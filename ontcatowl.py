@@ -1,12 +1,25 @@
-from rdflib import Graph, RDF
+from rdflib import Graph
 
-g = Graph()
-g.bind("rdf", RDF)
+gufo = Graph()
+ontology = Graph()
 
-# TODO: Read https://rdflib.readthedocs.io/en/stable/namespaces_and_bindings.html
+# Input GUFO Ontology
+try:
+    gufo.parse("resources/gufoEndurantsOnly.ttl")
+except OSError:
+    print(f"\nERROR. Could not load resources/gufoEndurantsOnly.ttl file. Exiting program.\n")
+    exit(1)
 
-# TODO: Load GUFO from ./resources in a graph
-# TODO: Load the ontology to be evaluated from fix path (for testing purposes) in a second graph
-# TODO: Load the ontology to be evaluated from argument in a second graph
+# TODO: Read from argument
+# Input Ontology
+try:
+    ontology.parse("resources/d3fend.ttl")
+except OSError:
+    print(f"\nERROR. Could not load resources/d3fend.ttl file. Exiting program.\n")
+    exit(1)
+
+# TODO: Future argument options: save in one file (ont + gufo), save inferences as assertions
+
 # TODO: Verify if there is a way tor reason over the input ontology
+# TODO: Study loggers for Python
 # TODO: update requirements.txt

@@ -15,7 +15,7 @@ pip install -r requirements.txt
 
 After the external libraries are installed, run the following command on the terminal for executing **OntCatOWL**:
 
-```shell
+```
 python ontcatowl.py <input file OR URL>
 ```
 
