@@ -1,25 +1,29 @@
+from owlrl import DeductiveClosure, RDFS_Semantics
 from rdflib import Graph
+import logging
 
 gufo = Graph()
 ontology = Graph()
 
-# Input GUFO Ontology
+# Input GUFO ontology
+# TODO (@pedropaulofb): Change for the complete version of GUFO after the tests are finished.
 try:
     gufo.parse("resources/gufoEndurantsOnly.ttl")
 except OSError:
-    print(f"\nERROR. Could not load resources/gufoEndurantsOnly.ttl file. Exiting program.\n")
+    logging.error("Could not load resources/gufoEndurantsOnly.ttl file. Exiting program.")
     exit(1)
 
-# TODO: Read from argument
-# Input Ontology
+# TODO (@pedropaulofb): Read from argument
+# Input ontology to be evaluated
 try:
     ontology.parse("resources/d3fend.ttl")
 except OSError:
-    print(f"\nERROR. Could not load resources/d3fend.ttl file. Exiting program.\n")
+    logging.error("Could not load resources/d3fend.ttl file. Exiting program.")
     exit(1)
 
-# TODO: Future argument options: save in one file (ont + gufo), save inferences as assertions
+# Performs RDFS inferences
+DeductiveClosure(RDFS_Semantics).expand(ontology)
 
-# TODO: Verify if there is a way tor reason over the input ontology
-# TODO: Study loggers for Python
-# TODO: update requirements.txt
+# TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
+# TODO (@pedropaulofb): Study loggers for Python
+# TODO (@pedropaulofb): update requirements.txt
