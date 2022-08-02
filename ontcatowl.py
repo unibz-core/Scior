@@ -1,10 +1,12 @@
+"""Main module for OntCatOWL"""
+
 import logging
-from os import times
 
-from owlrl import DeductiveClosure, RDFS_Semantics
 from rdflib import Graph
-import time
 
+from ontcatowl_dataclasses import initialize_gufo_list
+
+# TODO (@pedropaulofb): Set base level for printing log
 logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
 
 gufo = Graph()
@@ -28,16 +30,17 @@ except OSError:
 
 # TODO (@pedropaulofb): Read all classes from input ontology and create a list with no repetitions
 
-logging.info("Initializing RDFS inferences. This may take a while...")
-st = time.time()
-DeductiveClosure(RDFS_Semantics).expand(ontology)   # Performs RDFS inferences
-et = time.time()
-elapsed_time = et - st
-elapsed_time = round(elapsed_time, 2)
-logging.info(f"Inferencing process successfully completed on {elapsed_time} seconds.")
+logging.debug("Initializing RDFS inferences. This may take a while...")
+# DeductiveClosure(RDFS_Semantics).expand(ontology)  # Performs RDFS inferences
 
-# TODO (@pedropaulofb): Create log file parallel to logs printed on std.out (e.g., https://github.com/borntyping/jsonlog)
-# TODO (@pedropaulofb): Use different colors for logs levels printed on std.out (e.g. https://betterstack.com/community/questions/how-to-color-python-logging-output/)
+logging.debug("Initializing list of GUFO concepts.")
+gufo_list = []
+initialize_gufo_list(gufo_list)
+
+# TODO (@pedropaulofb): Create log file parallel to logs printed on std.out
+#  (e.g., https://github.com/borntyping/jsonlog)
+# TODO (@pedropaulofb): Use different colors for logs levels printed on std.ou
+#  (e.g. https://betterstack.com/community/questions/how-to-color-python-logging-output/)
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
 # TODO (@pedropaulofb): Evaluate on Linux before release first version
 # TODO (@pedropaulofb): update requirements.txt
