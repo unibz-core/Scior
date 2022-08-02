@@ -1,4 +1,6 @@
 import logging
+from os import times
+
 from owlrl import DeductiveClosure, RDFS_Semantics
 from rdflib import Graph
 import time
@@ -34,6 +36,8 @@ elapsed_time = et - st
 elapsed_time = round(elapsed_time, 2)
 logging.info(f"Inferencing process successfully completed on {elapsed_time} seconds.")
 
+# TODO (@pedropaulofb): Create log file parallel to logs printed on std.out (e.g., https://github.com/borntyping/jsonlog)
+# TODO (@pedropaulofb): Use different colors for logs levels printed on std.out (e.g. https://betterstack.com/community/questions/how-to-color-python-logging-output/)
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
-# TODO (@pedropaulofb): Study loggers for Python
+# TODO (@pedropaulofb): Evaluate on Linux before release first version
 # TODO (@pedropaulofb): update requirements.txt
