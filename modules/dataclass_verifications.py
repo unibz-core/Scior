@@ -63,31 +63,38 @@ if __name__ != "__main__":
         # There is no need for a return because the errors area already displayed case detected.
 
 
-    def correct_number_of_elements_ontology(dataclass, expected_number):
+    def correct_number_of_elements_ontology(ontology_dataclass):
         """ Sum of elements from all the lists in a dataclass must be equal to expected_number """
 
-        total_length = len(dataclass.is_type) + len(dataclass.is_individual) + len(dataclass.can_type) + len(
-            dataclass.can_individual) + len(dataclass.not_type) + len(dataclass.not_individual)
+        # TODO (@pedropaulofb): Update with the correct value.
+        expected_number = 10
+
+        total_length = len(ontology_dataclass.is_type) + len(ontology_dataclass.is_individual) + len(
+            ontology_dataclass.can_type) + len(ontology_dataclass.can_individual) + len(
+            ontology_dataclass.not_type) + len(ontology_dataclass.not_individual)
 
         if total_length != expected_number:
             logging.error(
-                f"INCONSISTENCY DETECTED: The number of elements in {dataclass.name} is {total_length}, which is different from the expected number ({expected_number}) in {__name__}.")
+                f"INCONSISTENCY DETECTED: The number of elements in {ontology_dataclass.name} is {total_length}, which is different from the expected number ({expected_number}) in {__name__}.")
             exit(1)
         else:
-            logging.debug(f"No inconsistency detected in {dataclass.name} in {__name__}.")
+            logging.debug(f"No inconsistency detected in {ontology_dataclass.name} in {__name__}.")
 
 
-    def correct_number_of_elements_gufo(dataclass, expected_number):
+    def correct_number_of_elements_gufo(gufo_dataclass):
         """Sum of elements from all the lists in a dataclass must be equal to expeted_number"""
 
-        total_length = len(dataclass.is_list) + len(dataclass.can_list) + len(dataclass.not_list)
+        # TODO (@pedropaulofb): Update with the correct value.
+        expected_number = 10
+
+        total_length = len(gufo_dataclass.is_list) + len(gufo_dataclass.can_list) + len(gufo_dataclass.not_list)
 
         if total_length != expected_number:
             logging.error(
-                f"INCONSISTENCY DETECTED: The number of elements in {dataclass.name} is {total_length}, which is different from the expected number ({expected_number}) in {__name__}.")
+                f"INCONSISTENCY DETECTED: The number of elements in {gufo_dataclass.name} is {total_length}, which is different from the expected number ({expected_number}) in {__name__}.")
             exit(1)
         else:
-            logging.debug(f"No inconsistency detected in {dataclass.name} in {__name__}.")
+            logging.debug(f"No inconsistency detected in {gufo_dataclass.name} in {__name__}.")
 
 
 def duplicated_other_list(list1, list2):

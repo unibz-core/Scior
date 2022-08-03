@@ -1,4 +1,7 @@
 """Definition of dataclasses used in OntCatOWL"""
+from modules.dataclass_verifications import check_duplicated_same_list_ontology, correct_number_of_elements_ontology, \
+    duplicated_other_list_ontology, check_duplicated_same_list_gufo, correct_number_of_elements_gufo, \
+    duplicated_other_list_gufo
 
 if __name__ != "__main__":
     import logging
@@ -25,10 +28,10 @@ if __name__ != "__main__":
 
         # TODO (@pedropaulofb): Duplicate the consistency checkings for the GUFOClass
 
-        # def is_consistent(self):
-        #     duplicated_same_list(self)
-        #     correct_number_of_elements(self)
-        #     duplicated_other_list(self)  # There is no need to return True, because a false validation exits the execution with an error message.
+        def is_consistent(self):
+            check_duplicated_same_list_ontology(self)
+            correct_number_of_elements_ontology(self)
+            duplicated_other_list_ontology(self)
 
 
     @dataclass
@@ -38,4 +41,7 @@ if __name__ != "__main__":
         can_list: list[str] = field(default_factory=list[str])
         not_list: list[str] = field(default_factory=list[str])
 
-        # TODO (@pedropaulofb): VERIFICATION - Copy code from OWLClass
+        def is_consistent(self):
+            check_duplicated_same_list_gufo(self)
+            correct_number_of_elements_gufo(self)
+            duplicated_other_list_gufo(self)
