@@ -3,10 +3,8 @@
 if __name__ == "__main__":
 
     import logging
-
     from rdflib import Graph
-
-    from modules.ontcatowl_dataclasses import initialize_gufo_list
+    from modules.ontcatowl_dataclasses import initialize_gufo_list, get_list_of_types
 
     # TODO (@pedropaulofb): Set base level for printing log
     logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
@@ -32,11 +30,21 @@ if __name__ == "__main__":
 
     # TODO (@pedropaulofb): Read all classes from input ontology and create a list with no repetitions
 
-    logging.debug("Initializing RDFS inferences. This may take a while...")
+    # logging.debug("Initializing RDFS reasoning. This may take a while...")
+    # st = time.time()
     # DeductiveClosure(RDFS_Semantics).expand(ontology)  # Performs RDFS inferences
+    # et = time.time()
+    # elapsed_time = round((et - st), 2)
+    # logging.debug(f"Reasoning process completed in {elapsed_time} seconds.")
 
     logging.debug("Initializing list of GUFO concepts.")
-    gufo_list = []
-    initialize_gufo_list(gufo_list)
+    gufo_list = initialize_gufo_list()
+    gufo_types = get_list_of_types()
 
-    # TODO (@pedropaulofb): Create log file parallel to logs printed on std.out  #  (e.g., https://github.com/borntyping/jsonlog)  # TODO (@pedropaulofb): Use different colors for logs levels printed on std.ou  #  (e.g. https://betterstack.com/community/questions/how-to-color-python-logging-output/)  # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions  # TODO (@pedropaulofb): Evaluate on Linux before release first version  # TODO (@pedropaulofb): update requirements.txt
+
+# TODO (@pedropaulofb): Create log file parallel to logs printed on std.out  #  (e.g., https://github.com/borntyping/jsonlog)
+# TODO (@pedropaulofb): Use different colors for logs levels printed on std.out (e.g. https://betterstack.com/community/questions/how-to-color-python-logging-output/)
+# TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
+# TODO (@peddropaulofb): Verify possibility to check consistency using a reasoner.
+# TODO (@pedropaulofb): Evaluate on Linux before release first version
+# TODO (@pedropaulofb): Update requirements.txt
