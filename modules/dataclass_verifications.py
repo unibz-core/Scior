@@ -1,4 +1,6 @@
-""" Module with functions for verifying the consistency of the dataclasses """
+""" This module implements the methods of the classes defined in dataclass_definitions.py """
+
+# TODO (@pedropaulofb): Maybe the verification functions should only be performed when a parameter is provided by the user, e.g., -v.
 
 if __name__ != "__main__":
 
@@ -42,23 +44,24 @@ if __name__ != "__main__":
             # There is no need for a return because the errors area already displayed case detected.
 
 
-    def check_duplicated_same_list_gufo(gufo_class):
+    def check_duplicated_same_list_gufo(gufo_dataclass):
         """ Verifies if there are duplicated elements in each one of the GUFOClass lists"""
+
         duplicated_list = []
 
-        if has_duplicates(gufo_class.is_list):
+        if has_duplicates(gufo_dataclass.is_list):
             duplicated_list.append("is_list")
-        elif has_duplicates(gufo_class.can_list):
+        elif has_duplicates(gufo_dataclass.can_list):
             duplicated_list.append("can_list")
-        elif has_duplicates(gufo_class.can_type):
+        elif has_duplicates(gufo_dataclass.not_list):
             duplicated_list.append("not_list")
 
         if len(duplicated_list) != 0:
             logging.error(
-                f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_class.name} in list {duplicated_list} in {__name__}.")
+                f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.name} in list {duplicated_list} in {__name__}.")
             exit(1)
         else:
-            logging.debug(f"No inconsistency detected in {gufo_class.name} in {__name__}.")
+            logging.debug(f"No inconsistency detected in {gufo_dataclass.name} in {__name__}.")
 
         # There is no need for a return because the errors area already displayed case detected.
 
@@ -66,8 +69,8 @@ if __name__ != "__main__":
     def correct_number_of_elements_ontology(ontology_dataclass):
         """ Sum of elements from all the lists in a dataclass must be equal to expected_number """
 
-        # TODO (@pedropaulofb): Update with the correct value.
-        expected_number = 10
+        # Total number of gufo elements (classes)
+        expected_number = 27
 
         total_length = len(ontology_dataclass.is_type) + len(ontology_dataclass.is_individual) + len(
             ontology_dataclass.can_type) + len(ontology_dataclass.can_individual) + len(
@@ -84,14 +87,14 @@ if __name__ != "__main__":
     def correct_number_of_elements_gufo(gufo_dataclass):
         """Sum of elements from all the lists in a dataclass must be equal to expeted_number"""
 
-        # TODO (@pedropaulofb): Update with the correct value.
-        expected_number = 10
+        types_number = 14
+        individuals_number = 13
 
         total_length = len(gufo_dataclass.is_list) + len(gufo_dataclass.can_list) + len(gufo_dataclass.not_list)
 
-        if total_length != expected_number:
+        if ((total_length != types_number) and (total_length != individuals_number)):
             logging.error(
-                f"INCONSISTENCY DETECTED: The number of elements in {gufo_dataclass.name} is {total_length}, which is different from the expected number ({expected_number}) in {__name__}.")
+                f"INCONSISTENCY DETECTED: The number of elements in {gufo_dataclass.name} is {total_length}, which is different from the expected number in {__name__}.")
             exit(1)
         else:
             logging.debug(f"No inconsistency detected in {gufo_dataclass.name} in {__name__}.")
@@ -190,3 +193,9 @@ def duplicated_other_list_gufo(gufo_dataclass):
         logging.debug(f"No inconsistency detected in {gufo_dataclass.name} in {__name__}. ")
 
     # There is no need for a return because the errors area already displayed case detected.
+
+
+# Tested only for List of GUFO classes
+def verify_all_list_consistency(list):
+    for i in range(len(list)):
+        list[i].is_consistent()

@@ -1,4 +1,6 @@
 """Main module for OntCatOWL"""
+from modules.dataclass_verifications import verify_all_list_consistency
+
 if __name__ == "__main__":
 
     import logging
@@ -41,6 +43,9 @@ if __name__ == "__main__":
     logging.debug("Initializing list of GUFO concepts.")
     gufo_types = get_list_of_types()
     gufo_individuals = get_list_of_individuals()
+
+    # verify_all_list_consistency(gufo_individuals)
+
 
 # TODO (@pedropaulofb): Create log file parallel to logs printed on std.out  #  (e.g., https://github.com/borntyping/jsonlog)
 # TODO (@pedropaulofb): Use different colors for logs levels printed on std.out (e.g. https://betterstack.com/community/questions/how-to-color-python-logging-output/)

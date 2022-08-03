@@ -5,6 +5,7 @@ from modules.dataclass_verifications import check_duplicated_same_list_ontology,
 
 if __name__ != "__main__":
     import logging
+    import time
     from dataclasses import dataclass, field
 
     logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
@@ -26,12 +27,10 @@ if __name__ != "__main__":
         not_type: list[str] = field(default_factory=list[str])
         not_individual: list[str] = field(default_factory=list[str])
 
-        # TODO (@pedropaulofb): Duplicate the consistency checkings for the GUFOClass
-
         def is_consistent(self):
-            check_duplicated_same_list_ontology(self)
-            correct_number_of_elements_ontology(self)
-            duplicated_other_list_ontology(self)
+            check_duplicated_same_list_ontology(self)   # Not tested yet
+            correct_number_of_elements_ontology(self)   # Not tested yet
+            duplicated_other_list_ontology(self)        # Not tested yet
 
 
     @dataclass
@@ -42,6 +41,6 @@ if __name__ != "__main__":
         not_list: list[str] = field(default_factory=list[str])
 
         def is_consistent(self):
-            check_duplicated_same_list_gufo(self)
-            correct_number_of_elements_gufo(self)
-            duplicated_other_list_gufo(self)
+            check_duplicated_same_list_gufo(self)   # basic test ok
+            correct_number_of_elements_gufo(self)   # basic test ok
+            duplicated_other_list_gufo(self)   # basic test ok
