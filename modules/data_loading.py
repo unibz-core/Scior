@@ -2,6 +2,8 @@
 
 # TODO (@pedropaulofb): The data should be loaded from a structured input file, like a csv, JSON, or YAML file.
 
+# TODO (@pedropaulofb): Create expected size for each list and for the sum of each list
+
 if __name__ != "__main__":
     from modules.dataclass_definitions import GUFOClass
 

@@ -6,6 +6,7 @@ if __name__ != "__main__":
 
     logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
 
+    # TODO (@pedropaulofb): Create expected size for each list and for the sum of each list
 
     @dataclass
     class OntologyClass:

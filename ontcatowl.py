@@ -6,6 +6,8 @@ if __name__ == "__main__":
     from modules.data_loading import get_list_of_types, get_list_of_individuals
 
     # TODO (@pedropaulofb): Set base level for printing log
+    #   e.g., only print if called with -d parameter (debug)
+    #   e.g., print debut only to file
     logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
 
     gufo = Graph()
