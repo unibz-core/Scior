@@ -1,10 +1,9 @@
 """Main module for OntCatOWL"""
-
 if __name__ == "__main__":
 
     import logging
     from rdflib import Graph
-    from modules.ontcatowl_dataclasses import initialize_gufo_list, get_list_of_types
+    from modules.data_loading import get_list_of_types, get_list_of_individuals
 
     # TODO (@pedropaulofb): Set base level for printing log
     logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
@@ -38,13 +37,13 @@ if __name__ == "__main__":
     # logging.debug(f"Reasoning process completed in {elapsed_time} seconds.")
 
     logging.debug("Initializing list of GUFO concepts.")
-    gufo_list = initialize_gufo_list()
     gufo_types = get_list_of_types()
-
+    gufo_individuals = get_list_of_individuals()
 
 # TODO (@pedropaulofb): Create log file parallel to logs printed on std.out  #  (e.g., https://github.com/borntyping/jsonlog)
 # TODO (@pedropaulofb): Use different colors for logs levels printed on std.out (e.g. https://betterstack.com/community/questions/how-to-color-python-logging-output/)
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
-# TODO (@peddropaulofb): Verify possibility to check consistency using a reasoner.
+# TODO (@pedropaulofb): Verify possibility to check consistency using a reasoner.
 # TODO (@pedropaulofb): Evaluate on Linux before release first version
 # TODO (@pedropaulofb): Update requirements.txt
+# TODO (@pedropaulofb): OntCatOWL can became a generic mapper tool!
