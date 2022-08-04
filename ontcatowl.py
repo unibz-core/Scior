@@ -1,10 +1,10 @@
 """Main module for OntCatOWL"""
+
 if __name__ == "__main__":
 
     import logging
-    from rdflib import Graph
+    from rdflib import Graph, Namespace
     from modules.data_loading import get_list_of_types, get_list_of_individuals
-    from modules.dataclass_verifications import verify_all_list_consistency
 
     # TODO (@pedropaulofb): Set base level for printing log
     #   e.g., only print if called with -d parameter (debug)
@@ -39,13 +39,10 @@ if __name__ == "__main__":
     # elapsed_time = round((et - st), 2)
     # logging.debug(f"Reasoning process completed in {elapsed_time} seconds.")
 
+    gufo_prefix = Namespace("http://purl.org/nemo/gufo#")
     logging.debug("Initializing list of GUFO concepts.")
     gufo_types = get_list_of_types()
     gufo_individuals = get_list_of_individuals()
-
-    verify_all_list_consistency(gufo_types)
-    verify_all_list_consistency(gufo_individuals)
-
 
 # TODO (@pedropaulofb): Create log file parallel to logs printed on std.out
 #       (e.g., https://github.com/borntyping/jsonlog)
