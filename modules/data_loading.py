@@ -1,8 +1,6 @@
-"""Loads GUFO data used for the evaluations. In the future this module should be substituted for another data loading option, like reading a CSV, JSON, or YAML file."""
+""" Loads GUFO data used for the evaluations. """
 
 # TODO (@pedropaulofb): The data should be loaded from a structured input file, like a csv, JSON, or YAML file.
-
-# TODO (@pedropaulofb): Create expected size for each list and for the sum of each list
 
 if __name__ != "__main__":
     from modules.dataclass_definitions import GUFOClass
@@ -87,7 +85,7 @@ if __name__ != "__main__":
 
 
     def get_list_of_individuals():
-        """Returns a list of dataclass GUFOClass with all GUFO invididuals and its corresponding internal list elements"""
+        """Returns a list of dataclass GUFOClass with all GUFO invididuals and its corresponding internal list elem."""
 
         gufo_individuals = []
         gufo_individuals.append(GUFOClass(name="gufo:Aspect", is_list=["gufo:Aspect"],

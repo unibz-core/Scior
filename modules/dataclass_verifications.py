@@ -1,6 +1,6 @@
 """ This module implements the methods of the classes defined in dataclass_definitions.py """
 
-# TODO (@pedropaulofb): Maybe the verification functions should only be performed when a parameter is provided by the user, e.g., -v.
+# TODO (@pedropaulofb): Maybe the verification funct should only be performed when a parameter is provided by the user
 
 if __name__ != "__main__":
 
@@ -36,10 +36,13 @@ if __name__ != "__main__":
 
         if len(duplicated_list) != 0:
             logging.error(
-                f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_class.name} in list {duplicated_list} in {__name__}.")
+                f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_class.name} "
+                f"in list {duplicated_list} in function {check_duplicated_same_list_ontology.__name__}.")
             exit(1)
         else:
-            logging.debug(f"No inconsistency detected in {ontology_class.name} in {__name__}.")
+            logging.debug(
+                f"No inconsistency detected in {ontology_class.name} "
+                f"in function {check_duplicated_same_list_ontology.__name__}.")
 
             # There is no need for a return because the errors area already displayed case detected.
 
@@ -58,10 +61,13 @@ if __name__ != "__main__":
 
         if len(duplicated_list) != 0:
             logging.error(
-                f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.name} in list {duplicated_list} in {__name__}.")
+                f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.name} "
+                f"in list {duplicated_list} in function {check_duplicated_same_list_gufo.__name__}.")
             exit(1)
         else:
-            logging.debug(f"No inconsistency detected in {gufo_dataclass.name} in {__name__}.")
+            logging.debug(
+                f"No inconsistency detected in {gufo_dataclass.name} "
+                f"in function {check_duplicated_same_list_gufo.__name__}.")
 
         # There is no need for a return because the errors area already displayed case detected.
 
@@ -78,10 +84,14 @@ if __name__ != "__main__":
 
         if total_length != expected_number:
             logging.error(
-                f"INCONSISTENCY DETECTED: The number of elements in {ontology_dataclass.name} is {total_length}, which is different from the expected number ({expected_number}) in {__name__}.")
+                f"INCONSISTENCY DETECTED: The number of elements in {ontology_dataclass.name} is {total_length}, "
+                f"which is different from the expected number ({expected_number}) "
+                f"in function {correct_number_of_elements_ontology.__name__}.")
             exit(1)
         else:
-            logging.debug(f"No inconsistency detected in {ontology_dataclass.name} in {__name__}.")
+            logging.debug(
+                f"No inconsistency detected in {ontology_dataclass.name} "
+                f"in function {correct_number_of_elements_ontology.__name__}.")
 
 
     def correct_number_of_elements_gufo(gufo_dataclass):
@@ -92,12 +102,15 @@ if __name__ != "__main__":
 
         total_length = len(gufo_dataclass.is_list) + len(gufo_dataclass.can_list) + len(gufo_dataclass.not_list)
 
-        if ((total_length != types_number) and (total_length != individuals_number)):
+        if (total_length != types_number) and (total_length != individuals_number):
             logging.error(
-                f"INCONSISTENCY DETECTED: The number of elements in {gufo_dataclass.name} is {total_length}, which is different from the expected number in {__name__}.")
+                f"INCONSISTENCY DETECTED: The number of elements in {gufo_dataclass.name} is {total_length}, "
+                f"which is different from the expected number in function {correct_number_of_elements_gufo.__name__}.")
             exit(1)
         else:
-            logging.debug(f"No inconsistency detected in {gufo_dataclass.name} in {__name__}.")
+            logging.debug(
+                f"No inconsistency detected in {gufo_dataclass.name} "
+                f"in function {correct_number_of_elements_gufo.__name__}.")
 
 
 def duplicated_other_list(list1, list2):
@@ -163,10 +176,13 @@ def duplicated_other_list_ontology(ontology_dataclass):
 
     if len(duplicated_list) != 0:
         logging.error(
-            f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_dataclass.name} in {__name__}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
+            f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_dataclass.name} in function "
+            f"{duplicated_other_list_ontology.__name__}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
         exit(1)
     else:
-        logging.debug(f"No inconsistency detected in {ontology_dataclass.name} in {__name__}. ")
+        logging.debug(
+            f"No inconsistency detected in {ontology_dataclass.name} "
+            f"in function {duplicated_other_list_ontology.__name__}. ")
 
     # There is no need for a return because the errors area already displayed case detected.
 
@@ -187,15 +203,18 @@ def duplicated_other_list_gufo(gufo_dataclass):
 
     if len(duplicated_list) != 0:
         logging.error(
-            f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.name} in {__name__}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
+            f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.name} in function "
+            f"{duplicated_other_list_gufo.__name__}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
         exit(1)
     else:
-        logging.debug(f"No inconsistency detected in {gufo_dataclass.name} in {__name__}. ")
+        logging.debug(
+            f"No inconsistency detected in {gufo_dataclass.name} in function {duplicated_other_list_gufo.__name__}. ")
 
     # There is no need for a return because the errors area already displayed case detected.
 
 
 # Tested only for List of GUFO classes
 def verify_all_list_consistency(list):
+    """ Calls the consistency verification of all elements in a list of GUFO or Ontology classes. """
     for i in range(len(list)):
         list[i].is_consistent()

@@ -5,15 +5,14 @@ from modules.dataclass_verifications import check_duplicated_same_list_ontology,
 
 if __name__ != "__main__":
     import logging
-    import time
     from dataclasses import dataclass, field
 
     logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
 
-    # TODO (@pedropaulofb): Create expected size for each list and for the sum of each list
 
     @dataclass
-    class OntologyClass:
+    class OntologyClass(object):
+        """ Each loaded ontology elem. has lists of GUFO elem. (types/indivuduals) that they are, can or cannot be. """
         name: str = field(default_factory=str)
         is_type: list[str] = field(default_factory=list[str])
         is_individual: list[str] = field(default_factory=list[str])
@@ -28,19 +27,24 @@ if __name__ != "__main__":
         not_individual: list[str] = field(default_factory=list[str])
 
         def is_consistent(self):
-            check_duplicated_same_list_ontology(self)   # Not tested yet
-            correct_number_of_elements_ontology(self)   # Not tested yet
-            duplicated_other_list_ontology(self)        # Not tested yet
+            # CAUTION: FUNCTIONS NOT TESTED YET!
+            check_duplicated_same_list_ontology(self)
+            correct_number_of_elements_ontology(self)
+            duplicated_other_list_ontology(self)
 
 
     @dataclass
-    class GUFOClass:
+    class GUFOClass(object):
+        """ Each GUFO element has a list of other GUFO elements that they are, can be or cannot be. """
         name: str = field(default_factory=str)
         is_list: list[str] = field(default_factory=list[str])
         can_list: list[str] = field(default_factory=list[str])
         not_list: list[str] = field(default_factory=list[str])
 
         def is_consistent(self):
-            check_duplicated_same_list_gufo(self)   # basic test ok
-            correct_number_of_elements_gufo(self)   # basic test ok
-            duplicated_other_list_gufo(self)   # basic test ok
+            # basic test ok
+            check_duplicated_same_list_gufo(self)
+            # basic test ok
+            correct_number_of_elements_gufo(self)
+            # basic test ok
+            duplicated_other_list_gufo(self)

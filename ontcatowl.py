@@ -1,11 +1,10 @@
 """Main module for OntCatOWL"""
-from modules.dataclass_verifications import verify_all_list_consistency
-
 if __name__ == "__main__":
 
     import logging
     from rdflib import Graph
     from modules.data_loading import get_list_of_types, get_list_of_individuals
+    from modules.dataclass_verifications import verify_all_list_consistency
 
     # TODO (@pedropaulofb): Set base level for printing log
     #   e.g., only print if called with -d parameter (debug)
@@ -44,11 +43,14 @@ if __name__ == "__main__":
     gufo_types = get_list_of_types()
     gufo_individuals = get_list_of_individuals()
 
-    # verify_all_list_consistency(gufo_individuals)
+    verify_all_list_consistency(gufo_types)
+    verify_all_list_consistency(gufo_individuals)
 
 
-# TODO (@pedropaulofb): Create log file parallel to logs printed on std.out  #  (e.g., https://github.com/borntyping/jsonlog)
-# TODO (@pedropaulofb): Use different colors for logs levels printed on std.out (e.g. https://betterstack.com/community/questions/how-to-color-python-logging-output/)
+# TODO (@pedropaulofb): Create log file parallel to logs printed on std.out
+#       (e.g., https://github.com/borntyping/jsonlog)
+# TODO (@pedropaulofb): Use different colors for logs levels printed on std.out
+#       (e.g. https://betterstack.com/community/questions/how-to-color-python-logging-output/)
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
 # TODO (@pedropaulofb): Verify possibility to check consistency using a reasoner.
 # TODO (@pedropaulofb): Evaluate on Linux before release first version
