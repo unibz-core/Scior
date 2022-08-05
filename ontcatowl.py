@@ -1,8 +1,8 @@
 """Main module for OntCatOWL"""
+from modules.test.test_functions import begin_test
+
 if __name__ == "__main__":
 
-    import time
-    from owlrl import DeductiveClosure, OWLRL_Extension
     from modules.data_initialization_ontology import initialize_ontology
     import logging
     from rdflib import Graph
@@ -47,6 +47,8 @@ if __name__ == "__main__":
     logging.debug("Initializing list of GUFO concepts.")
     gufo_types = get_list_of_gufo_types()
     gufo_individuals = get_list_of_gufo_individuals()
+
+    begin_test(ontology)
 
     # From now on, the working entities are:
     #   ontology: complete graph with inferences

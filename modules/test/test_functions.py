@@ -1,7 +1,7 @@
 """ Functions that allows human intervention and visualization for testing purposes. """
 from os import path, remove
 
-from rdflib import RDF, OWL
+from rdflib import RDF, RDFS, URIRef
 
 if __name__ != '__main':
 
@@ -10,16 +10,23 @@ if __name__ != '__main':
     logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
 
 
+    def erase_existing_file(file):
+        """ If a file exists, remove it """
+
+        file_exists = path.exists(file)
+
+        if file_exists:
+            remove(file)
+            logging.debug(f"Previously existent {file} successfully deleted.")
+
+
     def print_list_file(var):
         """ Print a list to the test file /trash/delete.txt """
 
         test_file = "./trash/delete.txt"
 
         try:
-            file_exists = path.exists(test_file)
-            if file_exists:
-                remove(test_file)
-                logging.debug("Previously existent trash/delete.txt successfully deleted.")
+            erase_existing_file(test_file)
             with open(test_file, 'a', encoding='utf-8') as f:
                 for i in range(len(var)):
                     f.write(var[i] + "\n")
@@ -29,16 +36,47 @@ if __name__ != '__main':
             exit(1)
 
 
+    def safe_output_file(graph):
+        """ Save a graph in a file """
+
+        output_file = "./trash/ontology.ttl"
+
+        try:
+            erase_existing_file(output_file)
+            with open(output_file, "w", encoding="utf-8") as f:
+                f.write(graph.serialize(format="turtle"))
+                logging.debug("New trash/ontology.ttl successfully created and written.")
+        except OSError:
+            logging.error(f"\nCould not WRITE file {output_file}. Exiting program.\n")
+            exit(1)
+
+
     def insert_triple(ontology):
         """ Allows user to manually insert a triple into the ontology for verifying its effects """
 
-        input1 = input("Enter the Ontology entity:")
-        input2 = input("Enter the relation number (1 for owl:subClassOf, 2 for rdf:type):")
-        input3 = input("Enter the Ontology entity:")
+        input1 = input("Enter the Ontology entity: ")
+        subject_uri = URIRef(input1)
+
+        input2 = input("Enter the relation number (1 for rdfs:subClassOf, 2 for rdf:type): ")
+
+        input3 = input("Enter the Ontology entity: ")
+        object_uri = URIRef(input3)
 
         if input2 == "1":
-            ontology.add((input1, OWL.subClassOf, input3))
+            ontology.add((subject_uri, RDFS.subClassOf, object_uri))
         else:
-            ontology.add((input1, RDF.type, input3))
+            ontology.add((subject_uri, RDF.type, object_uri))
 
         return ontology
+
+
+    def begin_test(ontology):
+        """ Creates a test loop """
+
+        cont = "y"
+
+        while cont == "y" or cont == "Y":
+            insert_triple(ontology)
+            # TODO (@pedropaulofb): Insert processing here
+            safe_output_file(ontology)
+            cont = input("Continue (Y/N)?: ")
