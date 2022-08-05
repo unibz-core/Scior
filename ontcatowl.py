@@ -1,11 +1,11 @@
 """Main module for OntCatOWL"""
-from modules.data_initialization_ontology import get_list_of_classes
-from modules.test.test_functions import print_list_file
+
+from modules.data_initialization_ontology import initialize_ontology
 
 if __name__ == "__main__":
 
     import logging
-    from rdflib import Graph, Namespace
+    from rdflib import Graph
     from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
 
     # TODO (@pedropaulofb): Set base level for printing log
@@ -32,10 +32,9 @@ if __name__ == "__main__":
         logging.error("Could not load resources/d3fend.ttl file. Exiting program.")
         exit(1)
 
-    ontology_classes = get_list_of_classes(ontology)
-    print_list_file(ontology_classes)
+    logging.debug("Initializing list of Ontology concepts.")
+    ontology_classes = initialize_ontology(ontology)
 
-    # ontology_classes = initialize_ontology(ontology)
     # TODO (@pedropaulofb): The ontology may already contain relations with GUFO. Treat that.
 
     # logging.debug("Initializing RDFS reasoning. This may take a while...")
@@ -48,6 +47,12 @@ if __name__ == "__main__":
     logging.debug("Initializing list of GUFO concepts.")
     gufo_types = get_list_of_gufo_types()
     gufo_individuals = get_list_of_gufo_individuals()
+
+    # From now on, the working entities are:
+    #   ontology: complete graph with inferences
+    #   ontology_classes: list of OntologyClasses to be manipulated
+    #   gufo_types: list of gufo types for reference
+    #   gufo_individuals: list of gufo individuals for reference
 
 # TODO (@pedropaulofb): Create log file parallel to logs printed on std.out
 #       (e.g., https://github.com/borntyping/jsonlog)

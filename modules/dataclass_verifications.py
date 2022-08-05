@@ -11,7 +11,7 @@ if __name__ != "__main__":
 
 
     def check_duplicated_same_list_ontology(ontology_class):
-        """ Verifies if there are duplicated elements in each one of the OWLClass lists"""
+        """ Verifies if there are duplicated elements in each one of the OntologyClass lists"""
         duplicated_list = []
 
         if has_duplicates(ontology_class.is_type):
@@ -92,7 +92,8 @@ if __name__ != "__main__":
 
         if (total_length != types_number) and (total_length != individuals_number):
             logging.error(f"INCONSISTENCY DETECTED: The number of elements in {gufo_dataclass.uri} is {total_length}, "
-                          f"which is different from the expected number in function {correct_number_of_elements_gufo.__name__}.")
+                          f"which is different from the expected number in "
+                          f"function {correct_number_of_elements_gufo.__name__}.")
             exit(1)
         else:
             logging.debug(f"No inconsistency detected in {gufo_dataclass.uri} "
@@ -187,9 +188,8 @@ def duplicated_other_list_gufo(gufo_dataclass):
         duplicated_list.append("not_list")
 
     if len(duplicated_list) != 0:
-        logging.error(
-            f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.uri} in function "
-            f"{duplicated_other_list_gufo.__name__}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
+        logging.error(f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.uri} in function "
+                      f"{duplicated_other_list_gufo.__name__}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
         exit(1)
     else:
         logging.debug(

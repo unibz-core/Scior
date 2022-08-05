@@ -45,8 +45,5 @@ if __name__ != "__main__":
 
         return result
 
-
-    # TODO (@pedropaulofb): CRETE THIS!
-    def list_classes(graph):
-        """ Return a list of all classes (complete URI) in the graph """
-        return False
+    # TODO (@pedropaulofb): Crete function to verify if a class in an ontology is an instance of a GUFO class
+    # TODO (@pedropaulofb): Crete function to verify if a class in an ontology is a subclass of a GUFO class

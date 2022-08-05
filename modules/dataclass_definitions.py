@@ -16,18 +16,22 @@ if __name__ != "__main__":
         uri: str = field(default_factory=str)
         is_type: list[str] = field(default_factory=list[str])
         is_individual: list[str] = field(default_factory=list[str])
-        can_type = ["gufo:AntiRigidType", "gufo:Category", "gufo:Kind", "gufo:Mixin", "gufo:NonRigidType",
-                    "gufo:NonSortal", "gufo:Phase", "gufo:PhaseMixin", "gufo:RigidType", "gufo:Role", "gufo:RoleMixin",
-                    "gufo:SemiRigidType", "gufo:Sortal", "gufo:SubKind"]
-        can_individual = ["gufo:Aspect", "gufo:Collection", "gufo:ExtrinsicAspect", "gufo:ExtrinsicMode",
-                          "gufo:FixedCollection", "gufo:FunctionalComplex", "gufo:IntrinsicAspect",
-                          "gufo:IntrinsicMode", "gufo:Object", "gufo:Quality", "gufo:Quantity", "gufo:Relator",
-                          "gufo:VariableCollection"]
+        can_type: list[str] = field(default_factory=list[str])
+        can_individual: list[str] = field(default_factory=list[str])
         not_type: list[str] = field(default_factory=list[str])
         not_individual: list[str] = field(default_factory=list[str])
 
+        def __post_init__(self):
+            self.can_type = ["gufo:AntiRigidType", "gufo:Category", "gufo:Kind", "gufo:Mixin", "gufo:NonRigidType",
+                             "gufo:NonSortal", "gufo:Phase", "gufo:PhaseMixin", "gufo:RigidType", "gufo:Role",
+                             "gufo:RoleMixin", "gufo:SemiRigidType", "gufo:Sortal", "gufo:SubKind"]
+            self.can_individual = ["gufo:Aspect", "gufo:Collection", "gufo:ExtrinsicAspect", "gufo:ExtrinsicMode",
+                                   "gufo:FixedCollection", "gufo:FunctionalComplex", "gufo:IntrinsicAspect",
+                                   "gufo:IntrinsicMode", "gufo:Object", "gufo:Quality", "gufo:Quantity", "gufo:Relator",
+                                   "gufo:VariableCollection"]
+
         def is_consistent(self):
-            # CAUTION: FUNCTIONS NOT TESTED YET!
+            # Only a basic test were for this method
             check_duplicated_same_list_ontology(self)
             correct_number_of_elements_ontology(self)
             duplicated_other_list_ontology(self)
@@ -42,9 +46,7 @@ if __name__ != "__main__":
         not_list: list[str] = field(default_factory=list[str])
 
         def is_consistent(self):
-            # basic test ok
+            # Only a basic test were for this method
             check_duplicated_same_list_gufo(self)
-            # basic test ok
             correct_number_of_elements_gufo(self)
-            # basic test ok
             duplicated_other_list_gufo(self)

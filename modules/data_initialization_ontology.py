@@ -1,20 +1,25 @@
 """ Module for initializing data read from the ontology to be evaluated """
 from rdflib import RDF, OWL
 
+from modules.dataclass_definitions import OntologyClass
+
 if __name__ != "__main__":
 
     def initialize_ontology(ontology):
-        """ Return an OWLClass list of all classes in the ontology to be evaluated with its related sub-lists """
+        """ Return an OntologyClass list of all classes in the ontology to be evaluated with its related sub-lists """
 
-        # classes_list = get_list_of_all_classes(ontology)
-        # classes_list = remove_gufo_classes(classes_list)
-        # ontology_list = create_list_ontology(classes_list)
+        ontology_list = []
 
-        # return ontology_list
-        pass
+        classes_list = get_list_of_classes(ontology)
+
+        for i in range(len(classes_list)):
+            ontology_list.append(OntologyClass(uri=classes_list[i]))
+
+        return ontology_list
 
 
     def get_list_of_classes(ontology):
+        """ Returns a list of all classes as URI strings without repetitions available in a Graph """
 
         classes_list = []
 
@@ -30,8 +35,3 @@ if __name__ != "__main__":
         classes_list = [*set(classes_list)]
 
         return classes_list
-
-
-    def create_list_ontology(classes_list):
-        # return ontology_list
-        pass
