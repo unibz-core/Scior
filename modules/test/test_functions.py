@@ -1,6 +1,8 @@
 """ Functions that allows human intervention and visualization for testing purposes. """
 from os import path, remove
 
+from rdflib import RDF, OWL
+
 if __name__ != '__main':
 
     import logging
@@ -25,3 +27,18 @@ if __name__ != '__main':
         except OSError:
             logging.error("Could not print in trash/delete.txt. Exiting program.")
             exit(1)
+
+
+    def insert_triple(ontology):
+        """ Allows user to manually insert a triple into the ontology for verifying its effects """
+
+        input1 = input("Enter the Ontology entity:")
+        input2 = input("Enter the relation number (1 for owl:subClassOf, 2 for rdf:type):")
+        input3 = input("Enter the Ontology entity:")
+
+        if input2 == "1":
+            ontology.add((input1, OWL.subClassOf, input3))
+        else:
+            ontology.add((input1, RDF.type, input3))
+
+        return ontology

@@ -1,9 +1,9 @@
 """Main module for OntCatOWL"""
-
-from modules.data_initialization_ontology import initialize_ontology
-
 if __name__ == "__main__":
 
+    import time
+    from owlrl import DeductiveClosure, OWLRL_Extension
+    from modules.data_initialization_ontology import initialize_ontology
     import logging
     from rdflib import Graph
     from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
