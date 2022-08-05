@@ -42,8 +42,7 @@ d3f:AccessControlList a owl:Class ;
     rdfs:label "Access Control List" ;
     rdfs:comment "A list of permissions attached to an object." ;
     rdfs:isDefinedBy <http://dbpedia.org/resource/Access-control_list> ;
-    rdfs:subClassOf d3f:AccessControlConfiguration ; 
-	rdfs:subClassOf <http://purl.org/nemo/gufo#Type> .
+    rdfs:subClassOf d3f:AccessControlConfiguration .
 
 d3f:AdobePDFFile1.3 a d3f:DocumentFile,
         owl:NamedIndividual ;
