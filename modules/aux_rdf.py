@@ -40,6 +40,13 @@ if __name__ != "__main__":
         result = []
 
         for pre, nam in graph.namespaces():
+            # N3 necessary for returning string and [1:-1] necessary for removing <>
             result.append(nam.n3()[1:-1])
 
         return result
+
+
+    # TODO (@pedropaulofb): CRETE THIS!
+    def list_classes(graph):
+        """ Return a list of all classes (complete URI) in the graph """
+        return False

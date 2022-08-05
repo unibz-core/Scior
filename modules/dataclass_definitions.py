@@ -13,7 +13,7 @@ if __name__ != "__main__":
     @dataclass
     class OntologyClass(object):
         """ Each loaded ontology elem. has lists of GUFO elem. (types/indivuduals) that they are, can or cannot be. """
-        name: str = field(default_factory=str)
+        uri: str = field(default_factory=str)
         is_type: list[str] = field(default_factory=list[str])
         is_individual: list[str] = field(default_factory=list[str])
         can_type = ["gufo:AntiRigidType", "gufo:Category", "gufo:Kind", "gufo:Mixin", "gufo:NonRigidType",
@@ -36,7 +36,7 @@ if __name__ != "__main__":
     @dataclass
     class GUFOClass(object):
         """ Each GUFO element has a list of other GUFO elements that they are, can be or cannot be. """
-        name: str = field(default_factory=str)
+        uri: str = field(default_factory=str)
         is_list: list[str] = field(default_factory=list[str])
         can_list: list[str] = field(default_factory=list[str])
         not_list: list[str] = field(default_factory=list[str])

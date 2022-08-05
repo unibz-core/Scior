@@ -1,10 +1,12 @@
 """Main module for OntCatOWL"""
+from modules.data_initialization_ontology import get_list_of_classes
+from modules.test.test_functions import print_list_file
 
 if __name__ == "__main__":
 
     import logging
     from rdflib import Graph, Namespace
-    from modules.data_loading import get_list_of_types, get_list_of_individuals
+    from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
 
     # TODO (@pedropaulofb): Set base level for printing log
     #   e.g., only print if called with -d parameter (debug)
@@ -30,7 +32,11 @@ if __name__ == "__main__":
         logging.error("Could not load resources/d3fend.ttl file. Exiting program.")
         exit(1)
 
-    # TODO (@pedropaulofb): Read all classes from input ontology and create a list with no repetitions
+    ontology_classes = get_list_of_classes(ontology)
+    print_list_file(ontology_classes)
+
+    # ontology_classes = initialize_ontology(ontology)
+    # TODO (@pedropaulofb): The ontology may already contain relations with GUFO. Treat that.
 
     # logging.debug("Initializing RDFS reasoning. This may take a while...")
     # st = time.time()
@@ -39,10 +45,9 @@ if __name__ == "__main__":
     # elapsed_time = round((et - st), 2)
     # logging.debug(f"Reasoning process completed in {elapsed_time} seconds.")
 
-    gufo_prefix = Namespace("http://purl.org/nemo/gufo#")
     logging.debug("Initializing list of GUFO concepts.")
-    gufo_types = get_list_of_types()
-    gufo_individuals = get_list_of_individuals()
+    gufo_types = get_list_of_gufo_types()
+    gufo_individuals = get_list_of_gufo_individuals()
 
 # TODO (@pedropaulofb): Create log file parallel to logs printed on std.out
 #       (e.g., https://github.com/borntyping/jsonlog)
