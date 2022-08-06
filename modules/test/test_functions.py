@@ -64,8 +64,10 @@ if __name__ != '__main':
 
         if input2 == "1":
             ontology.add((subject_uri, RDFS.subClassOf, object_uri))
+            logging.debug(f"The following triple was inserted into the ontology: {input1} rdfs:subClassOf {input3}.")
         else:
             ontology.add((subject_uri, RDF.type, object_uri))
+            logging.debug(f"The following triple was inserted into the ontology: {input1} rdf:type {input3}.")
 
         return ontology
 
@@ -76,7 +78,7 @@ if __name__ != '__main':
         cont = "y"
 
         while cont == "y" or cont == "Y":
-            insert_triple(ontology)
+            ontology = insert_triple(ontology)
             # TODO (@pedropaulofb): Insert processing here
             safe_output_file(ontology)
             cont = input("Continue (Y/N)?: ")
