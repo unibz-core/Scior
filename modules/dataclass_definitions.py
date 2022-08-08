@@ -31,10 +31,65 @@ if __name__ != "__main__":
                                    "gufo:VariableCollection"]
 
         def is_consistent(self):
+            """ Performs a consistency check on the dataclass """
             # Only a basic test were for this method
             check_duplicated_same_list_ontology(self)
             correct_number_of_elements_ontology(self)
             duplicated_other_list_ontology(self)
+
+        def move_between_lists(self, element, source_list, target_list):
+
+            # Source and target lists must be different
+            if source_list == target_list:
+                logging.error("Source equals target list. Program aborted.")
+                exit(1)
+
+            if source_list == "is_type":
+                source = self.is_type
+            elif source_list == "is_individual":
+                source = self.is_individual
+            elif source_list == "can_type":
+                source = self.can_type
+            elif source_list == "can_individual":
+                source = self.can_individual
+            elif source_list == "not_type":
+                source = self.not_type
+            elif source_list == "not_individual":
+                source = self.not_individual
+            else:
+                logging.error("Unknown source list type. Program aborted.")
+                exit(1)
+
+            if target_list == "is_type":
+                target = self.is_type
+            elif target_list == "is_individual":
+                target = self.is_individual
+            elif target_list == "can_type":
+                target = self.can_type
+            elif target_list == "can_individual":
+                target = self.can_individual
+            elif target_list == "not_type":
+                target = self.not_type
+            elif target_list == "not_individual":
+                target = self.not_individual
+            else:
+                logging.error("Unknown target list type. Program aborted.")
+                exit(1)
+
+            # Element must be in source list
+            if element not in source:
+                logging.error("The element to be moved was not found in source list. Program aborted.")
+                exit(1)
+
+            # Move element
+            logging.debug(f"Moving element {element} from {source_list} list to {target_list} list in {self.uri}. Program aborted.")
+            source.remove(element)
+            target.append(element)
+
+            # Performs consistency check - if time-consuming, this operation can be removed
+            self.is_consistent()
+
+            logging.debug("Element moved successfully.")
 
 
     @dataclass
@@ -46,6 +101,7 @@ if __name__ != "__main__":
         not_list: list[str] = field(default_factory=list[str])
 
         def is_consistent(self):
+            """ Performs a consistency check on the dataclass """
             # Only a basic test were for this method
             check_duplicated_same_list_gufo(self)
             correct_number_of_elements_gufo(self)

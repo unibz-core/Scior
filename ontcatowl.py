@@ -39,8 +39,6 @@ if __name__ == "__main__":
     gufo_types = get_list_of_gufo_types()
     gufo_individuals = get_list_of_gufo_individuals()
 
-    begin_test(ontology)
-
     # From now on, the working entities are:
     #   ontology: complete graph with inferences
     #   ontology_classes: list of OntologyClasses to be manipulated
