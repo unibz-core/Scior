@@ -1,7 +1,7 @@
 """ Module for initializing data read from the ontology to be evaluated """
 from rdflib import RDF, OWL
 
-from modules.dataclass_definitions import OntologyClass
+from modules.dataclass_definitions_ontology import OntologyClass
 
 if __name__ != "__main__":
 

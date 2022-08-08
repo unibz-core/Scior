@@ -1,7 +1,6 @@
 """Definition of dataclasses used in OntCatOWL"""
 from modules.dataclass_verifications import check_duplicated_same_list_ontology, correct_number_of_elements_ontology, \
-    duplicated_other_list_ontology, check_duplicated_same_list_gufo, correct_number_of_elements_gufo, \
-    duplicated_other_list_gufo
+    duplicated_other_list_ontology
 
 if __name__ != "__main__":
     import logging
@@ -32,12 +31,15 @@ if __name__ != "__main__":
 
         def is_consistent(self):
             """ Performs a consistency check on the dataclass """
+
             # Only a basic test were for this method
             check_duplicated_same_list_ontology(self)
             correct_number_of_elements_ontology(self)
             duplicated_other_list_ontology(self)
 
         def move_between_lists(self, element, source_list, target_list):
+            """ Move an element between two lists in the same OntologyClass """
+            # TODO (@pedropaulofb): This method probably can be better implemented.
 
             # Source and target lists must be different
             if source_list == target_list:
@@ -82,7 +84,8 @@ if __name__ != "__main__":
                 exit(1)
 
             # Move element
-            logging.debug(f"Moving element {element} from {source_list} list to {target_list} list in {self.uri}. Program aborted.")
+            logging.debug(f"Moving element {element} from {source_list} list to {target_list} list in {self.uri}. "
+                          f"Program aborted.")
             source.remove(element)
             target.append(element)
 
@@ -91,18 +94,50 @@ if __name__ != "__main__":
 
             logging.debug("Element moved successfully.")
 
+        def create_partial_hash(self, input_list):
 
-    @dataclass
-    class GUFOClass(object):
-        """ Each GUFO element has a list of other GUFO elements that they are, can be or cannot be. """
-        uri: str = field(default_factory=str)
-        is_list: list[str] = field(default_factory=list[str])
-        can_list: list[str] = field(default_factory=list[str])
-        not_list: list[str] = field(default_factory=list[str])
+            partial_hash = input_list
 
-        def is_consistent(self):
-            """ Performs a consistency check on the dataclass """
-            # Only a basic test were for this method
-            check_duplicated_same_list_gufo(self)
-            correct_number_of_elements_gufo(self)
-            duplicated_other_list_gufo(self)
+            if input_list == "is_type":
+                list_hash = self.is_type
+            elif input_list == "is_individual":
+                list_hash = self.is_individual
+            elif input_list == "can_type":
+                list_hash = self.can_type
+            elif input_list == "can_individual":
+                list_hash = self.can_individual
+            elif input_list == "not_type":
+                list_hash = self.not_type
+            elif input_list == "not_individual":
+                list_hash = self.not_individual
+            else:
+                logging.error("Unknown list type. Unable to create hash. Program aborted.")
+                exit(1)
+
+            for i in range(len(list_hash)):
+                partial_hash += list_hash[i]
+
+            return partial_hash
+
+        def create_hash(self):
+
+            hash_is_type = self.create_partial_hash("is_type")
+            hash_is_individual = self.create_partial_hash("is_individual")
+            hash_can_type = self.create_partial_hash("can_type")
+            hash_can_individual = self.create_partial_hash("can_individual")
+            hash_not_type = self.create_partial_hash("not_type")
+            hash_not_individual = self.create_partial_hash("not_individual")
+
+            class_hash = hash_is_type + hash_is_individual + hash_can_type + hash_can_individual + hash_not_type \
+                         + hash_not_individual
+
+            logging.debug(f"Hash successfully created for {self.uri}.")
+
+            return class_hash
+
+        def update_lists_from_gufo(self):
+
+            # verify hash before
+            # verify hash after
+
+            return self

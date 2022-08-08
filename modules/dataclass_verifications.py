@@ -1,4 +1,4 @@
-""" This module implements the methods of the classes defined in dataclass_definitions.py """
+""" This module implements the methods of the classes defined in dataclass_definitions_gufo.py """
 
 # TODO (@pedropaulofb): Maybe the verification funct should only be performed when a parameter is provided by the user
 from modules.aux_general import has_duplicates

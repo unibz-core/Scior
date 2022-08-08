@@ -3,7 +3,7 @@
 # TODO (@pedropaulofb): The data should be loaded from a structured input file, like a csv, JSON, or YAML file.
 
 if __name__ != "__main__":
-    from modules.dataclass_definitions import GUFOClass
+    from modules.dataclass_definitions_gufo import GUFOClass
 
 
     def get_list_of_gufo_types():

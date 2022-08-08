@@ -1,12 +1,11 @@
 """Main module for OntCatOWL"""
-from modules.test.test_functions import begin_test
 
 if __name__ == "__main__":
 
-    from modules.data_initialization_ontology import initialize_ontology
+    from modules.data_initialization_ontology import *
+    from modules.data_initialization_gufo import *
     import logging
     from rdflib import Graph
-    from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
 
     # TODO (@pedropaulofb): Set base level for printing log
     #   e.g., only print if called with -d parameter (debug)
@@ -39,11 +38,7 @@ if __name__ == "__main__":
     gufo_types = get_list_of_gufo_types()
     gufo_individuals = get_list_of_gufo_individuals()
 
-    # From now on, the working entities are:
-    #   ontology: complete graph with inferences
-    #   ontology_classes: list of OntologyClasses to be manipulated
-    #   gufo_types: list of gufo types for reference
-    #   gufo_individuals: list of gufo individuals for reference
+    # From now on, the working entities are:  #   ontology: complete graph with inferences  #   ontology_classes: list of OntologyClasses to be manipulated  #   gufo_types: list of gufo types for reference  #   gufo_individuals: list of gufo individuals for reference
 
 # TODO (@pedropaulofb): Create log file parallel to logs printed on std.out
 #       (e.g., https://github.com/borntyping/jsonlog)
