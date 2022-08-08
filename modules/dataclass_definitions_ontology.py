@@ -94,7 +94,29 @@ if __name__ != "__main__":
 
             logging.debug("Element moved successfully.")
 
+        def return_containing_list_name(self, element):
+            """ Verify to which of the dataclass lists the element belongs and returns the list name. """
+
+            if element in self.is_type:
+                containing_list = "is_type"
+            elif element in self.is_individual:
+                containing_list = "is_individual"
+            elif element in self.can_type:
+                containing_list = "can_type"
+            elif element in self.can_individual:
+                containing_list = "can_individual"
+            elif element in self.not_type:
+                containing_list = "not_type"
+            elif element in self.not_individual:
+                containing_list = "not_individual"
+            else:
+                logging.error(f"Element doesnt belong to any list for {self.uri}. Program aborted.")
+                exit(1)
+
+            return containing_list
+
         def create_partial_hash(self, input_list):
+            """ Creates a hash for a single list of the OntologyClass. """
 
             partial_hash = input_list
 
@@ -120,6 +142,10 @@ if __name__ != "__main__":
             return partial_hash
 
         def create_hash(self):
+            """ Creates a hash of the OntologyClass using all its lists.
+                The hash function can be used for verifying if the state of the class was modified after an operation.
+                Hash format is the name of the lists concatenated with the name of all its internal elements.
+            """
 
             hash_is_type = self.create_partial_hash("is_type")
             hash_is_individual = self.create_partial_hash("is_individual")
@@ -128,16 +154,20 @@ if __name__ != "__main__":
             hash_not_type = self.create_partial_hash("not_type")
             hash_not_individual = self.create_partial_hash("not_individual")
 
-            class_hash = hash_is_type + hash_is_individual + hash_can_type + hash_can_individual + hash_not_type \
-                         + hash_not_individual
+            class_hash = hash_is_type + hash_is_individual + hash_can_type + hash_can_individual + hash_not_type + hash_not_individual
 
             logging.debug(f"Hash successfully created for {self.uri}.")
 
             return class_hash
 
+        # TODO (@pedropaulofb): To be implemented.
         def update_lists_from_gufo(self):
 
-            # verify hash before
-            # verify hash after
+            # access corresponding GUFO element list
+            # for all NOT, move from where they are to the NOT list
+            # BEFORE MOVING: check if IS = NOT, if so INCONSISTENCY
+            # for all IS, move from where they are to the IS list
+            # BEFORE MOVING: check if IS = NOT, if so INCONSISTENCY
+            # Run on modified elements up to there is no modification (hash before and hash after)
 
             return self
