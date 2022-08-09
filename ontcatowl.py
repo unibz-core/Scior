@@ -38,6 +38,10 @@ if __name__ == "__main__":
     gufo_types = get_list_of_gufo_types()
     gufo_individuals = get_list_of_gufo_individuals()
 
+    ontology_classes[0].move_to_is_list('gufo:AntiRigidType')
+    print(ontology_classes[0])
+    ontology_classes[0].update_lists_from_gufo(gufo_types, gufo_individuals)
+
     # From now on, the working entities are:  #   ontology: complete graph with inferences  #   ontology_classes: list of OntologyClasses to be manipulated  #   gufo_types: list of gufo types for reference  #   gufo_individuals: list of gufo individuals for reference
 
 # TODO (@pedropaulofb): Create log file parallel to logs printed on std.out

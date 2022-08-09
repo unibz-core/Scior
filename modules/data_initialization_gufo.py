@@ -2,7 +2,6 @@
 
 # TODO (@pedropaulofb): The data should be loaded from a structured input file, like a csv, JSON, or YAML file.
 
-
 from modules.dataclass_definitions_gufo import GUFOClass
 
 

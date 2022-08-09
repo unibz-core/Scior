@@ -38,54 +38,45 @@ class OntologyClass(object):
         duplicated_other_list_ontology(self)
 
     def move_between_ontology_lists(self, element, source_list, target_list):
-        """ Move an element between two lists in the same OntologyClass """
+        """ Move an element between two lists in the same OntologyClass
+            Elements can only be moved from CAN lists to IS or NOT lists
+        """
         # TODO (@pedropaulofb): This method probably can be better implemented.
 
-        # Source and target lists must be different
+        # VERIFICATION 1: Source and target lists must be different
         if source_list == target_list:
             logging.error("Source equals target list. Program aborted.")
             exit(1)
 
-        if source_list == "is_type":
-            source = self.is_type
-        elif source_list == "is_individual":
-            source = self.is_individual
-        elif source_list == "can_type":
+        # VERIFICATION 2: Only CAN lists are allowed as source list
+        if source_list == "can_type":
             source = self.can_type
         elif source_list == "can_individual":
             source = self.can_individual
-        elif source_list == "not_type":
-            source = self.not_type
-        elif source_list == "not_individual":
-            source = self.not_individual
         else:
-            logging.error("Unknown source list type. Program aborted.")
+            logging.error(f"Source list {source_list} is unknown. Program aborted.")
             exit(1)
 
+        # VERIFICATION 3: Only IS or NOT lists are allowed as target list
         if target_list == "is_type":
             target = self.is_type
         elif target_list == "is_individual":
             target = self.is_individual
-        elif target_list == "can_type":
-            target = self.can_type
-        elif target_list == "can_individual":
-            target = self.can_individual
         elif target_list == "not_type":
             target = self.not_type
         elif target_list == "not_individual":
             target = self.not_individual
         else:
-            logging.error("Unknown target list type. Program aborted.")
+            logging.error(f"Target list {target_list} is unknown. Program aborted.")
             exit(1)
 
-        # Element must be in source list
+        # VERIFICATION 4: Element must be in source list
         if element not in source:
-            logging.error("The element to be moved was not found in source list. Program aborted.")
+            logging.error(f"The element {element} to be moved was not found in {source_list}. Program aborted.")
             exit(1)
 
         # Move element
-        logging.debug(f"Moving element {element} from {source_list} list to {target_list} list in {self.uri}. "
-                      f"Program aborted.")
+        logging.debug(f"Moving element {element} from {source_list} list to {target_list} list in {self.uri}.")
         source.remove(element)
         target.append(element)
 
@@ -107,7 +98,8 @@ class OntologyClass(object):
         elif source_list == "can_instance":
             target_list = "is_instance"
         else:
-            logging.error(f"The element {element} to be moved was not found in any CAN list. Program aborted.")
+            logging.error(f"When trying to move the element {element} to the IS LIST, "
+                          f"it was not found in the CAN list. Program aborted.")
             exit(1)
 
         # Consistency checking is already performed inside the move_between_ontology_lists function.
@@ -126,7 +118,8 @@ class OntologyClass(object):
         elif source_list == "can_instance":
             target_list = "not_instance"
         else:
-            logging.error(f"The element {element} to be moved was not found in any CAN list. Program aborted.")
+            logging.error(f"When trying to move the element {element} to the NOT LIST, "
+                          f"it was not found in the CAN list. Program aborted.")
             exit(1)
 
         # Consistency checking is already performed inside the move_between_ontology_lists function.
@@ -210,14 +203,18 @@ class OntologyClass(object):
         while hash_before != hash_after:
             for i in range(len(self.is_type)):
                 new_is, new_not = get_from_gufo_lists(self.is_type[i], gufo_types)
-                for i in range(len(new_is)):
-                    self.move_to_is_list(new_is[i])
-                for i in range(len(new_not)):
-                    self.move_to_not_list(new_not[i])
+                for j in range(len(new_is)):
+                    if new_is[j] != self.is_type[i]:
+                        self.move_to_is_list(new_is[j])
+                for k in range(len(new_not)):
+                    self.move_to_not_list(new_not[k])
             for i in range(len(self.is_individual)):
                 new_is, new_not = get_from_gufo_lists(self.is_individual[i], gufo_individuals)
-                for i in range(len(new_is)):
-                    self.move_to_is_list(new_is[i])
-                for i in range(len(new_not)):
-                    self.move_to_not_list(new_not[i])
+                for j in range(len(new_is)):
+                    if new_is[j] != self.is_individual[i]:
+                        self.move_to_is_list(new_is[j])
+                for k in range(len(new_not)):
+                    self.move_to_not_list(new_not[k])
             hash_after = self.create_hash()
+            if hash_before == hash_after:
+                logging.debug("Hash before equals hash after. Exiting update.")
