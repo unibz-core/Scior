@@ -3,7 +3,7 @@
 import logging
 
 # TODO (@pedropaulofb): Maybe the verification funct should only be performed when a parameter is provided by the user
-from modules.aux_general import has_duplicates
+from modules.utils_general import has_duplicates
 
 logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
 

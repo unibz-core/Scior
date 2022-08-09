@@ -1,9 +1,8 @@
 """ Functions that allows human intervention and visualization for testing purposes. """
+import logging
 from os import path, remove
 
 from rdflib import RDF, RDFS, URIRef
-
-import logging
 
 logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
 
@@ -49,6 +48,7 @@ def safe_output_file(graph):
         exit(1)
 
 
+# TODO (@pedropaulofb): Probably it is not necessary to return the ontology. Test first.
 def insert_triple(ontology):
     """ Allows user to manually insert a triple into the ontology for verifying its effects """
 

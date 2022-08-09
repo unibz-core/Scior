@@ -155,3 +155,5 @@ def get_list_of_gufo_individuals():
                             "gufo:FunctionalComplex", "gufo:IntrinsicAspect", "gufo:IntrinsicMode", "gufo:Quality",
                             "gufo:Quantity", "gufo:Relator"]))
     return gufo_individuals
+
+# TODO (@pedropaulofb): In the end of the initializing, verify if there is any redundant URI - there must be none.

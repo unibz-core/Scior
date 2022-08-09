@@ -34,3 +34,5 @@ def get_list_of_classes(ontology):
     classes_list = [*set(classes_list)]
 
     return classes_list
+
+# TODO (@pedropaulofb): In the end of the initializing, verify if there is any redundant URI - there must be none.

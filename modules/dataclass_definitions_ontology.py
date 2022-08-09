@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 
 from modules.dataclass_verifications import check_duplicated_same_list_ontology, correct_number_of_elements_ontology, \
     duplicated_other_list_ontology
+from modules.utils_gufo import get_from_gufo_lists
 
 logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
 
@@ -36,7 +37,7 @@ class OntologyClass(object):
         correct_number_of_elements_ontology(self)
         duplicated_other_list_ontology(self)
 
-    def move_between_lists(self, element, source_list, target_list):
+    def move_between_ontology_lists(self, element, source_list, target_list):
         """ Move an element between two lists in the same OntologyClass """
         # TODO (@pedropaulofb): This method probably can be better implemented.
 
@@ -93,6 +94,44 @@ class OntologyClass(object):
 
         logging.debug("Element moved successfully.")
 
+    # TODO (@pedropaulofb): Not tested yet.
+    def move_to_is_list(self, element):
+        """ Check if the element to be moved is a type or instance and move it from the CAN to the IS list.
+            This is a specific case of the move_between_ontology_lists function.
+        """
+
+        source_list = self.return_containing_list_name(element)
+
+        if source_list == "can_type":
+            target_list = "is_type"
+        elif source_list == "can_instance":
+            target_list = "is_instance"
+        else:
+            logging.error(f"The element {element} to be moved was not found in any CAN list. Program aborted.")
+            exit(1)
+
+        # Consistency checking is already performed inside the move_between_ontology_lists function.
+        self.move_between_ontology_lists(element, source_list, target_list)
+
+    # TODO (@pedropaulofb): Not tested yet.
+    def move_to_not_list(self, element):
+        """ Check if the element to be moved is a type or instance and move it from the CAN to the NOT list.
+            This is a specific case of the move_between_ontology_lists function.
+        """
+
+        source_list = self.return_containing_list_name(element)
+
+        if source_list == "can_type":
+            target_list = "not_type"
+        elif source_list == "can_instance":
+            target_list = "not_instance"
+        else:
+            logging.error(f"The element {element} to be moved was not found in any CAN list. Program aborted.")
+            exit(1)
+
+        # Consistency checking is already performed inside the move_between_ontology_lists function.
+        self.move_between_ontology_lists(element, source_list, target_list)
+
     def return_containing_list_name(self, element):
         """ Verify to which of the dataclass lists the element belongs and returns the list name. """
 
@@ -109,7 +148,7 @@ class OntologyClass(object):
         elif element in self.not_individual:
             containing_list = "not_individual"
         else:
-            logging.error(f"Element doesnt belong to any list for {self.uri}. Program aborted.")
+            logging.error(f"Element does not belong to any list for {self.uri}. Program aborted.")
             exit(1)
 
         return containing_list
@@ -160,14 +199,25 @@ class OntologyClass(object):
 
         return class_hash
 
-    # TODO (@pedropaulofb): To be implemented.
-    def update_lists_from_gufo(self):
+    # TODO (@pedropaulofb): Not tested yet. Test it.
+    def update_lists_from_gufo(self, gufo_types, gufo_individuals):
 
-        # access corresponding GUFO element list
-        # for all NOT, move from where they are to the NOT list
-        # BEFORE MOVING: check if IS = NOT, if so INCONSISTENCY
-        # for all IS, move from where they are to the IS list
-        # BEFORE MOVING: check if IS = NOT, if so INCONSISTENCY
-        # Run on modified elements up to there is no modification (hash before and hash after)
+        logging.debug(f"Updating lists for {self.uri} using GUFO.")
 
-        return self
+        hash_before = self.create_hash()
+        hash_after = "not set"
+
+        while hash_before != hash_after:
+            for i in range(len(self.is_type)):
+                new_is, new_not = get_from_gufo_lists(self.is_type[i], gufo_types)
+                for i in range(len(new_is)):
+                    self.move_to_is_list(new_is[i])
+                for i in range(len(new_not)):
+                    self.move_to_not_list(new_not[i])
+            for i in range(len(self.is_individual)):
+                new_is, new_not = get_from_gufo_lists(self.is_individual[i], gufo_individuals)
+                for i in range(len(new_is)):
+                    self.move_to_is_list(new_is[i])
+                for i in range(len(new_not)):
+                    self.move_to_not_list(new_not[i])
+            hash_after = self.create_hash()
