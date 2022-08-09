@@ -197,24 +197,31 @@ class OntologyClass(object):
 
         logging.debug(f"Updating lists for {self.uri} using GUFO.")
 
-        hash_before = self.create_hash()
-        hash_after = "not set"
+        hash_before = "hash BEFORE not set"
+        hash_after = "hash AFTER not set"
 
         while hash_before != hash_after:
-            for i in range(len(self.is_type)):
-                new_is, new_not = get_from_gufo_lists(self.is_type[i], gufo_types)
-                for j in range(len(new_is)):
-                    if new_is[j] != self.is_type[i]:
-                        self.move_to_is_list(new_is[j])
-                for k in range(len(new_not)):
-                    self.move_to_not_list(new_not[k])
-            for i in range(len(self.is_individual)):
-                new_is, new_not = get_from_gufo_lists(self.is_individual[i], gufo_individuals)
-                for j in range(len(new_is)):
-                    if new_is[j] != self.is_individual[i]:
-                        self.move_to_is_list(new_is[j])
-                for k in range(len(new_not)):
-                    self.move_to_not_list(new_not[k])
+            hash_before = self.create_hash()
+            for it in range(len(self.is_type)):
+                new_is, new_not = get_from_gufo_lists(self.is_type[it], gufo_types)
+                for jt in range(len(new_is)):
+                    if new_is[jt] not in self.is_type:
+                        self.move_to_is_list(new_is[jt])
+                for kt in range(len(new_not)):
+                    if new_not[kt] not in self.not_type:
+                        self.move_to_not_list(new_not[kt])
+            for ii in range(len(self.is_individual)):
+                new_is, new_not = get_from_gufo_lists(self.is_individual[ii], gufo_individuals)
+                for ji in range(len(new_is)):
+                    if new_is[ji] not in self.is_individual[ii]:
+                        self.move_to_is_list(new_is[ji])
+                for ki in range(len(new_not)):
+                    if new_not[ki] not in self.not_individual:
+                        self.move_to_not_list(new_not[ki])
             hash_after = self.create_hash()
             if hash_before == hash_after:
-                logging.debug("Hash before equals hash after. Exiting update.")
+                logging.debug(f"Hash before equals hash after. Update completed for {self.uri}.")
+            else:
+                logging.debug(f"Hash before NOT equals hash after. Continuing update for {self.uri}.")
+                              # f"\nHASH BEFORE = {hash_before}"
+                              # f"\nHASH AFTER = {hash_after}")
