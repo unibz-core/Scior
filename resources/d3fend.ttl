@@ -1548,6 +1548,8 @@ d3f:Second-stageBootLoader a owl:Class ;
     rdfs:comment "An optional, often feature rich,  second stage set of routines run in order to load the operating system." ;
     rdfs:subClassOf d3f:BootLoader .
 
+d3f:PedroPaulo a owl:Class .
+
 d3f:ServiceProvider a owl:Class ;
     rdfs:label "Service Provider" ;
     rdfs:subClassOf [ a owl:Restriction ;

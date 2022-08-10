@@ -7,3 +7,25 @@ def has_duplicates(list):
         return False
     else:
         return True
+
+
+def remove_duplicates(list):
+    """ Remove duplicated elements from a list. """
+
+    list = [*set(list)]
+
+    return list
+
+
+def lists_intersection(list1, list2):
+    """ Returns the intersection of two lists. """
+    temp = set(list2)
+    list3 = [value for value in list1 if value in temp]
+    return list3
+
+def lists_subtraction(list1, list2):
+    """ Returns the subtraction between two lists. """
+
+    list3 = list(set(list1) - set(list2))
+
+    return list3

@@ -1,4 +1,5 @@
 """Main module for OntCatOWL"""
+from modules.utils_rdf import get_list_root_classes, get_list_leaf_classes
 
 if __name__ == "__main__":
 
@@ -38,13 +39,15 @@ if __name__ == "__main__":
     gufo_types = get_list_of_gufo_types()
     gufo_individuals = get_list_of_gufo_individuals()
 
-    ontology_classes[0].move_element_to_is_list('gufo:AntiRigidType')
-    ontology_classes[0].move_element_to_is_list("gufo:ExtrinsicAspect")
-    print(ontology_classes[0])
-    ontology_classes[0].update_lists_from_gufo(gufo_types, gufo_individuals)
-    print(ontology_classes[0])
+    list_root = get_list_root_classes(ontology)
+    list_leaf = get_list_leaf_classes(ontology)
 
-    # From now on, the working entities are:  #   ontology: complete graph with inferences  #   ontology_classes: list of OntologyClasses to be manipulated  #   gufo_types: list of gufo types for reference  #   gufo_individuals: list of gufo individuals for reference
+
+    # From now on, the working entities are:
+    #   ontology: complete graph with inferences
+    #   ontology_classes: list of OntologyClasses to be manipulated
+    #   gufo_types: list of gufo types for reference
+    #   gufo_individuals: list of gufo individuals for reference
 
 # TODO (@pedropaulofb): Create log file parallel to logs printed on std.out
 #       (e.g., https://github.com/borntyping/jsonlog)
