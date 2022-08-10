@@ -37,7 +37,7 @@ class OntologyClass(object):
         correct_number_of_elements_ontology(self)
         duplicated_other_list_ontology(self)
 
-    def move_between_ontology_lists(self, element, source_list, target_list):
+    def move_element_between_lists(self, element, source_list, target_list):
         """ Move an element between two lists in the same OntologyClass
             Elements can only be moved from CAN lists to IS or NOT lists
         """
@@ -83,47 +83,61 @@ class OntologyClass(object):
         # Performs consistency check - if time-consuming, this operation can be removed
         self.is_consistent()
 
-        logging.debug("Element moved successfully.")
+        logging.debug(f"Element {element} moved successfully from list {source_list} to list {target_list}.")
 
-    # TODO (@pedropaulofb): Not tested yet.
-    def move_to_is_list(self, element):
+    def move_element_to_is_list(self, element):
         """ Check if the element to be moved is a type or instance and move it from the CAN to the IS list.
-            This is a specific case of the move_between_ontology_lists function.
+            The element is only moved it if it still not in the IS list.
+            This is a specific case of the move_element_between_lists function.
         """
 
         source_list = self.return_containing_list_name(element)
 
-        if source_list == "can_type":
-            target_list = "is_type"
-        elif source_list == "can_instance":
-            target_list = "is_instance"
+        if source_list == "is_type" or source_list == "is_individual":
+            logging.debug(f"Element {element} already in {source_list}. No moving is necessary.")
         else:
-            logging.error(f"When trying to move the element {element} to the IS LIST, "
-                          f"it was not found in the CAN list. Program aborted.")
-            exit(1)
+            if source_list == "can_type":
+                target_list = "is_type"
+            elif source_list == "can_individual":
+                target_list = "is_individual"
+            else:
+                logging.error(f"When trying to move the element {element} to the IS LIST, "
+                              f"it was not found in the CAN list. Program aborted.")
+                exit(1)
+            # Consistency checking is already performed inside the move_between_ontology_lists function.
+            self.move_element_between_lists(element, source_list, target_list)
 
-        # Consistency checking is already performed inside the move_between_ontology_lists function.
-        self.move_between_ontology_lists(element, source_list, target_list)
-
-    # TODO (@pedropaulofb): Not tested yet.
-    def move_to_not_list(self, element):
+    def move_element_to_not_list(self, element):
         """ Check if the element to be moved is a type or instance and move it from the CAN to the NOT list.
-            This is a specific case of the move_between_ontology_lists function.
+            The element is only moved it if it still not in the NOT list.
+            This is a specific case of the move_element_between_lists function.
         """
 
         source_list = self.return_containing_list_name(element)
 
-        if source_list == "can_type":
-            target_list = "not_type"
-        elif source_list == "can_instance":
-            target_list = "not_instance"
+        if source_list == "not_type" or source_list == "not_individual":
+            logging.debug(f"Element {element} already in {source_list}. No moving is necessary.")
         else:
-            logging.error(f"When trying to move the element {element} to the NOT LIST, "
-                          f"it was not found in the CAN list. Program aborted.")
-            exit(1)
+            if source_list == "can_type":
+                target_list = "not_type"
+            elif source_list == "can_individual":
+                target_list = "not_individual"
+            else:
+                logging.error(f"When trying to move the element {element} to the NOT LIST, "
+                              f"it was not found in the CAN list. Program aborted.")
+                exit(1)
+            # Consistency checking is already performed inside the move_between_ontology_lists function.
+            self.move_element_between_lists(element, source_list, target_list)
 
-        # Consistency checking is already performed inside the move_between_ontology_lists function.
-        self.move_between_ontology_lists(element, source_list, target_list)
+    def move_elem_list_to_is_list(self, elem_list):
+        """ Move a list of elements to the IS list """
+        for i in range(len(elem_list)):
+            self.move_element_to_is_list(elem_list[i])
+
+    def move_elem_list_to_not_list(self, elem_list):
+        """ Move a list of elements to the NOT list """
+        for i in range(len(elem_list)):
+            self.move_element_to_not_list(elem_list[i])
 
     def return_containing_list_name(self, element):
         """ Verify to which of the dataclass lists the element belongs and returns the list name. """
@@ -141,8 +155,10 @@ class OntologyClass(object):
         elif element in self.not_individual:
             containing_list = "not_individual"
         else:
-            logging.error(f"Element does not belong to any list for {self.uri}. Program aborted.")
+            logging.error(f"Element {element} does not belong to any list for {self.uri}. Program aborted.")
             exit(1)
+
+        logging.debug(f"Element {element} currently belong to list {containing_list} for {self.uri}.")
 
         return containing_list
 
@@ -204,24 +220,14 @@ class OntologyClass(object):
             hash_before = self.create_hash()
             for it in range(len(self.is_type)):
                 new_is, new_not = get_from_gufo_lists(self.is_type[it], gufo_types)
-                for jt in range(len(new_is)):
-                    if new_is[jt] not in self.is_type:
-                        self.move_to_is_list(new_is[jt])
-                for kt in range(len(new_not)):
-                    if new_not[kt] not in self.not_type:
-                        self.move_to_not_list(new_not[kt])
+                self.move_elem_list_to_is_list(new_is)
+                self.move_elem_list_to_not_list(new_not)
             for ii in range(len(self.is_individual)):
                 new_is, new_not = get_from_gufo_lists(self.is_individual[ii], gufo_individuals)
-                for ji in range(len(new_is)):
-                    if new_is[ji] not in self.is_individual[ii]:
-                        self.move_to_is_list(new_is[ji])
-                for ki in range(len(new_not)):
-                    if new_not[ki] not in self.not_individual:
-                        self.move_to_not_list(new_not[ki])
+                self.move_elem_list_to_is_list(new_is)
+                self.move_elem_list_to_not_list(new_not)
             hash_after = self.create_hash()
             if hash_before == hash_after:
                 logging.debug(f"Hash before equals hash after. Update completed for {self.uri}.")
             else:
                 logging.debug(f"Hash before NOT equals hash after. Continuing update for {self.uri}.")
-                              # f"\nHASH BEFORE = {hash_before}"
-                              # f"\nHASH AFTER = {hash_after}")
