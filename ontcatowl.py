@@ -2,12 +2,12 @@
 
 if __name__ == "__main__":
 
-    from modules.utils_graph import get_list_root_classes, get_list_leaf_classes, get_superclasses, get_subclasses, \
-    is_root_node, is_leaf_node
+    from modules.propagation import propagate_down
     from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
     from modules.data_initialization_ontology import initialize_ontology
     import logging
     from rdflib import Graph
+    import time
 
     # TODO (@pedropaulofb): Set base level for printing log
     #   e.g., only print if called with -d parameter (debug)
@@ -40,19 +40,11 @@ if __name__ == "__main__":
     gufo_types = get_list_of_gufo_types()
     gufo_individuals = get_list_of_gufo_individuals()
 
-    list_root = get_list_root_classes(ontology)
-    list_leaf = get_list_leaf_classes(ontology)
-
-    list_superclasses = get_superclasses(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#AccessControlList")
-    list_subclasses = get_subclasses(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#AccessControlList")
-
-    print(is_root_node(ontology,"http://d3fend.mitre.org/ontologies/d3fend.owl#AccessControlConfiguration"))
-    print(is_leaf_node(ontology,"http://d3fend.mitre.org/ontologies/d3fend.owl#AccessControlConfiguration"))
-    print(is_root_node(ontology,"http://d3fend.mitre.org/ontologies/d3fend.owl#ATTACKThing"))
-    print(is_leaf_node(ontology,"http://d3fend.mitre.org/ontologies/d3fend.owl#GroupPolicy"))
-
-    print(f"list_superclasses = \n{list_superclasses}\n")
-    print(f"list_subclasses = \n{list_subclasses}\n")
+    st = time.time()
+    propagate_down(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#DigitalArtifact")
+    et = time.time()
+    elapsed_time = round((et - st), 2)
+    logging.info(f"Execution time: {elapsed_time} seconds.")
 
     # From now on, the working entities are:  #   ontology: complete graph with inferences  #   ontology_classes: list of OntologyClasses to be manipulated  #   gufo_types: list of gufo types for reference  #   gufo_individuals: list of gufo individuals for reference
 

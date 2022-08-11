@@ -12,9 +12,12 @@ def propagate_up(graph, input_node):
     if is_root == False:
         parent_nodes = get_superclasses(graph, input_node)
         # TODO (@pedropaulofb): Include actions to be performed.
+        print(input_node)
         for i in range(len(parent_nodes)):
             propagate_up(graph, parent_nodes[i])
-
+    else:
+        # TODO (@pedropaulofb): Include actions to be performed.
+        print(input_node)
 
 def propagate_down(graph, input_node):
     """ Propagates from a specific node up to the graph's leaf nodes. """
@@ -24,9 +27,12 @@ def propagate_down(graph, input_node):
     if is_leaf == False:
         child_nodes = get_subclasses(graph, input_node)
         # TODO (@pedropaulofb): Include actions to be performed.
+        print(input_node)
         for i in range(len(child_nodes)):
             propagate_down(graph, child_nodes[i])
-
+    else:
+        # TODO (@pedropaulofb): Include actions to be performed.
+        print(input_node)
 
 def propagate_top_down(graph):
     """ Propagates from root nodes up to the graph's leaf nodes. """
