@@ -18,7 +18,6 @@ def propagate_up(graph, input_node):
 
 def propagate_down(graph, input_node):
     """ Propagates from a specific node up to the graph's leaf nodes. """
-    pass
 
     is_leaf = is_leaf_node(graph, input_node)
 
