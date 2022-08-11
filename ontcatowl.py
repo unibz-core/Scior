@@ -1,5 +1,5 @@
 """Main module for OntCatOWL"""
-from modules.utils_graph import get_related_leaves
+from modules.propagation import propagate_branch_top_down
 
 if __name__ == "__main__":
 
@@ -41,8 +41,7 @@ if __name__ == "__main__":
     gufo_individuals = get_list_of_gufo_individuals()
 
     st = time.time()
-    result = get_related_leaves(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#BinarySegment")
-    print(result)
+    propagate_branch_top_down(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo")
     et = time.time()
     elapsed_time = round((et - st), 2)
     logging.info(f"Execution time: {elapsed_time} seconds.")
