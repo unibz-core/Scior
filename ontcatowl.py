@@ -1,10 +1,10 @@
 """Main module for OntCatOWL"""
-from modules.utils_rdf import get_list_root_classes, get_list_leaf_classes
 
 if __name__ == "__main__":
 
-    from modules.data_initialization_ontology import *
-    from modules.data_initialization_gufo import *
+    from modules.utils_graph import get_list_root_classes, get_list_leaf_classes, get_superclasses, get_subclasses
+    from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
+    from modules.data_initialization_ontology import initialize_ontology
     import logging
     from rdflib import Graph
 
@@ -42,12 +42,13 @@ if __name__ == "__main__":
     list_root = get_list_root_classes(ontology)
     list_leaf = get_list_leaf_classes(ontology)
 
+    list_superclasses = get_superclasses(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#AccessControlList")
+    list_subclasses = get_subclasses(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#AccessControlList")
 
-    # From now on, the working entities are:
-    #   ontology: complete graph with inferences
-    #   ontology_classes: list of OntologyClasses to be manipulated
-    #   gufo_types: list of gufo types for reference
-    #   gufo_individuals: list of gufo individuals for reference
+    print(f"list_superclasses = \n{list_superclasses}\n")
+    print(f"list_subclasses = \n{list_subclasses}\n")
+
+    # From now on, the working entities are:  #   ontology: complete graph with inferences  #   ontology_classes: list of OntologyClasses to be manipulated  #   gufo_types: list of gufo types for reference  #   gufo_individuals: list of gufo individuals for reference
 
 # TODO (@pedropaulofb): Create log file parallel to logs printed on std.out
 #       (e.g., https://github.com/borntyping/jsonlog)
