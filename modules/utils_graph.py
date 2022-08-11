@@ -20,10 +20,10 @@ def get_list_all_classes(graph):
 
 def is_root_node(graph, element):
     """ Returns if a specific element is a root node in a graph. """
-    elem = URIRef(element)
+
     list_root = get_list_root_classes(graph)
 
-    if elem in list_root:
+    if element in list_root:
         return True
     else:
         return False
@@ -31,10 +31,10 @@ def is_root_node(graph, element):
 
 def is_leaf_node(graph, element):
     """ Returns if a specific element is a leaf node in a graph. """
-    elem = URIRef(element)
+
     list_leaf = get_list_leaf_classes(graph)
 
-    if elem in list_leaf:
+    if element in list_leaf:
         return True
     else:
         return False

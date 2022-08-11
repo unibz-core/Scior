@@ -2,7 +2,8 @@
 
 if __name__ == "__main__":
 
-    from modules.utils_graph import get_list_root_classes, get_list_leaf_classes, get_superclasses, get_subclasses
+    from modules.utils_graph import get_list_root_classes, get_list_leaf_classes, get_superclasses, get_subclasses, \
+    is_root_node, is_leaf_node
     from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
     from modules.data_initialization_ontology import initialize_ontology
     import logging
@@ -44,6 +45,11 @@ if __name__ == "__main__":
 
     list_superclasses = get_superclasses(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#AccessControlList")
     list_subclasses = get_subclasses(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#AccessControlList")
+
+    print(is_root_node(ontology,"http://d3fend.mitre.org/ontologies/d3fend.owl#AccessControlConfiguration"))
+    print(is_leaf_node(ontology,"http://d3fend.mitre.org/ontologies/d3fend.owl#AccessControlConfiguration"))
+    print(is_root_node(ontology,"http://d3fend.mitre.org/ontologies/d3fend.owl#ATTACKThing"))
+    print(is_leaf_node(ontology,"http://d3fend.mitre.org/ontologies/d3fend.owl#GroupPolicy"))
 
     print(f"list_superclasses = \n{list_superclasses}\n")
     print(f"list_subclasses = \n{list_subclasses}\n")
