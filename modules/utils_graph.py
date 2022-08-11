@@ -104,3 +104,43 @@ def get_subclasses(graph, element):
         subclasses.append(subj.n3()[1:-1])
 
     return subclasses
+
+
+def get_related_roots(graph, element):
+    """ Return list of all roots of the given graph that are (in)directly related to the given element."""
+
+    elem = URIRef(element)
+    related_roots = []
+    temp = []
+    all_roots = get_list_root_classes(graph)
+    superclasses = get_superclasses(graph, element)
+
+    for i in range(len(superclasses)):
+        if superclasses[i] in all_roots:
+            related_roots.append(superclasses[i])
+        else:
+            temp = get_related_roots(graph, superclasses[i])
+            related_roots.extend(temp)
+
+    related_roots = remove_duplicates(related_roots)
+    return related_roots
+
+
+def get_related_leaves(graph, element):
+    """ Return list of all leaves of the given graph that are (in)directly related to the given element."""
+
+    elem = URIRef(element)
+    related_leaves = []
+    temp = []
+    all_leaves = get_list_leaf_classes(graph)
+    subclasses = get_subclasses(graph, element)
+
+    for i in range(len(subclasses)):
+        if subclasses[i] in all_leaves:
+            related_leaves.append(subclasses[i])
+        else:
+            temp = get_related_leaves(graph, subclasses[i])
+            related_leaves.extend(temp)
+
+    related_leaves = remove_duplicates(related_leaves)
+    return related_leaves

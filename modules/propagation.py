@@ -34,7 +34,16 @@ def propagate_down(graph, input_node):
         # TODO (@pedropaulofb): Include actions to be performed.
         print(input_node)
 
-def propagate_top_down(graph):
+# def propagate_graph_top_down(graph, input_node):
+#     """ Propagate from root nodes to leaf nodes the changes in the graph's branches that contains the input node. """
+#     pass
+#
+#
+# def propagate_graph_top_down(graph, input_node):
+#     """ Propagate from leaf nodes to root nodes the changes in the graph's branches that contains the input node. """
+#     pass
+
+def propagate_graph_top_down(graph):
     """ Propagates from root nodes up to the graph's leaf nodes. """
 
     list_root_nodes = get_list_root_classes(graph)
@@ -43,7 +52,7 @@ def propagate_top_down(graph):
         propagate_down(graph, list_root_nodes[i])
 
 
-def propagate_bottom_up(graph):
+def propagate_graph_bottom_up(graph):
     """ Propagates from leaf nodes up to the graph's root nodes. """
 
     list_leaf_nodes = get_list_leaf_classes(graph)

@@ -1,8 +1,8 @@
 """Main module for OntCatOWL"""
+from modules.utils_graph import get_related_leaves
 
 if __name__ == "__main__":
 
-    from modules.propagation import propagate_down
     from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
     from modules.data_initialization_ontology import initialize_ontology
     import logging
@@ -41,7 +41,8 @@ if __name__ == "__main__":
     gufo_individuals = get_list_of_gufo_individuals()
 
     st = time.time()
-    propagate_down(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#DigitalArtifact")
+    result = get_related_leaves(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#BinarySegment")
+    print(result)
     et = time.time()
     elapsed_time = round((et - st), 2)
     logging.info(f"Execution time: {elapsed_time} seconds.")
