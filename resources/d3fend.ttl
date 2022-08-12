@@ -4608,6 +4608,10 @@ d3f:Isolate rdf:type owl:Class ;
             rdfs:subClassOf d3f:DefensiveTactic .
 
 
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#Isolated
+d3f:Isolated rdf:type owl:Class .
+
+
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#JavaScriptBlob
 d3f:JavaScriptBlob rdf:type owl:Class ;
                    rdfs:subClassOf d3f:BinaryLargeObject .
@@ -20526,8 +20530,8 @@ Level 2""" .
 #    Annotations
 #################################################################
 
-d3f:AccessControlConfiguration rdfs:seeAlso <http://dbpedia.org/resource/Access-control_list> ;
-                               rdfs:comment "Information about what access permissions are granted to particular users for particular objects" ;
+d3f:AccessControlConfiguration rdfs:comment "Information about what access permissions are granted to particular users for particular objects" ;
+                               rdfs:seeAlso <http://dbpedia.org/resource/Access-control_list> ;
                                rdfs:label "Access Control Configuration" .
 
 
@@ -20597,8 +20601,8 @@ d3f:AdministrativeNetworkTraffic rdfs:seeAlso <http://dbpedia.org/resource/Remot
                                  rdfs:comment "Administrative network traffic is network traffic related to the remote administration or control of hosts or devices through a standard remote administrative protocol.  Remote shells, terminals, RDP, and VNC are examples of these protocols, which are typically only used by administrators." .
 
 
-d3f:Application rdfs:comment "A program that gives a computer instructions that provide the user with tools to accomplish a task; \"he has tried several different word processing applications\".  Distinct from system software that is intrinsically part of the operating system.  An application can be made up of executable files, configuration files, shared libraries, etc." ;
-                rdfs:label "Application" ;
+d3f:Application rdfs:label "Application" ;
+                rdfs:comment "A program that gives a computer instructions that provide the user with tools to accomplish a task; \"he has tried several different word processing applications\".  Distinct from system software that is intrinsically part of the operating system.  An application can be made up of executable files, configuration files, shared libraries, etc." ;
                 rdfs:seeAlso <http://dbpedia.org/resource/Application_software> ,
                              <http://wordnet-rdf.princeton.edu/id/06582286-n> .
 
@@ -20723,10 +20727,10 @@ Authorization event data is collected to create a baseline user profile. Authori
 Depending on the complexity of the data considered, outliers may not be obvious to a human analyst reviewing events in simplistic analytic views. If malicious activity is not statistically different from benign activity, an alert threshold will not be met.""" .
 
 
-d3f:AuthorizationLog rdfs:comment "A log of authorization events." ;
-                     rdfs:seeAlso <http://wordnet-rdf.princeton.edu/id/00155053-n> ;
-                     rdfs:label "Authorization Log" ;
-                     rdfs:seeAlso <http://dbpedia.org/resource/Authorization> .
+d3f:AuthorizationLog rdfs:label "Authorization Log" ;
+                     rdfs:comment "A log of authorization events." ;
+                     rdfs:seeAlso <http://wordnet-rdf.princeton.edu/id/00155053-n> ,
+                                  <http://dbpedia.org/resource/Authorization> .
 
 
 d3f:BiometricAuthentication d3f:definition "Using biological measures in order to authenticate a user." ;
@@ -20777,13 +20781,12 @@ d3f:Browser rdfs:seeAlso <http://wordnet-rdf.princeton.edu/id/13376000-n> ;
 
 
 d3f:BrowserExtension rdfs:label "Browser Extension" ;
-                     rdfs:isDefinedBy <http://dbpedia.org/resource/Browser_extension> ;
-                     rdfs:comment "A browser extension is a plug-in that extends the functionality of a web browser in some way. Some extensions are authored using web technologies such as HTML, JavaScript, and CSS. Browser extensions can change the user interface of the web browser without directly affecting viewable content of a web page; for example, by adding a \"toolbar.\"" .
+                     rdfs:comment "A browser extension is a plug-in that extends the functionality of a web browser in some way. Some extensions are authored using web technologies such as HTML, JavaScript, and CSS. Browser extensions can change the user interface of the web browser without directly affecting viewable content of a web page; for example, by adding a \"toolbar.\"" ;
+                     rdfs:isDefinedBy <http://dbpedia.org/resource/Browser_extension> .
 
 
 d3f:ByteSequenceEmulation rdfs:label "Byte Sequence Emulation" ;
                           d3f:definition "Analyzing sequences of bytes and determining if they likely represent malicious shellcode." ;
-                          d3f:synonym "Shellcode Transmission Detection" ;
                           d3f:kb-article """## How it works
 
 Bytes are analyzed as if they are machine code instructions, and such instructions that are a common component of known shellcode are noted, such as stack pivots, reads from a Memory Address Table, and system calls for functions that disable protections or execute code.  For example, the x86 instruction `b0 0b: mov $11, %ax`, with no further alterations to the `%ax` register, followed by `cd 80: syscall` executes the system call `execve()` in the Linux kernel, which replaces the current process with another one specified -- this is a common action in shellcode, so this sequence would be flagged.
@@ -20809,7 +20812,8 @@ With inserting code directly, that it is not a buffer overflow, and just some pl
 
 ### False Positives
 
-Byte sequences containing code that is never used as machine code are still analyzed and flagged for anomalies, and [eventually](http://mathforum.org/library/drmath/view/55871.html), it is likely that an attack sequence will arise from the sheer volume of bytes transmitted.""" .
+Byte sequences containing code that is never used as machine code are still analyzed and flagged for anomalies, and [eventually](http://mathforum.org/library/drmath/view/55871.html), it is likely that an attack sequence will arise from the sheer volume of bytes transmitted.""" ;
+                          d3f:synonym "Shellcode Transmission Detection" .
 
 
 d3f:CallStack rdfs:comment "In computer science, a call stack is a stack data structure that stores information about the active subroutines of a computer program. This kind of stack is also known as an execution stack, program stack, control stack, run-time stack, or machine stack, and is often shortened to just \"the stack\". Although maintenance of the call stack is important for the proper functioning of most software, the details are normally hidden and automatic in high-level programming languages. Many computer instruction sets provide special instructions for manipulating stacks." ;
@@ -20819,8 +20823,8 @@ d3f:CallStack rdfs:comment "In computer science, a call stack is a stack data st
 
 d3f:Certificate rdfs:isDefinedBy <http://dbpedia.org/resource/Public_key_certificate> ;
                 rdfs:label "Certificate" ;
-                skos:altLabel "Public Key Certificate" ;
-                rdfs:comment "In cryptography, a public key certificate, also known as a digital certificate or identity certificate, is an electronic document used to prove the ownership of a public key. The certificate includes information about the key, information about the identity of its owner (called the subject), and the digital signature of an entity that has verified the certificate's contents (called the issuer). If the signature is valid, and the software examining the certificate trusts the issuer, then it can use that key to communicate securely with the certificate's subject. In email encryption, code signing, and e-signature systems, a certificate's subject is typically a person or organization. However, in Transport Layer Security (TLS) a certificate's subject is typically a computer or other device, t" .
+                rdfs:comment "In cryptography, a public key certificate, also known as a digital certificate or identity certificate, is an electronic document used to prove the ownership of a public key. The certificate includes information about the key, information about the identity of its owner (called the subject), and the digital signature of an entity that has verified the certificate's contents (called the issuer). If the signature is valid, and the software examining the certificate trusts the issuer, then it can use that key to communicate securely with the certificate's subject. In email encryption, code signing, and e-signature systems, a certificate's subject is typically a person or organization. However, in Transport Layer Security (TLS) a certificate's subject is typically a computer or other device, t" ;
+                skos:altLabel "Public Key Certificate" .
 
 
 d3f:Certificate-basedAuthentication d3f:definition "Requiring a digital certificate in order to authenticate a user." ;
@@ -20836,8 +20840,8 @@ TLS certificates are designed to expire to ensure that the cryptographic keys ar
 
 
 d3f:CertificateFile rdfs:isDefinedBy <http://dbpedia.org/resource/Public_key_certificate> ;
-                    rdfs:comment "A file containing a digital certificate. In cryptography, a public key certificate (also known as a digital certificate or identity certificate) is an electronic document used to prove the ownership of a public key. The certificate includes information about the key, information about its owner's identity, and the digital signature of an entity that has verified the certificate's contents are correct. If the signature is valid, and the person examining the certificate trusts the signer, then they know they can use that key to communicate with its owner." ;
-                    rdfs:label "Certificate File" .
+                    rdfs:label "Certificate File" ;
+                    rdfs:comment "A file containing a digital certificate. In cryptography, a public key certificate (also known as a digital certificate or identity certificate) is an electronic document used to prove the ownership of a public key. The certificate includes information about the key, information about its owner's identity, and the digital signature of an entity that has verified the certificate's contents are correct. If the signature is valid, and the person examining the certificate trusts the signer, then they know they can use that key to communicate with its owner." .
 
 
 d3f:CertificatePinning d3f:definition "Persisting either a server's X509 certificate or their public key and comparing that to server's presented identity to allow for greater client confidence in the remote server's identity for SSL connections." ;
@@ -20900,8 +20904,8 @@ d3f:CloudConfiguration rdfs:label "Cloud Configuration" ;
 
 
 d3f:CloudInstanceMetadata rdfs:seeAlso <https://isc.sans.edu/forums/diary/Cloud+Metadata+Urls/22046> ;
-                          rdfs:label "Cloud Instance Metadata" ;
-                          rdfs:comment "Cloud instance metadata is configuration information on the instance and users of the instance.  This includes such information as security groups, public ip addresses, and private addresses, public keys configured, and event rotating security keys. User data can contain initialization scripts, variables, passwords, and more." .
+                          rdfs:comment "Cloud instance metadata is configuration information on the instance and users of the instance.  This includes such information as security groups, public ip addresses, and private addresses, public keys configured, and event rotating security keys. User data can contain initialization scripts, variables, passwords, and more." ;
+                          rdfs:label "Cloud Instance Metadata" .
 
 
 d3f:CloudStorage rdfs:seeAlso <http://dbpedia.org/resource/Cloud_computing> ;
@@ -20915,8 +20919,8 @@ d3f:CloudUserAccount rdfs:comment "A user account on a given host is a local use
 
 
 d3f:CodeRepository rdfs:isDefinedBy <http://dbpedia.org/resource/Repository_(version_control)> ;
-                   rdfs:label "Code Repository" ;
                    rdfs:comment "A code repository is a form of database where code, typically source code, is stored and managed.  In revision control systems, a repository is a data structure that stores metadata for a set of files or directory structure. Depending on whether the version control system in use is distributed like (Git or Mercurial) or centralized like (Subversion, CVS, or Perforce), the whole set of information in the repository may be duplicated on every user's system or may be maintained on a single server." ;
+                   rdfs:label "Code Repository" ;
                    skos:altLabel "Repository" ,
                                  "Version Control Repository" .
 
@@ -20927,8 +20931,8 @@ d3f:Collection rdfs:label "Collection" .
 d3f:CollectionTechnique rdfs:label "Collection Technique" .
 
 
-d3f:Command rdfs:comment "In computing, a command is a directive to a computer program acting as an interpreter of some kind, in order to perform a specific task. Most commonly a command is either a directive to some kind of command-line interface, such as a shell, or an event in a graphical user interface triggered by the user selecting an option in a menu." ;
-            rdfs:label "Command" ;
+d3f:Command rdfs:label "Command" ;
+            rdfs:comment "In computing, a command is a directive to a computer program acting as an interpreter of some kind, in order to perform a specific task. Most commonly a command is either a directive to some kind of command-line interface, such as a shell, or an event in a graphical user interface triggered by the user selecting an option in a menu." ;
             rdfs:isDefinedBy <http://dbpedia.org/resource/Command_(computing)> .
 
 
@@ -20971,7 +20975,8 @@ A connected honeynet provides a tradeoff between emulating certain functionality
                       rdfs:label "Connected Honeynet" .
 
 
-d3f:ConnectionAttemptAnalysis d3f:kb-article """## How it works
+d3f:ConnectionAttemptAnalysis rdfs:label "Connection Attempt Analysis" ;
+                              d3f:kb-article """## How it works
 Connection Attempt Analysis in multiple ways.
 
 ### Monitoring traffic to unallocated IP space
@@ -20985,7 +20990,6 @@ Another approach passively inspects network traffic with application protocol an
 * Implementations that rely on analysis of unallocated IP address space increase in their complexity with network size and decentralized network infrastructure.
 * Inventory of unallocated IP space should should be continuously updated to mitigate the risk of false positives.
 * IPv6 also introduces challenges including IPv6 traffic bypassing IPv4 specific protection systems (ex. firewalls and IDS) and complexity in managing both IPv6 and IPv4 addresses.""" ;
-                              rdfs:label "Connection Attempt Analysis" ;
                               d3f:synonym "Network Scan Detection" ;
                               d3f:definition "Analyzing failed connections in a network to detect unauthorized activity." .
 
@@ -21026,8 +21030,8 @@ d3f:CreateProcess rdfs:comment "A process spawn refers to a function that loads 
 
 d3f:CreateThread rdfs:seeAlso <https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createthread> ;
                  rdfs:comment "Threads are an execution model that exists independently from a language, as well as a parallel execution model. They enable a program to control multiple different flows of work that overlap in time." ;
-                 rdfs:label "Create Thread" ;
-                 rdfs:seeAlso <http://dbpedia.org/resource/POSIX_Threads> .
+                 rdfs:seeAlso <http://dbpedia.org/resource/POSIX_Threads> ;
+                 rdfs:label "Create Thread" .
 
 
 d3f:Credential rdfs:seeAlso <http://dbpedia.org/resource/Access_control> ;
@@ -21122,8 +21126,8 @@ For example, a DNS policy can be created for blocking DNS queries for FQDNs that
 - Continuous maintenance of unauthorized domain lists is needed to keep up to date with possible site content changes.
 - File sharing or content delivery networks may require other filtering techniques that are more fine-grained (URL blocking).
 - Access to malicious websites or other network resources directly by IP instead of by DNS record, or after alteration of local DNS hosts file, may not result in DNS network traffic.""" ;
-                   d3f:synonym "DNS Blacklisting" ;
-                   d3f:definition "Blocking DNS Network Traffic based on criteria such as IP address, domain name, or DNS query type." .
+                   d3f:definition "Blocking DNS Network Traffic based on criteria such as IP address, domain name, or DNS query type." ;
+                   d3f:synonym "DNS Blacklisting" .
 
 
 d3f:DNSLookup rdfs:seeAlso <http://dbpedia.org/resource/List_of_DNS_record_types> ;
@@ -21203,8 +21207,8 @@ d3f:Deceive rdfs:label "Deceive" ;
 
 d3f:DecoyArtifact skos:altLabel "Trap" ;
                   rdfs:seeAlso <http://dbpedia.org/resource/Deception_technology> ;
-                  skos:altLabel "Decoy" ,
-                                "Lure" ;
+                  skos:altLabel "Lure" ,
+                                "Decoy" ;
                   rdfs:seeAlso <https://doi.org/10.1007/978-3-319-25133-2> ,
                                <https://shield.mitre.org/> ;
                   rdfs:label "Decoy Artifact" ;
@@ -21258,13 +21262,13 @@ Decoy objects are typically configured with detectable means of communication bu
                 d3f:definition "A Decoy Object is created and deployed for the purposes of deceiving attackers." .
 
 
-d3f:DecoyPersona d3f:kb-article """## How it works
+d3f:DecoyPersona d3f:definition "Establishing a fake online identity to misdirect, deceive, and or interact with adversaries." ;
+                 d3f:kb-article """## How it works
 A false online identity is created for the purposes of interacting with adversaries in a direct or indirect manner. This includes the associated email addresses, social media accounts, and other online communication profiles.
 
 ## Considerations
 * Include phone numbers and online social profiles as well as automatically or manually responding to contact made to the persona to improve realism.
 * Continuous updating and managing the decoy personas and online activity streams to ensure personas do not become stale and outdated.""" ;
-                 d3f:definition "Establishing a fake online identity to misdirect, deceive, and or interact with adversaries." ;
                  rdfs:label "Decoy Persona" .
 
 
@@ -21291,7 +21295,6 @@ Usage of decoy session tokens may be monitored to track attacker behavior or oth
 
 
 d3f:DecoyUserCredential rdfs:label "Decoy User Credential" ;
-                        d3f:definition "A Credential created for the purpose of deceiving an adversary." ;
                         d3f:kb-article """## How it works
 A detection analytic is developed to determine when a user uses decoy credentials. Subsequent actions by that user may be monitored or controlled by the defender.
 
@@ -21301,7 +21304,8 @@ A credential may be:
 
 ## Considerations
 * Decoy credentials should be integrated with a larger decoy environment to ensure that when decoy credentials are compromised, the credentials are used to interact with a decoy asset that is being monitored.
-* Continuous maintenance and updates are needed to ensure the legitimacy of the larger decoy environment and specifically the assets that utilize the decoy credentials.""" .
+* Continuous maintenance and updates are needed to ensure the legitimacy of the larger decoy environment and specifically the assets that utilize the decoy credentials.""" ;
+                        d3f:definition "A Credential created for the purpose of deceiving an adversary." .
 
 
 d3f:DefaultUserAccount rdfs:comment "Default accounts are those that are built-into an OS, such as the Guest or Administrator accounts on Windows systems or default factory/provider set accounts on other types of systems, software, or devices." ;
@@ -21360,10 +21364,10 @@ d3f:DiskEncryption d3f:definition "Encrypting a hard disk partition to prevent c
 
 d3f:DisplayAdapter rdfs:label "Display Adapter" ;
                    rdfs:isDefinedBy <http://dbpedia.org/resource/Video_card> ;
-                   skos:altLabel "Display Card" ;
+                   skos:altLabel "Display Card" ,
+                                 "Graphics Adapter" ;
                    rdfs:comment "A graphics card (also called a display card, video card, display adapter, or graphics adapter) is an expansion card which generates a feed of output images to a display device (such as a computer monitor). Frequently, these are advertised as discrete or dedicated graphics cards, emphasizing the distinction between these and integrated graphics. At the core of both is the graphics processing unit (GPU), which is the main part that does the actual computations, but should not be confused with the video card as a whole, although \"GPU\" is often used to refer to video cards." ;
-                   skos:altLabel "Graphics Adapter" ,
-                                 "Video Card" .
+                   skos:altLabel "Video Card" .
 
 
 d3f:DisplayDeviceDriver rdfs:label "Display Device Driver" ;
@@ -21430,6 +21434,7 @@ This technique can be accomplished in a number of ways:
 
 d3f:DynamicAnalysis d3f:definition "Executing or opening a file in a synthetic \"sandbox\" environment to determine if the file is a malicious program or if the file exploits another program such as a document reader." ;
                     rdfs:label "Dynamic Analysis" ;
+                    d3f:synonym "Malware Sandbox" ;
                     d3f:kb-article """## How it works
 Analyzing the interaction of a piece of code with a system while the code is being executed in a controlled environment such as a sandbox, virtual machine, or simulator. This exposes the natural behavior of the piece of code without requiring the code to be disassembled.
 
@@ -21441,8 +21446,7 @@ Analyzing the interaction of a piece of code with a system while the code is bei
 
 ## Implementations
 * [Cuckoo Sandbox](https://cuckoosandbox.org)""" ;
-                    d3f:synonym "Malware Sandbox" ,
-                                "Malware Detonation" .
+                    d3f:synonym "Malware Detonation" .
 
 
 d3f:Email rdfs:comment "An email, or email message, is a document that is sent between computer users across computer networks." ;
@@ -21459,8 +21463,8 @@ d3f:EmailRule rdfs:comment "A configuration of an email application which is use
               rdfs:label "Email Rule" .
 
 
-d3f:EmulatedFileAnalysis rdfs:label "Emulated File Analysis" ;
-                         d3f:definition "Emulating instructions in a file looking for specific patterns." .
+d3f:EmulatedFileAnalysis d3f:definition "Emulating instructions in a file looking for specific patterns." ;
+                         rdfs:label "Emulated File Analysis" .
 
 
 d3f:Enclave rdfs:label "Enclave" ;
@@ -21870,8 +21874,7 @@ d3f:HardwareDriver rdfs:label "Hardware Driver" ;
                    rdfs:comment "In computing, a device driver (commonly referred to simply as a driver) is a computer program that operates or controls a particular type of device that is attached to a computer. A driver provides a software interface to hardware devices, enabling operating systems and other computer programs to access hardware functions without needing to know precise details of the hardware being used. A driver communicates with the device through the computer bus or communications subsystem to which the hardware connects. When a calling program invokes a routine in the driver, the driver issues commands to the device. Once the device sends data back to the driver, the driver may invoke routines in the original calling program. Drivers are hardware dependent and operating-system-specific. They usually provide the interrupt handling required for any necessary asynchronous time-dependent hardware interface." .
 
 
-d3f:HierarchicalDomainDenylisting d3f:definition "Blocking the resolution of any subdomain of a specified domain name." ;
-                                  d3f:kb-article """## How it works
+d3f:HierarchicalDomainDenylisting d3f:kb-article """## How it works
 This technique is used to block DNS queries from related domains and subdomains that are unauthorized.
 
 Hierarchical domain blacklisting considers the blacklisting of second level domains and additional sub-domains and specific hosts for a given query value. A denylist is maintained that contains DNS names and corresponding subdomains, including wildcards, that should be blocked for a given lookup.
@@ -21881,6 +21884,7 @@ Hierarchical domain blacklisting considers the blacklisting of second level doma
 * Other domains that resolve to the domain of interest for blocking (CNAME, etc).
 * Denylists should have identified maintenance cycles to ensure lists are not stale.""" ;
                                   rdfs:label "Hierarchical Domain Denylisting" ;
+                                  d3f:definition "Blocking the resolution of any subdomain of a specified domain name." ;
                                   d3f:synonym "Hierarchical Domain Blacklisting" .
 
 
@@ -21908,8 +21912,8 @@ A homoglyph, in this context, is a deceptive string or word which looks like a t
 * Legitimate companies and products use non-dictionary words in their names that could result in many false positives""" .
 
 
-d3f:Host rdfs:label "Host" ;
-         skos:altLabel "Network Host" ;
+d3f:Host skos:altLabel "Network Host" ;
+         rdfs:label "Host" ;
          rdfs:isDefinedBy <http://dbpedia.org/resource/Host_(network)> ;
          rdfs:comment "A host is a computer or other device, typically connected to a computer network. A network host may offer information resources, services, and applications to users or other nodes on the network. A network host is a network node that is assigned a network layer host address. Network hosts that participate in applications that use the client-server model of computing, are classified as server or client systems. Network hosts may also function as nodes in peer-to-peer applications, in which all nodes share and consume resources in an equipotent manner." .
 
@@ -21961,8 +21965,8 @@ IPC can occur within a single computer or between multiple computers remotely th
                        rdfs:label "IPC Traffic Analysis" .
 
 
-d3f:Identifier rdfs:label "Identifier" ;
-               skos:altLabel "ID" ;
+d3f:Identifier skos:altLabel "ID" ;
+               rdfs:label "Identifier" ;
                rdfs:isDefinedBy <http://dbpedia.org/resource/Identifier> ;
                rdfs:comment "An identifier is a name that identifies (that is, labels the identity of) either a unique object or a unique class of objects, where the \"object\" or class may be an idea, physical [countable] object (or class thereof), or physical [noncountable] substance (or class thereof). The abbreviation ID often refers to identity, identification (the process of identifying), or an identifier (that is, an instance of identification). An identifier may be a word, number, letter, symbol, or any combination of those." .
 
@@ -21972,9 +21976,9 @@ d3f:IdentifierAnalysis d3f:definition "Analyzing identifier artifacts such as IP
 
 
 d3f:ImageCodeSegment rdfs:label "Image Code Segment" ;
-                     rdfs:seeAlso <http://dbpedia.org/resource/Code_segment> ,
-                                  "Process Code Segment" ;
-                     rdfs:comment "An image code segment, also known as a text segment or simply as text, is a portion of an object file that contains executable instructions. The term \"segment\" comes from the memory segment, which is a historical approach to memory management that has been succeeded by paging. When a program is stored in an object file, the code segment is a part of this file; when the loader places a program into memory so that it may be executed, various memory regions are allocated (in particular, as pages), corresponding to both the segments in the object files and to segments only needed at run time. For example, the code segment of an object file is loaded into a corresponding code segment in memory." .
+                     rdfs:seeAlso <http://dbpedia.org/resource/Code_segment> ;
+                     rdfs:comment "An image code segment, also known as a text segment or simply as text, is a portion of an object file that contains executable instructions. The term \"segment\" comes from the memory segment, which is a historical approach to memory management that has been succeeded by paging. When a program is stored in an object file, the code segment is a part of this file; when the loader places a program into memory so that it may be executed, various memory regions are allocated (in particular, as pages), corresponding to both the segments in the object files and to segments only needed at run time. For example, the code segment of an object file is loaded into a corresponding code segment in memory." ;
+                     rdfs:seeAlso "Process Code Segment" .
 
 
 d3f:ImageDataSegment rdfs:seeAlso "Process Data Segment" ;
@@ -22023,8 +22027,7 @@ Scalability as volume of attacks increase; single servers may not have the memor
                                  d3f:definition "Analyzing inbound network session or connection attempt volume." .
 
 
-d3f:InboundTrafficFiltering rdfs:label "Inbound Traffic Filtering" ;
-                            d3f:kb-article """## How it works
+d3f:InboundTrafficFiltering d3f:kb-article """## How it works
 Inbound Traffic, in this context, is network traffic originating from an untrusted network towards a private host or enclave.
 For example:
 
@@ -22047,6 +22050,7 @@ Filtering policies are developed by administrators to meet business requirements
 * Netfilter (Linux)
 * Windows Firewall
 * pf(BSD)""" ;
+                            rdfs:label "Inbound Traffic Filtering" ;
                             d3f:definition "Restricting network traffic originating from untrusted networks destined towards a private host or enclave." .
 
 
@@ -22191,8 +22195,8 @@ d3f:IntranetIPCNetworkTraffic rdfs:comment "Intranet IPC network traffic is netw
 
 
 d3f:IntranetMulticastNetworkTraffic rdfs:comment "Intranet IPC network traffic is multicast network traffic that does not cross a given network's boundaries." ;
-                                    rdfs:seeAlso <http://dbpedia.org/resource/Multicast> ;
-                                    rdfs:label "Intranet Multicast Network Traffic" .
+                                    rdfs:label "Intranet Multicast Network Traffic" ;
+                                    rdfs:seeAlso <http://dbpedia.org/resource/Multicast> .
 
 
 d3f:IntranetNetwork rdfs:comment "An intranet is a private network accessible only to an organization's staff or delegates. Generally a wide range of information and services from the organization's internal IT systems are available that would not be available to the public from the Internet. A company-wide intranet can constitute an important focal point of internal communication and collaboration, and provide a single starting point to access internal and external resources. In its simplest form an intranet is established with the technologies for local area networks (LANs) and wide area networks (WANs)." ;
@@ -22336,8 +22340,8 @@ d3f:LoginSession rdfs:comment "In computing, a login session is the period of ac
 
 
 d3f:MacOSKeychain rdfs:comment "Keychain is the password management system in macOS, developed by Apple. It was introduced with Mac OS 8.6, and has been included in all subsequent versions of the operating system, now known as macOS. A Keychain can contain various types of data: passwords (for websites, FTP servers, SSH accounts, network shares, wireless networks, groupware applications, encrypted disk images), private keys, certificates, and secure notes." ;
-                  rdfs:label "MacOS Keychain" ;
                   skos:altLabel "Keychain" ;
+                  rdfs:label "MacOS Keychain" ;
                   rdfs:isDefinedBy <http://dbpedia.org/resource/Keychain_(software)> .
 
 
@@ -22562,8 +22566,8 @@ d3f:OfficeApplicationFile rdfs:comment "A document file in a format associated w
                           rdfs:label "Office Application File" .
 
 
-d3f:One-timePassword rdfs:label "One-time Password" ;
-                     rdfs:seeAlso <http://dbpedia.org/resource/One-time_password> ;
+d3f:One-timePassword rdfs:seeAlso <http://dbpedia.org/resource/One-time_password> ;
+                     rdfs:label "One-time Password" ;
                      d3f:synonym "OTP" ;
                      d3f:definition "A one-time password is valid for only one user authentication." ;
                      d3f:kb-article """## How it works
@@ -22642,8 +22646,8 @@ d3f:OperatingSystemProcess rdfs:label "Operating System Process" ;
 
 
 d3f:OperatingSystemSharedLibraryFile rdfs:comment "An operating system shared library file is a shared library file that is part of the operating system and that incorporates common operating system code for use by any application or to provide operating system services." ;
-                                     rdfs:label "Operating System Shared Library File" ;
-                                     rdfs:seeAlso <http://dbpedia.org/resource/Library_(computing)#Shared_libraries> .
+                                     rdfs:seeAlso <http://dbpedia.org/resource/Library_(computing)#Shared_libraries> ;
+                                     rdfs:label "Operating System Shared Library File" .
 
 
 d3f:OrchestrationController rdfs:comment "An orchestration server provides orchestration services that automate the configuration, coordination, and management of computer systems and software." ;
@@ -22732,8 +22736,8 @@ d3f:PacketLog rdfs:label "Packet Log" ;
               rdfs:comment "A log of all the network packet data captured from a network by a network sensor (i.e., packet analyzer)," .
 
 
-d3f:Partition rdfs:comment "A partition is a region on secondary storage device created so that the region can be managed by itself; separate from any other regions (partitions) on that secondary storage device. Creating partitions is typically the first step of preparing a newly installed storage device, before any file system is created. The device stores the information about the partitions' locations and sizes in an area known as the partition table that the operating system reads before any other part of the disk. Each partition then appears to the operating system as a distinct \"logical\" storage device that uses part of the actual device. System administrators use a program called a partition editor to create, resize, delete, and manipulate the partitions. Partitioning allows the use of different filesystems to be installed for different kinds of files. Separating user data from system data can prevent the system partition from becoming full and rendering the system unusable. Partitioning can also make backing up easier. [Definition adapted as generalization from definition of disk partitioning and distinct from in-memory partitions.]" ;
-              rdfs:label "Partition" ;
+d3f:Partition rdfs:label "Partition" ;
+              rdfs:comment "A partition is a region on secondary storage device created so that the region can be managed by itself; separate from any other regions (partitions) on that secondary storage device. Creating partitions is typically the first step of preparing a newly installed storage device, before any file system is created. The device stores the information about the partitions' locations and sizes in an area known as the partition table that the operating system reads before any other part of the disk. Each partition then appears to the operating system as a distinct \"logical\" storage device that uses part of the actual device. System administrators use a program called a partition editor to create, resize, delete, and manipulate the partitions. Partitioning allows the use of different filesystems to be installed for different kinds of files. Separating user data from system data can prevent the system partition from becoming full and rendering the system unusable. Partitioning can also make backing up easier. [Definition adapted as generalization from definition of disk partitioning and distinct from in-memory partitions.]" ;
               skos:altLabel "Disk Slice" ;
               rdfs:isDefinedBy <http://dbpedia.org/resource/Disk_partitioning> ;
               rdfs:seeAlso <http://dbpedia.org/resource/Memory_management_(operating_systems)> ;
@@ -22791,8 +22795,8 @@ d3f:PasswordFile rdfs:comment "Simple form of password database held in a single
 
 
 d3f:PasswordStore rdfs:label "Password Store" ;
-                  rdfs:seeAlso <http://dbpedia.org/resource/Password_manager> ;
-                  rdfs:comment "A user repository of account passwords, often accessed via a password manager." .
+                  rdfs:comment "A user repository of account passwords, often accessed via a password manager." ;
+                  rdfs:seeAlso <http://dbpedia.org/resource/Password_manager> .
 
 
 d3f:Patent rdfs:label "Patent" .
@@ -22897,8 +22901,8 @@ d3f:PowerShellProfileScript rdfs:label "PowerShell Profile Script" ;
 
 
 d3f:PrivateKey rdfs:comment "A private key can be used to decrypt messages encrypted using the corresponding public key, or used to sign a message that can be authenticated with the corresponding public key." ;
-               rdfs:label "Private Key" ;
-               rdfs:seeAlso <http://dbpedia.org/resource/Public-key_cryptography> .
+               rdfs:seeAlso <http://dbpedia.org/resource/Public-key_cryptography> ;
+               rdfs:label "Private Key" .
 
 
 d3f:PrivilegeEscalation rdfs:label "Privilege Escalation" .
@@ -22965,8 +22969,8 @@ False negatives can occur via alteration of the verification logic or source of 
 
 
 d3f:ProcessEnvironmentVariable rdfs:isDefinedBy <http://dbpedia.org/resource/Environment_variable> ;
-                               rdfs:comment "An environment variable is a dynamic-named value that can affect the way running processes will behave on a computer. They are part of the environment in which a process runs." ;
                                rdfs:label "Process Environment Variable" ;
+                               rdfs:comment "An environment variable is a dynamic-named value that can affect the way running processes will behave on a computer. They are part of the environment in which a process runs." ;
                                skos:altLabel "Environment Variable" .
 
 
@@ -23057,8 +23061,7 @@ Some attributes of interest are:
                          rdfs:label "Process Spawn Analysis" .
 
 
-d3f:ProcessTermination d3f:definition "Terminating a running application process on a computer system." ;
-                       d3f:kb-article """## How it works
+d3f:ProcessTermination d3f:kb-article """## How it works
 
 Processes are managed by the operating system kernel.  Different operating system kernels manage the creation and termination of processes in a different manner, and expose this functionality via the kernel API.
 
@@ -23146,6 +23149,7 @@ Systems which are only accessible via a remote in-band connection may become ina
 
 ### Subsystems
 Processes that are started in a subsystem might not be fully terminated if they are terminated using the command for that subsystem.  For example, in the Windows Subsystem for Linux (WSL), processes started and terminated via WSL calls such as with the `kill` command in Bash may still have an entry in the Windows process table.""" ;
+                       d3f:definition "Terminating a running application process on a computer system." ;
                        rdfs:label "Process Termination" .
 
 
@@ -23179,9 +23183,9 @@ d3f:PublicKey rdfs:label "Public Key" ;
 d3f:RDPSession rdfs:comment "A Remote Desktop Protocol (RDP) session is a session established using the RDP protocol to access Remove Desktop Services (RDS)." ;
                skos:altLabel "Remote Desktop Session" ,
                              "Terminal Services" ;
-               rdfs:seeAlso <http://dbpedia.org/resource/Remote_Desktop_Services> ;
-               rdfs:label "RDP Session" ;
-               rdfs:seeAlso <http://dbpedia.org/resource/Remote_Desktop_Protocol> .
+               rdfs:seeAlso <http://dbpedia.org/resource/Remote_Desktop_Services> ,
+                            <http://dbpedia.org/resource/Remote_Desktop_Protocol> ;
+               rdfs:label "RDP Session" .
 
 
 d3f:RFShielding d3f:definition "Adding physical barriers to a platform to prevent undesired radio interference." ;
@@ -23232,8 +23236,8 @@ A relay may use a variety of proxying, forwarding, or routing technologies to br
 
 Complex intranet VPNs or routing encapsulation may affect the detection analytics.  In addition, unwanted packets might not be forwarded, and additional packets may be added at the relay, further complicating detection.""" ;
                          d3f:synonym "Relay Network Detection" ;
-                         rdfs:label "Relay Pattern Analysis" ;
-                         d3f:definition "The detection of an internal host relaying traffic between the internal network and the external network." .
+                         d3f:definition "The detection of an internal host relaying traffic between the internal network and the external network." ;
+                         rdfs:label "Relay Pattern Analysis" .
 
 
 d3f:RemoteSession rdfs:label "Remote Session" ;
@@ -23394,6 +23398,7 @@ If an attacker wants to inject some data into the program, for example as a para
 
 
 d3f:SenderMTAReputationAnalysis d3f:definition "Characterizing the reputation of mail transfer agents (MTA) to determine the security risk in emails." ;
+                                rdfs:label "Sender MTA Reputation Analysis" ;
                                 d3f:kb-article """## How it works
 The sender message transfer agent (MTA) trust rating can be considered an indicator of the level of security risk and/or a trust level associated with sender MTAs in an email header.
 
@@ -23408,8 +23413,7 @@ The features considered in determining the trust rating may include:
 For example, higher values for the length of time an MTA has interacted with the enterprise, or number of emails received from an MTA can result in a higher trust rating. The trust rating categorizes the sender MTA as unrated, neutral, trusted, suspicious, or malicious.
 
 ## Considerations
-Legitimate emails from a sender MTA may receive a lower trust rating over time if the sender's domain gets spoofed and is used to send unauthorized emails.""" ;
-                                rdfs:label "Sender MTA Reputation Analysis" .
+Legitimate emails from a sender MTA may receive a lower trust rating over time if the sender's domain gets spoofed and is used to send unauthorized emails.""" .
 
 
 d3f:SenderReputationAnalysis d3f:definition "Ascertaining sender reputation based on information associated with a message (e.g. email/instant messaging)." ;
@@ -23437,9 +23441,9 @@ Legitimate emails from a sender may receive a lower trust rating over time if th
 
 
 d3f:ServiceApplication rdfs:comment "An application that provides a set of software functionalities so that multiple clients who can reuse the functionality, provided they are authorized for use of the service." ;
-                       rdfs:seeAlso <http://dbpedia.org/resource/Server_(computing)> ;
-                       rdfs:label "Service Application" ;
-                       rdfs:seeAlso <http://dbpedia.org/resource/Service_(systems_architecture)> .
+                       rdfs:seeAlso <http://dbpedia.org/resource/Server_(computing)> ,
+                                    <http://dbpedia.org/resource/Service_(systems_architecture)> ;
+                       rdfs:label "Service Application" .
 
 
 d3f:ServiceBinaryVerification d3f:definition "Analyzing changes in service binary files by comparing to a source of truth." ;
@@ -23514,8 +23518,8 @@ d3f:SourceCode rdfs:label "Source Code" .
 
 
 d3f:StackFrame skos:altLabel "Activation Record" ;
-               rdfs:comment "A machine-dependent and application-binary-dependent (ABI-dependent) data structure containing subroutine state information including the arguments passed into the routine, the return address back to the routine's caller, and space for local variables of the routine." ;
                rdfs:isDefinedBy <http://dbpedia.org/resource/Call_stack#Structure> ;
+               rdfs:comment "A machine-dependent and application-binary-dependent (ABI-dependent) data structure containing subroutine state information including the arguments passed into the routine, the return address back to the routine's caller, and space for local variables of the routine." ;
                rdfs:seeAlso <http://dbpedia.org/resource/Call_stack> ;
                skos:altLabel "Activation Frame" ;
                rdfs:label "Stack Frame" .
@@ -23561,17 +23565,17 @@ A vulnerability such as a write-what-where condition that allows one to write da
 
 d3f:StackSegment rdfs:label "Stack Segment" ;
                  rdfs:comment "The stack segment contains the program stack, a last-in-first-out structure, typically allocated in the higher parts of memory for the process." ;
-                 rdfs:seeAlso <http://dbpedia.org/resource/Call_stack> ,
-                              <http://dbpedia.org/resource/Data_segment#Stack> .
+                 rdfs:seeAlso <http://dbpedia.org/resource/Data_segment#Stack> ,
+                              <http://dbpedia.org/resource/Call_stack> .
 
 
-d3f:StandaloneHoneynet rdfs:label "Standalone Honeynet" ;
+d3f:StandaloneHoneynet d3f:definition "An environment created for the purpose of attracting attackers and eliciting their behaviors that is not connected to any production enterprise systems." ;
                        d3f:kb-article """## How it works
 A standalone honeynet does not directly interact with the real enterprise environment. It may be located near or in some portion of the enterprise address space, but it does not interact with enterprise resources.
 
 ## Considerations
 A standalone honeynet is a lower risk to deploy compared to connected or integrated honeynets due to its isolation from the enterprise network. However, this comes at cost in loss of fidelity and realism. Significant extra effort must be made in order to make the environment look realistic.""" ;
-                       d3f:definition "An environment created for the purpose of attracting attackers and eliciting their behaviors that is not connected to any production enterprise systems." .
+                       rdfs:label "Standalone Honeynet" .
 
 
 d3f:Storage rdfs:comment "Computer data storage, often called storage or memory, is a technology consisting of computer components and recording media used to retain digital data. It is a core function and fundamental component of computers. In the Von Neumann architecture, the CPU consists of two main parts: The control unit and the arithmetic / logic unit (ALU). The former controls the flow of data between the CPU and memory, while the latter performs arithmetic and logical operations on data." ;
@@ -23580,8 +23584,8 @@ d3f:Storage rdfs:comment "Computer data storage, often called storage or memory,
             rdfs:label "Storage" .
 
 
-d3f:StoredProcedure rdfs:comment "A stored procedure (also termed proc, storp, sproc, StoPro, StoredProc, StoreProc, sp, or SP) is a subroutine available to applications that access a relational database management system (RDBMS). Such procedures are stored in the database data dictionary." ;
-                    rdfs:label "Stored Procedure" ;
+d3f:StoredProcedure rdfs:label "Stored Procedure" ;
+                    rdfs:comment "A stored procedure (also termed proc, storp, sproc, StoPro, StoredProc, StoreProc, sp, or SP) is a subroutine available to applications that access a relational database management system (RDBMS). Such procedures are stored in the database data dictionary." ;
                     rdfs:isDefinedBy <http://dbpedia.org/resource/Stored_procedure> .
 
 
@@ -23675,8 +23679,7 @@ d3f:SystemDaemonMonitoring d3f:definition "Tracking changes to the state or conf
 Attackers may manipulate system settings or services to disable system logging or monitoring of security tools and events. Firewall and antivirus services are popular targets for attackers. Disabling system logs will also allow an attacker's actions to go unnoticed. Analysis of logs, registries, and process monitoring help defenders locate signs of tampering. Two possible approaches are to monitor hardened system services or to monitor registry updates for modifications to security settings.""" .
 
 
-d3f:SystemFileAnalysis rdfs:label "System File Analysis" ;
-                       d3f:kb-article """## How it works
+d3f:SystemFileAnalysis d3f:kb-article """## How it works
 This technique ensures the integrity of system owned file resources. System files can impact the behavior below the user level.
 
 
@@ -23684,6 +23687,7 @@ This technique ensures the integrity of system owned file resources. System file
 * Need to manage the size of log file analysis.
 * False positives are a concern with this technique and filtering will need to be given additional thought.
 * A baseline or snapshot of file checksums should be established for future comparison.""" ;
+                       rdfs:label "System File Analysis" ;
                        d3f:definition "Monitoring system files such as authentication databases, configuration files, system logs, and system executables for modification or tampering." .
 
 
@@ -23739,8 +23743,8 @@ d3f:SystemStartupDirectory rdfs:comment "A system startup directory is a directo
                            rdfs:label "System Startup Directory" .
 
 
-d3f:SystemTimeApplication rdfs:label "System Time Application" ;
-                          rdfs:comment "A system time utility is utility software that can get the system time, such as the Unix date command or Windows' Net utility." .
+d3f:SystemTimeApplication rdfs:comment "A system time utility is utility software that can get the system time, such as the Unix date command or Windows' Net utility." ;
+                          rdfs:label "System Time Application" .
 
 
 d3f:T1001 d3f:attack-id "T1001" ;
@@ -23767,8 +23771,8 @@ d3f:T1003.004 d3f:attack-id "T1003.004" ;
               rdfs:label "LSA Secrets" .
 
 
-d3f:T1003.005 d3f:attack-id "T1003.005" ;
-              rdfs:label "Cached Domain Credentials" .
+d3f:T1003.005 rdfs:label "Cached Domain Credentials" ;
+              d3f:attack-id "T1003.005" .
 
 
 d3f:T1003.006 d3f:attack-id "T1003.006" ;
@@ -23779,8 +23783,8 @@ d3f:T1003.007 rdfs:label "Proc Filesystem" ;
               d3f:attack-id "T1003.007" .
 
 
-d3f:T1003.008 rdfs:label "/etc/passwd and /etc/shadow" ;
-              d3f:attack-id "T1003.008" .
+d3f:T1003.008 d3f:attack-id "T1003.008" ;
+              rdfs:label "/etc/passwd and /etc/shadow" .
 
 
 d3f:T1005 rdfs:label "Data from Local System" ;
@@ -23965,8 +23969,8 @@ d3f:T1055.009 d3f:attack-id "T1055.009" ;
               rdfs:label "Proc Memory" .
 
 
-d3f:T1055.012 rdfs:label "Process Hollowing" ;
-              d3f:attack-id "T1055.012" .
+d3f:T1055.012 d3f:attack-id "T1055.012" ;
+              rdfs:label "Process Hollowing" .
 
 
 d3f:T1055.013 rdfs:label "Process Doppelgänging" ;
@@ -23977,8 +23981,8 @@ d3f:T1055.014 rdfs:label "VDSO Hijacking" ;
               d3f:attack-id "T1055.014" .
 
 
-d3f:T1056.001 rdfs:label "Keylogging" ;
-              d3f:attack-id "T1056.001" .
+d3f:T1056.001 d3f:attack-id "T1056.001" ;
+              rdfs:label "Keylogging" .
 
 
 d3f:T1056.002 d3f:attack-id "T1056.002" ;
@@ -24054,8 +24058,8 @@ d3f:T1074 rdfs:label "Data Staged" ;
           d3f:attack-id "T1074" .
 
 
-d3f:T1074.001 d3f:attack-id "T1074.001" ;
-              rdfs:label "Local Data Staging" .
+d3f:T1074.001 rdfs:label "Local Data Staging" ;
+              d3f:attack-id "T1074.001" .
 
 
 d3f:T1074.002 rdfs:label "Remote Data Staging" ;
@@ -24102,8 +24106,8 @@ d3f:T1090.001 d3f:attack-id "T1090.001" ;
               rdfs:label "Internal Proxy" .
 
 
-d3f:T1090.002 rdfs:label "External Proxy" ;
-              d3f:attack-id "T1090.002" .
+d3f:T1090.002 d3f:attack-id "T1090.002" ;
+              rdfs:label "External Proxy" .
 
 
 d3f:T1090.003 rdfs:label "Multi-hop Proxy" ;
@@ -24545,8 +24549,8 @@ d3f:T1546.005 d3f:attack-id "T1546.005" ;
               rdfs:label "Trap" .
 
 
-d3f:T1546.006 rdfs:label "LC_LOAD_DYLIB Addition" ;
-              d3f:attack-id "T1546.006" .
+d3f:T1546.006 d3f:attack-id "T1546.006" ;
+              rdfs:label "LC_LOAD_DYLIB Addition" .
 
 
 d3f:T1546.007 rdfs:label "Netsh Helper DLL" ;
@@ -24764,8 +24768,8 @@ d3f:T1558.001 d3f:attack-id "T1558.001" ;
 
 d3f:T1558.003 rdfs:label "Kerberoasting" ;
               d3f:attack-id "T1558.003" ;
-              rdfs:seeAlso <https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nspi/6dd0a3ea-b4d4-4a73-a857-add03a89a543> ;
-              rdfs:comment "Service Provider Name (SPN) scanning is one way to gather hashes, which results in RPC calls conforming to the NSPI protocol." .
+              rdfs:comment "Service Provider Name (SPN) scanning is one way to gather hashes, which results in RPC calls conforming to the NSPI protocol." ;
+              rdfs:seeAlso <https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-nspi/6dd0a3ea-b4d4-4a73-a857-add03a89a543> .
 
 
 d3f:T1559 d3f:attack-id "T1559" ;
@@ -24888,16 +24892,16 @@ d3f:T1566.002 d3f:attack-id "T1566.002" ;
               rdfs:label "Spearphishing Link" .
 
 
-d3f:T1566.003 d3f:attack-id "T1566.003" ;
-              rdfs:label "Spearphishing Via Service" .
+d3f:T1566.003 rdfs:label "Spearphishing Via Service" ;
+              d3f:attack-id "T1566.003" .
 
 
 d3f:T1567 d3f:attack-id "T1567" ;
           rdfs:label "Exfiltration Over Web Service" .
 
 
-d3f:T1567.001 rdfs:label "Exfiltration to Code Repository" ;
-              d3f:attack-id "T1567.001" .
+d3f:T1567.001 d3f:attack-id "T1567.001" ;
+              rdfs:label "Exfiltration to Code Repository" .
 
 
 d3f:T1567.002 d3f:attack-id "T1567.002" ;
@@ -25109,14 +25113,14 @@ d3f:UserBehavior rdfs:label "User Behavior" ;
                  rdfs:seeAlso <http://dbpedia.org/resource/User_behavior_analytics> .
 
 
-d3f:UserBehaviorAnalysis d3f:definition "Analysis of user behavior and patterns for the purpose of detecting unauthorized user activity." ;
-                         rdfs:label "User Behavior Analysis" ;
-                         d3f:synonym "Credential Monitoring" ;
+d3f:UserBehaviorAnalysis rdfs:label "User Behavior Analysis" ;
+                         d3f:definition "Analysis of user behavior and patterns for the purpose of detecting unauthorized user activity." ;
                          d3f:kb-article """## Technique Overview
 
 Some techniques monitor patterns of human behavior and then apply algorithms and to identify patterns such as repeated login attempts from a single IP address or large file downloads, or abnormal accesses.
 
 Other techniques may have explicit or rigid definitions of \"bad behavior\" which are then matched against instances in a computer network environment.""" ;
+                         d3f:synonym "Credential Monitoring" ;
                          rdfs:comment "User behavior analytics (\"UBA\") as defined by Gartner, is a cybersecurity process about detection of insider threats, targeted attacks, and financial fraud. UBA solutions look at patterns of human behavior, and then apply algorithms and statistical analysis to detect meaningful anomalies from those patterns-anomalies that indicate potential threats.' Instead of tracking devices or security events, UBA tracks a system's users. Big data platforms are increasing UBA functionality by allowing them to analyze petabytes worth of data to detect insider threats and advanced persistent threats." ;
                          d3f:synonym "UBA" ;
                          rdfs:isDefinedBy <http://dbpedia.org/resource/User_behavior_analytics> .
@@ -25182,8 +25186,8 @@ d3f:UserStartupScriptFile rdfs:label "User Startup Script File" ;
 d3f:UserToUserMessage rdfs:comment "Personal message, private message (PM), direct message (DM), or personal chat (PC) is a private form of messaging between different members on a given platform. It is only seen and accessible by the users participating in the message." ;
                       skos:altLabel "Private Message" ;
                       rdfs:label "User to User Message" ;
-                      skos:altLabel "Personal Message" ;
-                      rdfs:isDefinedBy <http://dbpedia.org/resource/Personal_message> .
+                      rdfs:isDefinedBy <http://dbpedia.org/resource/Personal_message> ;
+                      skos:altLabel "Personal Message" .
 
 
 d3f:VideoInputDevice rdfs:comment "Video input devices are used to digitize images or video from the outside world into the computer. The information can be stored in a multitude of formats depending on the user's requirement." ;
@@ -25217,8 +25221,8 @@ d3f:WebFileResource rdfs:comment "A web resource is a resource identified by a U
                     skos:altLabel "Web Resource" .
 
 
-d3f:WebNetworkTraffic rdfs:comment "Web network traffic is network traffic that uses a standard web protocol." ;
-                      rdfs:label "Web Network Traffic" .
+d3f:WebNetworkTraffic rdfs:label "Web Network Traffic" ;
+                      rdfs:comment "Web network traffic is network traffic that uses a standard web protocol." .
 
 
 d3f:WebResourceAccess rdfs:comment "Ephemeral digital artifact comprising a request of a network resource and any response from that network resource using a standard web protocol." ;
@@ -25235,8 +25239,8 @@ d3f:WebServer rdfs:isDefinedBy <http://dbpedia.org/resource/Web_server> ;
               rdfs:comment "A web server is server software, or hardware dedicated to running this software, that can satisfy client requests on the World Wide Web. A web server can, in general, contain one or more websites. A web server processes incoming network requests over HTTP and several other related protocols. While the major function is to serve content, a full implementation of HTTP also includes ways of receiving content from clients. This feature is used for submitting web forms, including uploading of files." .
 
 
-d3f:WebServerApplication rdfs:isDefinedBy <http://dbpedia.org/resource/Web_application> ;
-                         rdfs:label "Web Server Application" ;
+d3f:WebServerApplication rdfs:label "Web Server Application" ;
+                         rdfs:isDefinedBy <http://dbpedia.org/resource/Web_application> ;
                          skos:altLabel "Web Application" ,
                                        "Web App" ;
                          rdfs:comment "A web server application (or web app) is an application software that runs on a web server, unlike computer-based software programs that are stored locally on the Operating System (OS) of the device. Web applications are accessed by the user through a web browser with an active internet connection. These applications are programmed using a client-server modeled structure-the user (\"client\") is provided services through an off-site server that is hosted by a third-party. Examples of commonly-used, web applications, include: web-mail, online retail sales, online banking, and online auctions." .
@@ -25264,8 +25268,8 @@ d3f:WindowsRegistryKey rdfs:comment "Windows registry keys are container objects
 
 d3f:WindowsShortcutFile rdfs:seeAlso <http://dbpedia.org/resource/Shortcut_(computing)#Microsoft_Windows> ;
                         skos:altLabel "Shell Link" ;
-                        rdfs:comment "A Microsoft Windows shortcut file." ;
                         rdfs:label "Windows Shortcut File" ;
+                        rdfs:comment "A Microsoft Windows shortcut file." ;
                         rdfs:seeAlso <http://dbpedia.org/resource/Symbolic_link#Shortcuts> .
 
 

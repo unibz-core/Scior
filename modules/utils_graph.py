@@ -18,66 +18,34 @@ def get_list_all_classes(graph):
     return list_classes
 
 
-def is_root_node(graph, element):
-    """ Returns if a specific element is a root node in a graph. """
-
-    list_root = get_list_root_classes(graph)
-
-    if element in list_root:
-        return True
-    else:
-        return False
-
-
-def is_leaf_node(graph, element):
-    """ Returns if a specific element is a leaf node in a graph. """
-
-    list_leaf = get_list_leaf_classes(graph)
-
-    if element in list_leaf:
-        return True
-    else:
-        return False
-
-
-def get_list_root_classes(graph):
+def get_list_root_classes(graph, all_classes):
     """ Returns a list without repetitions with the URI of all root classes in a graph.
         Root classes are:  (1) classes that (2) have no SUPERclasses besides owl:Thing.
         Isolated classes are both root and leaf at the same time.
     """
-
-    # List of all classes
-    cond1 = get_list_all_classes(graph)
 
     # List of all entities that have a rdfs:subclass property with other entity (participating as source)
     cond2 = []
     for subj, pred, obj in graph.triples((None, RDFS.subClassOf, None)):
         cond2.append(subj.n3()[1:-1])
 
-    list_root_classes = lists_subtraction(cond1, cond2)
+    list_root_classes = lists_subtraction(all_classes, cond2)
 
     return list_root_classes
 
 
-def get_list_leaf_classes(graph):
+def get_list_leaf_classes(graph, all_classes, all_roots):
     """ Returns a list without repetitions with the URI of all leaf classes in a graph.
         Leaf classes are:  (1) classes that (2) have no SUBclasses.
-        Isolated classes are both root and leaf at the same time.
+        Isolated classes are both root and leaf nodes at the same time.
     """
-
-    # List of all classes
-    cond1 = get_list_all_classes(graph)
 
     # List of all entities that have a rdfs:subclass property with other entity (participating as target)
     cond2 = []
     for subj, pred, obj in graph.triples((None, RDFS.subClassOf, None)):
         cond2.append(obj.n3()[1:-1])
 
-    # List of root classes
-    cond3 = get_list_root_classes(graph)
-
-    partial = lists_subtraction(cond1, cond2)
-    list_leaf_nodes = lists_subtraction(partial, cond3)
+    list_leaf_nodes = lists_subtraction(all_classes, cond2)
 
     return list_leaf_nodes
 
@@ -106,40 +74,34 @@ def get_subclasses(graph, element):
     return subclasses
 
 
-def get_related_roots(graph, element):
+def get_related_roots(graph, roots_list, element):
     """ Return list of all roots of the given graph that are (in)directly related to the given element."""
 
-    elem = URIRef(element)
     related_roots = []
-    temp = []
-    all_roots = get_list_root_classes(graph)
     superclasses = get_superclasses(graph, element)
 
     for i in range(len(superclasses)):
-        if superclasses[i] in all_roots:
+        if superclasses[i] in roots_list:
             related_roots.append(superclasses[i])
         else:
-            temp = get_related_roots(graph, superclasses[i])
+            temp = get_related_roots(graph, roots_list, superclasses[i])
             related_roots.extend(temp)
 
     related_roots = remove_duplicates(related_roots)
     return related_roots
 
 
-def get_related_leaves(graph, element):
+def get_related_leaves(graph, leaves_list, element):
     """ Return list of all leaves of the given graph that are (in)directly related to the given element."""
 
-    elem = URIRef(element)
     related_leaves = []
-    temp = []
-    all_leaves = get_list_leaf_classes(graph)
     subclasses = get_subclasses(graph, element)
 
     for i in range(len(subclasses)):
-        if subclasses[i] in all_leaves:
+        if subclasses[i] in leaves_list:
             related_leaves.append(subclasses[i])
         else:
-            temp = get_related_leaves(graph, subclasses[i])
+            temp = get_related_leaves(graph, leaves_list, subclasses[i])
             related_leaves.extend(temp)
 
     related_leaves = remove_duplicates(related_leaves)

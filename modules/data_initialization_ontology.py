@@ -1,7 +1,9 @@
 """ Module for initializing data read from the ontology to be evaluated """
+
 from rdflib import RDF, OWL
 
 from modules.dataclass_definitions_ontology import OntologyClass
+from modules.utils_graph import get_list_all_classes, get_list_root_classes, get_list_leaf_classes
 
 
 def initialize_ontology(ontology):
@@ -35,4 +37,20 @@ def get_list_of_classes(ontology):
 
     return classes_list
 
-# TODO (@pedropaulofb): In the end of the initializing, verify if there is any redundant URI - there must be none.
+    # TODO (@pedropaulofb): In the end of the initializing, verify if there is any redundant URI - there must be none.
+
+
+def initialize_classes_type_lists(ontology):
+    """ Return lists of different types of classes (string with the class URI for the input ontology to be used
+        in other functions.
+    """
+
+    classes = {"all": get_list_all_classes(ontology),
+               "roots": [],
+               "leaves": []
+               }
+
+    classes["roots"] = get_list_root_classes(ontology, classes["all"])
+    classes["leaves"] = get_list_leaf_classes(ontology, classes["all"], classes["roots"])
+
+    return classes

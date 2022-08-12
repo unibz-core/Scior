@@ -1,10 +1,9 @@
 """Main module for OntCatOWL"""
-from modules.propagation import propagate_branch_top_down
 
 if __name__ == "__main__":
 
     from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
-    from modules.data_initialization_ontology import initialize_ontology
+    from modules.data_initialization_ontology import *
     import logging
     from rdflib import Graph
     import time
@@ -26,6 +25,7 @@ if __name__ == "__main__":
 
     logging.debug("Initializing list of Ontology concepts.")
     ontology_classes = initialize_ontology(ontology)
+    classes_types = initialize_classes_type_lists(ontology)
 
     # TODO (@pedropaulofb): The ontology may already contain relations with GUFO. Treat that.
 
@@ -41,7 +41,10 @@ if __name__ == "__main__":
     gufo_individuals = get_list_of_gufo_individuals()
 
     st = time.time()
-    propagate_branch_top_down(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo")
+    # propagate_branch_top_down(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#D3FENDThing")
+    print(f"LIST ALL = {classes_types['all']}")
+    print(f"LIST ROOTS = {classes_types['roots']}")
+    print(f"LIST LEAVES = {classes_types['leaves']}")
     et = time.time()
     elapsed_time = round((et - st), 2)
     logging.info(f"Execution time: {elapsed_time} seconds.")
