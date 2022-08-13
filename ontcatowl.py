@@ -1,4 +1,7 @@
 """Main module for OntCatOWL"""
+import sys
+
+from modules.propagation import propagate_branch_bottom_up
 
 if __name__ == "__main__":
 
@@ -13,6 +16,9 @@ if __name__ == "__main__":
     #   e.g., print debut only to file
     logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
 
+    # TODO (@pedropaulofb): Analyse the size of the ontology first before modifying the system parameter below.
+    sys.setrecursionlimit(2000)
+
     ontology = Graph()
 
     # TODO (@pedropaulofb): Read from argument
@@ -25,7 +31,7 @@ if __name__ == "__main__":
 
     logging.debug("Initializing list of Ontology concepts.")
     ontology_classes = initialize_ontology(ontology)
-    classes_types = initialize_classes_type_lists(ontology)
+    ontology_nodes = initialize_nodes_lists(ontology)
 
     # TODO (@pedropaulofb): The ontology may already contain relations with GUFO. Treat that.
 
@@ -41,10 +47,10 @@ if __name__ == "__main__":
     gufo_individuals = get_list_of_gufo_individuals()
 
     st = time.time()
-    # propagate_branch_top_down(ontology, "http://d3fend.mitre.org/ontologies/d3fend.owl#D3FENDThing")
-    print(f"LIST ALL = {classes_types['all']}")
-    print(f"LIST ROOTS = {classes_types['roots']}")
-    print(f"LIST LEAVES = {classes_types['leaves']}")
+    # res = get_superclasses(ontology, ontology_nodes["all"], "http://d3fend.mitre.org/ontologies/d3fend.owl#OffensiveTactic") # TODO (@pedropaulofb): INCLUDE RESTRINCTION THAT IT MUST BE A CLASS!!!
+    # print(res)
+    # propagate_up(ontology, ontology_nodes, "http://d3fend.mitre.org/ontologies/d3fend.owl#Persistence")
+    propagate_branch_bottom_up(ontology, ontology_nodes, "http://d3fend.mitre.org/ontologies/d3fend.owl#Root2")
     et = time.time()
     elapsed_time = round((et - st), 2)
     logging.info(f"Execution time: {elapsed_time} seconds.")

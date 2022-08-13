@@ -18,6 +18,34 @@ def get_list_all_classes(graph):
     return list_classes
 
 
+def get_superclasses(graph, all_classes, element):
+    """ Returns a list of all superclasses of the given element of a graph. """
+
+    elem = URIRef(element)
+    superclasses = []
+
+    for obj in graph.objects(elem, RDFS.subClassOf):
+        ins = obj.n3()[1:-1]
+        if ins in all_classes:
+            superclasses.append(ins)
+
+    return superclasses
+
+
+def get_subclasses(graph, all_classes, element):
+    """ Returns a list of all subclasses of the given element of a graph. """
+
+    elem = URIRef(element)
+    subclasses = []
+
+    for subj in graph.subjects(RDFS.subClassOf, elem):
+        ins = subj.n3()[1:-1]
+        if ins in all_classes:
+            subclasses.append(ins)
+
+    return subclasses
+
+
 def get_list_root_classes(graph, all_classes):
     """ Returns a list without repetitions with the URI of all root classes in a graph.
         Root classes are:  (1) classes that (2) have no SUPERclasses besides owl:Thing.
@@ -50,58 +78,34 @@ def get_list_leaf_classes(graph, all_classes, all_roots):
     return list_leaf_nodes
 
 
-def get_superclasses(graph, element):
-    """ Returns a list of all superclasses of the given element of a graph. """
-
-    elem = URIRef(element)
-    superclasses = []
-
-    for obj in graph.objects(elem, RDFS.subClassOf):
-        superclasses.append(obj.n3()[1:-1])
-
-    return superclasses
-
-
-def get_subclasses(graph, element):
-    """ Returns a list of all subclasses of the given element of a graph. """
-
-    elem = URIRef(element)
-    subclasses = []
-
-    for subj in graph.subjects(RDFS.subClassOf, elem):
-        subclasses.append(subj.n3()[1:-1])
-
-    return subclasses
-
-
-def get_related_roots(graph, roots_list, element):
+def get_related_roots(graph, nodes_list, element):
     """ Return list of all roots of the given graph that are (in)directly related to the given element."""
 
     related_roots = []
-    superclasses = get_superclasses(graph, element)
+    superclasses = get_superclasses(graph, nodes_list["all"], element)
 
     for i in range(len(superclasses)):
-        if superclasses[i] in roots_list:
+        if superclasses[i] in nodes_list["roots"]:
             related_roots.append(superclasses[i])
         else:
-            temp = get_related_roots(graph, roots_list, superclasses[i])
+            temp = get_related_roots(graph, nodes_list, superclasses[i])
             related_roots.extend(temp)
 
     related_roots = remove_duplicates(related_roots)
     return related_roots
 
 
-def get_related_leaves(graph, leaves_list, element):
+def get_related_leaves(graph, nodes_list, element):
     """ Return list of all leaves of the given graph that are (in)directly related to the given element."""
 
     related_leaves = []
-    subclasses = get_subclasses(graph, element)
+    subclasses = get_subclasses(graph, nodes_list["all"], element)
 
     for i in range(len(subclasses)):
-        if subclasses[i] in leaves_list:
+        if subclasses[i] in nodes_list["leaves"]:
             related_leaves.append(subclasses[i])
         else:
-            temp = get_related_leaves(graph, leaves_list, subclasses[i])
+            temp = get_related_leaves(graph, nodes_list, subclasses[i])
             related_leaves.extend(temp)
 
     related_leaves = remove_duplicates(related_leaves)
