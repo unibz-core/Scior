@@ -1,7 +1,6 @@
 """ Functions related to the propagation of modifications in the graph. """
 
-from modules.utils_graph import get_subclasses, get_superclasses, \
-    get_related_roots, get_related_leaves
+from modules.utils_graph import get_subclasses, get_superclasses, get_related_roots, get_related_leaves
 
 
 def propagate_up(graph, nodes_list, input_node):

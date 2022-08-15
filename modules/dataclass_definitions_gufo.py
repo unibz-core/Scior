@@ -1,12 +1,9 @@
 """Definition of dataclasses used in OntCatOWL"""
 
-import logging
 from dataclasses import dataclass, field
 
 from modules.dataclass_verifications import check_duplicated_same_list_gufo, correct_number_of_elements_gufo, \
     duplicated_other_list_gufo
-
-logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.DEBUG)
 
 
 @dataclass

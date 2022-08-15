@@ -23,6 +23,7 @@ def lists_intersection(list1, list2):
     list3 = [value for value in list1 if value in temp]
     return list3
 
+
 def lists_subtraction(list1, list2):
     """ Returns the subtraction between two lists. """
 
