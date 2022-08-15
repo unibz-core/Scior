@@ -27,11 +27,10 @@ def check_duplicated_same_list_ontology(ontology_class):
 
     if len(duplicated_list) != 0:
         logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_class.uri} "
-                     f"in list {duplicated_list} in function {check_duplicated_same_list_ontology.__name__}.")
+                     f"in list {duplicated_list}.")
         exit(1)
     else:
-        logger.debug(f"No inconsistency detected in {ontology_class.uri} "
-                     f"in function {check_duplicated_same_list_ontology.__name__}.")
+        logger.debug(f"No inconsistency detected in {ontology_class.uri}.")
 
     # There is no need for a return because the errors area already displayed case detected.
 
@@ -51,11 +50,10 @@ def check_duplicated_same_list_gufo(gufo_dataclass):
 
     if len(duplicated_list) != 0:
         logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.uri} "
-                     f"in list {duplicated_list} in function {check_duplicated_same_list_gufo.__name__}.")
+                     f"in list {duplicated_list}.")
         exit(1)
     else:
-        logger.debug(f"No inconsistency detected in {gufo_dataclass.uri} "
-                     f"in function {check_duplicated_same_list_gufo.__name__}.")
+        logger.debug(f"No inconsistency detected in {gufo_dataclass.uri}.")
 
     # There is no need for a return because the errors area already displayed case detected.
 
@@ -74,12 +72,10 @@ def correct_number_of_elements_ontology(ontology_dataclass):
 
     if total_length != expected_number:
         logger.error(f"INCONSISTENCY DETECTED: The number of elements in {ontology_dataclass.uri} is {total_length}, "
-                     f"which is different from the expected number ({expected_number}) "
-                     f"in function {correct_number_of_elements_ontology.__name__}.")
+                     f"which is different from the expected number ({expected_number}.")
         exit(1)
     else:
-        logger.debug(f"No inconsistency detected in {ontology_dataclass.uri} "
-                     f"in function {correct_number_of_elements_ontology.__name__}.")
+        logger.debug(f"No inconsistency detected in {ontology_dataclass.uri}.")
 
 
 def correct_number_of_elements_gufo(gufo_dataclass):
@@ -97,8 +93,7 @@ def correct_number_of_elements_gufo(gufo_dataclass):
                      f"function {correct_number_of_elements_gufo.__name__}.")
         exit(1)
     else:
-        logger.debug(f"No inconsistency detected in {gufo_dataclass.uri} "
-                     f"in function {correct_number_of_elements_gufo.__name__}.")
+        logger.debug(f"No inconsistency detected in {gufo_dataclass.uri}.")
 
 
 def duplicated_other_list(list1, list2):
@@ -165,12 +160,10 @@ def duplicated_other_list_ontology(ontology_dataclass):
 
     if len(duplicated_list) != 0:
         logger.error(
-            f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_dataclass.uri} in function "
-            f"{duplicated_other_list_ontology.__name__}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
+            f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_dataclass.uri}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
         exit(1)
     else:
-        logger.debug(f"No inconsistency detected in {ontology_dataclass.uri} "
-                     f"in function {duplicated_other_list_ontology.__name__}. ")
+        logger.debug(f"No inconsistency detected in {ontology_dataclass.uri}. ")
 
     # There is no need for a return because the errors area already displayed case detected.
 
@@ -192,12 +185,11 @@ def duplicated_other_list_gufo(gufo_dataclass):
         duplicated_list.append("not_list")
 
     if len(duplicated_list) != 0:
-        logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.uri} in function "
-                     f"{duplicated_other_list_gufo.__name__}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
+        logger.error(
+            f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.uri}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
         exit(1)
     else:
-        logger.debug(f"No inconsistency detected in {gufo_dataclass.uri} in function "
-                     f"{duplicated_other_list_gufo.__name__}. ")
+        logger.debug(f"No inconsistency detected in {gufo_dataclass.uri}. ")
 
     # There is no need for a return because the errors area already displayed case detected.
 

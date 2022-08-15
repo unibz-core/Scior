@@ -1,4 +1,5 @@
 """Main module for OntCatOWL"""
+
 from modules.data_initialization_ontology import initialize_ontology, initialize_nodes_lists
 from modules.dataclass_verifications import verify_all_list_consistency
 
