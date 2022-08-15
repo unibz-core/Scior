@@ -1,6 +1,7 @@
 """ Logging configurations """
 
 import logging
+import os
 from datetime import datetime
 
 
@@ -15,10 +16,16 @@ def initialize_logger():
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
 
+    # If directory "/log" does not exist, create it
+    dir = "log/"
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
     # Creating FILE handler
     now = datetime.now()
     date_time = now.strftime("%d%m%Y-%H%M%S")
-    file_handler = logging.FileHandler(f"log/{date_time}.log")
+    # TODO (@pedropaulofb): Verify if directory does not exists and, if so, create it.
+    file_handler = logging.FileHandler(f"{dir}{date_time}.log")
     file_handler.setLevel(logging.DEBUG)
 
     # Create formatters and add it to handlers
