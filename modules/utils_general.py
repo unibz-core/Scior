@@ -9,10 +9,10 @@ def has_duplicates(list):
         return True
 
 
-def remove_duplicates(list):
+def remove_duplicates(input_list):
     """ Remove duplicated elements from a list. """
 
-    list = [*set(list)]
+    input_list = [*set(input_list)]
 
     return list
 

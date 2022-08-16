@@ -15,9 +15,5 @@ def get_from_gufo_lists(element, list_gufo_classes):
 
     return is_list, not_list
 
-
-
-
-
 # TODO (@pedropaulofb): Crete function to verify if a class in an ontology is an instance of a GUFO class
 # TODO (@pedropaulofb): Crete function to verify if a class in an ontology is a subclass of a GUFO class

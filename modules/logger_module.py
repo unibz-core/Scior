@@ -20,15 +20,14 @@ def initialize_logger():
         console_handler.setLevel(logging.INFO)
 
         # If directory "/log" does not exist, create it
-        dir = "log/"
-        if not os.path.exists(dir):
-            os.makedirs(dir)
+        log_dir = "log/"
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
 
         # Creating FILE handler
         now = datetime.now()
         date_time = now.strftime("%d%m%Y-%H%M%S")
-        # TODO (@pedropaulofb): Verify if directory does not exists and, if so, create it.
-        file_handler = logging.FileHandler(f"{dir}{date_time}.log")
+        file_handler = logging.FileHandler(f"{log_dir}{date_time}.log")
         file_handler.setLevel(logging.DEBUG)
 
         # Create formatters and add it to handlers

@@ -62,7 +62,7 @@ def get_list_root_classes(graph, all_classes):
     return list_root_classes
 
 
-def get_list_leaf_classes(graph, all_classes, all_roots):
+def get_list_leaf_classes(graph, all_classes):
     """ Returns a list without repetitions with the URI of all leaf classes in a graph.
         Leaf classes are:  (1) classes that (2) have no SUBclasses.
         Isolated classes are both root and leaf nodes at the same time.
