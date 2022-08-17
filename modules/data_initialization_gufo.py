@@ -167,6 +167,3 @@ def expected_number(hierarchy):
         exit(1)
 
     return NUMBER_CLASSES
-
-
-initialize_gufo_dictionary()
