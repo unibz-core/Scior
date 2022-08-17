@@ -3,8 +3,6 @@
 - Validate if the loaded data is correct.
 """
 
-import time
-
 import yaml
 from yaml import SafeLoader
 
@@ -26,7 +24,7 @@ def initialize_gufo_dictionary():
 
     logger = initialize_logger()
 
-    gufo_data_file = "../resources/gufo_data.yaml"
+    gufo_data_file = "resources/gufo_data.yaml"
     logger.debug(f"Loading {gufo_data_file} file...")
 
     try:
@@ -37,11 +35,7 @@ def initialize_gufo_dictionary():
         logger.error(f"Could not load {gufo_data_file} file. Exiting program.")
         exit(1)
 
-    st = time.perf_counter()
     validate_gufo_data(loaded_gufo_data)
-    et = time.perf_counter()
-    elapsed_time = round((et - st), 3)
-    logger.info(f"Execution time: {elapsed_time} seconds.")
 
     return loaded_gufo_data
 

@@ -68,6 +68,9 @@ def duplicated_other_list(list1, list2):
 def duplicated_other_list_ontology(ontology_dataclass):
     """ No same string must be in two lists at the same time. """
 
+    # TODO (@pedropaulofb): Analyse if all lists can be merged and then evaluate
+    #  if there is a duplicated element in this big list.
+
     logger = initialize_logger()
     duplicated_list = []
 
@@ -119,7 +122,8 @@ def duplicated_other_list_ontology(ontology_dataclass):
 
     if len(duplicated_list) != 0:
         logger.error(
-            f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_dataclass.uri}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
+            f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_dataclass.uri}. "
+            f"Lists {duplicated_list[0]} and {duplicated_list[1]}.")
         exit(1)
     else:
         logger.debug(f"No inconsistency detected in {ontology_dataclass.uri}. ")
@@ -128,6 +132,6 @@ def duplicated_other_list_ontology(ontology_dataclass):
 
 
 def verify_all_list_consistency(list):
-    """ Calls the consistency verification of all elements in a list of GUFO or Ontology classes. """
+    """ Calls the consistency verification of all elements in a list of Ontology DataClasses. """
     for i in range(len(list)):
         list[i].is_consistent()
