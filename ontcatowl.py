@@ -1,21 +1,19 @@
 """Main module for OntCatOWL"""
-from modules.data_initialization_gufo2 import initialize_gufo
+
+import time
+
+from rdflib import Graph
+
+from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
+from modules.data_initialization_gufo2 import initialize_gufo_dictionary
 from modules.data_initialization_ontology import initialize_ontology, initialize_nodes_lists
 from modules.dataclass_verifications import verify_all_list_consistency
+from modules.logger_config import initialize_logger
+from modules.propagation import propagate_graph_top_down
 
 if __name__ == "__main__":
 
-    from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
-    from modules.logger_config import initialize_logger
-    from rdflib import Graph
-    import time
-    import sys
-    from modules.propagation import propagate_graph_top_down
-
     logger = initialize_logger()
-
-    # TODO (@pedropaulofb): Analyse the size of the ontology first before modifying the system parameter below.
-    sys.setrecursionlimit(2000)
 
     ontology = Graph()
 
@@ -28,13 +26,12 @@ if __name__ == "__main__":
         exit(1)
 
     logger.debug("Initializing list of Ontology concepts.")
-    ontology_classes = initialize_ontology(ontology)
+    ontology_data = initialize_ontology(ontology)
     ontology_nodes = initialize_nodes_lists(ontology)
 
-    verify_all_list_consistency(ontology_classes)
+    verify_all_list_consistency(ontology_data)
 
-    types = initialize_gufo("type")
-    individuals = initialize_gufo("individual")
+    gufo_data = initialize_gufo_dictionary()
 
     # TODO (@pedropaulofb): The ontology may already contain relations with GUFO. Treat that.
 
@@ -49,7 +46,7 @@ if __name__ == "__main__":
     gufo_types = get_list_of_gufo_types()
     gufo_individuals = get_list_of_gufo_individuals()
 
-    ontology_classes[1].create_hash()
+    ontology_data[1].create_hash()
 
     st = time.perf_counter()
     propagate_graph_top_down(ontology, ontology_nodes)
@@ -58,11 +55,10 @@ if __name__ == "__main__":
     logger.info(f"Execution time: {elapsed_time} seconds.")
 
 # TODO (@pedropaulofb): Argument -d for printing log file
-# TODO (@pedropaulofb): Use different colors for logs levels printed on std.out
-#       (e.g. https://betterstack.com/community/questions/how-to-color-python-logging-output/)
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
 # TODO (@pedropaulofb): Verify possibility to check consistency using a reasoner.
 # TODO (@pedropaulofb): Is there a way to define the GUFO list as read-only?
 # TODO (@pedropaulofb): Evaluate on Linux before release first version
 # TODO (@pedropaulofb): Update requirements.txt
 # TODO (@pedropaulofb): OntCatOWL can became a generic mapper tool!
+# TODO (@pedropaulofb): Treat problem with huge ontologies (stack overflow)
