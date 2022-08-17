@@ -1,12 +1,12 @@
 """Main module for OntCatOWL"""
-
+from modules.data_initialization_gufo2 import initialize_gufo
 from modules.data_initialization_ontology import initialize_ontology, initialize_nodes_lists
 from modules.dataclass_verifications import verify_all_list_consistency
 
 if __name__ == "__main__":
 
     from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
-    from modules.logger_module import initialize_logger
+    from modules.logger_config import initialize_logger
     from rdflib import Graph
     import time
     import sys
@@ -32,6 +32,9 @@ if __name__ == "__main__":
     ontology_nodes = initialize_nodes_lists(ontology)
 
     verify_all_list_consistency(ontology_classes)
+
+    types = initialize_gufo("type")
+    individuals = initialize_gufo("individual")
 
     # TODO (@pedropaulofb): The ontology may already contain relations with GUFO. Treat that.
 

@@ -32,7 +32,8 @@ def initialize_logger():
 
         # Create formatters and add it to handlers
         console_format = logging.Formatter('%(levelname)s - %(message)s')
-        file_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s - func: %(funcName)s')
+        file_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s [func: %(funcName)s '
+                                        'in %(filename)s]')
         console_handler.setFormatter(console_format)
         file_handler.setFormatter(file_format)
 

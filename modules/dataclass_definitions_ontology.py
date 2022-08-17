@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 
 from modules.dataclass_verifications import check_duplicated_same_list_ontology, correct_number_of_elements_ontology, \
     duplicated_other_list_ontology
-from modules.logger_module import initialize_logger
+from modules.logger_config import initialize_logger
 from modules.utils_gufo import get_from_gufo_lists
 
 

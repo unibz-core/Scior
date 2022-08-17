@@ -16,7 +16,6 @@ class GUFOClass(object):
 
     def is_consistent(self):
         """ Performs a consistency check on the dataclass """
-        # Only a basic test were for this method
         check_duplicated_same_list_gufo(self)
         correct_number_of_elements_gufo(self)
         duplicated_other_list_gufo(self)

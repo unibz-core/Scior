@@ -49,6 +49,6 @@ def initialize_nodes_lists(ontology):
              }
 
     nodes["roots"] = get_list_root_classes(ontology, nodes["all"])
-    nodes["leaves"] = get_list_leaf_classes(ontology, nodes["all"], nodes["roots"])
+    nodes["leaves"] = get_list_leaf_classes(ontology, nodes["all"])
 
     return nodes

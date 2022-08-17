@@ -2,7 +2,7 @@
 
 # TODO (@pedropaulofb): Maybe the verification funct should only be performed when a parameter is provided by the user
 
-from modules.logger_module import initialize_logger
+from modules.logger_config import initialize_logger
 from modules.utils_general import has_duplicates
 
 
