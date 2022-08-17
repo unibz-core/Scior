@@ -27,8 +27,6 @@ def lists_intersection(list1, list2):
 def lists_subtraction(list1, list2):
     """ Returns the subtraction between two lists. """
 
-    print(f"list1 = {list1}")
-    print(f"list2 = {list2}")
     list3 = list(set(list1) - set(list2))
 
     return list3

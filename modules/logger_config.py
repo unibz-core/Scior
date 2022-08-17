@@ -1,4 +1,4 @@
-""" Logging configurations """
+""" Logging configurations. """
 
 import logging
 import os

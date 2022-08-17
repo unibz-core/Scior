@@ -1,4 +1,4 @@
-""" This module implements the methods of the classes defined in dataclass_definitions_gufo.py """
+""" This module implements the methods of the classes defined in dataclass_definitions_ontology.py """
 
 # TODO (@pedropaulofb): Maybe the verification funct should only be performed when a parameter is provided by the user
 
@@ -35,29 +35,6 @@ def check_duplicated_same_list_ontology(ontology_class):
     # There is no need for a return because the errors area already displayed case detected.
 
 
-def check_duplicated_same_list_gufo(gufo_dataclass):
-    """ Verifies if there are duplicated elements in each one of the GUFOClass lists"""
-
-    logger = initialize_logger()
-    duplicated_list = []
-
-    if has_duplicates(gufo_dataclass.is_list):
-        duplicated_list.append("is_list")
-    elif has_duplicates(gufo_dataclass.can_list):
-        duplicated_list.append("can_list")
-    elif has_duplicates(gufo_dataclass.not_list):
-        duplicated_list.append("not_list")
-
-    if len(duplicated_list) != 0:
-        logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.uri} "
-                     f"in list {duplicated_list}.")
-        exit(1)
-    else:
-        logger.debug(f"No inconsistency detected in {gufo_dataclass.uri}.")
-
-    # There is no need for a return because the errors area already displayed case detected.
-
-
 def correct_number_of_elements_ontology(ontology_dataclass):
     """ Sum of elements from all the lists in a dataclass must be equal to expected_number """
 
@@ -76,24 +53,6 @@ def correct_number_of_elements_ontology(ontology_dataclass):
         exit(1)
     else:
         logger.debug(f"No inconsistency detected in {ontology_dataclass.uri}.")
-
-
-def correct_number_of_elements_gufo(gufo_dataclass):
-    """Sum of elements from all the lists in a dataclass must be equal to expeted_number"""
-
-    logger = initialize_logger()
-    types_number = 14
-    individuals_number = 13
-
-    total_length = len(gufo_dataclass.is_list) + len(gufo_dataclass.can_list) + len(gufo_dataclass.not_list)
-
-    if (total_length != types_number) and (total_length != individuals_number):
-        logger.error(f"INCONSISTENCY DETECTED: The number of elements in {gufo_dataclass.uri} is {total_length}, "
-                     f"which is different from the expected number in "
-                     f"function {correct_number_of_elements_gufo.__name__}.")
-        exit(1)
-    else:
-        logger.debug(f"No inconsistency detected in {gufo_dataclass.uri}.")
 
 
 def duplicated_other_list(list1, list2):
@@ -168,33 +127,6 @@ def duplicated_other_list_ontology(ontology_dataclass):
     # There is no need for a return because the errors area already displayed case detected.
 
 
-def duplicated_other_list_gufo(gufo_dataclass):
-    """ No same string must be in two lists at the same time."""
-
-    logger = initialize_logger()
-    duplicated_list = []
-
-    if duplicated_other_list(gufo_dataclass.is_list, gufo_dataclass.can_list):
-        duplicated_list.append("is_list")
-        duplicated_list.append("can_list")
-    elif duplicated_other_list(gufo_dataclass.is_list, gufo_dataclass.not_list):
-        duplicated_list.append("is_list")
-        duplicated_list.append("not_list")
-    elif duplicated_other_list(gufo_dataclass.can_list, gufo_dataclass.not_list):
-        duplicated_list.append("can_list")
-        duplicated_list.append("not_list")
-
-    if len(duplicated_list) != 0:
-        logger.error(
-            f"INCONSISTENCY DETECTED: Same element in two lists for element {gufo_dataclass.uri}. Lists {duplicated_list[0]} and {duplicated_list[1]}.")
-        exit(1)
-    else:
-        logger.debug(f"No inconsistency detected in {gufo_dataclass.uri}. ")
-
-    # There is no need for a return because the errors area already displayed case detected.
-
-
-# Tested only for List of GUFO classes
 def verify_all_list_consistency(list):
     """ Calls the consistency verification of all elements in a list of GUFO or Ontology classes. """
     for i in range(len(list)):

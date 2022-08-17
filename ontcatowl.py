@@ -4,8 +4,7 @@ import time
 
 from rdflib import Graph
 
-from modules.data_initialization_gufo import get_list_of_gufo_types, get_list_of_gufo_individuals
-from modules.data_initialization_gufo2 import initialize_gufo_dictionary
+from modules.data_initialization_gufo import initialize_gufo_dictionary
 from modules.data_initialization_ontology import initialize_ontology, initialize_nodes_lists
 from modules.dataclass_verifications import verify_all_list_consistency
 from modules.logger_config import initialize_logger
@@ -13,23 +12,19 @@ from modules.propagation import propagate_graph_top_down
 
 if __name__ == "__main__":
 
-    logger = initialize_logger()
+    ### DATA LOADINGS AND INITIALIZATIONS
 
-    ontology = Graph()
+    # Logger initialization
+    logger = initialize_logger()
 
     # TODO (@pedropaulofb): Read from argument
     # Input ontology to be evaluated
+    ontology = Graph()
     try:
         ontology.parse("resources/d3fend.ttl")
     except OSError:
         logger.error("Could not load resources/d3fend.ttl file. Exiting program.")
         exit(1)
-
-    logger.debug("Initializing list of Ontology concepts.")
-    ontology_data = initialize_ontology(ontology)
-    ontology_nodes = initialize_nodes_lists(ontology)
-
-    verify_all_list_consistency(ontology_data)
 
     gufo_data = initialize_gufo_dictionary()
 
@@ -42,11 +37,9 @@ if __name__ == "__main__":
     # elapsed_time = round((et - st), 3)
     # logger.debug(f"Reasoning process completed in {elapsed_time} seconds.")
 
-    logger.debug("Initializing list of GUFO concepts.")
-    gufo_types = get_list_of_gufo_types()
-    gufo_individuals = get_list_of_gufo_individuals()
-
-    ontology_data[1].create_hash()
+    ontology_data = initialize_ontology(ontology)
+    ontology_nodes = initialize_nodes_lists(ontology)
+    verify_all_list_consistency(ontology_data)
 
     st = time.perf_counter()
     propagate_graph_top_down(ontology, ontology_nodes)

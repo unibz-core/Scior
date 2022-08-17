@@ -3,19 +3,23 @@
 from rdflib import RDF, OWL
 
 from modules.dataclass_definitions_ontology import OntologyClass
+from modules.logger_config import initialize_logger
 from modules.utils_graph import get_list_all_classes, get_list_root_classes, get_list_leaf_classes
 
 
 def initialize_ontology(ontology):
     """ Return an OntologyClass list of all classes in the ontology to be evaluated with its related sub-lists """
 
-    ontology_list = []
+    logger = initialize_logger()
+    logger.debug("Initializing list of Ontology concepts...")
 
+    ontology_list = []
     classes_list = get_list_of_classes(ontology)
 
     for i in range(len(classes_list)):
         ontology_list.append(OntologyClass(uri=classes_list[i]))
 
+    logger.debug("List of Ontology concepts successfully initialized.")
     return ontology_list
 
 
@@ -42,6 +46,8 @@ def initialize_nodes_lists(ontology):
     """ Return lists of different types of classes (string with the class URI) for the input ontology to be used
         in other functions. This lists of classes must be initializated and, after that, not be edited anymore.
     """
+    logger = initialize_logger()
+    logger.debug("Initializing list of Ontology nodes...")
 
     nodes = {"all": get_list_all_classes(ontology),
              "roots": [],
@@ -50,5 +56,7 @@ def initialize_nodes_lists(ontology):
 
     nodes["roots"] = get_list_root_classes(ontology, nodes["all"])
     nodes["leaves"] = get_list_leaf_classes(ontology, nodes["all"])
+
+    logger.debug("List of Ontology concepts successfully initialized.")
 
     return nodes
