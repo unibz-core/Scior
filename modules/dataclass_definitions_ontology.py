@@ -9,7 +9,7 @@ from modules.utils_gufo import get_from_gufo_lists
 
 @dataclass
 class OntologyClass(object):
-    """ Each loaded ontology elem. has lists of GUFO elem. (types/indivuduals) that they are, can or cannot be. """
+    """ Each loaded ontology elem. has lists of GUFO elem. (types/individuals) that they are, can or cannot be. """
     uri: str = field(default_factory=str)
     is_type: list[str] = field(default_factory=list[str])
     is_individual: list[str] = field(default_factory=list[str])
@@ -155,6 +155,7 @@ class OntologyClass(object):
         """ Verify to which of the dataclass lists the element belongs and returns the list name. """
 
         logger = initialize_logger()
+        containing_list = "not set"
 
         if element in self.is_type:
             containing_list = "is_type"
@@ -180,6 +181,7 @@ class OntologyClass(object):
         """ Creates a hash for a single list of the OntologyClass. """
 
         partial_hash = input_list
+        list_hash = "not set"
 
         if input_list == "is_type":
             list_hash = self.is_type

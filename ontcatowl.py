@@ -32,7 +32,7 @@ if __name__ == "__main__":
         logger.error("Could not load resources/d3fend.ttl file. Exiting program.")
         exit(1)
 
-    gufo_dictonary = initialize_gufo_dictionary()
+    gufo_dictionary = initialize_gufo_dictionary()
 
     logger.info("Initializing RDFS reasoning. This may take a while...")
     st = time.perf_counter()
@@ -53,6 +53,7 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
 # TODO (@pedropaulofb): Verify possibility to check consistency using a reasoner.
 # TODO (@pedropaulofb): Is there a way to define the GUFO list as read-only?
+# TODO (@pedropaulofb): Verify if there is any unused module, function or method
 # TODO (@pedropaulofb): Evaluate on Linux before release first version
 # TODO (@pedropaulofb): Update requirements.txt
 # TODO (@pedropaulofb): OntCatOWL can became a generic mapper tool!

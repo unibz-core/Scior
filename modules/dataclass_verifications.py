@@ -68,67 +68,14 @@ def duplicated_other_list(list1, list2):
 def duplicated_other_list_ontology(ontology_dataclass):
     """ No same string must be in two lists at the same time. """
 
-    # TODO (@pedropaulofb): Analyse if all lists can be merged and then evaluate
-    #  if there is a duplicated element in this big list.
-
     logger = initialize_logger()
-    duplicated_list = []
+    merged_list = ontology_dataclass.is_type + ontology_dataclass.is_individual + ontology_dataclass.can_type + ontology_dataclass.can_individual + ontology_dataclass.not_type + ontology_dataclass.not_individual
 
-    if duplicated_other_list(ontology_dataclass.is_type, ontology_dataclass.is_individual):
-        duplicated_list.append("is_type")
-        duplicated_list.append("is_individual")
-    elif duplicated_other_list(ontology_dataclass.is_type, ontology_dataclass.can_individual):
-        duplicated_list.append("is_type")
-        duplicated_list.append("can_individual")
-    elif duplicated_other_list(ontology_dataclass.is_type, ontology_dataclass.not_individual):
-        duplicated_list.append("is_type")
-        duplicated_list.append("not_individual")
-    elif duplicated_other_list(ontology_dataclass.can_type, ontology_dataclass.is_individual):
-        duplicated_list.append("can_type")
-        duplicated_list.append("is_individual")
-    elif duplicated_other_list(ontology_dataclass.can_type, ontology_dataclass.can_individual):
-        duplicated_list.append("can_type")
-        duplicated_list.append("can_individual")
-    elif duplicated_other_list(ontology_dataclass.can_type, ontology_dataclass.not_individual):
-        duplicated_list.append("can_type")
-        duplicated_list.append("not_individual")
-    elif duplicated_other_list(ontology_dataclass.not_type, ontology_dataclass.is_individual):
-        duplicated_list.append("not_type")
-        duplicated_list.append("is_individual")
-    elif duplicated_other_list(ontology_dataclass.not_type, ontology_dataclass.can_individual):
-        duplicated_list.append("not_type")
-        duplicated_list.append("can_individual")
-    elif duplicated_other_list(ontology_dataclass.not_type, ontology_dataclass.not_individual):
-        duplicated_list.append("not_type")
-        duplicated_list.append("not_individual")
-    elif duplicated_other_list(ontology_dataclass.is_type, ontology_dataclass.can_type):
-        duplicated_list.append("is_type")
-        duplicated_list.append("can_type")
-    elif duplicated_other_list(ontology_dataclass.is_type, ontology_dataclass.not_type):
-        duplicated_list.append("is_type")
-        duplicated_list.append("not_type")
-    elif duplicated_other_list(ontology_dataclass.can_type, ontology_dataclass.not_type):
-        duplicated_list.append("can_type")
-        duplicated_list.append("not_type")
-    elif duplicated_other_list(ontology_dataclass.is_individual, ontology_dataclass.can_individual):
-        duplicated_list.append("is_individual")
-        duplicated_list.append("can_individual")
-    elif duplicated_other_list(ontology_dataclass.is_individual, ontology_dataclass.not_individual):
-        duplicated_list.append("is_individual")
-        duplicated_list.append("not_individual")
-    elif duplicated_other_list(ontology_dataclass.can_individual, ontology_dataclass.not_individual):
-        duplicated_list.append("can_individual")
-        duplicated_list.append("not_individual")
-
-    if len(duplicated_list) != 0:
-        logger.error(
-            f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_dataclass.uri}. "
-            f"Lists {duplicated_list[0]} and {duplicated_list[1]}.")
+    if has_duplicates(merged_list):
+        logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for {ontology_dataclass.uri}")
         exit(1)
     else:
         logger.debug(f"No inconsistency detected in {ontology_dataclass.uri}. ")
-
-    # There is no need for a return because the errors area already displayed case detected.
 
 
 def verify_all_list_consistency(list):

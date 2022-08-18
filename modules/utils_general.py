@@ -1,9 +1,9 @@
 """ General auxiliary functions. """
 
 
-def has_duplicates(list):
+def has_duplicates(input_list):
     """ Check if given list contains any duplicated element """
-    if len(list) == len(set(list)):
+    if len(input_list) == len(set(input_list)):
         return False
     else:
         return True
