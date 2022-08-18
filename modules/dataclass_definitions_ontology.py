@@ -141,6 +141,8 @@ class OntologyClass(object):
         # Consistency checking is already performed inside the move_between_ontology_lists function.
         self.move_element_between_lists(element, source_list, target_list)
 
+        # TODO (@pedropaulofb): Every time this function is called, the gufo_data_not must be applied.
+
     def move_elem_list_to_is_list(self, elem_list):
         """ Move a list of elements to the IS list """
         for i in range(len(elem_list)):

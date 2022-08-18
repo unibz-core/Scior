@@ -15,16 +15,24 @@ NUMBER_CLASSES_INDIVIDUALS = 13
 
 
 def initialize_gufo_dictionary():
-    """ Loads GUFO Data from a YAML resource file and returns a multi-level dictionary
-        The dictionary contains:
-            - 1st level keys: hierarchies (types or individuals)
-            - 2nd level keys: classes belonging to the hierarchies
-            - 3rd level: three lists of strings (is_list, can_list, not_list) with related classes
+    """ Loads GUFO Data from a YAML resource file and returns a multi-level dictionary. The dictionary contains:
+            - 1st level (e.g.: gufo_data):
+                1a) Types hierarchy dictionary of GUFO classes
+                1b) Individuals hierarchy dictionary of GUFO classes
+                1c) Complements (disjoint_unions) dictionary of GUFO classes
+            - 2nd level (e.g.: gufo_data["types"]):
+                2a) Dictionary of classes belonging to the types' hierarchy (keys) and its associated lists (items)
+                2b) Dictionary of classes belonging to the individuals' hierarchy(keys) and its associated lists(items)
+                2c) GUFO classes (keys) and a list of its compliments (items)
+            - 3rd level:
+                3a) Three lists (is_list, can_list, not_list) with strings of GUFO classes for the types' hierarchy.
+                3b) Three lists (same as above) with strings of GUFO classes for the individuals' hierarchy.
+                3c) None.
     """
 
     logger = initialize_logger()
 
-    gufo_data_file = "resources/gufo_data.yaml"
+    gufo_data_file = "../resources/gufo_data.yaml"
     logger.debug(f"Loading {gufo_data_file} file...")
 
     try:
@@ -35,9 +43,12 @@ def initialize_gufo_dictionary():
         logger.error(f"Could not load {gufo_data_file} file. Exiting program.")
         exit(1)
 
+    # TODO (@pedropaulofb): Correct and create the verifications for the complements dictionary
     validate_gufo_data(loaded_gufo_data)
 
     return loaded_gufo_data
+
+    # TODO (@pedropaulofb): In the future the yaml file should be created automatically from the gufo.owl file
 
 
 def validate_gufo_data(gufo_data):
@@ -46,17 +57,19 @@ def validate_gufo_data(gufo_data):
     logger = initialize_logger()
     logger.debug("Performing validation of the GUFO data loaded from the YAML resource file...")
 
-    # Verify if only the two necessary hierarchies were loaded.
-    num_hierarchies = len(gufo_data.keys())
-    if num_hierarchies != 2:
+    # Verify if only the two necessary 1st level entries were loaded.
+    num_entries = len(gufo_data.keys())
+    if num_entries != 3:
         logger.error(f"Data provided in YAML file is invalid: "
-                     f"number of hierarchies different from the expected. Expected 2 but found {num_hierarchies}. "
+                     f"number of 1st level entries is different from the expected. "
+                     f"Expected 3 but found {num_entries}. "
                      f"Exiting program.")
         exit(1)
 
-    # Verify if hierarchies were loaded.
-    verify_loaded_hierarchy(gufo_data, "types")
-    verify_loaded_hierarchy(gufo_data, "individuals")
+    # Verify if 1st level entries were loaded.
+    verify_loaded_1st_level_entries(gufo_data, "types")
+    verify_loaded_1st_level_entries(gufo_data, "individuals")
+    verify_loaded_1st_level_entries(gufo_data, "complements")
 
     # Verify if the number of classes in the hierarchies are the expected number.
     verify_num_classes_hierarchy(gufo_data, "types")
@@ -66,25 +79,26 @@ def validate_gufo_data(gufo_data):
     verify_num_items_classes(gufo_data, "types")
     verify_num_items_classes(gufo_data, "individuals")
 
-    # For each class in the hierarchies, there must be no duplicates (inside a list or between lists).
-    verify_repeated_classes(gufo_data, "types")
-    verify_repeated_classes(gufo_data, "individuals")
+    # For each class in the hierarchies or complements, there must be no duplicates (inside a list or between lists).
+    verify_repeated_classes_hierarchies(gufo_data, "types")
+    verify_repeated_classes_hierarchies(gufo_data, "individuals")
+    # TODO (@pedropaulofb): Create function verify_repeated_classes_complements(gufo_data)
 
     # TODO (@pedropaulofb): Create new verification: every element loaded at the lowest level (classes from lists)
     #  must be part of one of the hierarchies' lists (e.g., gufo:Kind readed from is_list of gufo:King must be present
     #  in the list of the classes read from the Type hierarchy.
 
-    logger.debug("Validation of the GUFO data loaded from the YAML resource file successfully performed.")
+    logger.info("Validation of the GUFO data loaded from the YAML resource file successfully performed.")
 
 
-def verify_loaded_hierarchy(gufo_data, hierarchy):
+def verify_loaded_1st_level_entries(gufo_data, entry):
     """ Verify if the argument hierarchy was loaded. """
 
     logger = initialize_logger()
 
-    if hierarchy not in gufo_data.keys():
+    if entry not in gufo_data.keys():
         logger.error(f"Data provided in YAML resource file is invalid: "
-                     f"{hierarchy.upper()} HIERARCHY not found. Exiting program.")
+                     f"{entry.upper()} 1ST LEVEL ENTRY not found. Exiting program.")
         exit(1)
 
 
@@ -127,7 +141,7 @@ def verify_num_items_classes(gufo_data, hierarchy):
         index += 1
 
 
-def verify_repeated_classes(gufo_data, hierarchy):
+def verify_repeated_classes_hierarchies(gufo_data, hierarchy):
     """ For each class in the argument hierarchy, there must be no duplicates (inside a list or between lists). """
     logger = initialize_logger()
 
@@ -162,3 +176,6 @@ def expected_number(hierarchy):
         exit(1)
 
     return NUMBER_CLASSES
+
+
+initialize_gufo_dictionary()
