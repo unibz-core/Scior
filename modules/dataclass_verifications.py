@@ -29,8 +29,6 @@ def check_duplicated_same_list_ontology(ontology_class):
         logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for element {ontology_class.uri} "
                      f"in list {duplicated_list}.")
         exit(1)
-    else:
-        logger.debug(f"No inconsistency detected in {ontology_class.uri}.")
 
     # There is no need for a return because the errors area already displayed case detected.
 
@@ -51,25 +49,15 @@ def correct_number_of_elements_ontology(ontology_dataclass):
         logger.error(f"INCONSISTENCY DETECTED: The number of elements in {ontology_dataclass.uri} is {total_length}, "
                      f"which is different from the expected number ({expected_number}.")
         exit(1)
-    else:
-        logger.debug(f"No inconsistency detected in {ontology_dataclass.uri}.")
-
-
-def duplicated_other_list(list1, list2):
-    """ Returns a boolean indicating if the value of one list appears in another """
-
-    check_1in2 = any(item in list1 for item in list2)
-    check_2in1 = any(item in list2 for item in list1)
-    result = check_1in2 or check_2in1
-
-    return result
 
 
 def duplicated_other_list_ontology(ontology_dataclass):
     """ No same string must be in two lists at the same time. """
 
     logger = initialize_logger()
-    merged_list = ontology_dataclass.is_type + ontology_dataclass.is_individual + ontology_dataclass.can_type + ontology_dataclass.can_individual + ontology_dataclass.not_type + ontology_dataclass.not_individual
+    merged_list = ontology_dataclass.is_type + ontology_dataclass.is_individual + \
+                  ontology_dataclass.can_type + ontology_dataclass.can_individual + \
+                  ontology_dataclass.not_type + ontology_dataclass.not_individual
 
     if has_duplicates(merged_list):
         logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for {ontology_dataclass.uri}")
@@ -80,5 +68,10 @@ def duplicated_other_list_ontology(ontology_dataclass):
 
 def verify_all_list_consistency(list):
     """ Calls the consistency verification of all elements in a list of Ontology DataClasses. """
+    logger = initialize_logger()
+    logger.debug("Initializing consistency checking for all ontology dataclasses...")
+
     for i in range(len(list)):
         list[i].is_consistent()
+
+    logger.debug("Consistency checking for all ontology dataclasses successfully performed.")

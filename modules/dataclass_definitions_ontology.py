@@ -228,6 +228,7 @@ class OntologyClass(object):
 
         return class_hash
 
+    # TODO (@pedropaulofb): OUTDATED!!!
     def update_lists_from_gufo(self, gufo_types, gufo_individuals):
 
         logger = initialize_logger()
