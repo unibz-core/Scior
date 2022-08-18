@@ -6,12 +6,14 @@ from dataclasses import dataclass, field
 
 from modules.dataclass_verifications import verify_duplicates_in_lists_ontology
 from modules.logger_config import initialize_logger
-from modules.utils_gufo import get_from_gufo_lists
 
 
 @dataclass
 class OntologyDataClass(object):
-    """ Each loaded ontology elem. has lists of GUFO elem. (types/individuals) that they are, can or cannot be. """
+    """ Each loaded ontology dataclass has a URI (identifier) and six lists of GUFO elemelements.
+    The lists indicate which gufo elem. the dataclass is, can, or cannot be, for the types and individuals hierarchies.
+    """
+
     uri: str = field(default_factory=str)
     is_type: list[str] = field(default_factory=list[str])
     is_individual: list[str] = field(default_factory=list[str])
@@ -30,8 +32,10 @@ class OntologyDataClass(object):
         """ Move an element between two lists in the same OntologyClass
             Elements can only be moved from CAN lists to IS or NOT lists
         """
-
         logger = initialize_logger()
+        logger.debug(
+            f"Starting to move element {element} from {source_list} list to {target_list} list in {self.uri}...")
+
         source = []
         target = []
 
@@ -66,51 +70,66 @@ class OntologyDataClass(object):
             exit(1)
 
         # VERIFICATION 4: Element must be in source list
-        if element not in source_list:
+        if element not in source:
             logger.error(f"Error for {self.uri} when trying to move {element} from list {source_list} "
                          f"to list {target_list}. The element {element} to be moved was not found "
                          f"in {source_list}. Program aborted.")
             exit(1)
 
         # Move element
-        logger.debug(f"Moving element {element} from {source_list} list to {target_list} list in {self.uri}.")
         source.remove(element)
         target.append(element)
 
-        # Performs consistency check - if time-consuming, this operation can be removed
+        # Performs consistency check
         self.is_consistent()
 
-        logger.debug(f"Element {element} moved successfully from list {source_list} to list {target_list}.")
+        # TODO (@pedropaulofb): UPDATE THE CLASS AFTER ANY MOVING!
+
+        logger.debug(f"Element {element} moved successfully from list {source_list} "
+                     f"to list {target_list} in {self.uri}.")
 
     def move_element_to_is_list(self, element):
-        """ Check if the element to be moved is a type or instance and move it from the CAN to the IS list.
-            The element is only moved it if it still not in the IS list.
-            This is a specific case of the move_element_between_lists function.
+        """ Check if the element to be moved is a type or instance
+                and move it from the corresponding CAN to the corresponding IS list.
+
+            The element is only moved if it still not in the IS list.
+            E.g. 1) if the element is in the can_type list, it is going to be moved to the is_type list.
+            E.g. 2) if the element is in the is_type list, it is not going to be moved.
+
+            This is a specific case of the move_element_between_lists method and
+            is analogous to the move_element_to_not_list method.
         """
+
         logger = initialize_logger()
         target_list = "undefined"
 
         source_list = self.return_containing_list_name(element)
 
         if source_list == "is_type" or source_list == "is_individual":
-            logger.debug(f"Element {element} already in {source_list}. No moving is necessary.")
+            logger.debug(f"Element {element} already in {source_list} for {self.uri}. No moving is necessary.")
         else:
             if source_list == "can_type":
                 target_list = "is_type"
             elif source_list == "can_individual":
                 target_list = "is_individual"
             else:
-                logger.error(f"When trying to move the element {element} to the IS LIST, "
-                             f"it was not found in the CAN list. Program aborted.")
+                logger.error(f"Error when trying to move the element {element} to the IS LIST in {self.uri}. "
+                             f"The element was not found in the CAN list. Program aborted.")
                 exit(1)
 
-        # Consistency checking is already performed inside the move_between_ontology_lists function.
-        self.move_element_between_lists(element, source_list, target_list)
+            # Consistency checking is already performed inside the move_between_ontology_lists function.
+            self.move_element_between_lists(element, source_list, target_list)
 
     def move_element_to_not_list(self, element):
-        """ Check if the element to be moved is a type or instance and move it from the CAN to the NOT list.
-            The element is only moved it if it still not in the NOT list.
-            This is a specific case of the move_element_between_lists function.
+        """ Check if the element to be moved is a type or instance
+                and move it from the corresponding CAN to the corresponding NOT list.
+
+            The element is only moved if it still not in the NOT list.
+            E.g. 1) if the element is in the can_type list, it is going to be moved to the not_type list.
+            E.g. 2) if the element is in the not_type list, it is not going to be moved.
+
+            This is a specific case of the move_element_between_lists method and
+            is analogous to the move_element_to_is_list method.
         """
 
         logger = initialize_logger()
@@ -119,29 +138,33 @@ class OntologyDataClass(object):
         source_list = self.return_containing_list_name(element)
 
         if source_list == "not_type" or source_list == "not_individual":
-            logger.debug(f"Element {element} already in {source_list}. No moving is necessary.")
+            logger.debug(f"Element {element} already in {source_list} for {self.uri}. No moving is necessary.")
         else:
             if source_list == "can_type":
                 target_list = "not_type"
             elif source_list == "can_individual":
                 target_list = "not_individual"
             else:
-                logger.error(f"When trying to move the element {element} to the NOT LIST, "
-                             f"it was not found in the CAN list. Program aborted.")
+                logger.error(f"When trying to move the element {element} to the NOT LIST in {self.uri}. "
+                             f"The element was not found in the CAN list. Program aborted.")
                 exit(1)
 
-        # Consistency checking is already performed inside the move_between_ontology_lists function.
-        self.move_element_between_lists(element, source_list, target_list)
+            # Consistency checking is already performed inside the move_between_ontology_lists function.
+            self.move_element_between_lists(element, source_list, target_list)
 
         # TODO (@pedropaulofb): Every time this function is called, the gufo_data_not must be applied.
 
-    def move_elem_list_to_is_list(self, elem_list):
-        """ Move a list of elements to the IS list """
+    def move_list_of_elements_to_is_list(self, elem_list):
+        """ Moves a list of elements to the IS list. Analogous to move_list_of_elements_to_not_list function.
+        This is a specific case of the move_element_to_is_list function. """
+
         for i in range(len(elem_list)):
             self.move_element_to_is_list(elem_list[i])
 
-    def move_elem_list_to_not_list(self, elem_list):
-        """ Move a list of elements to the NOT list """
+    def move_list_of_elements_to_not_list(self, elem_list):
+        """ Moves a list of elements to the NOT list. Analogous to move_list_of_elements_to_is_list function.
+        This is a specific case of the move_element_to_not_list function. """
+
         for i in range(len(elem_list)):
             self.move_element_to_not_list(elem_list[i])
 
@@ -149,30 +172,32 @@ class OntologyDataClass(object):
         """ Verify to which of the dataclass lists the element belongs and returns the list name. """
 
         logger = initialize_logger()
-        containing_list = "not set"
+        containing_list_name = "not set"
 
         if element in self.is_type:
-            containing_list = "is_type"
+            containing_list_name = "is_type"
         elif element in self.is_individual:
-            containing_list = "is_individual"
+            containing_list_name = "is_individual"
         elif element in self.can_type:
-            containing_list = "can_type"
+            containing_list_name = "can_type"
         elif element in self.can_individual:
-            containing_list = "can_individual"
+            containing_list_name = "can_individual"
         elif element in self.not_type:
-            containing_list = "not_type"
+            containing_list_name = "not_type"
         elif element in self.not_individual:
-            containing_list = "not_individual"
+            containing_list_name = "not_individual"
         else:
             logger.error(f"Element {element} does not belong to any list for {self.uri}. Program aborted.")
             exit(1)
 
-        logger.debug(f"Element {element} currently belong to list {containing_list} for {self.uri}.")
+        logger.debug(f"Element {element} currently belong to list {containing_list_name} for {self.uri}.")
 
-        return containing_list
+        return containing_list_name
 
     def create_partial_hash(self, input_list):
-        """ Creates a hash for a single list of the OntologyClass. """
+        """ Creates a hash for a single list inside an Ontology DataClass.
+            Hashes are the concatenation of all the names of all elements inside a list.
+        """
 
         partial_hash = input_list
         list_hash = "not set"
@@ -200,7 +225,8 @@ class OntologyDataClass(object):
         return partial_hash
 
     def create_hash(self):
-        """ Creates a hash of the OntologyClass using all its lists.
+        """ Creates a hash of the Ontology DataClass using all its lists.
+            Hashes are the concatenation of all partial hashes of all the dataclass lists.
             The hash function can be used for verifying if the state of the class was modified after an operation.
             Hash format is the name of the lists concatenated with the name of all its internal elements.
         """
@@ -221,7 +247,7 @@ class OntologyDataClass(object):
         return class_hash
 
     # TODO (@pedropaulofb): OUTDATED!!!
-    def update_lists_from_gufo(self, gufo_types, gufo_individuals):
+    def update_lists_from_gufo(self, gufo_dictionary):
 
         logger = initialize_logger()
         logger.debug(f"Updating lists for {self.uri} using GUFO.")
@@ -231,18 +257,25 @@ class OntologyDataClass(object):
 
         while hash_before != hash_after:
             hash_before = self.create_hash()
+
+            # Updating types list
             for it in range(len(self.is_type)):
-                new_is, new_not = get_from_gufo_lists(self.is_type[it], gufo_types)
-                self.move_elem_list_to_is_list(new_is)
-                self.move_elem_list_to_not_list(new_not)
+                new_is = gufo_dictionary["types"][self.is_type[it]]["is_list"]
+                new_not = gufo_dictionary["types"][self.is_type[it]]["not_list"]
+                self.move_list_of_elements_to_is_list(new_is)
+                self.move_list_of_elements_to_not_list(new_not)
+
+            # Updating individuals list
             for ii in range(len(self.is_individual)):
-                new_is, new_not = get_from_gufo_lists(self.is_individual[ii], gufo_individuals)
-                self.move_elem_list_to_is_list(new_is)
-                self.move_elem_list_to_not_list(new_not)
+                new_is = gufo_dictionary["individuals"][self.is_individual[ii]]["is_list"]
+                new_not = gufo_dictionary["individuals"][self.is_individual[ii]]["not_list"]
+                self.move_list_of_elements_to_is_list(new_is)
+                self.move_list_of_elements_to_not_list(new_not)
             hash_after = self.create_hash()
+
+            # TODO (@pedropaulofb): Updating complements list
+
             if hash_before == hash_after:
                 logger.debug(f"Hash before equals hash after. Update completed for {self.uri}.")
             else:
                 logger.debug(f"Hash before NOT equals hash after. Continuing update for {self.uri}.")
-
-# TODO (@pedropaulofb): Verify "dataclass with slots" and the use of __slot__ for better performance.

@@ -83,7 +83,7 @@ def validate_gufo_data(gufo_data):
     # TODO (@pedropaulofb): Create function verify_repeated_classes_complements(gufo_data)
 
     # TODO (@pedropaulofb): Create new verification: every element loaded at the lowest level (classes from lists)
-    #  must be part of one of the hierarchies' lists (e.g., gufo:Kind readed from is_list of gufo:King must be present
+    #  must be part of one of the hierarchies' lists (e.g., gufo:Kind read from is_list of gufo:King must be present
     #  in the list of the classes read from the Type hierarchy.
 
     logger.debug("Validation of the GUFO data loaded from the YAML resource file successfully performed.")
