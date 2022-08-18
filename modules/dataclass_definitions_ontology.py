@@ -1,4 +1,7 @@
-"""Definition of dataclasses used in OntCatOWL"""
+""" Definition of dataclass as the data structure used for loading the input ontology in OntCatOWL.
+    This module contains the data structure fields, initial value assignments and methods.
+"""
+
 from dataclasses import dataclass, field
 
 from modules.dataclass_verifications import check_duplicated_same_list_ontology, correct_number_of_elements_ontology, \
@@ -8,7 +11,7 @@ from modules.utils_gufo import get_from_gufo_lists
 
 
 @dataclass
-class OntologyClass(object):
+class OntologyDataClass(object):
     """ Each loaded ontology elem. has lists of GUFO elem. (types/individuals) that they are, can or cannot be. """
     uri: str = field(default_factory=str)
     is_type: list[str] = field(default_factory=list[str])
@@ -17,15 +20,6 @@ class OntologyClass(object):
     can_individual: list[str] = field(default_factory=list[str])
     not_type: list[str] = field(default_factory=list[str])
     not_individual: list[str] = field(default_factory=list[str])
-
-    def __post_init__(self):
-        self.can_type = ["gufo:AntiRigidType", "gufo:Category", "gufo:Kind", "gufo:Mixin", "gufo:NonRigidType",
-                         "gufo:NonSortal", "gufo:Phase", "gufo:PhaseMixin", "gufo:RigidType", "gufo:Role",
-                         "gufo:RoleMixin", "gufo:SemiRigidType", "gufo:Sortal", "gufo:SubKind"]
-        self.can_individual = ["gufo:Aspect", "gufo:Collection", "gufo:ExtrinsicAspect", "gufo:ExtrinsicMode",
-                               "gufo:FixedCollection", "gufo:FunctionalComplex", "gufo:IntrinsicAspect",
-                               "gufo:IntrinsicMode", "gufo:Object", "gufo:Quality", "gufo:Quantity", "gufo:Relator",
-                               "gufo:VariableCollection"]
 
     def is_consistent(self):
         """ Performs a consistency check on the dataclass """
@@ -252,3 +246,5 @@ class OntologyClass(object):
                 logger.debug(f"Hash before equals hash after. Update completed for {self.uri}.")
             else:
                 logger.debug(f"Hash before NOT equals hash after. Continuing update for {self.uri}.")
+
+# TODO (@pedropaulofb): Verify "dataclass with slots" and the use of __slot__ for better performance.

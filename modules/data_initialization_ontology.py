@@ -2,12 +2,12 @@
 
 from rdflib import RDF, OWL
 
-from modules.dataclass_definitions_ontology import OntologyClass
+from modules.dataclass_definitions_ontology import OntologyDataClass
 from modules.logger_config import initialize_logger
 from modules.utils_graph import get_list_all_classes, get_list_root_classes, get_list_leaf_classes
 
 
-def initialize_ontology(ontology):
+def initialize_ontology(ontology, gufo_dictionary):
     """ Return an OntologyClass list of all classes in the ontology to be evaluated with its related sub-lists """
 
     logger = initialize_logger()
@@ -15,9 +15,12 @@ def initialize_ontology(ontology):
 
     ontology_list = []
     classes_list = get_list_of_classes(ontology)
+    gufo_can_list_types, gufo_can_list_individuals = get_gufo_possibilities(gufo_dictionary)
 
     for i in range(len(classes_list)):
-        ontology_list.append(OntologyClass(uri=classes_list[i]))
+        ontology_list.append(OntologyDataClass(uri=classes_list[i],
+                                               can_type=gufo_can_list_types,
+                                               can_individual=gufo_can_list_individuals))
 
     logger.debug("List of Ontology concepts successfully initialized.")
     return ontology_list
@@ -40,6 +43,16 @@ def get_list_of_classes(ontology):
     classes_list = [*set(classes_list)]
 
     return classes_list
+
+
+def get_gufo_possibilities(gufo_dictionary):
+    """ Returns list of all GUFO classes available for classification in two lists (for types and individuals).
+        The data is loaded from the gufo dictionary obtained from the GUFO YAML file. """
+
+    can_list_types = list(gufo_dictionary["types"].keys())
+    can_list_individuals = list(gufo_dictionary["individuals"].keys())
+
+    return can_list_types, can_list_individuals
 
 
 def initialize_nodes_lists(ontology):
