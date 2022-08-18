@@ -43,6 +43,7 @@ if __name__ == "__main__":
 
     ontology_dataclass = initialize_ontology(ontology_graph)
     ontology_nodes = initialize_nodes_lists(ontology_graph)
+
     verify_all_list_consistency(ontology_dataclass)
 
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")

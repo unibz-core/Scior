@@ -62,8 +62,6 @@ def duplicated_other_list_ontology(ontology_dataclass):
     if has_duplicates(merged_list):
         logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for {ontology_dataclass.uri}")
         exit(1)
-    else:
-        logger.debug(f"No inconsistency detected in {ontology_dataclass.uri}. ")
 
 
 def verify_all_list_consistency(list):

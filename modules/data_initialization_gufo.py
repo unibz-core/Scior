@@ -37,7 +37,7 @@ def initialize_gufo_dictionary():
     try:
         with open(gufo_data_file) as f:
             loaded_gufo_data = yaml.load(f, Loader=SafeLoader)
-            logger.debug(f"{gufo_data_file} file successfully loaded.")
+            logger.debug(f"Resource file {gufo_data_file} successfully loaded.")
     except OSError:
         logger.error(f"Could not load {gufo_data_file} file. Exiting program.")
         exit(1)
