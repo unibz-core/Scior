@@ -4,8 +4,7 @@
 
 from dataclasses import dataclass, field
 
-from modules.dataclass_verifications import check_duplicated_same_list_ontology, correct_number_of_elements_ontology, \
-    duplicated_other_list_ontology
+from modules.dataclass_verifications import verify_duplicates_in_lists_ontology
 from modules.logger_config import initialize_logger
 from modules.utils_gufo import get_from_gufo_lists
 
@@ -22,11 +21,10 @@ class OntologyDataClass(object):
     not_individual: list[str] = field(default_factory=list[str])
 
     def is_consistent(self):
-        """ Performs a consistency check on the dataclass """
+        """ Performs a consistency check on the dataclass. For now only one verification is performed, which is
+         the identification of duplicates. Other verifications can be added later if necessary. """
 
-        check_duplicated_same_list_ontology(self)
-        correct_number_of_elements_ontology(self)
-        duplicated_other_list_ontology(self)
+        verify_duplicates_in_lists_ontology(self)
 
     def move_element_between_lists(self, element, source_list, target_list):
         """ Move an element between two lists in the same OntologyClass

@@ -7,7 +7,7 @@ from rdflib import Graph
 
 from modules.data_initialization_gufo import initialize_gufo_dictionary
 from modules.data_initialization_ontology import initialize_ontology, initialize_nodes_lists
-from modules.dataclass_verifications import verify_all_list_consistency
+from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.logger_config import initialize_logger
 
 if __name__ == "__main__":
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     ontology_dataclass = initialize_ontology(ontology_graph, gufo_dictionary)
     ontology_nodes = initialize_nodes_lists(ontology_graph)
 
-    verify_all_list_consistency(ontology_dataclass)
+    verify_all_ontology_dataclasses_consistency(ontology_dataclass)
 
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL concluded on {date_time}!")
