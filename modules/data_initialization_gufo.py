@@ -2,7 +2,6 @@
 - Loading GUFO Data used for the evaluations from a YAML file and creates an output dictionary.
 - Validate if the loaded data is correct.
 """
-
 import yaml
 from yaml import SafeLoader
 
@@ -32,7 +31,7 @@ def initialize_gufo_dictionary():
 
     logger = initialize_logger()
 
-    gufo_data_file = "../resources/gufo_data.yaml"
+    gufo_data_file = "resources/gufo_data.yaml"
     logger.debug(f"Loading {gufo_data_file} file...")
 
     try:
@@ -43,7 +42,6 @@ def initialize_gufo_dictionary():
         logger.error(f"Could not load {gufo_data_file} file. Exiting program.")
         exit(1)
 
-    # TODO (@pedropaulofb): Correct and create the verifications for the complements dictionary
     validate_gufo_data(loaded_gufo_data)
 
     return loaded_gufo_data
@@ -88,7 +86,7 @@ def validate_gufo_data(gufo_data):
     #  must be part of one of the hierarchies' lists (e.g., gufo:Kind readed from is_list of gufo:King must be present
     #  in the list of the classes read from the Type hierarchy.
 
-    logger.info("Validation of the GUFO data loaded from the YAML resource file successfully performed.")
+    logger.debug("Validation of the GUFO data loaded from the YAML resource file successfully performed.")
 
 
 def verify_loaded_1st_level_entries(gufo_data, entry):
@@ -164,18 +162,15 @@ def expected_number(hierarchy):
     """ Return the number of classes expected for the argument hierarchy. """
 
     logger = initialize_logger()
-    NUMBER_CLASSES = 0
+    number_classes = 0
 
     if hierarchy == "types":
-        NUMBER_CLASSES = NUMBER_CLASSES_TYPES
+        number_classes = NUMBER_CLASSES_TYPES
     elif hierarchy == "individuals":
-        NUMBER_CLASSES = NUMBER_CLASSES_INDIVIDUALS
+        number_classes = NUMBER_CLASSES_INDIVIDUALS
     else:
         logger.error(f"Invalid parameter when returning expected number for {hierarchy.upper()} HIERARCHY. "
                      f"Exiting program.")
         exit(1)
 
-    return NUMBER_CLASSES
-
-
-initialize_gufo_dictionary()
+    return number_classes
