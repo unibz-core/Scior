@@ -313,15 +313,23 @@ class OntologyDataClass(object):
                 list require_is must be subset of list is_type AND
                 list require_not must be subset of list not_type, THEN
                     if all conditions are met, move the results to is_type
+            Analogous to method update_complement_individual.
         """
 
         list_complement_keys = list(gufo_complements.keys())
 
         for i in range(len(self.not_type)):
-            if self.not_type[i] in list_complement_keys:
-                if set(gufo_complements[self.not_type[i]]["require_is"]).issubset(set(self.is_type)):
-                    if set(gufo_complements[self.not_type[i]]["require_not"]).issubset(set(self.not_type)):
-                        self.move_list_of_elements_to_is_list(gufo_complements[self.not_type[i]]["result"])
+            # Condition 1: the ontology dataclass element must be at list of dict keys
+            if self.not_type[i] not in list_complement_keys:
+                continue
+            # Condition 2: list require_is must be subset of list is_type
+            if not set(gufo_complements[self.not_type[i]]["require_is"]).issubset(set(self.is_type)):
+                continue
+            # Condition 3: list require_not must be subset of list not_type
+            if not set(gufo_complements[self.not_type[i]]["require_not"]).issubset(set(self.not_type)):
+                continue
+
+            self.move_list_of_elements_to_is_list(gufo_complements[self.not_type[i]]["result"])
 
     def update_complement_individual(self, gufo_complements):
         """ for all elements in ontology not_list:
@@ -329,12 +337,20 @@ class OntologyDataClass(object):
                 list require_is must be subset of list is_individual AND
                 list require_not must be subset of list not_individual, THEN
                     if all conditions are met, move the results to is_type
+            Analogous to method update_complement_individual.
         """
 
         list_complement_keys = list(gufo_complements.keys())
 
         for i in range(len(self.not_individual)):
-            if self.not_individual[i] in list_complement_keys:
-                if set(gufo_complements[self.not_individual[i]]["require_is"]).issubset(set(self.is_individual)):
-                    if set(gufo_complements[self.not_individual[i]]["require_not"]).issubset(set(self.not_individual)):
-                        self.move_list_of_elements_to_is_list(gufo_complements[self.not_individual[i]]["result"])
+            # Condition 1: the ontology dataclass element must be at list of dict keys
+            if self.not_individual[i] not in list_complement_keys:
+                continue
+            # Condition 2: list require_is must be subset of list is_individual
+            if not set(gufo_complements[self.not_individual[i]]["require_is"]).issubset(set(self.is_individual)):
+                continue
+            # Condition 3: list require_not must be subset of list not_individual
+            if not set(gufo_complements[self.not_individual[i]]["require_not"]).issubset(set(self.not_individual)):
+                continue
+
+            self.move_list_of_elements_to_is_list(gufo_complements[self.not_individual[i]]["result"])
