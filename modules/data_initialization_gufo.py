@@ -92,7 +92,9 @@ def validate_gufo_data(gufo_data):
     # For each class in the hierarchies or complements, there must be no duplicates (inside a list or between lists).
     verify_repeated_classes_hierarchies(gufo_data, "types")
     verify_repeated_classes_hierarchies(gufo_data, "individuals")
-    verify_repeated_classes_complements(gufo_data)
+
+    # For each class in the complements' dictionary, there must be no duplicates in the 2nd level keys.
+    #   However, it is not possible to verify that, because the loader overwrites the key.
 
     # TODO (@pedropaulofb): Create new verification: every element loaded at the lowest level (classes from lists)
     #  must be part of one of the hierarchies' lists (e.g., gufo:Kind read from is_list of gufo:King must be present
@@ -168,17 +170,6 @@ def verify_repeated_classes_hierarchies(gufo_data, hierarchy):
                          f"Exiting program.")
             exit(1)
         index += 1
-
-
-def verify_repeated_classes_complements(gufo_data):
-    """ For each class in the complements' dictionary, there must be no duplicates in the 2nd level keys. """
-    logger = initialize_logger()
-
-    classes_list = list(gufo_data["complements"].keys())
-    if has_duplicates(classes_list):
-        logger.error(f"Data provided in YAML file is invalid: duplicated entry found in the complements list. "
-                     f"Exiting program.")
-        exit(1)
 
 
 def expected_number(hierarchy):
