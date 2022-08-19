@@ -51,7 +51,6 @@ if __name__ == "__main__":
     ontology_dataclass[0].move_element_to_is_list("gufo:Kind")
     print(ontology_dataclass[0])
     ontology_dataclass[0].update_lists_from_gufo(gufo_dictionary)
-    # by the end is_list must also contain gufo:RigidType and gufo:Sortal
     print(ontology_dataclass[0])
 
     ###########################################################################

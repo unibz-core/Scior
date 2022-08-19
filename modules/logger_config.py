@@ -26,7 +26,7 @@ def initialize_logger():
 
         # Creating FILE handler
         now = datetime.now()
-        date_time = now.strftime("%d%m%Y-%H%M%S")
+        date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
         file_handler = logging.FileHandler(f"{log_dir}{date_time}.log")
         file_handler.setLevel(logging.DEBUG)
 

@@ -16,17 +16,29 @@ NUMBER_CLASSES_INDIVIDUALS = 13
 def initialize_gufo_dictionary():
     """ Loads GUFO Data from a YAML resource file and returns a multi-level dictionary. The dictionary contains:
             - 1st level (e.g.: gufo_data):
-                1a) Types hierarchy dictionary of GUFO classes
-                1b) Individuals hierarchy dictionary of GUFO classes
-                1c) Complements (disjoint_unions) dictionary of GUFO classes
+                1a) Types hierarchy dictionary of GUFO classes (key: "types")
+                1b) Individuals hierarchy dictionary of GUFO classes (key: "individuals")
+                1c) Complements (disjoint_unions) dictionary of GUFO classes (key: "complements")
             - 2nd level (e.g.: gufo_data["types"]):
                 2a) Dictionary of classes belonging to the types' hierarchy (keys) and its associated lists (items)
                 2b) Dictionary of classes belonging to the individuals' hierarchy(keys) and its associated lists(items)
-                2c) GUFO classes (keys) and a list of its compliments (items)
+                2c) Dictionary of complement classes (keys) and two associated list (items)
             - 3rd level:
                 3a) Three lists (is_list, can_list, not_list) with strings of GUFO classes for the types' hierarchy.
                 3b) Three lists (same as above) with strings of GUFO classes for the individuals' hierarchy.
-                3c) None.
+                3c) Two lists (require and result) of strings of GUFO classes.
+
+            For the complement, when an ontology dataclass is NOT one of the 2nd level keys
+            (i.e., the 2nd level key is found in the not list of the class), if the ontology dataclass IS all elements
+            of the require list, then it is also the element of the result list.
+            Empty require list indicates no condition.
+
+            E.g. 1) For key gufo:IntrinsicAspect, item {'require': ['gufo:Aspect'], 'result': ['gufo:ExtrinsicAspect']}:
+                If the dataclass IS NOT a gufo:IntrinsicAspect AND if it IS "gufo:Aspect",
+                than it IS a "gufo:ExtrinsicAspect".
+
+            E.g. 2) For key gufo:Object, item {'require': [], 'result': ['gufo:Aspect']}:
+                If the dataclass IS NOT a gufo:Object, than it IS a "gufo:Aspect"
     """
 
     logger = initialize_logger()
@@ -55,7 +67,7 @@ def validate_gufo_data(gufo_data):
     logger = initialize_logger()
     logger.debug("Performing validation of the GUFO data loaded from the YAML resource file...")
 
-    # Verify if only the two necessary 1st level entries were loaded.
+    # Verify if only the three necessary 1st level entries were loaded.
     num_entries = len(gufo_data.keys())
     if num_entries != 3:
         logger.error(f"Data provided in YAML file is invalid: "
@@ -80,7 +92,7 @@ def validate_gufo_data(gufo_data):
     # For each class in the hierarchies or complements, there must be no duplicates (inside a list or between lists).
     verify_repeated_classes_hierarchies(gufo_data, "types")
     verify_repeated_classes_hierarchies(gufo_data, "individuals")
-    # TODO (@pedropaulofb): Create function verify_repeated_classes_complements(gufo_data)
+    verify_repeated_classes_complements(gufo_data)
 
     # TODO (@pedropaulofb): Create new verification: every element loaded at the lowest level (classes from lists)
     #  must be part of one of the hierarchies' lists (e.g., gufo:Kind read from is_list of gufo:King must be present
@@ -156,6 +168,17 @@ def verify_repeated_classes_hierarchies(gufo_data, hierarchy):
                          f"Exiting program.")
             exit(1)
         index += 1
+
+
+def verify_repeated_classes_complements(gufo_data):
+    """ For each class in the complements' dictionary, there must be no duplicates in the 2nd level keys. """
+    logger = initialize_logger()
+
+    classes_list = list(gufo_data["complements"].keys())
+    if has_duplicates(classes_list):
+        logger.error(f"Data provided in YAML file is invalid: duplicated entry found in the complements list. "
+                     f"Exiting program.")
+        exit(1)
 
 
 def expected_number(hierarchy):

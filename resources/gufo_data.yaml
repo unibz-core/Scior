@@ -475,34 +475,76 @@ individuals:
       - gufo:Relator
 complements:
   gufo:AntiRigidType:
-    - gufo:SemiRigidType
+    require:
+      - gufo:NonRigidType
+    result:
+      - gufo:SemiRigidType
   gufo:NonRigidType:
-    - gufo:RigidType
+    require: [ ]
+    result:
+      - gufo:RigidType
   gufo:NonSortal:
-    - gufo:Sortal
+    require: [ ]
+    result:
+      - gufo:Sortal
   gufo:RigidType:
-    - gufo:NonRigidType
+    require: [ ]
+    result:
+      - gufo:NonRigidType
   gufo:SemiRigidType:
-    - gufo:AntiRigidType
+    require:
+      - gufo:NonRigidType
+    result:
+      - gufo:AntiRigidType
   gufo:Sortal:
-    - gufo:NonSortal
+    require: [ ]
+    result:
+      - gufo:NonSortal
   gufo:Aspect:
-    - gufo:Object
+    require: [ ]
+    result:
+      - gufo:Object
   gufo:ExtrinsicAspect:
-    - gufo:IntrinsicAspect
+    require:
+      - gufo:Aspect
+    result:
+      - gufo:IntrinsicAspect
   gufo:ExtrinsicMode:
-    - gufo:Relator
+    require:
+      - gufo:ExtrinsicAspect
+    result:
+      - gufo:Relator
   gufo:FixedCollection:
-    - gufo:VariableCollection
+    require:
+      - gufo:Collection
+    result:
+      - gufo:VariableCollection
   gufo:IntrinsicAspect:
-    - gufo:ExtrinsicAspect
+    require:
+      - gufo:Aspect
+    result:
+      - gufo:ExtrinsicAspect
   gufo:IntrinsicMode:
-    - gufo:Quality
+    require:
+      - gufo:IntrinsicAspect
+    result:
+      - gufo:Quality
   gufo:Object:
-    - gufo:Aspect
+    require: [ ]
+    result:
+      - gufo:Aspect
   gufo:Quality:
-    - gufo:IntrinsicMode
+    require:
+      - gufo:IntrinsicAspect
+    result:
+      - gufo:IntrinsicMode
   gufo:Relator:
-    - gufo:ExtrinsicMode
+    require:
+      - gufo:ExtrinsicAspect
+    result:
+      - gufo:ExtrinsicMode
   gufo:VariableCollection:
-    - gufo:FixedCollection
+    require:
+      - gufo:Collection
+    result:
+      - gufo:FixedCollection

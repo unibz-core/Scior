@@ -252,30 +252,39 @@ class OntologyDataClass(object):
         logger = initialize_logger()
         logger.debug(f"Updating lists for {self.uri} using GUFO.")
 
-        hash_before = "hash BEFORE not set"
-        hash_after = "hash AFTER not set"
+        # Run only if there is any possibility for types or individuals (i.e., can list > 0).
+        if len(self.can_type) > 0 or len(self.can_individual) > 0:
 
-        while hash_before != hash_after:
-            hash_before = self.create_hash()
+            hash_before = "hash BEFORE not set"
+            hash_after = "hash AFTER not set"
 
-            # Updating types list
-            for it in range(len(self.is_type)):
-                new_is = gufo_dictionary["types"][self.is_type[it]]["is_list"]
-                new_not = gufo_dictionary["types"][self.is_type[it]]["not_list"]
-                self.move_list_of_elements_to_is_list(new_is)
-                self.move_list_of_elements_to_not_list(new_not)
+            while hash_before != hash_after:
+                hash_before = self.create_hash()
 
-            # Updating individuals list
-            for ii in range(len(self.is_individual)):
-                new_is = gufo_dictionary["individuals"][self.is_individual[ii]]["is_list"]
-                new_not = gufo_dictionary["individuals"][self.is_individual[ii]]["not_list"]
-                self.move_list_of_elements_to_is_list(new_is)
-                self.move_list_of_elements_to_not_list(new_not)
-            hash_after = self.create_hash()
+                # If no element in can_type list, the solution for type was already found.
+                if len(self.can_type) > 0:
+                    # Updating types list
+                    for it in range(len(self.is_type)):
+                        new_is = gufo_dictionary["types"][self.is_type[it]]["is_list"]
+                        new_not = gufo_dictionary["types"][self.is_type[it]]["not_list"]
+                        self.move_list_of_elements_to_is_list(new_is)
+                        self.move_list_of_elements_to_not_list(new_not)
 
-            # TODO (@pedropaulofb): Updating complements list
+                # If no element in can_individual list, the solution for individual was already found.
+                if len(self.can_individual) > 0:
+                    # Updating individuals list
+                    for ii in range(len(self.is_individual)):
+                        new_is = gufo_dictionary["individuals"][self.is_individual[ii]]["is_list"]
+                        new_not = gufo_dictionary["individuals"][self.is_individual[ii]]["not_list"]
+                        self.move_list_of_elements_to_is_list(new_is)
+                        self.move_list_of_elements_to_not_list(new_not)
 
-            if hash_before == hash_after:
-                logger.debug(f"Hash before equals hash after. Update completed for {self.uri}.")
-            else:
-                logger.debug(f"Hash before NOT equals hash after. Continuing update for {self.uri}.")
+                hash_after = self.create_hash()
+
+                # TODO (@pedropaulofb): Verify possible skip condition for complement.
+                # TODO (@pedropaulofb): Updating complements list
+
+                if hash_before == hash_after:
+                    logger.debug(f"Hash before equals hash after. Update completed for {self.uri}.")
+                else:
+                    logger.debug(f"Hash before NOT equals hash after. Continuing update for {self.uri}.")
