@@ -45,16 +45,6 @@ if __name__ == "__main__":
 
     verify_all_ontology_dataclasses_consistency(ontology_dataclass)
 
-    ###########################################################################
-
-    print(ontology_dataclass[0])
-    ontology_dataclass[0].move_element_to_is_list("gufo:Kind")
-    print(ontology_dataclass[0])
-    ontology_dataclass[0].update_lists_from_gufo(gufo_dictionary)
-    print(ontology_dataclass[0])
-
-    ###########################################################################
-
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL concluded on {date_time}!")
 
@@ -66,6 +56,5 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Verify if there is any unused module, function or method
 # TODO (@pedropaulofb): Evaluate on Linux before release first version
 # TODO (@pedropaulofb): Update requirements.txt
-# TODO (@pedropaulofb): OntCatOWL can became a generic mapper tool!
 # TODO (@pedropaulofb): Treat problem with huge ontologies (stack overflow)
 # TODO (@pedropaulofb): Verify "dataclass with slots" and the use of __slot__ for better performance.

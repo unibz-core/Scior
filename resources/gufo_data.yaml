@@ -475,76 +475,92 @@ individuals:
       - gufo:Relator
 complements:
   gufo:AntiRigidType:
-    require:
+    require_is:
       - gufo:NonRigidType
+    require_not: [ ]
     result:
       - gufo:SemiRigidType
   gufo:NonRigidType:
-    require: [ ]
+    require_is: [ ]
+    require_not: [ ]
     result:
       - gufo:RigidType
   gufo:NonSortal:
-    require: [ ]
+    require_is: [ ]
+    require_not: [ ]
     result:
       - gufo:Sortal
   gufo:RigidType:
-    require: [ ]
+    require_is: [ ]
+    require_not: [ ]
     result:
       - gufo:NonRigidType
   gufo:SemiRigidType:
-    require:
+    require_is:
       - gufo:NonRigidType
+    require_not: [ ]
     result:
       - gufo:AntiRigidType
   gufo:Sortal:
-    require: [ ]
+    require_is: [ ]
+    require_not: [ ]
     result:
       - gufo:NonSortal
   gufo:Aspect:
-    require: [ ]
+    require_is: [ ]
+    require_not: [ ]
     result:
       - gufo:Object
   gufo:ExtrinsicAspect:
-    require:
+    require_is:
       - gufo:Aspect
+    require_not: [ ]
     result:
       - gufo:IntrinsicAspect
   gufo:ExtrinsicMode:
-    require:
+    require_is:
       - gufo:ExtrinsicAspect
+    require_not: [ ]
     result:
       - gufo:Relator
   gufo:FixedCollection:
-    require:
+    require_is:
       - gufo:Collection
+    require_not: [ ]
     result:
       - gufo:VariableCollection
   gufo:IntrinsicAspect:
-    require:
+    require_is:
       - gufo:Aspect
+    require_not: [ ]
     result:
       - gufo:ExtrinsicAspect
   gufo:IntrinsicMode:
-    require:
+    require_is:
       - gufo:IntrinsicAspect
+    require_not: [ ]
     result:
       - gufo:Quality
   gufo:Object:
-    require: [ ]
+    require_is: [ ]
+    require_not: [ ]
     result:
       - gufo:Aspect
   gufo:Quality:
-    require:
+    require_is:
       - gufo:IntrinsicAspect
+    require_not: [ ]
     result:
       - gufo:IntrinsicMode
   gufo:Relator:
-    require:
+    require_is:
       - gufo:ExtrinsicAspect
+    require_not: [ ]
     result:
       - gufo:ExtrinsicMode
   gufo:VariableCollection:
-    require:
+    require_is:
       - gufo:Collection
+    require_not: [ ]
     result:
       - gufo:FixedCollection

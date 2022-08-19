@@ -26,18 +26,23 @@ def initialize_gufo_dictionary():
             - 3rd level:
                 3a) Three lists (is_list, can_list, not_list) with strings of GUFO classes for the types' hierarchy.
                 3b) Three lists (same as above) with strings of GUFO classes for the individuals' hierarchy.
-                3c) Two lists (require and result) of strings of GUFO classes.
+                3c) Three lists (require_is, require_not, and result) of strings of GUFO classes.
 
-            For the complement, when an ontology dataclass is NOT one of the 2nd level keys
-            (i.e., the 2nd level key is found in the not list of the class), if the ontology dataclass IS all elements
-            of the require list, then it is also the element of the result list.
+            For the complement, when:
+                1) an ontology dataclass is NOT one of the 2nd level keys
+                    (i.e., the 2nd level key is found in the not list of the class), if:
+                2) the ontology dataclass IS all elements of the require_is list
+                3) the ontology dataclass IS NOT all elements of the require_not list
+                4) then it is also all the element of the result list.
+
             Empty require list indicates no condition.
 
-            E.g. 1) For key gufo:IntrinsicAspect, item {'require': ['gufo:Aspect'], 'result': ['gufo:ExtrinsicAspect']}:
-                If the dataclass IS NOT a gufo:IntrinsicAspect AND if it IS "gufo:Aspect",
-                than it IS a "gufo:ExtrinsicAspect".
+            E.g. 1) For key gufo:IntrinsicAspect,
+                        item {'require_is': ['gufo:Aspect'], require_not: [], 'result': ['gufo:ExtrinsicAspect']}:
+                    If the dataclass IS NOT a gufo:IntrinsicAspect AND if it IS "gufo:Aspect",
+                        than it IS a "gufo:ExtrinsicAspect".
 
-            E.g. 2) For key gufo:Object, item {'require': [], 'result': ['gufo:Aspect']}:
+            E.g. 2) For key gufo:Object, item {'require_is': [], 'require_not': [], 'result': ['gufo:Aspect']}:
                 If the dataclass IS NOT a gufo:Object, than it IS a "gufo:Aspect"
     """
 
