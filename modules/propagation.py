@@ -21,17 +21,22 @@ def propagate_up(ontology_dataclasses_list, graph, nodes_list, input_node, actio
             perform_rule_actions(ontology_dataclasses_list, input_node, action_code)
 
 
-def propagate_down(graph, nodes_list, input_node):
+def propagate_down(ontology_dataclasses_list, graph, nodes_list, input_node, action_code, call):
     """ Propagates from a specific node up to the graph's leaf nodes. """
 
     if input_node not in nodes_list["leaves"]:
         child_nodes = get_subclasses(graph, nodes_list["all"], input_node)
-        # TODO (@pedropaulofb): Include actions to be performed.
+
+        # Execute actions.
+        perform_rule_actions(ontology_dataclasses_list, child_nodes, action_code)
+
         for i in range(len(child_nodes)):
-            propagate_down(graph, nodes_list,
-                           child_nodes[i])
-    # else:
-    #     # TODO (@pedropaulofb): Include actions to be performed.
+            call = call + 1
+            propagate_down(ontology_dataclasses_list, graph, nodes_list, child_nodes[i], action_code, call)
+
+    else:
+        if call > 0:
+            perform_rule_actions(ontology_dataclasses_list, input_node, action_code)
 
 
 def propagate_branch_top_down(graph, nodes_list, input_node):

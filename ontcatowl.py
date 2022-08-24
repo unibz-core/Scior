@@ -11,7 +11,7 @@ from modules.data_initialization_ontology import initialize_ontology, initialize
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
-from modules.rules_hierarchy_types import rule_t1_no_sortal_supertype
+from modules.rules_hierarchy_types import rules_kind, rules_rigidity
 from modules.utils_general import update_all_ontology_dataclass_list
 
 if __name__ == "__main__":
@@ -24,8 +24,6 @@ if __name__ == "__main__":
     now = datetime.now()
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL started on {date_time}!")
-
-    # TODO (@pedropaulofb): Read from argument
 
     # Input ontology_graph to be evaluated
     ontology_graph = Graph()
@@ -55,15 +53,12 @@ if __name__ == "__main__":
     for num in range(len(ontology_dataclass_list)):
         if ontology_dataclass_list[num].uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo3":
             break
-    # print(f"Working class = {ontology_dataclass_list[num].uri}")
 
-    ontology_dataclass_list[num].move_element_to_is_list("gufo:Kind")
+    ontology_dataclass_list[num].move_element_to_is_list("gufo:SubKind")
     ontology_dataclass_list[num].update_all_internal_lists_from_gufo(gufo_dictionary)
 
-    ontology_dataclass_list[num].move_element_to_is_list("gufo:Kind")
-    ontology_dataclass_list[num].update_all_internal_lists_from_gufo(gufo_dictionary)
-
-    rule_t1_no_sortal_supertype(ontology_dataclass_list, ontology_graph, ontology_nodes)
+    rules_kind(ontology_dataclass_list, ontology_graph, ontology_nodes)
+    rules_rigidity(ontology_dataclass_list, ontology_graph, ontology_nodes)
 
     update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
 
@@ -72,9 +67,9 @@ if __name__ == "__main__":
     ############################## END TESTS
 
     now = datetime.now()
-    date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL concluded on {date_time}!")
 
+# TODO (@pedropaulofb): Read input ontology from user's argument
 # TODO (@pedropaulofb): The ontology_graph may already contain relations with GUFO. Treat that.
 # TODO (@pedropaulofb): Argument -t for saving functions'execution times in log
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions

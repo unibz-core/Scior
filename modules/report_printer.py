@@ -24,11 +24,11 @@ def print_report_file(ontology_dataclass_list):
     for i in range(len(ontology_dataclass_list)):
         name = "URI = " + ontology_dataclass_list[i].uri
         list1 = "is_type = " + str(ontology_dataclass_list[i].is_type)
-        list2 = "is_individual" + str(ontology_dataclass_list[i].is_individual)
+        list2 = "is_individual = " + str(ontology_dataclass_list[i].is_individual)
         list3 = "can_type = " + str(ontology_dataclass_list[i].can_type)
-        list4 = "can_individual" + str(ontology_dataclass_list[i].can_individual)
+        list4 = "can_individual = " + str(ontology_dataclass_list[i].can_individual)
         list5 = "not_type = " + str(ontology_dataclass_list[i].not_type)
-        list6 = "not_individual" + str(ontology_dataclass_list[i].not_individual)
+        list6 = "not_individual = " + str(ontology_dataclass_list[i].not_individual)
         line = name + \
                list_separator + list1 + \
                list_separator + list2 + \
