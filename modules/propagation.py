@@ -1,5 +1,5 @@
 """ Functions related to the propagation of modifications in the graph. """
-from modules.rules_actions import perform_rule_action
+from modules.rules_actions import perform_rule_actions
 from modules.utils_graph import get_subclasses, get_superclasses, get_related_roots, get_related_leaves
 
 
@@ -8,13 +8,17 @@ def propagate_up(ontology_dataclasses_list, graph, nodes_list, input_node, actio
 
     if input_node not in nodes_list["roots"]:
         parent_nodes = get_superclasses(graph, nodes_list["all"], input_node)
-        perform_rule_action(ontology_dataclasses_list, parent_nodes, action_code)
+
+        # Execute actions.
+        perform_rule_actions(ontology_dataclasses_list, parent_nodes, action_code)
+
         for i in range(len(parent_nodes)):
             call = call + 1
-            propagate_up(ontology_dataclasses_list, graph, nodes_list, parent_nodes[i], "rule_t1", call)
+            propagate_up(ontology_dataclasses_list, graph, nodes_list, parent_nodes[i], action_code, call)
+
     else:
         if call > 0:
-            perform_rule_action(ontology_dataclasses_list, input_node, action_code)
+            perform_rule_actions(ontology_dataclasses_list, input_node, action_code)
 
 
 def propagate_down(graph, nodes_list, input_node):

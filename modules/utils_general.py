@@ -39,16 +39,11 @@ def update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = 0
 
-    exec = 0
-
     while initial_hash != final_hash:
         initial_hash = final_hash
         for i in range(len(ontology_dataclass_list)):
             ontology_dataclass_list[i].update_all_internal_lists_from_gufo(gufo_dictionary)
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
-        exec += 1
-
-    print(f"exec = {exec}")
 
 
 def generate_hash_ontology_dataclass_list(ontology_dataclass_list):
