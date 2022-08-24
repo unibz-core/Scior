@@ -9,6 +9,8 @@ from modules.data_initialization_gufo import initialize_gufo_dictionary
 from modules.data_initialization_ontology import initialize_ontology, initialize_nodes_lists
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.logger_config import initialize_logger
+from modules.rules_hierarchy_types import rule_t1_no_sortal_supertype
+from modules.utils_general import update_all_ontology_dataclass_list
 
 if __name__ == "__main__":
 
@@ -40,10 +42,38 @@ if __name__ == "__main__":
     elapsed_time = round((et - st), 3)
     logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
 
-    ontology_dataclass = initialize_ontology(ontology_graph, gufo_dictionary)
+    ontology_dataclass_list = initialize_ontology(ontology_graph, gufo_dictionary)
     ontology_nodes = initialize_nodes_lists(ontology_graph)
 
-    verify_all_ontology_dataclasses_consistency(ontology_dataclass)
+    verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
+
+    ############################## BEGIN TESTS
+
+    num = 0
+    for num in range(len(ontology_dataclass_list)):
+        if ontology_dataclass_list[num].uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo3":
+            break
+    print(f"Working class = {ontology_dataclass_list[num].uri}")
+
+    ontology_dataclass_list[num].move_element_to_is_list("gufo:Kind")
+    ontology_dataclass_list[num].update_all_internal_lists_from_gufo(gufo_dictionary)
+
+    num = 0
+    for num in range(len(ontology_dataclass_list)):
+        if ontology_dataclass_list[num].uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo4":
+            break
+    print(f"Working class = {ontology_dataclass_list[num].uri}")
+
+    ontology_dataclass_list[num].move_element_to_is_list("gufo:Kind")
+    ontology_dataclass_list[num].update_all_internal_lists_from_gufo(gufo_dictionary)
+
+    rule_t1_no_sortal_supertype(ontology_dataclass_list, ontology_graph, ontology_nodes)
+
+    update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
+
+    print(ontology_dataclass_list)
+
+    ############################## END TESTS
 
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL concluded on {date_time}!")

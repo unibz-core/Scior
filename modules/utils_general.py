@@ -30,3 +30,10 @@ def lists_subtraction(list1, list2):
     list3 = list(set(list1) - set(list2))
 
     return list3
+
+
+def update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary):
+    """ Updates all lists of all dataclasses inside the ontology dataclass list. """
+
+    for i in range(len(ontology_dataclass_list)):
+        ontology_dataclass_list[0].update_all_internal_lists_from_gufo(gufo_dictionary)

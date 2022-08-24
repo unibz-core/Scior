@@ -1,6 +1,7 @@
 """ Auxiliary functions for extending and complementing RDFLib's graph functions """
 from rdflib import RDF, OWL, RDFS, URIRef
 
+from modules.logger_config import initialize_logger
 from modules.utils_general import remove_duplicates, lists_subtraction
 
 
@@ -21,6 +22,9 @@ def get_list_all_classes(graph):
 def get_superclasses(graph, all_classes, element):
     """ Returns a list of all superclasses of the given element of a graph. """
 
+    logger = initialize_logger()
+    logger.debug(f"Getting superclasses of node {element}...")
+
     elem = URIRef(element)
     superclasses = []
 
@@ -28,6 +32,8 @@ def get_superclasses(graph, all_classes, element):
         ins = obj.n3()[1:-1]
         if ins in all_classes:
             superclasses.append(ins)
+
+    logger.debug(f"Superclasses of node {element} are: {superclasses}.")
 
     return superclasses
 

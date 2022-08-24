@@ -19,8 +19,8 @@ def initialize_ontology(ontology, gufo_dictionary):
 
     for i in range(len(classes_list)):
         ontology_list.append(OntologyDataClass(uri=classes_list[i],
-                                               can_type=gufo_can_list_types,
-                                               can_individual=gufo_can_list_individuals))
+                                               can_type=gufo_can_list_types.copy(),
+                                               can_individual=gufo_can_list_individuals.copy()))
 
     logger.debug("List of Ontology concepts successfully initialized.")
     return ontology_list

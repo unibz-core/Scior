@@ -83,7 +83,8 @@ class OntologyDataClass(object):
         # Performs consistency check
         self.is_consistent()
 
-        # TODO (@pedropaulofb): UPDATE THE CLASS AFTER ANY MOVING!
+        # # Updates the class after any moving, so the class can allways be in an updated state
+        # self.update_all_internal_lists_from_gufo(gufo_dictionary)
 
         logger.debug(f"Element {element} moved successfully from list {source_list} "
                      f"to list {target_list} in {self.uri}.")
@@ -151,8 +152,6 @@ class OntologyDataClass(object):
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
             self.move_element_between_lists(element, source_list, target_list)
-
-        # TODO (@pedropaulofb): Every time this function is called, the gufo_data_not must be applied.
 
     def move_list_of_elements_to_is_list(self, elem_list):
         """ Moves a list of elements to the IS list. Analogous to move_list_of_elements_to_not_list function.
@@ -246,7 +245,7 @@ class OntologyDataClass(object):
 
         return class_hash
 
-    def update_all_lists_from_gufo(self, gufo_dictionary):
+    def update_all_internal_lists_from_gufo(self, gufo_dictionary):
         """ Update all lists inside the Ontology DataClass using the GUFO Dictionary.
             Perform updates for is lists (type and individual) and for not lists (type and individual using complement)
         """
@@ -291,6 +290,7 @@ class OntologyDataClass(object):
         """ Update the type list of an Ontology DataClass using the GUFO dictionary.
             This method is analogous to the update_individual_list_from_gufo method.
         """
+
         for it in range(len(self.is_type)):
             new_is = gufo_dictionary["types"][self.is_type[it]]["is_list"]
             new_not = gufo_dictionary["types"][self.is_type[it]]["not_list"]
@@ -354,3 +354,4 @@ class OntologyDataClass(object):
                 continue
 
             self.move_list_of_elements_to_is_list(gufo_complements[self.not_individual[i]]["result"])
+
