@@ -225,10 +225,13 @@ class OntologyDataClass(object):
 
     def create_hash(self):
         """ Creates a hash of the Ontology DataClass using all its lists.
-            Hashes are the concatenation of all partial hashes of all the dataclass lists.
+            The python builtin function hash is applied to the concatenation
+                of the dataclass uri with all partial hashes of all the dataclass lists.
             The hash function can be used for verifying if the state of the class was modified after an operation.
-            Hash format is the name of the lists concatenated with the name of all its internal elements.
         """
+
+        logger = initialize_logger()
+        logger.debug(f"Creating hash for {self.uri}.")
 
         hash_is_type = self.create_partial_hash("is_type")
         hash_is_individual = self.create_partial_hash("is_individual")
@@ -237,13 +240,14 @@ class OntologyDataClass(object):
         hash_not_type = self.create_partial_hash("not_type")
         hash_not_individual = self.create_partial_hash("not_individual")
 
-        class_hash = hash_is_type + hash_is_individual + hash_can_type + hash_can_individual + \
+        class_hash = self.uri + hash_is_type + hash_is_individual + hash_can_type + hash_can_individual + \
                      hash_not_type + hash_not_individual
 
-        logger = initialize_logger()
-        logger.debug(f"Hash successfully created for {self.uri}.")
+        final_hash = hash(class_hash)
 
-        return class_hash
+        logger.debug(f"Hash successfully created for {self.uri}. Hash value is: {final_hash}.")
+
+        return final_hash
 
     def update_all_internal_lists_from_gufo(self, gufo_dictionary):
         """ Update all lists inside the Ontology DataClass using the GUFO Dictionary.
@@ -256,8 +260,8 @@ class OntologyDataClass(object):
         # Run only if there is any possibility for types or individuals (i.e., can list > 0).
         if len(self.can_type) > 0 or len(self.can_individual) > 0:
 
-            hash_before = "hash BEFORE not set"
-            hash_after = "hash AFTER not set"
+            hash_before = 0
+            hash_after = 1
 
             while hash_before != hash_after:
                 hash_before = self.create_hash()

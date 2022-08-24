@@ -1,4 +1,5 @@
 """ General auxiliary functions. """
+from modules.logger_config import initialize_logger
 
 
 def has_duplicates(input_list):
@@ -35,5 +36,34 @@ def lists_subtraction(list1, list2):
 def update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary):
     """ Updates all lists of all dataclasses inside the ontology dataclass list. """
 
+    initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
+    final_hash = 0
+
+    exec = 0
+
+    while initial_hash != final_hash:
+        initial_hash = final_hash
+        for i in range(len(ontology_dataclass_list)):
+            ontology_dataclass_list[i].update_all_internal_lists_from_gufo(gufo_dictionary)
+        final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
+        exec += 1
+
+    print(f"exec = {exec}")
+
+
+def generate_hash_ontology_dataclass_list(ontology_dataclass_list):
+    """ Generates a hash for the complete list of ontology dataclasses. """
+
+    logger = initialize_logger()
+    logger.debug("Generating hash for the complete list of ontology dataclasses...")
+
+    total_hash = 0
+
     for i in range(len(ontology_dataclass_list)):
-        ontology_dataclass_list[0].update_all_internal_lists_from_gufo(gufo_dictionary)
+        class_hash = ontology_dataclass_list[i].create_hash()
+        total_hash += class_hash
+
+    logger.debug(
+        f"Hash for the complete list of ontology dataclasses successfully created. Hash value is: {total_hash}")
+
+    return total_hash
