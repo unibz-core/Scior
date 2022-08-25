@@ -23,12 +23,13 @@ def gufo_type_rules(ontology_dataclass_list, graph, nodes_list):
     """
 
     for i in range(len(ontology_dataclass_list)):
+
         if "gufo:Kind" in ontology_dataclass_list[i].is_type:
             propagate_up(ontology_dataclass_list, graph, nodes_list, ontology_dataclass_list[i].uri, ["rule_t1"], 0)
             propagate_down(ontology_dataclass_list, graph, nodes_list, ontology_dataclass_list[i].uri,
                            ["rule_t2", "rule_t3"], 0)
 
-        if "gudo:NonSortal" in ontology_dataclass_list[i].is_type:
+        if "gufo:NonSortal" in ontology_dataclass_list[i].is_type:
             propagate_up(ontology_dataclass_list, graph, nodes_list, ontology_dataclass_list[i].uri, ["rule_t4"], 0)
 
         if "gufo:RigidType" in ontology_dataclass_list[i].is_type:

@@ -27,7 +27,7 @@ def perform_rule_actions_types(ontology_dataclasses_list, nodes, list_actions_co
                         ontology_dataclasses_list[j].move_element_to_not_list("gufo:AntiRigidType")
 
 
-def perform_rule_actions_BAK(ontology_dataclasses_list, nodes, list_actions_code):
+def perform_rule_actions_types_BAK(ontology_dataclasses_list, nodes, list_actions_code):
     """ Runs actions to be performed in propagation functions.
     The actions are informed through the parameter list_actions_code.
     """
