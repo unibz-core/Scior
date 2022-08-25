@@ -1,5 +1,5 @@
 """ Functions related to the propagation of modifications in the graph. """
-from modules.rules_hierarchy_types import perform_rule_actions
+from modules.rules_actions import perform_rule_actions_types
 from modules.utils_graph import get_subclasses, get_superclasses, get_related_roots, get_related_leaves
 
 
@@ -10,7 +10,7 @@ def propagate_up(ontology_dataclasses_list, graph, nodes_list, input_node, actio
         parent_nodes = get_superclasses(graph, nodes_list["all"], input_node)
 
         # Execute actions.
-        perform_rule_actions(ontology_dataclasses_list, parent_nodes, action_code)
+        perform_rule_actions_types(ontology_dataclasses_list, parent_nodes, action_code)
 
         for i in range(len(parent_nodes)):
             call = call + 1
@@ -18,7 +18,7 @@ def propagate_up(ontology_dataclasses_list, graph, nodes_list, input_node, actio
 
     else:
         if call > 0:
-            perform_rule_actions(ontology_dataclasses_list, input_node, action_code)
+            perform_rule_actions_types(ontology_dataclasses_list, input_node, action_code)
 
 
 def propagate_down(ontology_dataclasses_list, graph, nodes_list, input_node, action_code, call):
@@ -28,7 +28,7 @@ def propagate_down(ontology_dataclasses_list, graph, nodes_list, input_node, act
         child_nodes = get_subclasses(graph, nodes_list["all"], input_node)
 
         # Execute actions.
-        perform_rule_actions(ontology_dataclasses_list, child_nodes, action_code)
+        perform_rule_actions_types(ontology_dataclasses_list, child_nodes, action_code)
 
         for i in range(len(child_nodes)):
             call = call + 1
@@ -36,7 +36,7 @@ def propagate_down(ontology_dataclasses_list, graph, nodes_list, input_node, act
 
     else:
         if call > 0:
-            perform_rule_actions(ontology_dataclasses_list, input_node, action_code)
+            perform_rule_actions_types(ontology_dataclasses_list, input_node, action_code)
 
 
 def propagate_branch_top_down(graph, nodes_list, input_node):
