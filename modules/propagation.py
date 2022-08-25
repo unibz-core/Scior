@@ -1,5 +1,5 @@
 """ Functions related to the propagation of modifications in the graph. """
-from modules.rules_actions import perform_rule_actions
+from modules.rules_hierarchy_types import perform_rule_actions
 from modules.utils_graph import get_subclasses, get_superclasses, get_related_roots, get_related_leaves
 
 

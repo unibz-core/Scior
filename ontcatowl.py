@@ -11,7 +11,7 @@ from modules.data_initialization_ontology import initialize_ontology, initialize
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
-from modules.rules_hierarchy_types import rules_kind, rules_rigidity
+from modules.rules_hierarchy_types import gufo_type_rules
 from modules.utils_general import update_all_ontology_dataclass_list
 
 if __name__ == "__main__":
@@ -57,8 +57,7 @@ if __name__ == "__main__":
     ontology_dataclass_list[num].move_element_to_is_list("gufo:SubKind")
     ontology_dataclass_list[num].update_all_internal_lists_from_gufo(gufo_dictionary)
 
-    rules_kind(ontology_dataclass_list, ontology_graph, ontology_nodes)
-    rules_rigidity(ontology_dataclass_list, ontology_graph, ontology_nodes)
+    gufo_type_rules(ontology_dataclass_list, ontology_graph, ontology_nodes)
 
     update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
 
