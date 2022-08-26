@@ -5,7 +5,7 @@ from modules.utils_general import count_gufo_classification_in_list
 from modules.utils_graph import get_superclasses, get_subclasses
 
 
-def gufo_type_rules(ontology_dataclass_list, graph, nodes_list):
+def execute_rules_gufo_type(ontology_dataclass_list, graph, nodes_list):
     """ Implements rules for gufo:Kind types
 
     - RULE T1: All direct or indirect superclasses of an ontology class that is a type of gufo:Kind
@@ -51,9 +51,13 @@ def gufo_type_rules(ontology_dataclass_list, graph, nodes_list):
                 counter = count_gufo_classification_in_list(ontology_dataclass_list, all_superclasses_of_subclasses,
                                                             "gufo:Kind")
                 if counter != 1:
+                    # TODO (@pedropaulofb): This error could be substituted by a warning and a possibility
+                    #  of correction for the user
                     logger.error(f"Inconsistency detected. Number of gufo:Kinds types as supertypes "
                                  f"of {ontology_dataclass_list[i].uri} is {counter}, while it must be exactly 1.")
                 # else:
+                # TODO (@pedropaulofb): Modify propagate functions: create a new optional argument which is
+                #  a list of classes where the propagation must not be applied. I.e., if node in list, do nothing.
                 # set all supertypes as NOT KIND (except for the one which is already a kind)
 
         # RULES: 5

@@ -3,7 +3,6 @@
 import time
 from datetime import datetime
 
-from owlrl import DeductiveClosure, RDFS_Semantics
 from rdflib import Graph
 
 from modules.data_initialization_gufo import initialize_gufo_dictionary
@@ -11,7 +10,7 @@ from modules.data_initialization_ontology import initialize_ontology, initialize
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
-from modules.rules_hierarchy_types import gufo_type_rules
+from modules.rules_hierarchy_types import execute_rules_gufo_type
 from modules.utils_general import update_all_ontology_dataclass_list
 
 if __name__ == "__main__":
@@ -37,7 +36,7 @@ if __name__ == "__main__":
 
     logger.info("Initializing RDFS reasoning. This may take a while...")
     st = time.perf_counter()
-    DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
+    # DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
     et = time.perf_counter()
     elapsed_time = round((et - st), 3)
     logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
@@ -57,7 +56,7 @@ if __name__ == "__main__":
     ontology_dataclass_list[num].move_element_to_is_list("gufo:Kind")
     ontology_dataclass_list[num].update_all_internal_lists_from_gufo(gufo_dictionary)
 
-    gufo_type_rules(ontology_dataclass_list, ontology_graph, ontology_nodes)
+    execute_rules_gufo_type(ontology_dataclass_list, ontology_graph, ontology_nodes)
 
     update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
 
