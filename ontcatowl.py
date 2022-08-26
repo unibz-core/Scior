@@ -57,14 +57,6 @@ if __name__ == "__main__":
     ontology_dataclass_list[num].move_element_to_is_list("gufo:Kind")
     ontology_dataclass_list[num].update_all_internal_lists_from_gufo(gufo_dictionary)
 
-    num = 0
-    for num in range(len(ontology_dataclass_list)):
-        if ontology_dataclass_list[num].uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo-B":
-            break
-
-    ontology_dataclass_list[num].move_element_to_is_list("gufo:Kind")
-    ontology_dataclass_list[num].update_all_internal_lists_from_gufo(gufo_dictionary)
-
     gufo_type_rules(ontology_dataclass_list, ontology_graph, ontology_nodes)
 
     update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)

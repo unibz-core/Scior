@@ -62,3 +62,18 @@ def generate_hash_ontology_dataclass_list(ontology_dataclass_list):
         f"Hash for the complete list of ontology dataclasses successfully created. Hash value is: {total_hash}")
 
     return total_hash
+
+
+def count_gufo_classification_in_list(ontology_dataclass_list, list_uris, classification):
+    """ Receives a list of URIs and returns the number of elements in this list which have the given classification
+    in its is_type or is_individual list. """
+
+    counter = 0
+
+    for i in range(len(ontology_dataclass_list)):
+        if ontology_dataclass_list[i].uri in list_uris:
+            if (classification in ontology_dataclass_list[i].is_type) or (
+                    classification in ontology_dataclass_list[i].is_individual):
+                counter = counter + 1
+
+    return counter
