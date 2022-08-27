@@ -41,8 +41,8 @@ def update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
 
     while initial_hash != final_hash:
         initial_hash = final_hash
-        for i in range(len(ontology_dataclass_list)):
-            ontology_dataclass_list[i].update_all_internal_lists_from_gufo(gufo_dictionary)
+        for ontology_dataclass in ontology_dataclass_list:
+            ontology_dataclass.update_all_internal_lists_from_gufo(gufo_dictionary)
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
 
@@ -54,8 +54,8 @@ def generate_hash_ontology_dataclass_list(ontology_dataclass_list):
 
     total_hash = 0
 
-    for i in range(len(ontology_dataclass_list)):
-        class_hash = ontology_dataclass_list[i].create_hash()
+    for ontology_dataclass in ontology_dataclass_list:
+        class_hash = ontology_dataclass.create_hash()
         total_hash += class_hash
 
     logger.debug(
@@ -71,10 +71,9 @@ def get_list_gufo_classification(ontology_dataclass_list, list_uris, classificat
 
     return_list = []
 
-    for i in range(len(ontology_dataclass_list)):
-        if ontology_dataclass_list[i].uri in list_uris:
-            if (classification in ontology_dataclass_list[i].is_type) or (
-                    classification in ontology_dataclass_list[i].is_individual):
-                return_list.append(ontology_dataclass_list[i].uri)
+    for ontology_dataclass in ontology_dataclass_list:
+        if ontology_dataclass.uri in list_uris:
+            if (classification in ontology_dataclass.is_type) or (classification in ontology_dataclass.is_individual):
+                return_list.append(ontology_dataclass.uri)
 
     return return_list

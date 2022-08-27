@@ -17,8 +17,8 @@ def initialize_ontology(ontology, gufo_dictionary):
     classes_list = get_list_of_classes(ontology)
     gufo_can_list_types, gufo_can_list_individuals = get_gufo_possibilities(gufo_dictionary)
 
-    for i in range(len(classes_list)):
-        ontology_list.append(OntologyDataClass(uri=classes_list[i],
+    for new_class in classes_list:
+        ontology_list.append(OntologyDataClass(uri=new_class,
                                                can_type=gufo_can_list_types.copy(),
                                                can_individual=gufo_can_list_individuals.copy()))
 

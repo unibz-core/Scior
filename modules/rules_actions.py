@@ -12,34 +12,34 @@ def perform_rule_actions_types(list_ontology_dataclasses, list_nodes, list_actio
 
     logger = initialize_logger()
 
-    for action in range(len(list_actions_code)):
-        for ontology_dataclass in range(len(list_ontology_dataclasses)):
+    for action in list_actions_code:
+        for ontology_dataclass in list_ontology_dataclasses:
 
             # Condition 1: ontology dataclass must be in the list of nodes
-            if list_ontology_dataclasses[ontology_dataclass].uri not in list_nodes:
+            if ontology_dataclass.uri not in list_nodes:
                 continue
 
             # Condition 2: ontology dataclass must not be in the list of restrictions
-            if list_ontology_dataclasses[ontology_dataclass].uri not in list_restrictions:
+            if ontology_dataclass.uri not in list_restrictions:
 
                 logger.debug(
-                    f"Executing {list_actions_code[action]} in {list_ontology_dataclasses[ontology_dataclass]}...")
+                    f"Executing {action} in {ontology_dataclass}...")
 
                 # Rules t1 and t5
-                if (list_actions_code[action] == "rule_t1") or (list_actions_code[action] == "rule_t5"):
-                    list_ontology_dataclasses[ontology_dataclass].move_element_to_not_list("gufo:Sortal")
+                if (action == "rule_t1") or (action == "rule_t5"):
+                    ontology_dataclass.move_element_to_not_list("gufo:Sortal")
 
                 # Rule t2
-                if list_actions_code[action] == "rule_t2":
-                    list_ontology_dataclasses[ontology_dataclass].move_element_to_not_list("gufo:NonSortal")
+                if action == "rule_t2":
+                    ontology_dataclass.move_element_to_not_list("gufo:NonSortal")
 
                 # Rules t3 and t4
-                if (list_actions_code[action] == "rule_t3") or (list_actions_code[action] == "rule_t4"):
-                    list_ontology_dataclasses[ontology_dataclass].move_element_to_not_list("gufo:Kind")
+                if (action == "rule_t3") or (action == "rule_t4"):
+                    ontology_dataclass.move_element_to_not_list("gufo:Kind")
 
                 # Rule t6
-                if list_actions_code[action] == "rule_t6":
-                    list_ontology_dataclasses[ontology_dataclass].move_element_to_not_list("gufo:AntiRigidType")
+                if action == "rule_t6":
+                    ontology_dataclass.move_element_to_not_list("gufo:AntiRigidType")
 
-                logger.debug(f"Successfully executed {list_actions_code[action]} "
-                             f"in {list_ontology_dataclasses[ontology_dataclass]}.")
+                logger.debug(f"Successfully executed {action} "
+                             f"in {ontology_dataclass}.")

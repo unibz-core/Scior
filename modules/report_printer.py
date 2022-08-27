@@ -9,8 +9,9 @@ from modules.logger_config import initialize_logger
 
 
 def print_report_file(ontology_dataclass_list):
-    logger = initialize_logger()
+    """ printing in file a report of the current state of the ontology dataclass list in a readable format."""
 
+    logger = initialize_logger()
     logger.info("Printing report of the current state of the ontology dataclass list...")
 
     # If directory "/report" does not exist, create it
@@ -22,8 +23,8 @@ def print_report_file(ontology_dataclass_list):
 
     ordered_list_uri = []
 
-    for i in range(len(ontology_dataclass_list)):
-        ordered_list_uri.append(ontology_dataclass_list[i].uri)
+    for ontology_dataclass in ontology_dataclass_list:
+        ordered_list_uri.append(ontology_dataclass.uri)
 
     ordered_list_uri.sort()
 
@@ -32,16 +33,16 @@ def print_report_file(ontology_dataclass_list):
     line_separator = "\n\n"
     list_separator = "\n\t\t"
 
-    for i in range(len(ordered_list_uri)):
-        for j in range(len(ontology_dataclass_list)):
-            if ordered_list_uri[i] == ontology_dataclass_list[j].uri:
-                name = "URI = " + ontology_dataclass_list[j].uri
-                list1 = "is_type = " + str(ontology_dataclass_list[j].is_type)
-                list2 = "is_individual = " + str(ontology_dataclass_list[j].is_individual)
-                list3 = "can_type = " + str(ontology_dataclass_list[j].can_type)
-                list4 = "can_individual = " + str(ontology_dataclass_list[j].can_individual)
-                list5 = "not_type = " + str(ontology_dataclass_list[j].not_type)
-                list6 = "not_individual = " + str(ontology_dataclass_list[j].not_individual)
+    for ordered_uri in ordered_list_uri:
+        for ont_dataclass in ontology_dataclass_list:
+            if ordered_uri == ont_dataclass.uri:
+                name = "URI = " + ont_dataclass.uri
+                list1 = "is_type = " + str(ont_dataclass.is_type)
+                list2 = "is_individual = " + str(ont_dataclass.is_individual)
+                list3 = "can_type = " + str(ont_dataclass.can_type)
+                list4 = "can_individual = " + str(ont_dataclass.can_individual)
+                list5 = "not_type = " + str(ont_dataclass.not_type)
+                list6 = "not_individual = " + str(ont_dataclass.not_individual)
                 line = name + \
                        list_separator + list1 + \
                        list_separator + list2 + \
@@ -61,3 +62,5 @@ def print_report_file(ontology_dataclass_list):
     date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
     with open(f"{report_dir}{date_time}.report", 'w') as f:
         f.write(format_report_hash + report)
+
+    logger.info("Report successfully printed.")

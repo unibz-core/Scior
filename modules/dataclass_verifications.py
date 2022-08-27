@@ -23,8 +23,8 @@ def verify_all_ontology_dataclasses_consistency(ontology_dataclass_list):
     logger = initialize_logger()
     logger.debug("Initializing consistency checking for all ontology dataclasses...")
 
-    for i in range(len(ontology_dataclass_list)):
-        ontology_dataclass_list[i].is_consistent()
+    for ontology_dataclass in ontology_dataclass_list:
+        ontology_dataclass.is_consistent()
 
     logger.debug("Consistency checking for all ontology dataclasses successfully performed.")
 
@@ -35,7 +35,7 @@ def updates_all_list_ontology_dataclasses(ontology_dataclass_list, gufo_dictiona
     logger = initialize_logger()
     logger.debug("Updating all ontology elements in the dataclass list ...")
 
-    for i in range(len(ontology_dataclass_list)):
-        ontology_dataclass_list[i].update_all_lists_from_gufo(gufo_dictionary)
+    for ontology_dataclass in ontology_dataclass_list:
+        ontology_dataclass.update_all_lists_from_gufo(gufo_dictionary)
 
     logger.debug("All ontology elements in the dataclass list were successfully updated.")

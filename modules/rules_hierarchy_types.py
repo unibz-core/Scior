@@ -1,11 +1,17 @@
 """ Rules applied to the TYPES HIERARCHY. """
+
 from modules.logger_config import initialize_logger
 from modules.propagation import propagate_up, propagate_down
 from modules.utils_general import get_list_gufo_classification
 from modules.utils_graph import get_superclasses, get_subclasses
 
 
-def execute_rules_gufo_type(ontology_dataclass_list, graph, nodes_list):
+def execute_rules_types(ontology_dataclass_list, graph, nodes_list):
+    """ Executes all rules related to types. """
+    rules_gufo_type_enforced(ontology_dataclass_list, graph, nodes_list)
+
+
+def rules_gufo_type_enforced(list_ontology_dataclasses, graph, nodes_list):
     """ Implements rules for gufo:Kind types
 
     - RULE T1: All direct or indirect superclasses of an ontology class that is a type of gufo:Kind
@@ -29,47 +35,47 @@ def execute_rules_gufo_type(ontology_dataclass_list, graph, nodes_list):
 
     logger = initialize_logger()
 
-    for i in range(len(ontology_dataclass_list)):
+    for ontology_dataclass in list_ontology_dataclasses:
 
         # RULES 1, 2, 3, and 4 ----------------------------------------------------------------------------------------
-        if "gufo:Kind" in ontology_dataclass_list[i].is_type:
-            logger.debug(f"Starting rules t1, t2, t3, and t4 for gufo:Kind {ontology_dataclass_list[i].uri}...")
+        if "gufo:Kind" in ontology_dataclass.is_type:
+            logger.debug(f"Starting rules t1, t2, t3, and t4 for gufo:Kind {ontology_dataclass.uri}...")
 
             # Rule 1
-            propagate_up(ontology_dataclass_list, graph, nodes_list, ontology_dataclass_list[i].uri, ["rule_t1"], 0)
+            propagate_up(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri, ["rule_t1"], 0)
 
             # Rules 2 and 3
-            propagate_down(ontology_dataclass_list, graph, nodes_list, ontology_dataclass_list[i].uri,
+            propagate_down(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri,
                            ["rule_t2", "rule_t3"], 0)
 
             # Rule 4
             # Get all subclasses
-            all_subclasses = get_subclasses(graph, nodes_list["all"], ontology_dataclass_list[i].uri).copy()
+            all_subclasses = get_subclasses(graph, nodes_list["all"], ontology_dataclass.uri).copy()
 
             # For all subclasses
-            for ir4 in range(len(all_subclasses)):
+            for subclass in all_subclasses:
                 # Get all superclasses
-                all_superclasses_of_subclasses = get_superclasses(graph, nodes_list["all"], all_subclasses[ir4]).copy()
+                all_superclasses_of_subclasses = get_superclasses(graph, nodes_list["all"], subclass).copy()
                 # Return all superclasses that are of type Kind
-                return_list = get_list_gufo_classification(ontology_dataclass_list, all_superclasses_of_subclasses,
+                return_list = get_list_gufo_classification(list_ontology_dataclasses, all_superclasses_of_subclasses,
                                                            "gufo:Kind")
                 counter = len(return_list)
                 if counter != 1:
                     # TODO (@pedropaulofb): This error could be substituted by a warning and a possibility
                     #  of correction for the user
                     logger.error(f"Inconsistency detected. Number of gufo:Kinds types as supertypes "
-                                 f"of {ontology_dataclass_list[i].uri} is {counter}, while it must be exactly 1.")
+                                 f"of {ontology_dataclass.uri} is {counter}, while it must be exactly 1.")
                 else:
                     # set all supertypes as NOT KIND (except for the one that is already a kind)
-                    propagate_up(ontology_dataclass_list, graph, nodes_list, all_subclasses[ir4], ["rule_t4"], 0,
+                    propagate_up(list_ontology_dataclasses, graph, nodes_list, subclass, ["rule_t4"], 0,
                                  return_list)
 
         # RULES: 5 ----------------------------------------------------------------------------------------------------
-        if "gufo:NonSortal" in ontology_dataclass_list[i].is_type:
-            logger.debug(f"Starting rule t5 for gufo:NonSortal {ontology_dataclass_list[i].uri}...")
-            propagate_up(ontology_dataclass_list, graph, nodes_list, ontology_dataclass_list[i].uri, ["rule_t5"], 0)
+        if "gufo:NonSortal" in ontology_dataclass.is_type:
+            logger.debug(f"Starting rule t5 for gufo:NonSortal {ontology_dataclass.uri}...")
+            propagate_up(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri, ["rule_t5"], 0)
 
         # RULES: 6 ----------------------------------------------------------------------------------------------------
-        if "gufo:RigidType" in ontology_dataclass_list[i].is_type:
-            logger.debug(f"Starting rule t6 for gufo:RigidType {ontology_dataclass_list[i].uri}...")
-            propagate_up(ontology_dataclass_list, graph, nodes_list, ontology_dataclass_list[i].uri, ["rule_t6"], 0)
+        if "gufo:RigidType" in ontology_dataclass.is_type:
+            logger.debug(f"Starting rule t6 for gufo:RigidType {ontology_dataclass.uri}...")
+            propagate_up(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri, ["rule_t6"], 0)

@@ -10,15 +10,15 @@ def propagate_up(ontology_dataclasses_list, graph, nodes_list, input_node, actio
         list_restrictions = []
 
     if input_node not in nodes_list["roots"]:
-        parent_nodes = get_superclasses(graph, nodes_list["all"], input_node)
+        list_parent_nodes = get_superclasses(graph, nodes_list["all"], input_node)
 
         # Execute actions if not in restriction list.
         if input_node not in list_restrictions:
-            perform_rule_actions_types(ontology_dataclasses_list, parent_nodes, action_code, list_restrictions)
+            perform_rule_actions_types(ontology_dataclasses_list, list_parent_nodes, action_code, list_restrictions)
 
-        for i in range(len(parent_nodes)):
+        for parent_node in list_parent_nodes:
             call = call + 1
-            propagate_up(ontology_dataclasses_list, graph, nodes_list, parent_nodes[i], action_code, call,
+            propagate_up(ontology_dataclasses_list, graph, nodes_list, parent_node, action_code, call,
                          list_restrictions)
 
     else:
@@ -33,15 +33,15 @@ def propagate_down(ontology_dataclasses_list, graph, nodes_list, input_node, act
         list_restrictions = []
 
     if input_node not in nodes_list["leaves"]:
-        child_nodes = get_subclasses(graph, nodes_list["all"], input_node)
+        list_child_nodes = get_subclasses(graph, nodes_list["all"], input_node)
 
         # Execute actions if not in restriction list.
         if input_node not in list_restrictions:
-            perform_rule_actions_types(ontology_dataclasses_list, child_nodes, action_code, list_restrictions)
+            perform_rule_actions_types(ontology_dataclasses_list, list_child_nodes, action_code, list_restrictions)
 
-        for i in range(len(child_nodes)):
+        for child_node in list_child_nodes:
             call = call + 1
-            propagate_down(ontology_dataclasses_list, graph, nodes_list, child_nodes[i], action_code, call,
+            propagate_down(ontology_dataclasses_list, graph, nodes_list, child_node, action_code, call,
                            list_restrictions)
 
     else:
