@@ -26,7 +26,7 @@ from modules.utils_general import update_all_ontology_dataclass_list
 
 if __name__ == "__main__":
 
-    ### DATA LOADINGS AND INITIALIZATIONS
+    # DATA LOADINGS AND INITIALIZATIONS
 
     # Logger initialization
     logger = initialize_logger()
