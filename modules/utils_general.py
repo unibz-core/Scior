@@ -64,16 +64,17 @@ def generate_hash_ontology_dataclass_list(ontology_dataclass_list):
     return total_hash
 
 
-def count_gufo_classification_in_list(ontology_dataclass_list, list_uris, classification):
-    """ Receives a list of URIs and returns the number of elements in this list which have the given classification
-    in its is_type or is_individual list. """
+def get_list_gufo_classification(ontology_dataclass_list, list_uris, classification):
+    """ Receives a list of URIs and returns a list of dataclasses with the elements in the input list which have
+    the given classification in its is_type or is_individual list.
+    """
 
-    counter = 0
+    return_list = []
 
     for i in range(len(ontology_dataclass_list)):
         if ontology_dataclass_list[i].uri in list_uris:
             if (classification in ontology_dataclass_list[i].is_type) or (
                     classification in ontology_dataclass_list[i].is_individual):
-                counter = counter + 1
+                return_list.append(ontology_dataclass_list[i].uri)
 
-    return counter
+    return return_list

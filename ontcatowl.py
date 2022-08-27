@@ -1,4 +1,15 @@
-"""Main module for OntCatOWL"""
+"""Main module for OntCatOWL
+
+Arguments: TO BE IMPLEMENTED
+
+-1: suggest all modifications that are identified
+-2: suggestions and enforcements according to the rule types (DEFAULT)
+-3: enforce all modifications that are identified
+
+-s (same as -1):
+-e (same as -3):
+
+"""
 
 import time
 from datetime import datetime

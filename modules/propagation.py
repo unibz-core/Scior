@@ -3,40 +3,46 @@ from modules.rules_actions import perform_rule_actions_types
 from modules.utils_graph import get_subclasses, get_superclasses, get_related_roots, get_related_leaves
 
 
-def propagate_up(ontology_dataclasses_list, graph, nodes_list, input_node, action_code, call):
+def propagate_up(ontology_dataclasses_list, graph, nodes_list, input_node, action_code, call, list_restrictions=[]):
     """ Propagates from a specific node up to the graph's root nodes. """
 
     if input_node not in nodes_list["roots"]:
         parent_nodes = get_superclasses(graph, nodes_list["all"], input_node)
 
-        # Execute actions.
-        perform_rule_actions_types(ontology_dataclasses_list, parent_nodes, action_code)
+        # Execute actions if not in restriction list.
+        if input_node not in list_restrictions:
+            perform_rule_actions_types(ontology_dataclasses_list, parent_nodes, action_code, list_restrictions)
 
         for i in range(len(parent_nodes)):
             call = call + 1
-            propagate_up(ontology_dataclasses_list, graph, nodes_list, parent_nodes[i], action_code, call)
+            propagate_up(ontology_dataclasses_list, graph, nodes_list, parent_nodes[i], action_code, call,
+                         list_restrictions)
 
     else:
         if call > 0:
-            perform_rule_actions_types(ontology_dataclasses_list, input_node, action_code)
+            if input_node not in list_restrictions:
+                perform_rule_actions_types(ontology_dataclasses_list, input_node, action_code, list_restrictions)
 
 
-def propagate_down(ontology_dataclasses_list, graph, nodes_list, input_node, action_code, call):
+def propagate_down(ontology_dataclasses_list, graph, nodes_list, input_node, action_code, call, list_restrictions=[]):
     """ Propagates from a specific node up to the graph's leaf nodes. """
 
     if input_node not in nodes_list["leaves"]:
         child_nodes = get_subclasses(graph, nodes_list["all"], input_node)
 
-        # Execute actions.
-        perform_rule_actions_types(ontology_dataclasses_list, child_nodes, action_code)
+        # Execute actions if not in restriction list.
+        if input_node not in list_restrictions:
+            perform_rule_actions_types(ontology_dataclasses_list, child_nodes, action_code, list_restrictions)
 
         for i in range(len(child_nodes)):
             call = call + 1
-            propagate_down(ontology_dataclasses_list, graph, nodes_list, child_nodes[i], action_code, call)
+            propagate_down(ontology_dataclasses_list, graph, nodes_list, child_nodes[i], action_code, call,
+                           list_restrictions)
 
     else:
         if call > 0:
-            perform_rule_actions_types(ontology_dataclasses_list, input_node, action_code)
+            if input_node not in list_restrictions:
+                perform_rule_actions_types(ontology_dataclasses_list, input_node, action_code, list_restrictions)
 
 
 def propagate_branch_top_down(graph, nodes_list, input_node):
