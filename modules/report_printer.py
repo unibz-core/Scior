@@ -1,6 +1,7 @@
 """ Functions for printing in file a report of the current state of the ontology dataclass list in
 a readable format. """
 
+import hashlib
 import os
 from datetime import datetime
 
@@ -50,8 +51,13 @@ def print_report_file(ontology_dataclass_list):
                        list_separator + list6 + line_separator
                 report += line
 
+    # Creating report hash
+    enc_report = report.encode('utf-8')
+    report_hash = hashlib.sha256(enc_report).hexdigest()
+    format_report_hash = "CONTENT HASH SHA256 = " + str(report_hash) + "\n\n"
+
     # Creating report file
     now = datetime.now()
     date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
     with open(f"{report_dir}{date_time}.report", 'w') as f:
-        f.write(report)
+        f.write(format_report_hash + report)
