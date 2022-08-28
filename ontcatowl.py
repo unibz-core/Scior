@@ -78,7 +78,6 @@ if __name__ == "__main__":
     logger.info(f"OntCatOWL concluded on {date_time}!")
 
 # TODO (@pedropaulofb): Read input ontology from user's argument
-# TODO (@pedropaulofb): Verify when if where I use "in range(len(" can be substituted by simply "in" or "enumerate"
 # TODO (@pedropaulofb): The ontology_graph may already contain relations with GUFO. Treat that.
 # TODO (@pedropaulofb): Argument -t for saving functions'execution times in log
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions

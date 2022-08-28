@@ -88,13 +88,13 @@ def get_related_roots(graph, nodes_list, element):
     """ Return list of all roots of the given graph that are (in)directly related to the given element."""
 
     related_roots = []
-    superclasses = get_superclasses(graph, nodes_list["all"], element)
+    list_superclasses = get_superclasses(graph, nodes_list["all"], element)
 
-    for i in range(len(superclasses)):
-        if superclasses[i] in nodes_list["roots"]:
-            related_roots.append(superclasses[i])
+    for superclass in list_superclasses:
+        if superclass in nodes_list["roots"]:
+            related_roots.append(superclass)
         else:
-            temp = get_related_roots(graph, nodes_list, superclasses[i])
+            temp = get_related_roots(graph, nodes_list, superclass)
             related_roots.extend(temp)
 
     related_roots = remove_duplicates(related_roots)
@@ -105,13 +105,13 @@ def get_related_leaves(graph, nodes_list, element):
     """ Return list of all leaves of the given graph that are (in)directly related to the given element."""
 
     related_leaves = []
-    subclasses = get_subclasses(graph, nodes_list["all"], element)
+    list_subclasses = get_subclasses(graph, nodes_list["all"], element)
 
-    for i in range(len(subclasses)):
-        if subclasses[i] in nodes_list["leaves"]:
-            related_leaves.append(subclasses[i])
+    for subclass in list_subclasses:
+        if subclass in nodes_list["leaves"]:
+            related_leaves.append(subclass)
         else:
-            temp = get_related_leaves(graph, nodes_list, subclasses[i])
+            temp = get_related_leaves(graph, nodes_list, subclass)
             related_leaves.extend(temp)
 
     related_leaves = remove_duplicates(related_leaves)
