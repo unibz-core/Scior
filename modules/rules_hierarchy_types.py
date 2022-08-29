@@ -3,16 +3,17 @@
 from modules.logger_config import initialize_logger
 from modules.propagation import propagate_up, propagate_down
 from modules.utils_general import get_list_gufo_classification
-from modules.utils_graph import get_superclasses, get_subclasses
+from modules.utils_graph import get_superclasses, get_subclasses, get_all_related_nodes
 
 
 def execute_rules_types(ontology_dataclass_list, graph, nodes_list):
     """ Executes all rules related to types. """
     rules_gufo_type_enforced(ontology_dataclass_list, graph, nodes_list)
+    rules_gufo_type_suggested(ontology_dataclass_list, graph, nodes_list)
 
 
 def rules_gufo_type_enforced(list_ontology_dataclasses, graph, nodes_list):
-    """ Implements rules for gufo:Kind types
+    """ Implements rules enforced by default for gufo types' hierarchy
 
     - RULE T1: All direct or indirect superclasses of an ontology class that is a type of gufo:Kind
     cannot be a type of gufo:Sortal.
@@ -37,7 +38,7 @@ def rules_gufo_type_enforced(list_ontology_dataclasses, graph, nodes_list):
 
     for ontology_dataclass in list_ontology_dataclasses:
 
-        # RULES 1, 2, 3, and 4 ----------------------------------------------------------------------------------------
+        # RULES: 1, 2, 3, and 4 ---------------------------------------------------------------------------------------
         if "gufo:Kind" in ontology_dataclass.is_type:
             logger.debug(f"Starting rules t1, t2, t3, and t4 for gufo:Kind {ontology_dataclass.uri}...")
 
@@ -79,3 +80,28 @@ def rules_gufo_type_enforced(list_ontology_dataclasses, graph, nodes_list):
         if "gufo:RigidType" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule t6 for gufo:RigidType {ontology_dataclass.uri}...")
             propagate_up(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri, ["rule_t6"], 0)
+
+
+def rules_gufo_type_suggested(list_ontology_dataclasses, graph, nodes_list):
+    """ Implements rules enforced by default for gufo types' hierarchy
+
+    - RULE T1:
+    """
+
+    logger = initialize_logger()
+
+    for ontology_dataclass in list_ontology_dataclasses:
+
+        # RULES: 7 ----------------------------------------------------------------------------------------------------
+        if "gufo:NonSortal" in ontology_dataclass.is_type:
+            logger.debug(f"Starting rule t7 for gufo:NonSortal {ontology_dataclass.uri}...")
+
+            list_related_nodes = get_all_related_nodes(graph, nodes_list, ontology_dataclass.uri)
+            print(f"list_related_nodes = {list_related_nodes}")
+
+            # Get all other ontology dataclasses that are reachable from the ontology dataclass
+            # Check if one of these related dataclasses is a sortal
+            # if found, ok
+            # if not found, print to user:
+            #     - non sortals that can be specialized by a new sortal
+            #     - unkown tuped classes that can be a sortal or that can be specialized by a new sortal

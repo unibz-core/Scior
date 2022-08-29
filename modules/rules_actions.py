@@ -2,8 +2,9 @@
 from modules.logger_config import initialize_logger
 
 
-def perform_rule_actions_types(list_ontology_dataclasses, list_nodes, list_actions_code, list_restrictions=None):
-    """ Runs actions to be performed in propagation functions.
+def perform_rule_actions_types(list_ontology_dataclasses, list_nodes, list_actions_code,
+                               list_restrictions=None):
+    """ Runs actions to be performed in propagation functions for enforced rules.
     The actions are informed through the parameter list_actions_code.
     """
 
@@ -22,8 +23,7 @@ def perform_rule_actions_types(list_ontology_dataclasses, list_nodes, list_actio
             # Condition 2: ontology dataclass must not be in the list of restrictions
             if ontology_dataclass.uri not in list_restrictions:
 
-                logger.debug(
-                    f"Executing {action} in {ontology_dataclass}...")
+                logger.debug(f"Executing {action} in {ontology_dataclass}...")
 
                 # Rules t1 and t5
                 if (action == "rule_t1") or (action == "rule_t5"):
@@ -43,3 +43,4 @@ def perform_rule_actions_types(list_ontology_dataclasses, list_nodes, list_actio
 
                 logger.debug(f"Successfully executed {action} "
                              f"in {ontology_dataclass}.")
+

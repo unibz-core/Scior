@@ -6,8 +6,10 @@ Arguments: TO BE IMPLEMENTED
 -2: suggestions and enforcements according to the rule types (DEFAULT)
 -3: enforce all modifications that are identified
 
--s (same as -1):
--e (same as -3):
+-s: same as -1
+-e: same as -3
+
+-t: save in log file the execution times of all functions
 
 """
 
@@ -60,10 +62,10 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo-A":
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceDOWN":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Kind")
+    ont_dataclass.move_element_to_is_list("gufo:NonSortal")
     ont_dataclass.update_all_internal_lists_from_gufo(gufo_dictionary)
 
     execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes)
@@ -79,7 +81,6 @@ if __name__ == "__main__":
 
 # TODO (@pedropaulofb): Read input ontology from user's argument
 # TODO (@pedropaulofb): The ontology_graph may already contain relations with GUFO. Treat that.
-# TODO (@pedropaulofb): Argument -t for saving functions'execution times in log
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
 # TODO (@pedropaulofb): Verify possibility to check consistency using a reasoner.
 # TODO (@pedropaulofb): Instead of using exit(1) for all problems, identify which ones can generate a warning instead.

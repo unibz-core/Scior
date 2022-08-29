@@ -1866,13 +1866,14 @@ d3f:LateralMovement rdf:type owl:Class ;
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#OffensiveTactic
-d3f:OffensiveTactic rdf:type         owl:Class ;
-                    rdfs:subClassOf  d3f:ATTACKThing , d3f:Root2, [ rdf:type           owl:Restriction ;
-                                                                    owl:onProperty     d3f:display-order ;
-                                                                    owl:someValuesFrom xsd:integer ] ;
-                    rdfs:comment     "Per ATT&CK, these are defined as Tactical Goals, not Tactics per se. Many children also fit definition of tactics.  Some are neither tactics or tactical goals really (e.g., Execution, which is a useful grouping, but an action, not really a tactic or technique." ;
-                    rdfs:isDefinedBy <https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf> ;
-                    rdfs:label       "Offensive Tactic" .
+d3f:OffensiveTactic
+    rdf:type         owl:Class ;
+    rdfs:subClassOf  d3f:ATTACKThing, d3f:Root2, [ rdf:type           owl:Restriction ;
+                                                   owl:onProperty     d3f:display-order ;
+                                                   owl:someValuesFrom xsd:integer ] ;
+    rdfs:comment     "Per ATT&CK, these are defined as Tactical Goals, not Tactics per se. Many children also fit definition of tactics.  Some are neither tactics or tactical goals really (e.g., Execution, which is a useful grouping, but an action, not really a tactic or technique." ;
+    rdfs:isDefinedBy <https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf> ;
+    rdfs:label       "Offensive Tactic" .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo-A
@@ -1893,27 +1894,48 @@ d3f:PedroPaulo2
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo3
 d3f:PedroPaulo3
-    rdf:type                    owl:Class ;
-                rdfs:subClassOf d3f:PedroPaulo2 .
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:PedroPaulo2 .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo4
-d3f:PedroPaulo4 rdf:type owl:Class ;
-                rdfs:subClassOf d3f:PedroPaulo2 .
+d3f:PedroPaulo4
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:PedroPaulo2 .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Persistence
-d3f:Persistence rdf:type owl:Class ;
-                rdfs:subClassOf d3f:OffensiveTactic .
+d3f:Persistence
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:OffensiveTactic, d3f:PersistenceUP .
+
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceDOWN
+d3f:PersistenceDOWN
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:Persistence .
+
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceUP
+d3f:PersistenceUP
+    rdf:type owl:Class .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#PrivilegeEscalation
-d3f:PrivilegeEscalation rdf:type owl:Class ;
-                        rdfs:subClassOf d3f:OffensiveTactic .
+d3f:PrivilegeEscalation
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:OffensiveTactic .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Root2
-d3f:Root2 rdf:type owl:Class .
+d3f:Root2
+    rdf:type owl:Class .
+
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#Root3
+d3f:Root3
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:Root2 .
 
 
 #################################################################
@@ -1921,8 +1943,9 @@ d3f:Root2 rdf:type owl:Class .
 #################################################################
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#AMD64CodeSegment
-d3f:AMD64CodeSegment rdf:type owl:NamedIndividual ;
-                     rdfs:label "AMD64 Code Segment" .
+d3f:AMD64CodeSegment
+    rdf:type   owl:NamedIndividual ;
+    rdfs:label "AMD64 Code Segment" .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#ARM32CodeSegment

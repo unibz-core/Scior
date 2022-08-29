@@ -116,3 +116,46 @@ def get_related_leaves(graph, nodes_list, element):
 
     related_leaves = remove_duplicates(related_leaves)
     return related_leaves
+
+
+def get_all_subclasses(graph, nodes_list, element):
+    """ Return list of all nodes of the given graph that are direct or indirect subclasses of the given element.
+        The return list DOES NOT include the own element.
+    """
+
+    all_subclasses = []
+    list_subclasses = get_subclasses(graph, nodes_list["all"], element)
+
+    for subclass in list_subclasses:
+        all_subclasses.append(subclass)
+        if list_subclasses not in nodes_list["leaves"]:
+            temp = get_all_subclasses(graph, nodes_list, subclass)
+            all_subclasses.extend(temp)
+
+    all_subclasses = remove_duplicates(all_subclasses)
+
+    return all_subclasses
+
+
+def get_all_related_nodes(graph, nodes_list, element):
+    """ Return list of all nodes of the given graph that are directly or indirectly related to the given element.
+        I.e., return all nodes that are reachable from the input node (element).
+        The return list INCLUDES also the own element.
+    """
+
+    related_nodes = []
+
+    # get all related roots
+    related_roots = get_related_roots(graph, nodes_list, element)
+    print(f"related_roots = {related_roots}")
+
+    # add related roots
+    related_nodes.extend(related_roots)
+
+    for root in related_roots:
+        temp = get_all_subclasses(graph, nodes_list, root)
+        related_nodes.extend(temp)
+
+    related_nodes = remove_duplicates(related_nodes)
+
+    return related_nodes
