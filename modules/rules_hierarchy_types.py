@@ -96,12 +96,24 @@ def rules_gufo_type_suggested(list_ontology_dataclasses, graph, nodes_list):
         if "gufo:NonSortal" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule t7 for gufo:NonSortal {ontology_dataclass.uri}...")
 
+            # Get all ontology dataclasses that are reachable from the input dataclass
             list_related_nodes = get_all_related_nodes(graph, nodes_list, ontology_dataclass.uri)
-            print(f"list_related_nodes = {list_related_nodes}")
+            logger.debug(f"Related nodes from {ontology_dataclass.uri} are: {list_related_nodes}")
 
-            # Get all other ontology dataclasses that are reachable from the ontology dataclass
-            # Check if one of these related dataclasses is a sortal
-            # if found, ok
-            # if not found, print to user:
-            #     - non sortals that can be specialized by a new sortal
-            #     - unkown tuped classes that can be a sortal or that can be specialized by a new sortal
+            # Check if one of these related dataclasses is a gufo:Sortal
+            sortal_list = get_list_gufo_classification(list_ontology_dataclasses, list_related_nodes,
+                                                       "gufo:Sortal")
+
+            if len(sortal_list) == 0:
+                logger.debug(f"None of the nodes related to from {ontology_dataclass.uri} is a gufo:Sortal")
+                # TODO (@pedropaulofb): This must be treated in the following way:
+                #   a) Show to user only classes that CAN BE Sortals.
+                #       a1) User can set one of them as Sortal.
+                #       a2) User can specialize it with a new Sortal.
+                #   b) Show to user only classes that ARE NonSortals.
+                #       b1) User can reclassify one of them as Sortal.
+                #       b2) User can specialize it with a new Sortal.
+                # With that information, the action provided by the user must be performed.
+
+                logger.warning(f"For {ontology_dataclass.uri}, one of the following related classes "
+                               f"must be a gufo:Sortal or must be specialized by a gufo:Sortal: {list_related_nodes}")

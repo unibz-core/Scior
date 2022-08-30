@@ -147,11 +147,13 @@ def get_all_related_nodes(graph, nodes_list, element):
 
     # get all related roots
     related_roots = get_related_roots(graph, nodes_list, element)
-    print(f"related_roots = {related_roots}")
+    if len(related_roots) == 0:
+        related_roots.append(element)
 
     # add related roots
     related_nodes.extend(related_roots)
 
+    # add all subclasses (up to leaf nodes) of all related roots
     for root in related_roots:
         temp = get_all_subclasses(graph, nodes_list, root)
         related_nodes.extend(temp)

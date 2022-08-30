@@ -24,7 +24,7 @@ from modules.dataclass_verifications import verify_all_ontology_dataclasses_cons
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
 from modules.rules_hierarchy_types import execute_rules_types
-from modules.utils_general import update_all_ontology_dataclass_list
+from modules.utils_general import update_all_ontology_dataclass_list, generate_hash_ontology_dataclass_list
 
 if __name__ == "__main__":
 
@@ -62,15 +62,20 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceDOWN":
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#OffensiveTactic":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:NonSortal")
+    ont_dataclass.move_element_to_is_list("gufo:Category")
     ont_dataclass.update_all_internal_lists_from_gufo(gufo_dictionary)
 
-    execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes)
+    initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
+    final_hash = 0
 
-    update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
+    while initial_hash != final_hash:
+        initial_hash = final_hash
+        execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes)
+        update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
+        final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
     print_report_file(ontology_dataclass_list)
 
