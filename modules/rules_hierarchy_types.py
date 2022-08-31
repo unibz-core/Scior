@@ -6,8 +6,8 @@ from prettytable import PrettyTable
 
 from modules.logger_config import initialize_logger
 from modules.propagation import propagate_up, propagate_down
-from modules.utils_general import get_list_gufo_classification, generate_hash_ontology_dataclass_list, get_element_list, \
-    external_move_to_is_list
+from modules.utils_general import get_list_gufo_classification, generate_hash_ontology_dataclass_list, \
+    get_element_list, external_move_to_is_list
 from modules.utils_graph import get_superclasses, get_subclasses, get_all_related_nodes
 
 

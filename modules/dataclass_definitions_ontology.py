@@ -276,7 +276,7 @@ class OntologyDataClass(object):
                     self.update_individual_list_from_gufo(gufo_dictionary)
                 # Update FROM NOT LIST
                 if len(self.can_individual) > 0:
-                    self.update_complement_individual(gufo_dictionary["complements"])
+                    self.update_complement_individual(gufo_dictionary["complements"], gufo_dictionary)
 
                 hash_after = self.create_hash()
 
@@ -330,7 +330,7 @@ class OntologyDataClass(object):
 
             self.move_list_of_elements_to_is_list(gufo_complements[not_type]["result"], gufo_dictionary)
 
-    def update_complement_individual(self, gufo_complements):
+    def update_complement_individual(self, gufo_complements, gufo_dictionary):
         """ for all elements in ontology not_list:
                 the ontology dataclass element must be at list of dict keys AND
                 list require_is must be subset of list is_individual AND
@@ -352,4 +352,4 @@ class OntologyDataClass(object):
             if not set(gufo_complements[not_individual]["require_not"]).issubset(set(self.not_individual)):
                 continue
 
-            self.move_list_of_elements_to_is_list(gufo_complements[not_individual]["result"])
+            self.move_list_of_elements_to_is_list(gufo_complements[not_individual]["result"], gufo_dictionary)
