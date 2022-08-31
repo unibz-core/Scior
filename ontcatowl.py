@@ -1,4 +1,4 @@
-"""Main module for OntCatOWL
+"""Main module  for OntCatOWL
 
 Arguments: TO BE IMPLEMENTED
 
@@ -16,6 +16,7 @@ Arguments: TO BE IMPLEMENTED
 import time
 from datetime import datetime
 
+from owlrl import DeductiveClosure, RDFS_Semantics
 from rdflib import Graph
 
 from modules.data_initialization_gufo import initialize_gufo_dictionary
@@ -48,7 +49,7 @@ if __name__ == "__main__":
 
     logger.info("Initializing RDFS reasoning. This may take a while...")
     st = time.perf_counter()
-    # DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
+    DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
     et = time.perf_counter()
     elapsed_time = round((et - st), 3)
     logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
@@ -64,10 +65,9 @@ if __name__ == "__main__":
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#OffensiveTactic":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Category")
-    ont_dataclass.update_all_internal_lists_from_gufo(gufo_dictionary)
+    ont_dataclass.move_element_to_is_list("gufo:Category", gufo_dictionary)
 
-    execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, gufo_dictionary)
+    execute_rules_types(ontology_dataclass_list, gufo_dictionary, ontology_graph, ontology_nodes)
 
     print_report_file(ontology_dataclass_list)
 
