@@ -1,4 +1,7 @@
 """ Auxiliary functions for extending and complementing RDFLib's RDF treatment functions """
+from rdflib import URIRef, RDFS, RDF
+
+from modules.logger_config import initialize_logger
 
 
 def has_prefix(graph, prefix):
@@ -43,3 +46,35 @@ def list_namespaces(graph):
         result.append(nam.n3()[1:-1])
 
     return result
+
+
+def insert_new_element_type_hierarchy(ontology_graph, class_name, gufo_type):
+    """ Allows user to manually insert a triple into the ontology for verifying its effects """
+
+    logger = initialize_logger()
+    logger.debug(f"Inserting the following triple into the ontology: "
+                 f"{class_name} rdf:type {gufo_type} ...")
+
+    subject_uri = URIRef(class_name)
+    ontology_graph.add((subject_uri, RDF.type, gufo_type))
+
+    logger.debug(f"The following triple was successfully inserted into the ontology: "
+                 f"{class_name} rdf:type {gufo_type}.")
+
+    return ontology_graph
+
+
+def insert_new_element_individual_hierarchy(ontology_graph, class_name, gufo_individual):
+    """ Allows user to manually insert a triple into the ontology for verifying its effects """
+
+    logger = initialize_logger()
+    logger.debug(f"Inserting the following triple into the ontology: "
+                 f"{class_name} rdfs:subClassOf {gufo_individual} ...")
+
+    subject_uri = URIRef(class_name)
+    ontology_graph.add((subject_uri, RDFS.subClassOf, gufo_individual))
+
+    logger.debug(f"The following triple was successfully inserted into the ontology: "
+                 f"{class_name} rdfs:subClassOf {gufo_individual}.")
+
+    return ontology_graph
