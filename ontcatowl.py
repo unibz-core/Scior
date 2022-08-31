@@ -87,3 +87,4 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Update requirements.txt
 # TODO (@pedropaulofb): Treat problem with huge ontologies (stack overflow)
 # TODO (@pedropaulofb): Verify "dataclass with slots" and the use of __slot__ for better performance.
+# TODO (@pedropaulofb): As log files are getting big, maybe it is going to be necessary to compact them into a zip file.

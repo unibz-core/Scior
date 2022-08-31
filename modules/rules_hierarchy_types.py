@@ -7,10 +7,14 @@ from modules.utils_general import get_list_gufo_classification, update_all_ontol
 from modules.utils_graph import get_superclasses, get_subclasses, get_all_related_nodes
 
 
+# GENERAL FUNCTIONS FOR RULES -----------------------------------------------------------------------------------------
+
 def execute_rules_types(ontology_dataclass_list, graph, nodes_list, gufo_dictionary):
     """ Executes all rules related to types. """
     logger = initialize_logger()
     logger.info("Starting GUFO types hierarchy rules ...")
+
+    list_of_rules = ["k_s_sup", "k_ns_sub", "k_k_sub", "t_k_sup", "ns_s_sup", "r_ar_sup", "ns_s_spe"]
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = 0
@@ -18,20 +22,40 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, gufo_diction
     while initial_hash != final_hash:
         initial_hash = final_hash
 
-        rule_k_s_sup(ontology_dataclass_list, graph, nodes_list)
-        rule_k_ns_sub(ontology_dataclass_list, graph, nodes_list)
-        rule_k_k_sub(ontology_dataclass_list, graph, nodes_list)
-        rule_t_k_sup(ontology_dataclass_list, graph, nodes_list)
-        rule_ns_s_sup(ontology_dataclass_list, graph, nodes_list)
-        rule_r_ar_sup(ontology_dataclass_list, graph, nodes_list)
-        rule_ns_s_spe(ontology_dataclass_list, graph, nodes_list)
-
-        update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
+        for rule in list_of_rules:
+            switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule)
+            update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
 
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
     logger.info("GUFO types hierarchy rules successfully concluded.")
 
+
+def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code):
+    """ A switch function that calls the rule received in its parameter. """
+
+    logger = initialize_logger()
+
+    if rule_code == "k_s_sup":
+        rule_k_s_sup(ontology_dataclass_list, graph, nodes_list)
+    elif rule_code == "k_ns_sub":
+        rule_k_ns_sub(ontology_dataclass_list, graph, nodes_list)
+    elif rule_code == "k_k_sub":
+        rule_k_k_sub(ontology_dataclass_list, graph, nodes_list)
+    elif rule_code == "t_k_sup":
+        rule_t_k_sup(ontology_dataclass_list, graph, nodes_list)
+    elif rule_code == "ns_s_sup":
+        rule_ns_s_sup(ontology_dataclass_list, graph, nodes_list)
+    elif rule_code == "r_ar_sup":
+        rule_r_ar_sup(ontology_dataclass_list, graph, nodes_list)
+    elif rule_code == "ns_s_spe":
+        rule_ns_s_spe(ontology_dataclass_list, graph, nodes_list)
+    else:
+        logger.error("Unexpected rule code received as parameter! Program aborted.")
+        exit(1)
+
+
+# IMPLEMENTATIONS OF SPECIFIC RULES -----------------------------------------------------------------------------------
 
 def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list):
     """

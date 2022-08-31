@@ -230,9 +230,6 @@ class OntologyDataClass(object):
             The hash function can be used for verifying if the state of the class was modified after an operation.
         """
 
-        logger = initialize_logger()
-        logger.debug(f"Creating hash for {self.uri}.")
-
         hash_is_type = self.create_partial_hash("is_type")
         hash_is_individual = self.create_partial_hash("is_individual")
         hash_can_type = self.create_partial_hash("can_type")
@@ -244,8 +241,6 @@ class OntologyDataClass(object):
                      hash_not_type + hash_not_individual
 
         final_hash = hash(class_hash)
-
-        logger.debug(f"Hash successfully created for {self.uri}. Hash value is: {final_hash}.")
 
         return final_hash
 
