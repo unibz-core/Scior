@@ -282,6 +282,12 @@ class OntologyDataClass(object):
 
                 hash_after = self.create_hash()
 
+                # TODO (@pedropaulofb): Temporary solution for Rigidy in Types Hierarchy.
+                # IF NOT AntiRigidType THEN NOT Phase, PhaseMixin, Role, RoleMixin - tested and necessary
+                # IF NOT SemiRigidType THEN NOT Mixin - not tested!
+                # IF NOT RigidType THEN NOT Category, Kind, SubKind - not tested!
+                # TODO (@pedropaulofb): Temporary solution is the creation of result_is and result_not in YAML file.
+
                 if hash_before == hash_after:
                     logger.debug(f"Hash before equals hash after. Update completed for {self.uri}.")
                 else:

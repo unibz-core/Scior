@@ -16,7 +16,6 @@ Arguments: TO BE IMPLEMENTED
 import time
 from datetime import datetime
 
-from owlrl import DeductiveClosure, RDFS_Semantics
 from rdflib import Graph
 
 from modules.data_initialization_gufo import initialize_gufo_dictionary
@@ -49,7 +48,7 @@ if __name__ == "__main__":
 
     logger.info("Initializing RDFS reasoning. This may take a while...")
     st = time.perf_counter()
-    DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
+    # DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
     et = time.perf_counter()
     elapsed_time = round((et - st), 3)
     logger.info(f"Reasoning process completed in {elapsed_time} seconds.")

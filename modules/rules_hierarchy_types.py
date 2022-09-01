@@ -185,7 +185,7 @@ def rule_ns_s_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list)
         if "gufo:NonSortal" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
             propagate_up(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list, ontology_dataclass.uri,
-                         rule_code, 0)
+                         rule_code, 0, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
 
@@ -204,7 +204,7 @@ def rule_r_ar_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list)
         if "gufo:RigidType" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
             propagate_up(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list, ontology_dataclass.uri,
-                         rule_code, 0)
+                         rule_code, 0, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
 
