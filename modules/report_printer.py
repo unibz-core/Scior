@@ -64,3 +64,6 @@ def print_report_file(ontology_dataclass_list):
         f.write(format_report_hash + report)
 
     logger.info("Report successfully printed.")
+
+# TODO (@pedropaulofb): Print found classes (e.g., can_type = 0)
+# TODO (@pedropaulofb): Print improved classes (e.g., can_type_final < can_type_initial)

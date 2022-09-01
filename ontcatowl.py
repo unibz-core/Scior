@@ -75,6 +75,7 @@ if __name__ == "__main__":
     now = datetime.now()
     logger.info(f"OntCatOWL concluded on {date_time}!")
 
+# TODO (@pedropaulofb): Currently reasoning cannot be done after the initialization (e.g., after the rules exec).
 # TODO (@pedropaulofb): Read input ontology from user's argument
 # TODO (@pedropaulofb): The ontology_graph may already contain relations with GUFO. Treat that.
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
