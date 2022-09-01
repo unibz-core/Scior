@@ -189,8 +189,6 @@ class OntologyDataClass(object):
             logger.error(f"Element {element} does not belong to any list for {self.uri}. Program aborted.")
             exit(1)
 
-        logger.debug(f"Element {element} currently belong to list {containing_list_name} for {self.uri}.")
-
         return containing_list_name
 
     def create_partial_hash(self, input_list):

@@ -1,11 +1,16 @@
 """ Functions related to the propagation of modifications in the graph. """
+from modules.logger_config import initialize_logger
 from modules.rules_actions import perform_rule_actions_types
 from modules.utils_graph import get_subclasses, get_superclasses
 
 
 def propagate_up(ontology_dataclasses_list, gufo_dictionary, graph, nodes_list, input_node, action_code, call,
                  list_restrictions=None):
-    """ Propagates from a specific node up to the graph's root nodes. """
+    """ Propagates from a specific node up to the graph's root nodes.
+        Warning: the propagation begins with the input_node itself (so the action applies to it).
+    """
+
+    logger = initialize_logger()
 
     if list_restrictions is None:
         list_restrictions = []
@@ -30,7 +35,9 @@ def propagate_up(ontology_dataclasses_list, gufo_dictionary, graph, nodes_list, 
 
 def propagate_down(ontology_dataclasses_list, gufo_dictionary, graph, nodes_list, input_node, action_code, call,
                    list_restrictions=None):
-    """ Propagates from a specific node up to the graph's leaf nodes. """
+    """ Propagates from a specific node up to the graph's leaf nodes.
+        Warning: the propagation begins with the input_node itself (so the action applies to it).
+    """
 
     if list_restrictions is None:
         list_restrictions = []

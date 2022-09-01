@@ -6,7 +6,7 @@ from prettytable import PrettyTable
 
 from modules.logger_config import initialize_logger
 from modules.propagation import propagate_up, propagate_down
-from modules.utils_general import get_list_gufo_classification, generate_hash_ontology_dataclass_list, \
+from modules.utils_dataclass import generate_hash_ontology_dataclass_list, get_list_gufo_classification, \
     get_element_list, external_move_to_is_list
 from modules.utils_graph import get_superclasses, get_subclasses, get_all_related_nodes
 
@@ -27,6 +27,8 @@ def execute_rules_types(ontology_dataclass_list, gufo_dictionary, graph, nodes_l
         initial_hash = final_hash
 
         for rule in list_of_rules:
+            # TODO (@pedropaulofb): Correct time counting.
+            # Time counter cannot be performed here, as it includes user interactions that must be removed.
             st = time.perf_counter()
 
             switch_rule_execution(ontology_dataclass_list, gufo_dictionary, graph, nodes_list, rule)
@@ -37,7 +39,11 @@ def execute_rules_types(ontology_dataclass_list, gufo_dictionary, graph, nodes_l
 
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
-    logger.info("GUFO types hierarchy rules successfully concluded.")
+        if initial_hash == final_hash:
+            logger.debug("Final hash equals initial hash for the dataclass list. "
+                         "GUFO types hierarchy rules successfully concluded.")
+        else:
+            logger.debug("Final hash does not equals initial hash for the dataclass list. Re-executing rules.")
 
 
 def switch_rule_execution(ontology_dataclass_list, gufo_dictionary, graph, nodes_list, rule_code):
@@ -81,7 +87,7 @@ def rule_k_s_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list):
         if "gufo:Kind" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
             propagate_up(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list, ontology_dataclass.uri,
-                         rule_code, 0)
+                         rule_code, 0, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
 
@@ -119,7 +125,7 @@ def rule_k_k_sub(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list):
         if "gufo:Kind" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
             propagate_down(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list, ontology_dataclass.uri,
-                           rule_code, 0)
+                           rule_code, 0, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
 
@@ -207,6 +213,12 @@ def rule_ns_s_spe(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list)
     - DEFAULT: Suggest
     - CODE: ns_s_spe
     """
+
+    # TODO (@pedropaulofb): The special case of a NonSortal single class (root and leaf at the same time)
+    #  must be treated. In this case,
+    #   (a) the user must input a new Sortal class specializing it,
+    #   (b) create a specialization relation between an already existent class and this NonSortal class, and
+    #   (c) modify the classification of the single class.
 
     rule_code = "ns_s_spe"
 
