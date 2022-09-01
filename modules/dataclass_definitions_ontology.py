@@ -22,6 +22,10 @@ class OntologyDataClass(object):
     not_type: list[str] = field(default_factory=list[str])
     not_individual: list[str] = field(default_factory=list[str])
 
+    # TODO (@pedropaulofb): Evaluate the possibility of having a copy of the pointer to the gufo_dictionary inside
+    #  the dataclass. E.g., self.gufo_dictionary. This would simplify a lot the use of it in methods' and function'
+    #  parameters, as the dict is necessary for updating the dataclasses' internal lists.
+
     def is_consistent(self):
         """ Performs a consistency check on the dataclass. For now only one verification is performed, which is
          the identification of duplicates. Other verifications can be added later if necessary. """

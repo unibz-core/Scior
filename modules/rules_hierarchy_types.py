@@ -86,6 +86,7 @@ def rule_k_s_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list):
     for ontology_dataclass in list_ontology_dataclasses:
         if "gufo:Kind" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            # The selected dataclass is included in the exclusion list because the action must not be performed on it.
             propagate_up(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list, ontology_dataclass.uri,
                          rule_code, 0, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
@@ -124,6 +125,7 @@ def rule_k_k_sub(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list):
     for ontology_dataclass in list_ontology_dataclasses:
         if "gufo:Kind" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            # The selected dataclass is included in the exclusion list because the action must not be performed on it.
             propagate_down(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list, ontology_dataclass.uri,
                            rule_code, 0, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
