@@ -191,20 +191,36 @@ def rule_ns_s_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list)
 
 def rule_r_ar_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list):
     """
-    - DESCRIPTION: No rigid type can have an anti-rigid type as direct or indirect superclass.
+    - DESCRIPTION: No rigid or semi-rigid type can have an anti-rigid type as direct or indirect superclass.
     - DEFAULT: Enforce
     - CODE: r_ar_sup
     """
 
     rule_code = "r_ar_sup"
+    rule_code_up = "r_ar_sup_up"
+    rule_code_down = "r_ar_sup_down"
 
     logger = initialize_logger()
 
     for ontology_dataclass in list_ontology_dataclasses:
-        if "gufo:RigidType" in ontology_dataclass.is_type:
+        # Getting RigidType or SemiRigidType types
+        if ("gufo:RigidType" in ontology_dataclass.is_type) or ("gufo:SemiRigidType" in ontology_dataclass.is_type):
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+
+            # No RigidType or SemiRigidType can have AntiRigidType as direct or indirect superclasses and (... cont.)
             propagate_up(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list, ontology_dataclass.uri,
-                         rule_code, 0, [ontology_dataclass.uri])
+                         rule_code_up, 0, [ontology_dataclass.uri])
+
+            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+
+        # Getting AntiRigidType types
+        if "gufo:AntiRigidType" in ontology_dataclass.is_type:
+            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+
+            # (...) consequently, no AntiRigidType can have RigidType or SemiRigidType as direct or indirect subclasses
+            propagate_down(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list, ontology_dataclass.uri,
+                           rule_code_down, 0, [ontology_dataclass.uri])
+
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
 
@@ -256,6 +272,8 @@ def rule_ns_s_spe(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list)
                 new_sortal_uri = input("Enter the URI of the element to be classified as a Sortal: ")
                 new_sortal_type = "gufo:" + input("Enter the type of the element (options are: "
                                                   "Sortal, Kind, Phase, Role, or SubKind): ")
+
+                # TODO (@pedropaulofb): Treat invalid input from user (for both data entries).
 
                 external_move_to_is_list(list_ontology_dataclasses, new_sortal_uri, new_sortal_type, gufo_dictionary)
 
