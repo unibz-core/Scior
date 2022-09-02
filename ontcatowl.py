@@ -50,7 +50,7 @@ if __name__ == "__main__":
     st = time.perf_counter()
     # DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
     et = time.perf_counter()
-    elapsed_time = round((et - st), 3)
+    elapsed_time = round((et - st), 4)
     logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
 
     ontology_dataclass_list = initialize_ontology(ontology_graph, gufo_dictionary)
@@ -64,7 +64,7 @@ if __name__ == "__main__":
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#OffensiveTactic":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Category", gufo_dictionary)
+    ont_dataclass.move_element_to_is_list("gufo:Mixin", gufo_dictionary)
 
     execute_rules_types(ontology_dataclass_list, gufo_dictionary, ontology_graph, ontology_nodes)
 

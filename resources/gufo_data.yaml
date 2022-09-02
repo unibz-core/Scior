@@ -564,3 +564,55 @@ complements:
     require_not: [ ]
     result:
       - gufo:FixedCollection
+subtypes:
+  gufo:Aspect:
+    - gufo:ExtrinsicAspect
+    - gufo:ExtrinsicMode
+    - gufo:Relator
+    - gufo:IntrinsicAspect
+    - gufo:IntrinsicMode
+    - gufo:Quality
+  gufo:ExtrinsicAspect:
+    - gufo:ExtrinsicMode
+    - gufo:Relator
+  gufo:IntrinsicAspect:
+    - gufo:IntrinsicMode
+    - gufo:Quality
+  gufo:Object:
+    - gufo:Collection
+    - gufo:FixedCollection
+    - gufo:VariableCollection
+    - gufo:FunctionalComplex
+    - gufo:Quantity
+  gufo:Collection:
+    - gufo:FixedCollection
+    - gufo:VariableCollection
+  gufo:NonRigidType:
+    - gufo:AntiRigidType
+    - gufo:Phase
+    - gufo:PhaseMixin
+    - gufo:Role
+    - gufo:RoleMixin
+    - gufo:SemiRigidType
+    - gufo:Mixin
+  gufo:AntiRigidType:
+    - gufo:Phase
+    - gufo:PhaseMixin
+    - gufo:Role
+    - gufo:RoleMixin
+  gufo:SemiRigidType:
+    - gufo:Mixin
+  gufo:NonSortal:
+    - gufo:Category
+    - gufo:Mixin
+    - gufo:PhaseMixin
+    - gufo:RoleMixin
+  gufo:RigidType:
+    - gufo:Category
+    - gufo:Kind
+    - gufo:SubKind
+  gufo:Sortal:
+    - gufo:Kind
+    - gufo:Phase
+    - gufo:Role
+    - gufo:SubKind

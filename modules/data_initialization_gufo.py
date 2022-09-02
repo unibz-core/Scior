@@ -19,14 +19,17 @@ def initialize_gufo_dictionary():
                 1a) Types hierarchy dictionary of GUFO classes (key: "types")
                 1b) Individuals hierarchy dictionary of GUFO classes (key: "individuals")
                 1c) Complements (disjoint_unions) dictionary of GUFO classes (key: "complements")
+                1d) Subtypes dictionary of GUFO classes (key: "subtypes")
             - 2nd level (e.g.: gufo_data["types"]):
                 2a) Dictionary of classes belonging to the types' hierarchy (keys) and its associated lists (items)
                 2b) Dictionary of classes belonging to the individuals' hierarchy(keys) and its associated lists(items)
-                2c) Dictionary of complement classes (keys) and two associated list (items)
+                2c) Dictionary of complement classes (keys) and three associated list (items)
+                2d) Dictionary of subtype classes (keys) and a single associated list (items)
             - 3rd level:
                 3a) Three lists (is_list, can_list, not_list) with strings of GUFO classes for the types' hierarchy.
                 3b) Three lists (same as above) with strings of GUFO classes for the individuals' hierarchy.
                 3c) Three lists (require_is, require_not, and result) of strings of GUFO classes.
+                3d) List of subclasses for the key GUFO class.
 
             For the complement, when:
                 1) an ontology dataclass is NOT one of the 2nd level keys
@@ -72,12 +75,14 @@ def validate_gufo_data(gufo_data):
     logger = initialize_logger()
     logger.debug("Performing validation of the GUFO data loaded from the YAML resource file...")
 
-    # Verify if only the three necessary 1st level entries were loaded.
+    # Verify if only the four necessary 1st level entries were loaded.
+    expected_number_1st_level_entries = 4
     num_entries = len(gufo_data.keys())
-    if num_entries != 3:
+
+    if num_entries != expected_number_1st_level_entries:
         logger.error(f"Data provided in YAML file is invalid: "
                      f"number of 1st level entries is different from the expected. "
-                     f"Expected 3 but found {num_entries}. "
+                     f"Expected {expected_number_1st_level_entries} but found {num_entries}. "
                      f"Exiting program.")
         exit(1)
 
@@ -85,6 +90,7 @@ def validate_gufo_data(gufo_data):
     verify_loaded_1st_level_entries(gufo_data, "types")
     verify_loaded_1st_level_entries(gufo_data, "individuals")
     verify_loaded_1st_level_entries(gufo_data, "complements")
+    verify_loaded_1st_level_entries(gufo_data, "subtypes")
 
     # Verify if the number of classes in the hierarchies are the expected number.
     verify_num_classes_hierarchy(gufo_data, "types")
@@ -98,11 +104,8 @@ def validate_gufo_data(gufo_data):
     verify_repeated_classes_hierarchies(gufo_data, "types")
     verify_repeated_classes_hierarchies(gufo_data, "individuals")
 
-    # For each class in the complements' dictionary, there must be no duplicates in the 2nd level keys.
-    #   However, it is not possible to verify that, because the loader overwrites the key.
-
-    # TODO (@pedropaulofb): Create new verification: every element loaded at the lowest level (classes from lists)
-    #  must be part of one of the hierarchies' lists (e.g., gufo:Kind read from is_list of gufo:King must be present
+    # TODO (@pedropaulofb): Create new verification: every element loaded from the 2nd to the lowest level
+    #  must be part of one of the hierarchies' lists (e.g., gufo:Kind read from is_list of gufo:Kind must be present
     #  in the list of the classes read from the Type hierarchy.
 
     logger.debug("Validation of the GUFO data loaded from the YAML resource file successfully performed.")
