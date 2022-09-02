@@ -16,6 +16,7 @@ Arguments: TO BE IMPLEMENTED
 import time
 from datetime import datetime
 
+from owlrl import DeductiveClosure, RDFS_Semantics
 from rdflib import Graph
 
 from modules.data_initialization_gufo import initialize_gufo_dictionary
@@ -48,7 +49,7 @@ if __name__ == "__main__":
 
     logger.info("Initializing RDFS reasoning. This may take a while...")
     st = time.perf_counter()
-    # DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
+    DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
     et = time.perf_counter()
     elapsed_time = round((et - st), 4)
     logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
@@ -61,10 +62,10 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Persistence":
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceUP":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:RoleMixin", gufo_dictionary)
+    ont_dataclass.move_element_to_is_list("gufo:Kind", gufo_dictionary)
 
     execute_rules_types(ontology_dataclass_list, gufo_dictionary, ontology_graph, ontology_nodes)
 

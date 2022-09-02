@@ -32,9 +32,10 @@ def perform_rule_actions_types(list_ontology_dataclasses, gufo_dictionary, list_
             if (action == "k_k_sub") or (action == "t_k_sup"):
                 ontology_dataclass.move_element_to_not_list("gufo:Kind", gufo_dictionary)
 
-            if action == "r_ar_sup_up":
+            if action == "r_ar_sup":
                 ontology_dataclass.move_element_to_not_list("gufo:AntiRigidType", gufo_dictionary)
-            if action == "r_ar_sup_down":
+
+            if action == "ar_r_sub":
                 ontology_dataclass.move_element_to_not_list("gufo:RigidType", gufo_dictionary)
                 ontology_dataclass.move_element_to_not_list("gufo:SemiRigidType", gufo_dictionary)
 

@@ -18,7 +18,7 @@ def execute_rules_types(ontology_dataclass_list, gufo_dictionary, graph, nodes_l
     logger = initialize_logger()
     logger.info("Starting GUFO types hierarchy rules ...")
 
-    list_of_rules = ["k_s_sup", "k_ns_sub", "k_k_sub", "t_k_sup", "ns_s_sup", "r_ar_sup", "ns_s_spe"]
+    list_of_rules = ["k_s_sup", "k_ns_sub", "k_k_sub", "t_k_sup", "ns_s_sup", "r_ar_sup", "ar_r_sub", "ns_s_spe"]
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = 0
@@ -62,6 +62,8 @@ def switch_rule_execution(ontology_dataclass_list, gufo_dictionary, graph, nodes
     elif rule_code == "ns_s_sup":
         rule_ns_s_sup(ontology_dataclass_list, gufo_dictionary, graph, nodes_list)
     elif rule_code == "r_ar_sup":
+        rule_r_ar_sup(ontology_dataclass_list, gufo_dictionary, graph, nodes_list)
+    elif rule_code == "ar_r_sub":
         rule_r_ar_sup(ontology_dataclass_list, gufo_dictionary, graph, nodes_list)
     elif rule_code == "ns_s_spe":
         rule_ns_s_spe(ontology_dataclass_list, gufo_dictionary, graph, nodes_list)
@@ -192,13 +194,12 @@ def rule_ns_s_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list)
 def rule_r_ar_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list):
     """
     - DESCRIPTION: No rigid or semi-rigid type can have an anti-rigid type as direct or indirect superclass.
+        Inverse of rule_ar_r_sub.
     - DEFAULT: Enforce
     - CODE: r_ar_sup
     """
 
     rule_code = "r_ar_sup"
-    rule_code_up = "r_ar_sup_up"
-    rule_code_down = "r_ar_sup_down"
 
     logger = initialize_logger()
 
@@ -209,17 +210,29 @@ def rule_r_ar_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list)
 
             # No RigidType or SemiRigidType can have AntiRigidType as direct or indirect superclasses and (... cont.)
             propagate_up(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list, ontology_dataclass.uri,
-                         rule_code_up, 0, [ontology_dataclass.uri])
+                         rule_code, 0, [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
-        # Getting AntiRigidType types
+
+def rule_ar_r_sub(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list):
+    """
+    - DESCRIPTION: No AntiRigidType can have RigidType or SemiRigidType as direct or indirect subclasses.
+        Inverse of rule_r_ar_sup.
+    - DEFAULT: Enforce
+    - CODE: ar_r_sub
+    """
+
+    rule_code = "ar_r_sub"
+
+    logger = initialize_logger()
+
+    for ontology_dataclass in list_ontology_dataclasses:
         if "gufo:AntiRigidType" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
 
-            # (...) consequently, no AntiRigidType can have RigidType or SemiRigidType as direct or indirect subclasses
             propagate_down(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list, ontology_dataclass.uri,
-                           rule_code_down, 0, [ontology_dataclass.uri])
+                           rule_code, 0, [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
