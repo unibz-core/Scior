@@ -18,7 +18,7 @@ def execute_rules_types(ontology_dataclass_list, gufo_dictionary, graph, nodes_l
     logger = initialize_logger()
     logger.info("Starting GUFO types hierarchy rules ...")
 
-    enforced_rules = ["k_s_sup", "k_ns_sub", "k_k_sub", "t_k_sup", "ns_s_sup", "r_ar_sup", "ar_r_sub"]
+    enforced_rules = ["k_s_sup", "k_ns_sub", "k_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub"]
     suggestion_rules = ["ns_s_spe"]
 
     list_of_rules = enforced_rules  # + suggestion_rules
@@ -64,6 +64,8 @@ def switch_rule_execution(ontology_dataclass_list, gufo_dictionary, graph, nodes
         rule_t_k_sup(ontology_dataclass_list, gufo_dictionary, graph, nodes_list)
     elif rule_code == "ns_s_sup":
         rule_ns_s_sup(ontology_dataclass_list, gufo_dictionary, graph, nodes_list)
+    elif rule_code == "s_ns_sub":
+        rule_s_ns_sub(ontology_dataclass_list, gufo_dictionary, graph, nodes_list)
     elif rule_code == "r_ar_sup":
         rule_r_ar_sup(ontology_dataclass_list, gufo_dictionary, graph, nodes_list)
     elif rule_code == "ar_r_sub":
@@ -182,6 +184,7 @@ def rule_ns_s_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list)
     """
     - DESCRIPTION: All direct or indirect superclasses of an ontology class that is a type of gufo:NonSortal
                     cannot be a type of gufo:Sortal.
+        Inverse of rule_s_ns_sub.
     - DEFAULT: Enforce
     - CODE: ns_s_sup
     """
@@ -194,8 +197,28 @@ def rule_ns_s_sup(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list)
         if "gufo:NonSortal" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
             execute_and_propagate_up(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list,
-                                     ontology_dataclass.uri,
-                                     rule_code, [ontology_dataclass.uri])
+                                     ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
+            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+
+
+def rule_s_ns_sub(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list):
+    """
+    - DESCRIPTION: All direct or indirect subclasses of an ontology class that is a type of gufo:Sortal
+                    cannot be a type of gufo:NonSortal.
+        Inverse of rule_ns_s_sup.
+    - DEFAULT: Enforce
+    - CODE: s_ns_sub
+    """
+
+    rule_code = "s_ns_sub"
+
+    logger = initialize_logger()
+
+    for ontology_dataclass in list_ontology_dataclasses:
+        if "gufo:Sortal" in ontology_dataclass.is_type:
+            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            execute_and_propagate_down(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list,
+                                       ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
 

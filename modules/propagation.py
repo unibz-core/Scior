@@ -28,6 +28,7 @@ def execute_and_propagate_up(ontology_dataclasses_list, gufo_dictionary, graph, 
     # If input_node is not a root node, propagate to upper nodes.
     if input_node not in nodes_list["roots"]:
         list_parent_nodes = get_superclasses(graph, nodes_list["all"], input_node)
+        logger.debug(f"Propagating {action_code} from {input_node} to UP nodes: {list_parent_nodes}.")
         for parent_node in list_parent_nodes:
             execute_and_propagate_up(ontology_dataclasses_list, gufo_dictionary, graph, nodes_list, parent_node,
                                      action_code, list_restrictions)
@@ -44,17 +45,20 @@ def execute_and_propagate_down(ontology_dataclasses_list, gufo_dictionary, graph
             does not interrupt the propagation for upper nodes.
     """
 
+    logger = initialize_logger()
+
     if list_restrictions is None:
         list_restrictions = []
 
     # Execute actions if input_node is not in list_restrictions.
     if input_node not in list_restrictions:
-        perform_rule_actions_types(ontology_dataclasses_list, gufo_dictionary, input_node, action_code,
+        perform_rule_actions_types(ontology_dataclasses_list, gufo_dictionary, [input_node], action_code,
                                    list_restrictions)
 
     # If input_node is not a leaf node, propagate to lower nodes.
     if input_node not in nodes_list["leaves"]:
         list_child_nodes = get_subclasses(graph, nodes_list["all"], input_node)
+        logger.debug(f"Propagating {action_code} from {input_node} to DOWN nodes: {list_child_nodes}.")
         for child_node in list_child_nodes:
             execute_and_propagate_down(ontology_dataclasses_list, gufo_dictionary, graph, nodes_list, child_node,
                                        action_code, list_restrictions)

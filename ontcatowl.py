@@ -63,12 +63,10 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceDOWN":
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#ATTACKThing":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Mixin", gufo_dictionary)
-
-    # WHY OFFENSIVE TACTIC IS NOT CLASSIFIED AS A NON-SORTAL?
+    ont_dataclass.move_element_to_is_list("gufo:Role", gufo_dictionary)
 
     execute_rules_types(ontology_dataclass_list, gufo_dictionary, ontology_graph, ontology_nodes)
 
