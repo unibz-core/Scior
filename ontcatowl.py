@@ -2,15 +2,23 @@
 
 Arguments: TO BE IMPLEMENTED
 
--1: suggest all modifications that are identified
--2: suggestions and enforcements according to the rule types (DEFAULT)
--3: enforce all modifications that are identified
+-m: ask for user confirmation before any modifications
+-n: do not ask for user confirmation before any modifications (DEFAULT)
 
--a: run both enforced and suggested rules (DEFAULT)
--s: run only enforced rules
--e: run only suggested rules
+-i: when inconsistencies are found, treat them
+-x: when inconsistencies are found, inform user and exit program (DEFAULT)
 
--t: save in log file the execution times of all functions
+-c: allows possibility to reclassificate classes.
+
+-a: run only automatic rules
+-m: run automatic and interactive rules (DEFAULT)
+
+-j: prints to user justification for every classification performed
+-t: prints to user the execution times of all functions
+-v: verbose mode (same as -jt)
+
+-s: print options (j|t|v) in the console (DEFAULT)
+-l: print options (j|t|v) in the log file
 
 """
 
@@ -62,13 +70,13 @@ if __name__ == "__main__":
 
     ############################## BEGIN TESTS
 
-    # for ont_dataclass in ontology_dataclass_list:
-    #     if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceDOWN":
-    #         break
-    #
-    # ont_dataclass.move_element_to_is_list("gufo:Role", gufo_dictionary)
+    for ont_dataclass in ontology_dataclass_list:
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceDOWN":
+            break
 
-    stile = "n_r_t"
+    ont_dataclass.move_element_to_is_list("gufo:Role", gufo_dictionary)
+
+    stile = "a"
 
     execute_rules_types(ontology_dataclass_list, gufo_dictionary, ontology_graph, ontology_nodes, stile)
 

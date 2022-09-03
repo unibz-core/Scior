@@ -366,41 +366,46 @@ def rule_nk_k_sub(list_ontology_dataclasses, gufo_dictionary, graph, nodes_list)
     logger = initialize_logger()
 
     for ontology_dataclass in list_ontology_dataclasses:
-        # FOR every class that has is_type Sortal and not_type Kind:
-        if ("gufo:Sortal" in ontology_dataclass.is_type) and ("gufo:Kind" in ontology_dataclass.not_type):
-            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
 
-            # Get all ontology dataclasses that are directly or indirectly superclasses of ontology_dataclass
-            list_superclasses = get_all_superclasses(graph, nodes_list, ontology_dataclass.uri)
-            logger.debug(f"Superclasses from {ontology_dataclass.uri} are: {list_superclasses}")
+        # CONDITION 1: class has is_type Sortal and not_type Kind:
+        if ("gufo:Sortal" not in ontology_dataclass.is_type) or ("gufo:Kind" not in ontology_dataclass.not_type):
+            continue
 
-            # Verify if there is a Kind in the superclass list
-            kind_sortals = get_list_gufo_classification(list_ontology_dataclasses, list_superclasses, "gufo:Kind")
+        logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
 
-            # Kind not found in list of superclasses
-            if len(kind_sortals) == 0:
-                list_possibilities = []
-                # select which can be kind (can_type)
-                for possible_kind in list_superclasses:
+        # Get all ontology dataclasses that are directly or indirectly superclasses of ontology_dataclass
+        list_superclasses = get_all_superclasses(graph, nodes_list, ontology_dataclass.uri)
+        logger.debug(f"Superclasses from {ontology_dataclass.uri} are: {list_superclasses}")
 
-                    possible_kind_can = get_element_list(list_ontology_dataclasses, possible_kind, "can_type")
+        # Verify if there is a Kind in the superclass list
+        kind_sortals = get_list_gufo_classification(list_ontology_dataclasses, list_superclasses, "gufo:Kind")
 
-                    if "gufo:Kind" in possible_kind_can:
-                        list_possibilities.append(possible_kind)
+        # CONDITION 2: Kind not found in list of superclasses
+        if len(kind_sortals) != 0:
+            continue
 
-                    # TODO (@pedropaulofb): Treat the case where there is no possibility (e.g., root class or a class
-                    # that all supertypes are have kind in its not_type list. In this case an incompleteness was found
-                    # and the user must (a) create a new kind class and define its relation with one of the classes in
-                    # the list_superclasses or (b) reclassify one of the classes.
+        list_possibilities = []
+        # select which can be kind (can_type)
+        for possible_kind in list_superclasses:
 
-                if len(list_possibilities) > 0:
-                    # User must choose an option to become a Kind.
-                    print(f"No identity provider (Kind) was identified for the class {ontology_dataclass.uri}.")
-                    print(f"The following classes were identified as possible identity providers:")
-                    for item in list_possibilities:
-                        print(f"\t - {item}")
-                    new_kind = input(f"Enter the class to be set as gufo:Kind: ")
-                    external_move_to_is_list(list_ontology_dataclasses, new_kind, "gufo:Kind", gufo_dictionary)
+            possible_kind_can = get_element_list(list_ontology_dataclasses, possible_kind, "can_type")
 
-                    # TODO (@pedropaulofb): Instead of just selecting a possibility, the user can create
-                    #  a new one and set the relation or to reclassify one of the classes.
+            if "gufo:Kind" in possible_kind_can:
+                list_possibilities.append(possible_kind)
+
+            # TODO (@pedropaulofb): Treat the case where there is no possibility (e.g., root class or a class
+            # that all supertypes are have kind in its not_type list. In this case an incompleteness was found
+            # and the user must (a) create a new kind class and define its relation with one of the classes in
+            # the list_superclasses or (b) reclassify one of the classes.
+
+        if len(list_possibilities) > 0:
+            # User must choose an option to become a Kind.
+            print(f"No identity provider (Kind) was identified for the class {ontology_dataclass.uri}.")
+            print(f"The following classes were identified as possible identity providers:")
+            for item in list_possibilities:
+                print(f"\t - {item}")
+            new_kind = input(f"Enter the class to be set as gufo:Kind: ")
+            external_move_to_is_list(list_ontology_dataclasses, new_kind, "gufo:Kind", gufo_dictionary)
+
+            # TODO (@pedropaulofb): Instead of just selecting a possibility, the user can create
+            #  a new one and set the relation or to reclassify one of the classes.
