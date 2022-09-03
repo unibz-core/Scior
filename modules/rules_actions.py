@@ -26,10 +26,10 @@ def perform_rule_actions_types(list_ontology_dataclasses, gufo_dictionary, list_
             if (action == "k_s_sup") or (action == "ns_s_sup"):
                 ontology_dataclass.move_element_to_not_list("gufo:Sortal", gufo_dictionary)
 
-            if (action == "k_ns_sub") or (action == "s_ns_sub"):
+            if action == "s_ns_sub":
                 ontology_dataclass.move_element_to_not_list("gufo:NonSortal", gufo_dictionary)
 
-            if (action == "k_k_sub") or (action == "t_k_sup"):
+            if (action == "s_k_sub") or (action == "t_k_sup"):
                 ontology_dataclass.move_element_to_not_list("gufo:Kind", gufo_dictionary)
 
             if action == "r_ar_sup":

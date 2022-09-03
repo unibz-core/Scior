@@ -62,19 +62,22 @@ if __name__ == "__main__":
 
     ############################## BEGIN TESTS
 
-    for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#ATTACKThing":
-            break
+    # for ont_dataclass in ontology_dataclass_list:
+    #     if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceDOWN":
+    #         break
+    #
+    # ont_dataclass.move_element_to_is_list("gufo:Role", gufo_dictionary)
 
-    ont_dataclass.move_element_to_is_list("gufo:Role", gufo_dictionary)
+    stile = "n_r_t"
 
-    execute_rules_types(ontology_dataclass_list, gufo_dictionary, ontology_graph, ontology_nodes)
+    execute_rules_types(ontology_dataclass_list, gufo_dictionary, ontology_graph, ontology_nodes, stile)
 
     print_report_file(ontology_dataclass_list)
 
     ############################## END TESTS
 
     now = datetime.now()
+    date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL concluded on {date_time}!")
 
 # TODO (@pedropaulofb): Currently reasoning cannot be done after the initialization (e.g., after the rules exec).

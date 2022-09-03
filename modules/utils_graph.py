@@ -118,6 +118,25 @@ def get_related_leaves(graph, nodes_list, element):
     return related_leaves
 
 
+def get_all_superclasses(graph, nodes_list, element):
+    """ Return list of all nodes of the given graph that are direct or indirect superclasses of the given element.
+        The return list DOES NOT include the own element.
+    """
+
+    all_superclasses = []
+    list_superclasses = get_superclasses(graph, nodes_list["all"], element)
+
+    for superclass in list_superclasses:
+        all_superclasses.append(superclass)
+        if list_superclasses not in nodes_list["roots"]:
+            temp = get_all_superclasses(graph, nodes_list, superclass)
+            all_superclasses.extend(temp)
+
+    all_superclasses = remove_duplicates(all_superclasses)
+
+    return all_superclasses
+
+
 def get_all_subclasses(graph, nodes_list, element):
     """ Return list of all nodes of the given graph that are direct or indirect subclasses of the given element.
         The return list DOES NOT include the own element.
