@@ -6,8 +6,9 @@ Arguments: TO BE IMPLEMENTED
 -2: suggestions and enforcements according to the rule types (DEFAULT)
 -3: enforce all modifications that are identified
 
--s: same as -1
--e: same as -3
+-a: run both enforced and suggested rules (DEFAULT)
+-s: run only enforced rules
+-e: run only suggested rules
 
 -t: save in log file the execution times of all functions
 
@@ -62,10 +63,12 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceUP":
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PersistenceDOWN":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Kind", gufo_dictionary)
+    ont_dataclass.move_element_to_is_list("gufo:Mixin", gufo_dictionary)
+
+    # WHY OFFENSIVE TACTIC IS NOT CLASSIFIED AS A NON-SORTAL?
 
     execute_rules_types(ontology_dataclass_list, gufo_dictionary, ontology_graph, ontology_nodes)
 

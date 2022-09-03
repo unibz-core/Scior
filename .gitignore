@@ -128,5 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Personal tests
+# Personal tests and backups
 trash/
+/modules/backups - not used/
