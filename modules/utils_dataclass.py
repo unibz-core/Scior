@@ -33,6 +33,7 @@ def generate_hash_ontology_dataclass_list(ontology_dataclass_list):
     return total_hash
 
 
+# TODO (@pedropaulofb): Upgrade this function for accepting which is the list to be queried as parameter.
 def get_list_gufo_classification(ontology_dataclass_list, list_uris, classification):
     """ Receives a list of URIs and returns a list of dataclasses with the elements in the input list which have
     the given classification in its is_type or is_individual list.

@@ -20,7 +20,9 @@ def get_list_all_classes(graph):
 
 
 def get_superclasses(graph, all_classes, element):
-    """ Returns a list of all superclasses of the given element of a graph. """
+    """ Returns a list of all superclasses of the given element of a graph.
+        Analogous to function get_subclasses.
+    """
 
     logger = initialize_logger()
     logger.debug(f"Getting superclasses of node {element}...")
@@ -39,7 +41,9 @@ def get_superclasses(graph, all_classes, element):
 
 
 def get_subclasses(graph, all_classes, element):
-    """ Returns a list of all subclasses of the given element of a graph. """
+    """ Returns a list of all subclasses of the given element of a graph.
+        Analogous to function get_superclasses.
+    """
 
     elem = URIRef(element)
     subclasses = []
@@ -121,6 +125,7 @@ def get_related_leaves(graph, nodes_list, element):
 def get_all_superclasses(graph, nodes_list, element):
     """ Return list of all nodes of the given graph that are direct or indirect superclasses of the given element.
         The return list DOES NOT include the own element.
+        Analogous to function get_all_subclasses.
     """
 
     all_superclasses = []
@@ -140,6 +145,7 @@ def get_all_superclasses(graph, nodes_list, element):
 def get_all_subclasses(graph, nodes_list, element):
     """ Return list of all nodes of the given graph that are direct or indirect subclasses of the given element.
         The return list DOES NOT include the own element.
+        Analogous to function get_all_superclasses.
     """
 
     all_subclasses = []
@@ -159,7 +165,7 @@ def get_all_subclasses(graph, nodes_list, element):
 def get_all_related_nodes(graph, nodes_list, element):
     """ Return list of all nodes of the given graph that are directly or indirectly related to the given element.
         I.e., return all nodes that are reachable from the input node (element).
-        The return list INCLUDES also the own element.
+        The return list DOES NOT INCLUDE the own element.
     """
 
     related_nodes = []
@@ -177,6 +183,7 @@ def get_all_related_nodes(graph, nodes_list, element):
         temp = get_all_subclasses(graph, nodes_list, root)
         related_nodes.extend(temp)
 
+    related_nodes.remove(element)
     related_nodes = remove_duplicates(related_nodes)
 
     return related_nodes
