@@ -25,11 +25,11 @@ Arguments: TO BE IMPLEMENTED
 import time
 from datetime import datetime
 
-from owlrl import DeductiveClosure, RDFS_Semantics
 from rdflib import Graph
 
+from modules.data_initialization_graph import initialize_nodes_lists
 from modules.data_initialization_gufo import initialize_gufo_dictionary
-from modules.data_initialization_ontology import initialize_ontology, initialize_nodes_lists
+from modules.data_initialization_ontology_dataclass import initialize_ontology_dataclasses
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
@@ -58,12 +58,12 @@ if __name__ == "__main__":
 
     logger.info("Initializing RDFS reasoning. This may take a while...")
     st = time.perf_counter()
-    DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
+    # DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
     et = time.perf_counter()
     elapsed_time = round((et - st), 4)
     logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
 
-    ontology_dataclass_list = initialize_ontology(ontology_graph, gufo_dictionary)
+    ontology_dataclass_list = initialize_ontology_dataclasses(ontology_graph, gufo_dictionary)
     ontology_nodes = initialize_nodes_lists(ontology_graph)
 
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
@@ -74,11 +74,11 @@ if __name__ == "__main__":
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Root2":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Mixin", gufo_dictionary)
+    ont_dataclass.move_element_to_is_list("gufo:Mixin")
 
     stile = "a"
 
-    execute_rules_types(ontology_dataclass_list, gufo_dictionary, ontology_graph, ontology_nodes, stile)
+    execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, stile)
 
     print_report_file(ontology_dataclass_list)
 

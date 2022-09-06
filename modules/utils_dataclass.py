@@ -2,7 +2,7 @@
 from modules.logger_config import initialize_logger
 
 
-def update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary):
+def update_all_ontology_dataclass_list(ontology_dataclass_list):
     """ Updates all lists of all dataclasses inside the ontology dataclass list. """
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
@@ -11,7 +11,7 @@ def update_all_ontology_dataclass_list(ontology_dataclass_list, gufo_dictionary)
     while initial_hash != final_hash:
         initial_hash = final_hash
         for ontology_dataclass in ontology_dataclass_list:
-            ontology_dataclass.update_all_internal_lists_from_gufo(gufo_dictionary)
+            ontology_dataclass.update_all_internal_lists_from_gufo()
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
 
@@ -80,9 +80,9 @@ def get_element_list(ontology_dataclass_list, element, desired_list):
     exit(1)
 
 
-def external_move_to_is_list(list_ontology_dataclasses, class_name, classification, gufo_dictionary):
+def external_move_to_is_list(list_ontology_dataclasses, class_name, classification):
     """ Receives the URI of an ontology dataclass and moves an element (from inputted element name) to its is list. """
 
     for ontology_dataclass in list_ontology_dataclasses:
         if ontology_dataclass.uri == class_name:
-            ontology_dataclass.move_element_to_is_list(classification, gufo_dictionary)
+            ontology_dataclass.move_element_to_is_list(classification)

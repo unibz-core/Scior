@@ -10,7 +10,7 @@ from modules.logger_config import initialize_logger
 
 @dataclass
 class OntologyDataClass(object):
-    """ Each loaded ontology dataclass has a URI (identifier) and six lists of GUFO elemelements.
+    """ Each loaded ontology dataclass has a URI (identifier) and six lists of GUFO elements.
     The lists indicate which gufo elem. the dataclass is, can, or cannot be, for the types and individuals hierarchies.
     """
 
@@ -21,10 +21,7 @@ class OntologyDataClass(object):
     can_individual: list[str] = field(default_factory=list[str])
     not_type: list[str] = field(default_factory=list[str])
     not_individual: list[str] = field(default_factory=list[str])
-
-    # TODO (@pedropaulofb): Evaluate the possibility of having a copy of the pointer to the gufo_dictionary inside
-    #  the dataclass. E.g., self.gufo_dictionary. This would simplify a lot the use of it in methods' and function'
-    #  parameters, as the dict is necessary for updating the dataclasses' internal lists.
+    gufo_dictionary: dict = field(default_factory=dict)
 
     def is_consistent(self):
         """ Performs a consistency check on the dataclass. For now only one verification is performed, which is
@@ -32,7 +29,7 @@ class OntologyDataClass(object):
 
         verify_duplicates_in_lists_ontology(self)
 
-    def move_element_between_lists(self, element, source_list, target_list, gufo_dictionary):
+    def move_element_between_lists(self, element, source_list, target_list):
         """ Move an element between two lists in the same OntologyClass
             Elements can only be moved from CAN lists to IS or NOT lists
         """
@@ -87,13 +84,13 @@ class OntologyDataClass(object):
         # Performs consistency check
         self.is_consistent()
 
-        # # Updates the class after any moving, so the class can allways be in an updated state
-        self.update_all_internal_lists_from_gufo(gufo_dictionary)
+        # # Updates the class after any moving, so the class can always be in an updated state
+        self.update_all_internal_lists_from_gufo()
 
         logger.debug(f"Element {element} moved successfully from list {source_list} "
                      f"to list {target_list} in {self.uri}.")
 
-    def move_element_to_is_list(self, element, gufo_dictionary):
+    def move_element_to_is_list(self, element):
         """ Check if the element to be moved is a type or instance
                 and move it from the corresponding CAN to the corresponding IS list.
 
@@ -123,9 +120,9 @@ class OntologyDataClass(object):
                 exit(1)
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
-            self.move_element_between_lists(element, source_list, target_list, gufo_dictionary)
+            self.move_element_between_lists(element, source_list, target_list)
 
-    def move_element_to_not_list(self, element, gufo_dictionary):
+    def move_element_to_not_list(self, element):
         """ Check if the element to be moved is a type or instance
                 and move it from the corresponding CAN to the corresponding NOT list.
 
@@ -155,21 +152,21 @@ class OntologyDataClass(object):
                 exit(1)
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
-            self.move_element_between_lists(element, source_list, target_list, gufo_dictionary)
+            self.move_element_between_lists(element, source_list, target_list)
 
-    def move_list_of_elements_to_is_list(self, elem_list, gufo_dictionary):
+    def move_list_of_elements_to_is_list(self, elem_list):
         """ Moves a list of elements to the IS list. Analogous to move_list_of_elements_to_not_list function.
         This is a specific case of the move_element_to_is_list function. """
 
         for elem in elem_list:
-            self.move_element_to_is_list(elem, gufo_dictionary)
+            self.move_element_to_is_list(elem)
 
-    def move_list_of_elements_to_not_list(self, elem_list, gufo_dictionary):
+    def move_list_of_elements_to_not_list(self, elem_list):
         """ Moves a list of elements to the NOT list. Analogous to move_list_of_elements_to_is_list function.
         This is a specific case of the move_element_to_not_list function. """
 
         for elem in elem_list:
-            self.move_element_to_not_list(elem, gufo_dictionary)
+            self.move_element_to_not_list(elem)
 
     def return_containing_list_name(self, element):
         """ Verify to which of the dataclass lists the element belongs and returns the list name. """
@@ -239,14 +236,14 @@ class OntologyDataClass(object):
         hash_not_type = self.create_partial_hash("not_type")
         hash_not_individual = self.create_partial_hash("not_individual")
 
-        class_hash = self.uri + hash_is_type + hash_is_individual + hash_can_type + hash_can_individual + \
-                     hash_not_type + hash_not_individual
+        class_hash = self.uri + hash_is_type + hash_is_individual + hash_can_type + \
+                     hash_can_individual + hash_not_type + hash_not_individual
 
         final_hash = hash(class_hash)
 
         return final_hash
 
-    def update_all_internal_lists_from_gufo(self, gufo_dictionary):
+    def update_all_internal_lists_from_gufo(self):
         """ Update all lists inside the Ontology DataClass using the GUFO Dictionary.
             Perform updates for is lists (type and individual) and for not lists (type and individual using complement)
         """
@@ -267,60 +264,54 @@ class OntologyDataClass(object):
 
                 # Update FROM TYPE (IS) LIST
                 if len(self.can_type) > 0:
-                    self.update_type_list_from_gufo(gufo_dictionary)
+                    self.update_type_list_from_gufo()
                 # Update FROM COMPLEMENT LIST
                 if len(self.can_type) > 0:
-                    self.update_complement_type(gufo_dictionary["complements"], gufo_dictionary)
+                    self.update_complement_type()
                 # Update FROM SUBTYPE LIST
                 if len(self.can_type) > 0:
-                    self.update_type_subtypes_negation(gufo_dictionary)
+                    self.update_type_subtypes_negation()
 
                 # If no element in can_individual list, the solution for individual was already found.
                 # Update FROM INDIVIDUAL (IS) LIST
                 if len(self.can_individual) > 0:
-                    self.update_individual_list_from_gufo(gufo_dictionary)
+                    self.update_individual_list_from_gufo()
                 # Update FROM COMPLEMENT LIST
                 if len(self.can_individual) > 0:
-                    self.update_complement_individual(gufo_dictionary)
+                    self.update_complement_individual()
                 # Update FROM SUBTYPE LIST
                 if len(self.can_individual) > 0:
-                    self.update_individual_subtypes_negation(gufo_dictionary)
+                    self.update_individual_subtypes_negation()
 
                 hash_after = self.create_hash()
-
-                # TODO (@pedropaulofb): Temporary solution for Rigidy in Types Hierarchy.
-                # IF NOT AntiRigidType THEN NOT Phase, PhaseMixin, Role, RoleMixin - tested and necessary
-                # IF NOT SemiRigidType THEN NOT Mixin - not tested!
-                # IF NOT RigidType THEN NOT Category, Kind, SubKind - not tested!
-                # TODO (@pedropaulofb): Temporary solution is the creation of result_is and result_not in YAML file.
 
                 if hash_before == hash_after:
                     logger.debug(f"Hash before equals hash after. Update completed for {self.uri}.")
                 else:
                     logger.debug(f"Hash before NOT equals hash after. Continuing update for {self.uri}.")
 
-    def update_type_list_from_gufo(self, gufo_dictionary):
+    def update_type_list_from_gufo(self):
         """ Update the type list of an Ontology DataClass using the GUFO dictionary.
             This method is analogous to the update_individual_list_from_gufo method.
         """
 
         for is_type in self.is_type:
-            new_is = gufo_dictionary["types"][is_type]["is_list"]
-            new_not = gufo_dictionary["types"][is_type]["not_list"]
-            self.move_list_of_elements_to_is_list(new_is, gufo_dictionary)
-            self.move_list_of_elements_to_not_list(new_not, gufo_dictionary)
+            new_is = self.gufo_dictionary["types"][is_type]["is_list"]
+            new_not = self.gufo_dictionary["types"][is_type]["not_list"]
+            self.move_list_of_elements_to_is_list(new_is)
+            self.move_list_of_elements_to_not_list(new_not)
 
-    def update_individual_list_from_gufo(self, gufo_dictionary):
+    def update_individual_list_from_gufo(self):
         """ Update the individual list of an Ontology DataClass using the GUFO dictionary.
             This method is analogous to the update_type_list_from_gufo method.
         """
         for is_individual in self.is_individual:
-            new_is = gufo_dictionary["individuals"][is_individual]["is_list"]
-            new_not = gufo_dictionary["individuals"][is_individual]["not_list"]
-            self.move_list_of_elements_to_is_list(new_is, gufo_dictionary)
-            self.move_list_of_elements_to_not_list(new_not, gufo_dictionary)
+            new_is = self.gufo_dictionary["individuals"][is_individual]["is_list"]
+            new_not = self.gufo_dictionary["individuals"][is_individual]["not_list"]
+            self.move_list_of_elements_to_is_list(new_is)
+            self.move_list_of_elements_to_not_list(new_not)
 
-    def update_complement_type(self, gufo_complements, gufo_dictionary):
+    def update_complement_type(self):
         """ for all elements in ontology not_list:
                 the ontology dataclass element must be at list of dict keys AND
                 list require_is must be subset of list is_type AND
@@ -329,22 +320,22 @@ class OntologyDataClass(object):
             Analogous to method update_complement_individual.
         """
 
-        list_complement_keys = list(gufo_complements.keys())
+        list_complement_keys = list(self.gufo_dictionary["complements"].keys())
 
         for not_type in self.not_type:
             # Condition 1: the ontology dataclass element must be at list of dict keys
             if not_type not in list_complement_keys:
                 continue
             # Condition 2: list require_is must be subset of list is_type
-            if not set(gufo_complements[not_type]["require_is"]).issubset(set(self.is_type)):
+            if not set(self.gufo_dictionary["complements"][not_type]["require_is"]).issubset(set(self.is_type)):
                 continue
             # Condition 3: list require_not must be subset of list not_type
-            if not set(gufo_complements[not_type]["require_not"]).issubset(set(self.not_type)):
+            if not set(self.gufo_dictionary["complements"][not_type]["require_not"]).issubset(set(self.not_type)):
                 continue
 
-            self.move_list_of_elements_to_is_list(gufo_complements[not_type]["result"], gufo_dictionary)
+            self.move_list_of_elements_to_is_list(self.gufo_dictionary["complements"][not_type]["result"])
 
-    def update_complement_individual(self, gufo_dictionary):
+    def update_complement_individual(self):
         """ for all elements in ontology not_list:
                 the ontology dataclass element must be at list of dict keys AND
                 list require_is must be subset of list is_individual AND
@@ -353,24 +344,24 @@ class OntologyDataClass(object):
             Analogous to method update_complement_individual.
         """
 
-        list_complement_keys = list(gufo_dictionary["complements"].keys())
+        list_complement_keys = list(self.gufo_dictionary["complements"].keys())
 
         for not_individual in self.not_individual:
             # Condition 1: the ontology dataclass element must be at list of dict keys
             if not_individual not in list_complement_keys:
                 continue
             # Condition 2: list require_is must be subset of list is_individual
-            if not set(gufo_dictionary["complements"][not_individual]["require_is"]).issubset(set(self.is_individual)):
+            if not set(self.gufo_dictionary["complements"][not_individual]["require_is"]).issubset(
+                    set(self.is_individual)):
                 continue
             # Condition 3: list require_not must be subset of list not_individual
-            if not set(gufo_dictionary["complements"][not_individual]["require_not"]) \
+            if not set(self.gufo_dictionary["complements"][not_individual]["require_not"]) \
                     .issubset(set(self.not_individual)):
                 continue
 
-            self.move_list_of_elements_to_is_list(gufo_dictionary["complements"][not_individual]["result"],
-                                                  gufo_dictionary)
+            self.move_list_of_elements_to_is_list(self.gufo_dictionary["complements"][not_individual]["result"])
 
-    def update_type_subtypes_negation(self, gufo_dictionary):
+    def update_type_subtypes_negation(self):
         """ Update the "is list" of an Ontology DataClass using the GUFO dictionary.
 
             General description (for types and individuals - however this method applies only to types):
@@ -383,16 +374,16 @@ class OntologyDataClass(object):
 
         """
 
-        list_subtypes_keys = list(gufo_dictionary["subtypes"].keys())
+        list_subtypes_keys = list(self.gufo_dictionary["subtypes"].keys())
 
         for not_type in self.not_type:
 
             # Condition: the ontology dataclass element must be at list of dict keys
             if not_type in list_subtypes_keys:
                 # Move all the key's list elements to the dataclass not list
-                self.move_list_of_elements_to_not_list(gufo_dictionary["subtypes"][not_type], gufo_dictionary)
+                self.move_list_of_elements_to_not_list(self.gufo_dictionary["subtypes"][not_type])
 
-    def update_individual_subtypes_negation(self, gufo_dictionary):
+    def update_individual_subtypes_negation(self):
         """ Update the "is list" of an Ontology DataClass using the GUFO dictionary.
 
             General description (for types and individuals - however this method applies only to individuals):
@@ -405,11 +396,11 @@ class OntologyDataClass(object):
 
         """
 
-        list_subtypes_keys = list(gufo_dictionary["subtypes"].keys())
+        list_subtypes_keys = list(self.gufo_dictionary["subtypes"].keys())
 
         for not_individual in self.not_individual:
 
             # Condition: the ontology dataclass element must be at list of dict keys
             if not_individual in list_subtypes_keys:
                 # Move all the key's list elements to the dataclass not list
-                self.move_list_of_elements_to_not_list(gufo_dictionary["subtypes"][not_individual], gufo_dictionary)
+                self.move_list_of_elements_to_not_list(self.gufo_dictionary["subtypes"][not_individual])

@@ -2,7 +2,7 @@
 from modules.logger_config import initialize_logger
 
 
-def perform_rule_actions_types(list_ontology_dataclasses, gufo_dictionary, list_nodes, action, list_restrictions=None):
+def perform_rule_actions_types(list_ontology_dataclasses, list_nodes, action, list_restrictions=None):
     """ Runs actions to be performed in propagation functions for enforced rules.
     The actions are informed through the parameter list_actions_code.
     """
@@ -19,24 +19,26 @@ def perform_rule_actions_types(list_ontology_dataclasses, gufo_dictionary, list_
             continue
 
         # Condition 2: ontology dataclass must not be in the list of restrictions
-        if ontology_dataclass.uri not in list_restrictions:
+        if ontology_dataclass.uri in list_restrictions:
+            continue
 
-            logger.debug(f"Executing {action} in {ontology_dataclass}...")
+        # Conditions met. Executing.
+        logger.debug(f"Executing {action} in {ontology_dataclass}...")
 
-            if (action == "k_s_sup") or (action == "ns_s_sup"):
-                ontology_dataclass.move_element_to_not_list("gufo:Sortal", gufo_dictionary)
+        if (action == "k_s_sup") or (action == "ns_s_sup"):
+            ontology_dataclass.move_element_to_not_list("gufo:Sortal")
 
-            if action == "s_ns_sub":
-                ontology_dataclass.move_element_to_not_list("gufo:NonSortal", gufo_dictionary)
+        if action == "s_ns_sub":
+            ontology_dataclass.move_element_to_not_list("gufo:NonSortal")
 
-            if (action == "s_k_sub") or (action == "t_k_sup"):
-                ontology_dataclass.move_element_to_not_list("gufo:Kind", gufo_dictionary)
+        if (action == "s_k_sub") or (action == "t_k_sup"):
+            ontology_dataclass.move_element_to_not_list("gufo:Kind")
 
-            if action == "r_ar_sup":
-                ontology_dataclass.move_element_to_not_list("gufo:AntiRigidType", gufo_dictionary)
+        if action == "r_ar_sup":
+            ontology_dataclass.move_element_to_not_list("gufo:AntiRigidType")
 
-            if action == "ar_r_sub":
-                ontology_dataclass.move_element_to_not_list("gufo:RigidType", gufo_dictionary)
-                ontology_dataclass.move_element_to_not_list("gufo:SemiRigidType", gufo_dictionary)
+        if action == "ar_r_sub":
+            ontology_dataclass.move_element_to_not_list("gufo:RigidType")
+            ontology_dataclass.move_element_to_not_list("gufo:SemiRigidType")
 
-            logger.debug(f"Successfully executed {action} in {ontology_dataclass}.")
+        logger.debug(f"Successfully executed {action} in {ontology_dataclass}.")
