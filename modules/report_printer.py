@@ -8,7 +8,7 @@ from datetime import datetime
 from modules.logger_config import initialize_logger
 
 
-def print_report_file(ontology_dataclass_list):
+def print_report_file(ontology_dataclass_list, nodes_list):
     """ printing in file a report of the current state of the ontology dataclass list in a readable format."""
 
     logger = initialize_logger()
@@ -57,6 +57,9 @@ def print_report_file(ontology_dataclass_list):
     report_hash = hashlib.sha256(enc_report).hexdigest()
     format_report_hash = "CONTENT HASH SHA256 = " + str(report_hash) + "\n\n"
 
+    # Creating summary
+    generate_class_summary(ontology_dataclass_list, nodes_list)
+
     # Creating report file
     now = datetime.now()
     date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
@@ -64,6 +67,31 @@ def print_report_file(ontology_dataclass_list):
         f.write(format_report_hash + report)
 
     logger.info("Report successfully printed.")
+
+
+def generate_class_summary(ontology_dataclass_list, nodes_list):
+    """ Returns a string to be printed in the report. This string contains evaluation metrics. """
+
+    NUMBER_GUFO_CLASSES_TYPES = 14
+    NUMBER_GUFO_CLASSES_INDIVIDUALS = 13
+
+    total_number_of_classes = len(nodes_list["all"])
+
+    # solved_classes_types
+    # solved_classes_individuals
+    #
+    # reduced_classes_types
+    # reduced_classes_individuals
+    #
+    # total_improved_types
+    # total_improved_individuals
+    #
+    # total_improved_all
+    # total_not_improved_all
+
+    # for ontology_dataclass in ontology_dataclass_list:
+
+    print(total_number_of_classes)
 
 # TODO (@pedropaulofb): Print found classes (e.g., can_type = 0)
 # TODO (@pedropaulofb): Print improved classes (e.g., can_type_final < can_type_initial)
