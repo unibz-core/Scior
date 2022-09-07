@@ -76,11 +76,11 @@ if __name__ == "__main__":
 
     ont_dataclass.move_element_to_is_list("gufo:Mixin")
 
-    stile = "a"
+    stile = "e"
 
     execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, stile)
 
-    print_report_file(ontology_dataclass_list)
+    print_report_file(ontology_dataclass_list, ontology_nodes)
 
     ############################## END TESTS
 

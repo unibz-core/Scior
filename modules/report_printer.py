@@ -5,7 +5,15 @@ import hashlib
 import os
 from datetime import datetime
 
+from prettytable import PrettyTable
+
 from modules.logger_config import initialize_logger
+
+SECTION_SEPARATOR = "\n##########################################################\n"
+
+# TODO (@pedropaulofb): These constants have to be updated for using "full GUFO".
+NUMBER_GUFO_CLASSES_TYPES = 14
+NUMBER_GUFO_CLASSES_INDIVIDUALS = 13
 
 
 def print_report_file(ontology_dataclass_list, nodes_list):
@@ -52,13 +60,13 @@ def print_report_file(ontology_dataclass_list, nodes_list):
                        list_separator + list6 + line_separator
                 report += line
 
-    # Creating report hash
+    # Creating hash
     enc_report = report.encode('utf-8')
     report_hash = hashlib.sha256(enc_report).hexdigest()
     format_report_hash = "CONTENT HASH SHA256 = " + str(report_hash) + "\n\n"
 
     # Creating summary
-    generate_class_summary(ontology_dataclass_list, nodes_list)
+    print_class_summary(ontology_dataclass_list, nodes_list)
 
     # Creating report file
     now = datetime.now()
@@ -69,29 +77,81 @@ def print_report_file(ontology_dataclass_list, nodes_list):
     logger.info("Report successfully printed.")
 
 
-def generate_class_summary(ontology_dataclass_list, nodes_list):
-    """ Returns a string to be printed in the report. This string contains evaluation metrics. """
+def print_class_summary(ontology_dataclass_list, nodes_list):
+    """ Prints evaluation metrics. """
 
-    NUMBER_GUFO_CLASSES_TYPES = 14
-    NUMBER_GUFO_CLASSES_INDIVIDUALS = 13
+    section_title = "\t\tONTOLOGICAL CLASSIFICATION SUMMARY\t\t"
 
     total_number_of_classes = len(nodes_list["all"])
 
-    # solved_classes_types
-    # solved_classes_individuals
-    #
-    # reduced_classes_types
-    # reduced_classes_individuals
-    #
-    # total_improved_types
-    # total_improved_individuals
-    #
-    # total_improved_all
-    # total_not_improved_all
+    solved_types = 0
+    solved_individuals = 0
 
-    # for ontology_dataclass in ontology_dataclass_list:
+    reduced_types = 0
+    reduced_individuals = 0
 
-    print(total_number_of_classes)
+    # Calculating TYPES data
+    for ontology_dataclass in ontology_dataclass_list:
+        if len(ontology_dataclass.can_type) == 0:
+            solved_types += 1
+        elif len(ontology_dataclass.can_type) < NUMBER_GUFO_CLASSES_TYPES:
+            reduced_types += 1
 
-# TODO (@pedropaulofb): Print found classes (e.g., can_type = 0)
-# TODO (@pedropaulofb): Print improved classes (e.g., can_type_final < can_type_initial)
+    improved_types = solved_types + reduced_types
+
+    solved_types_percentage = round(100 * solved_types / total_number_of_classes, 2)
+    reduced_types_percentage = round(100 * reduced_types / total_number_of_classes, 2)
+    improved_types_percentage: float = round(100 * improved_types / total_number_of_classes, 2)
+
+    # Calculating INDIVIDUALS data
+    for ontology_dataclass in ontology_dataclass_list:
+        if len(ontology_dataclass.can_individual) == 0:
+            solved_individuals += 1
+        elif len(ontology_dataclass.can_individual) < NUMBER_GUFO_CLASSES_INDIVIDUALS:
+            reduced_individuals += 1
+
+    improved_individuals = solved_individuals + reduced_individuals
+
+    solved_individuals_percentage = round(100 * solved_individuals / total_number_of_classes, 2)
+    reduced_individuals_percentage = round(100 * reduced_individuals / total_number_of_classes, 2)
+    improved_individuals_percentage: float = round(100 * improved_individuals / total_number_of_classes, 2)
+
+    # Calculating TOTAL data
+
+    solved_total = solved_types + solved_individuals
+    solved_total_percentage: float = round(100 * solved_total / total_number_of_classes, 2)
+
+    reduced_total = reduced_types + reduced_individuals
+    reduced_total_percentage: float = round(100 * reduced_total / total_number_of_classes, 2)
+
+    improved_total = improved_types + improved_individuals
+    improved_total_percentage: float = round(100 * improved_total / total_number_of_classes, 2)
+
+    table = PrettyTable(["GROUP", "ITEM", "VALUE", "PERCENTAGE"])
+
+    table.add_row(["Types", "Inputted", total_number_of_classes, 100.0])
+    table.add_row(["Types", "Solved", solved_types, solved_types_percentage])
+    table.add_row(["Types", "Reduced", reduced_types, reduced_types_percentage])
+    table.add_row(["Types", "Improved", improved_types, improved_types_percentage])
+    table.add_row(["Types", "Not Improved", improved_types, 100 - improved_types_percentage])
+    table.add_row(["-----", "-----", "-----", "-----"])
+
+    table.add_row(["Individuals", "Inputted", total_number_of_classes, 100.0])
+    table.add_row(["Individuals", "Solved", solved_individuals, solved_individuals_percentage])
+    table.add_row(["Individuals", "Reduced", reduced_individuals, reduced_individuals_percentage])
+    table.add_row(["Individuals", "Improved", improved_individuals, improved_individuals_percentage])
+    table.add_row(["-----", "-----", "-----", "-----"])
+
+    table.add_row(["Total", "Inputted", total_number_of_classes, 100.0])
+    table.add_row(["Total", "Solved", solved_total, solved_total_percentage])
+    table.add_row(["Total", "Reduced", reduced_total, reduced_total_percentage])
+    table.add_row(["Total", "Improved", improved_total, improved_total_percentage])
+
+    table.align["GROUP"] = "l"
+    table.align["ITEM"] = "l"
+    table.align["VALUE"] = "c"
+    table.align["PERCENTAGE"] = "c"
+
+    print(SECTION_SEPARATOR + section_title + SECTION_SEPARATOR)
+    print(table)
+    print(SECTION_SEPARATOR)
