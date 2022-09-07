@@ -33,7 +33,7 @@ from modules.data_initialization_ontology_dataclass import initialize_ontology_d
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
-from modules.rules_hierarchy_types import execute_rules_types
+from modules.rules_types_run import execute_rules_types
 
 if __name__ == "__main__":
 

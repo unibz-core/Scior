@@ -1,6 +1,6 @@
 """ Functions related to the propagation of modifications in the graph. """
 from modules.logger_config import initialize_logger
-from modules.rules_actions import perform_rule_actions_types
+from modules.rules_types_actions import perform_rule_actions_types
 from modules.utils_graph import get_subclasses, get_superclasses
 
 
