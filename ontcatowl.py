@@ -74,7 +74,7 @@ if __name__ == "__main__":
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Root2":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Mixin")
+    ont_dataclass.move_element_to_is_list("gufo:Role")
 
     stile = "e"
 

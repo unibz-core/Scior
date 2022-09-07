@@ -10,6 +10,7 @@ from modules.utils_general import lists_subtraction
 from modules.utils_graph import get_all_related_nodes, get_subclasses, get_superclasses, get_all_superclasses, \
     get_all_subclasses
 
+INTERVENTION_WARNING = "MANUAL INTERVENTION NEEDED!\n"
 
 def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list):
     """
@@ -252,7 +253,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
             if len(sortal_list) == 0:
                 logger.debug(f"None of the nodes related to from {ontology_dataclass.uri} is a gufo:Sortal")
 
-                logger.info("MANUAL INTERVENTION NEEDED!\n")
+                logger.info(iNTERVENTION_WARN)
                 time.sleep(0.2)
 
                 print(f"\nFor {ontology_dataclass.uri}, one of the following related classes must be a gufo:Sortal "
@@ -327,7 +328,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
 
         if len(list_possibilities) > 0:
 
-            logger.info("MANUAL INTERVENTION NEEDED!\n")
+            logger.info(iNTERVENTION_WARN)
             time.sleep(0.2)
 
             # User must choose an option to become a Kind.
@@ -377,7 +378,7 @@ def rule_ns_k_sub(list_ontology_dataclasses, graph, nodes_list):
         # Treat if number of kind subclasses is smaller than 2.
         if number_of_kinds < 2:
 
-            logger.info("MANUAL INTERVENTION NEEDED!\n")
+            logger.info(iNTERVENTION_WARN)
             time.sleep(0.2)
 
             print(f"The class {ontology_dataclass.uri} is a NonSortal with {number_of_kinds} Kind as subclass. "

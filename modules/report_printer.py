@@ -14,6 +14,7 @@ SECTION_SEPARATOR = "\n#########################################################
 # TODO (@pedropaulofb): These constants have to be updated for using "full GUFO".
 NUMBER_GUFO_CLASSES_TYPES = 14
 NUMBER_GUFO_CLASSES_INDIVIDUALS = 13
+NUMBER_GUFO_CLASSES = NUMBER_GUFO_CLASSES_TYPES + NUMBER_GUFO_CLASSES_INDIVIDUALS
 
 
 def print_report_file(ontology_dataclass_list, nodes_list):
@@ -86,16 +87,32 @@ def print_class_summary(ontology_dataclass_list, nodes_list):
 
     solved_types = 0
     solved_individuals = 0
+    solved_total = 0
 
     reduced_types = 0
     reduced_individuals = 0
+    reduced_total = 0
 
-    # Calculating TYPES data
     for ontology_dataclass in ontology_dataclass_list:
+
+        # Calculating TYPES data
         if len(ontology_dataclass.can_type) == 0:
             solved_types += 1
         elif len(ontology_dataclass.can_type) < NUMBER_GUFO_CLASSES_TYPES:
             reduced_types += 1
+
+        # Calculating INDIVIDUALS data
+        if len(ontology_dataclass.can_individual) == 0:
+            solved_individuals += 1
+        elif len(ontology_dataclass.can_individual) < NUMBER_GUFO_CLASSES_INDIVIDUALS:
+            reduced_individuals += 1
+
+        # Calculating TOTAL data
+        changes = len(ontology_dataclass.can_type) + len(ontology_dataclass.can_individual)
+        if changes == 0:
+            solved_total += 1
+        elif changes < NUMBER_GUFO_CLASSES:
+            reduced_total += 1
 
     improved_types = solved_types + reduced_types
 
@@ -103,43 +120,31 @@ def print_class_summary(ontology_dataclass_list, nodes_list):
     reduced_types_percentage = round(100 * reduced_types / total_number_of_classes, 2)
     improved_types_percentage: float = round(100 * improved_types / total_number_of_classes, 2)
 
-    # Calculating INDIVIDUALS data
-    for ontology_dataclass in ontology_dataclass_list:
-        if len(ontology_dataclass.can_individual) == 0:
-            solved_individuals += 1
-        elif len(ontology_dataclass.can_individual) < NUMBER_GUFO_CLASSES_INDIVIDUALS:
-            reduced_individuals += 1
-
     improved_individuals = solved_individuals + reduced_individuals
 
     solved_individuals_percentage = round(100 * solved_individuals / total_number_of_classes, 2)
     reduced_individuals_percentage = round(100 * reduced_individuals / total_number_of_classes, 2)
     improved_individuals_percentage: float = round(100 * improved_individuals / total_number_of_classes, 2)
 
-    # Calculating TOTAL data
+    improved_total = solved_total + reduced_total
 
-    solved_total = solved_types + solved_individuals
     solved_total_percentage: float = round(100 * solved_total / total_number_of_classes, 2)
-
-    reduced_total = reduced_types + reduced_individuals
     reduced_total_percentage: float = round(100 * reduced_total / total_number_of_classes, 2)
-
-    improved_total = improved_types + improved_individuals
     improved_total_percentage: float = round(100 * improved_total / total_number_of_classes, 2)
 
     table = PrettyTable(["GROUP", "ITEM", "VALUE", "PERCENTAGE"])
 
-    table.add_row(["Types", "Inputted", total_number_of_classes, 100.0])
-    table.add_row(["Types", "Solved", solved_types, solved_types_percentage])
-    table.add_row(["Types", "Reduced", reduced_types, reduced_types_percentage])
-    table.add_row(["Types", "Improved", improved_types, improved_types_percentage])
-    table.add_row(["Types", "Not Improved", improved_types, 100 - improved_types_percentage])
+    table.add_row(["Type", "Inputted", total_number_of_classes, 100.0])
+    table.add_row(["Type", "Solved", solved_types, solved_types_percentage])
+    table.add_row(["Type", "Reduced", reduced_types, reduced_types_percentage])
+    table.add_row(["Type", "Improved", improved_types, improved_types_percentage])
+    table.add_row(["Type", "Not Improved", improved_types, 100 - improved_types_percentage])
     table.add_row(["-----", "-----", "-----", "-----"])
 
-    table.add_row(["Individuals", "Inputted", total_number_of_classes, 100.0])
-    table.add_row(["Individuals", "Solved", solved_individuals, solved_individuals_percentage])
-    table.add_row(["Individuals", "Reduced", reduced_individuals, reduced_individuals_percentage])
-    table.add_row(["Individuals", "Improved", improved_individuals, improved_individuals_percentage])
+    table.add_row(["Individual", "Inputted", total_number_of_classes, 100.0])
+    table.add_row(["Individual", "Solved", solved_individuals, solved_individuals_percentage])
+    table.add_row(["Individual", "Reduced", reduced_individuals, reduced_individuals_percentage])
+    table.add_row(["Individual", "Improved", improved_individuals, improved_individuals_percentage])
     table.add_row(["-----", "-----", "-----", "-----"])
 
     table.add_row(["Total", "Inputted", total_number_of_classes, 100.0])
