@@ -253,7 +253,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
             if len(sortal_list) == 0:
                 logger.debug(f"None of the nodes related to from {ontology_dataclass.uri} is a gufo:Sortal")
 
-                logger.info(iNTERVENTION_WARN)
+                logger.info(INTERVENTION_WARNING)
                 time.sleep(0.2)
 
                 print(f"\nFor {ontology_dataclass.uri}, one of the following related classes must be a gufo:Sortal "
@@ -270,8 +270,10 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
                 print(table)
 
                 new_sortal_uri = input("Enter the URI of the element to be classified as a Sortal: ")
+                new_sortal_uri.strip()
                 new_sortal_type = "gufo:" + input("Enter the type of the element (options are: "
                                                   "Sortal, Kind, Phase, Role, or SubKind): ")
+                new_sortal_type.strip()
 
                 # TODO (@pedropaulofb): Treat invalid input from user (for both data entries).
 
@@ -328,7 +330,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
 
         if len(list_possibilities) > 0:
 
-            logger.info(iNTERVENTION_WARN)
+            logger.info(INTERVENTION_WARNING)
             time.sleep(0.2)
 
             # User must choose an option to become a Kind.
@@ -337,6 +339,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
             for item in list_possibilities:
                 print(f"\t - {item}")
             new_kind = input(f"Enter the class to be set as gufo:Kind: ")
+            new_kind.strip()
             external_move_to_is_list(list_ontology_dataclasses, new_kind, "gufo:Kind")
 
             # TODO (@pedropaulofb): Instead of just selecting a possibility, the user can create
@@ -378,7 +381,7 @@ def rule_ns_k_sub(list_ontology_dataclasses, graph, nodes_list):
         # Treat if number of kind subclasses is smaller than 2.
         if number_of_kinds < 2:
 
-            logger.info(iNTERVENTION_WARN)
+            logger.info(INTERVENTION_WARNING)
             time.sleep(0.2)
 
             print(f"The class {ontology_dataclass.uri} is a NonSortal with {number_of_kinds} Kind as subclass. "
@@ -395,6 +398,7 @@ def rule_ns_k_sub(list_ontology_dataclasses, graph, nodes_list):
                 print(f"\t - {non_kind_subclass}")
 
             new_kind = input(f"Enter the class to be set as gufo:Kind: ")
+            new_kind.strip()
             external_move_to_is_list(list_ontology_dataclasses, new_kind, "gufo:Kind")
             logger.debug(f"Subclass {new_kind} successfully defined as gufo:Kind for "
                          f"ontology dataclass {ontology_dataclass.uri}.")

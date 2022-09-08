@@ -74,9 +74,9 @@ if __name__ == "__main__":
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Root2":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Role")
+    ont_dataclass.move_element_to_is_list("gufo:Mixin")
 
-    stile = "e"
+    stile = "a"
 
     execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, stile)
 

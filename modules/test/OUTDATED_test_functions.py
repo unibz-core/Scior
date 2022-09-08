@@ -53,11 +53,14 @@ def insert_triple(ontology):
     """ Allows user to manually insert a triple into the ontology for verifying its effects """
 
     input1 = input("Enter the Ontology entity: ")
+    input1.strip()
     subject_uri = URIRef(input1)
 
     input2 = input("Enter the relation number (1 for rdfs:subClassOf, 2 for rdf:type): ")
+    input2.strip()
 
     input3 = input("Enter the Ontology entity: ")
+    input3.strip()
     object_uri = URIRef(input3)
 
     if input2 == "1":
