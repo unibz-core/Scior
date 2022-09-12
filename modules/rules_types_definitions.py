@@ -328,7 +328,15 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
             # and the user must (a) create a new kind class and define its relation with one of the classes in
             # the list_superclasses or (b) reclassify one of the classes.
 
-        if len(list_possibilities) > 0:
+        # If automatic, then the unique possibility can be directly asserted.
+        # TODO (@pedropaulofb): Treat case not automatic.
+        if len(list_possibilities) == 1:
+            external_move_to_is_list(list_ontology_dataclasses, list_possibilities[0], "gufo:Kind")
+            logger.debug(f"Class {list_possibilities[0]} is the unique possible identity provider "
+                         f"for {ontology_dataclass.uri}. Hence, it was automatically asserted as gufo:Kind.")
+
+        # Case multiple possibilities, user must choose.
+        elif len(list_possibilities) > 1:
 
             logger.info(INTERVENTION_WARNING)
             time.sleep(0.2)
