@@ -5,7 +5,7 @@ import time
 from modules.logger_config import initialize_logger
 from modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, rule_t_k_sup, rule_ns_s_sup, rule_s_ns_sub, \
     rule_r_ar_sup, \
-    rule_ar_r_sub, rule_n_r_t, rule_ns_s_spe, rule_nk_k_sup, rule_ns_k_sub
+    rule_ar_r_sub, rule_n_r_t, rule_ns_s_spe, rule_nk_k_sup, rule_ns_k_sub, rule_s_nsup_k
 from modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
@@ -14,12 +14,13 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, stile):
     logger = initialize_logger()
     logger.info("Starting GUFO types hierarchy rules ...")
 
-    automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub", "n_r_t"]
+    automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub",
+                       "n_r_t", "s_nsup_k"]
     interactive_rules = ["ns_s_spe", "nk_k_sup", "ns_k_sub"]
 
-    if stile == "e":
+    if stile == "automatic":
         list_of_rules = automatic_rules.copy()
-    elif stile == "a":
+    elif stile == "interactive":
         list_of_rules = automatic_rules + interactive_rules
     else:
         list_of_rules = []
@@ -27,6 +28,8 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, stile):
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = 0
+
+    # TODO (@pedropaulofb): LOOP(LOOP(automatic) + interactive)
 
     while initial_hash != final_hash:
         initial_hash = final_hash
@@ -78,6 +81,8 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code)
         rule_nk_k_sup(ontology_dataclass_list, graph, nodes_list)
     elif rule_code == "ns_k_sub":
         rule_ns_k_sub(ontology_dataclass_list, graph, nodes_list)
+    elif rule_code == "s_nsup_k":
+        rule_s_nsup_k(ontology_dataclass_list, graph, nodes_list)
     else:
         logger.error("Unexpected rule code received as parameter! Program aborted.")
         exit(1)

@@ -2,6 +2,18 @@
 
 Arguments: TO BE IMPLEMENTED
 
+# INTERACTIVITY LEVEL:
+-1: Always interactive. No modifications are performed without the agreement of the user.
+-2: (DEFAULT) Automatic when possible, interactive if necessary.
+-3: Automatic only. No manual intervention needed.
+
+# MODEL COMPLETENESS ASSUMPTION:
+-c: Complete. New classes cannot be created.
+-i: (DEFAULT) Incomplete model. New classes can be created by the user.
+
+
+
+
 -m: ask for user confirmation before any modifications
 -n: do not ask for user confirmation before any modifications (DEFAULT)
 
@@ -71,12 +83,12 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#ATTACKMitigation":
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo-A":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:SubKind")
+    ont_dataclass.move_element_to_is_list("gufo:Sortal")
 
-    stile = "a"
+    stile = "automatic"
 
     execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, stile)
 
@@ -101,3 +113,5 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Treat problem with huge ontologies (stack overflow)
 # TODO (@pedropaulofb): Verify "dataclass with slots" and the use of __slot__ for better performance.
 # TODO (@pedropaulofb): As log files are getting big, maybe it is going to be necessary to compact them into a zip file.
+# TODO (@pedropaulofb): It must be possible to print in a file the current state of the ontology during interactions
+#   with the user, so he can open and evaluate the current status of the ontology.

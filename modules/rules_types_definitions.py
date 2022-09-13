@@ -12,6 +12,7 @@ from modules.utils_graph import get_all_related_nodes, get_subclasses, get_super
 
 INTERVENTION_WARNING = "MANUAL INTERVENTION NEEDED!\n"
 
+
 def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list):
     """
     - DESCRIPTION: All direct or indirect superclasses of an ontology class that is a type of gufo:Kind
@@ -85,7 +86,9 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list):
                     # TODO (@pedropaulofb): This error could be substituted by a warning and a possibility
                     #  of correction for the user
                     logger.error(f"Inconsistency detected. Number of gufo:Kinds types as supertypes "
-                                 f"of {ontology_dataclass.uri} is {counter}, while it must be exactly 1.")
+                                 f"of {ontology_dataclass.uri} is {counter}, while it must be exactly 1. "
+                                 f"Program aborted.")
+                    exit(1)
                 else:
                     # set all supertypes as NOT KIND (except for the one that is already a kind)
                     execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list, subclass,
@@ -354,6 +357,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
             #  a new one and set the relation or to reclassify one of the classes.
 
 
+# TODO (@pedropaulofb): RESTRICT LIST OF POSSIBILITIES FOR SHOWING ONLY ALLOWED CLASSES!
 def rule_ns_k_sub(list_ontology_dataclasses, graph, nodes_list):
     """
     - DESCRIPTION: NonSortals aggregates identities from at least two different identity principles providers.
@@ -413,3 +417,31 @@ def rule_ns_k_sub(list_ontology_dataclasses, graph, nodes_list):
 
     # TODO (@pedropaulofb): The case where a NonSortal class only have one subclass and it is a Kind must be treated.
     # It represents a clear case of incompleteness.
+
+
+def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list):
+    """
+        - DESCRIPTION: In complete models, every gufo:Sortal without supertypes is a gufo:Kind.
+        - DEFAULT: Automatic
+        - CODE: s_nsup_k
+        """
+
+    rule_code = "s_nsup_k"
+
+    logger = initialize_logger()
+
+    for ontology_dataclass in list_ontology_dataclasses:
+
+        # CONDITION 1: ontology_dataclass must be a gufo:Sortal
+        if "gufo:Sortal" not in ontology_dataclass.is_type:
+            continue
+
+        logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+
+        # Get list of all superclasses up to leaves.
+        all_superclasses = get_all_superclasses(graph, nodes_list, ontology_dataclass.uri)
+
+        # CONDITION 2: list of superclasses must be empty
+
+        if len(all_superclasses) == 0:
+            ontology_dataclass.move_element_to_is_list("gufo:Kind")
