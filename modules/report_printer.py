@@ -138,7 +138,7 @@ def print_class_summary(ontology_dataclass_list, nodes_list):
     table.add_row(["Type", "Solved", solved_types, solved_types_percentage])
     table.add_row(["Type", "Reduced", reduced_types, reduced_types_percentage])
     table.add_row(["Type", "Improved", improved_types, improved_types_percentage])
-    table.add_row(["Type", "Not Improved", improved_types, 100 - improved_types_percentage])
+    table.add_row(["Type", "Not Improved", improved_types, round(100 - improved_types_percentage, 2)])
     table.add_row(["-----", "-----", "-----", "-----"])
 
     table.add_row(["Individual", "Inputted", total_number_of_classes, 100.0])

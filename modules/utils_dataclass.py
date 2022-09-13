@@ -33,7 +33,43 @@ def generate_hash_ontology_dataclass_list(ontology_dataclass_list):
     return total_hash
 
 
-# TODO (@pedropaulofb): Upgrade this function for accepting which is the list to be queried as parameter.
+def NEW_get_list_gufo_classification(ontology_dataclass_list, list_uris, search_list, gufo_element):
+    """ Receives a list of URIs (list_uris), the name of the list to be searched (search_list), and the element that
+    must be in that list. Allowed search_list values can be: IS, CAN or NOT (valid for both types or individuals).
+
+    Returns a list of URIs of the elements from the list_uris that have the element in its search_list.
+    """
+
+    global search_individual, search_type
+
+    logger = initialize_logger()
+    return_list = []
+
+    for ontology_dataclass in ontology_dataclass_list:
+
+        # CONDITION 1: The searched occurs for the URIs inside the list_uris.
+        if ontology_dataclass.uri not in list_uris:
+            continue
+
+        if search_list == "IS":
+            search_type = ontology_dataclass.is_type
+            search_individual = ontology_dataclass.is_individual
+        elif search_list == "CAN":
+            search_type = ontology_dataclass.can_type
+            search_individual = ontology_dataclass.can_individual
+        elif search_list == "NOT":
+            search_type = ontology_dataclass.not_type
+            search_individual = ontology_dataclass.not_individual
+        else:
+            logger.error("Unexpected search list value. Program aborted.")
+            exit(1)
+
+        if (gufo_element in search_type) or (gufo_element in search_individual):
+            return_list.append(ontology_dataclass.uri)
+
+    return return_list
+
+
 def get_list_gufo_classification(ontology_dataclass_list, list_uris, classification):
     """ Receives a list of URIs and returns a list of dataclasses with the elements in the input list which have
     the given classification in its is_type or is_individual list.

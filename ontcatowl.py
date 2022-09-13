@@ -83,12 +83,12 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#PedroPaulo-A":
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Animal":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Sortal")
+    ont_dataclass.move_element_to_is_list("gufo:Category")
 
-    stile = "automatic"
+    stile = "interactive"
 
     execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, stile)
 
@@ -115,3 +115,4 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): As log files are getting big, maybe it is going to be necessary to compact them into a zip file.
 # TODO (@pedropaulofb): It must be possible to print in a file the current state of the ontology during interactions
 #   with the user, so he can open and evaluate the current status of the ontology.
+# TODO (@pedropaulofb): Add option to skip interactive rule iteration (to add other processing first).

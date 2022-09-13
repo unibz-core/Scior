@@ -1796,24 +1796,34 @@ d3f:ATTACKMitigation rdf:type owl:Class ;
                      rdfs:subClassOf d3f:ATTACKThing ,
                                      [ rdf:type owl:Restriction ;
                                        owl:onProperty d3f:d3fend-comment ;
-                                       owl:someValuesFrom xsd:string
-                                     ] ;
+                                       owl:someValuesFrom xsd:string ] ;
                      rdfs:label "ATTACK Mitigation" .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#ATTACKThing
-d3f:ATTACKThing rdf:type owl:Class ;
-                rdfs:comment "ATTACK things are concepts defined in the ATT&CK Framework." ;
-                rdfs:label "ATTACK Thing" .
+d3f:ATTACKThing
+    rdf:type     owl:Class ;
+    rdfs:comment "ATTACK things are concepts defined in the ATT&CK Framework." ;
+    rdfs:label   "ATTACK Thing" .
+
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#Animal
+d3f:Animal
+    rdf:type owl:Class .
+
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#Athlete
+d3f:Athlete
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:Animal .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Collection
-d3f:Collection rdf:type owl:Class ;
-               rdfs:subClassOf d3f:OffensiveTactic ,
-                               [ rdf:type owl:Restriction ;
-                                 owl:onProperty d3f:display-order ;
-                                 owl:hasValue 2
-                               ] .
+d3f:Collection
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:OffensiveTactic, [ rdf:type       owl:Restriction ;
+                                           owl:onProperty d3f:display-order ;
+                                           owl:hasValue   2 ] .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#CommandAndControl
@@ -1827,33 +1837,51 @@ d3f:CredentialAccess rdf:type owl:Class ;
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#DefenseEvasion
-d3f:DefenseEvasion rdf:type owl:Class ;
-                   rdfs:subClassOf d3f:OffensiveTactic .
+d3f:DefenseEvasion
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:OffensiveTactic .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Discovery
-d3f:Discovery rdf:type owl:Class ;
-              rdfs:subClassOf d3f:OffensiveTactic .
+d3f:Discovery
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:OffensiveTactic .
+
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#Dog
+d3f:Dog
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:Animal .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Execution
-d3f:Execution rdf:type owl:Class ;
-              rdfs:subClassOf d3f:OffensiveTactic .
+d3f:Execution
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:OffensiveTactic .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Exfiltration
-d3f:Exfiltration rdf:type owl:Class ;
-                 rdfs:subClassOf d3f:OffensiveTactic .
+d3f:Exfiltration
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:OffensiveTactic .
+
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#Human
+d3f:Human
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:Animal .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Impact
-d3f:Impact rdf:type owl:Class ;
-           rdfs:subClassOf d3f:OffensiveTactic .
+d3f:Impact
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:OffensiveTactic .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#InitialAccess
-d3f:InitialAccess rdf:type owl:Class ;
-                  rdfs:subClassOf d3f:OffensiveTactic .
+d3f:InitialAccess
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:OffensiveTactic .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Isolated
