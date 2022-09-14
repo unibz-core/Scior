@@ -33,7 +33,7 @@ def generate_hash_ontology_dataclass_list(ontology_dataclass_list):
     return total_hash
 
 
-def NEW_get_list_gufo_classification(ontology_dataclass_list, list_uris, search_list, gufo_element):
+def get_list_gufo_classification(ontology_dataclass_list, list_uris, search_list, gufo_element):
     """ Receives a list of URIs (list_uris), the name of the list to be searched (search_list), and the element that
     must be in that list. Allowed search_list values can be: IS, CAN or NOT (valid for both types or individuals).
 
@@ -66,21 +66,6 @@ def NEW_get_list_gufo_classification(ontology_dataclass_list, list_uris, search_
 
         if (gufo_element in search_type) or (gufo_element in search_individual):
             return_list.append(ontology_dataclass.uri)
-
-    return return_list
-
-
-def get_list_gufo_classification(ontology_dataclass_list, list_uris, classification):
-    """ Receives a list of URIs and returns a list of dataclasses with the elements in the input list which have
-    the given classification in its is_type or is_individual list.
-    """
-
-    return_list = []
-
-    for ontology_dataclass in ontology_dataclass_list:
-        if ontology_dataclass.uri in list_uris:
-            if (classification in ontology_dataclass.is_type) or (classification in ontology_dataclass.is_individual):
-                return_list.append(ontology_dataclass.uri)
 
     return return_list
 

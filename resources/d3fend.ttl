@@ -1780,24 +1780,36 @@ d3f:windows-registry-key rdf:type owl:DatatypeProperty ;
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#windows-registry-value
-d3f:windows-registry-value rdf:type owl:DatatypeProperty ;
+d3f:windows-registry-value rdf:type           owl:DatatypeProperty ;
                            rdfs:subPropertyOf d3f:windows-registry-data-property ;
-                           rdfs:comment "x value y: The key-value pair x has the data value y." ;
-                           rdfs:label "windows-registry-value" ;
-                           skos:altLabel "value" .
+                           rdfs:comment       "x value y: The key-value pair x has the data value y." ;
+                           rdfs:label         "windows-registry-value" ;
+                           skos:altLabel      "value" .
 
 
 #################################################################
 #    Classes
 #################################################################
 
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#AC
+d3f:AC
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:Athlete .
+
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#AN
+d3f:AN
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:Athlete .
+
+
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#ATTACKMitigation
-d3f:ATTACKMitigation rdf:type owl:Class ;
-                     rdfs:subClassOf d3f:ATTACKThing ,
-                                     [ rdf:type owl:Restriction ;
-                                       owl:onProperty d3f:d3fend-comment ;
+d3f:ATTACKMitigation
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:ATTACKThing, [ rdf:type           owl:Restriction ;
+                                       owl:onProperty     d3f:d3fend-comment ;
                                        owl:someValuesFrom xsd:string ] ;
-                     rdfs:label "ATTACK Mitigation" .
+    rdfs:label      "ATTACK Mitigation" .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#ATTACKThing
@@ -1851,7 +1863,7 @@ d3f:Discovery
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Dog
 d3f:Dog
     rdf:type        owl:Class ;
-    rdfs:subClassOf d3f:Animal .
+    rdfs:subClassOf d3f:Mamifero .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Execution
@@ -1869,7 +1881,7 @@ d3f:Exfiltration
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Human
 d3f:Human
     rdf:type        owl:Class ;
-    rdfs:subClassOf d3f:Animal .
+    rdfs:subClassOf d3f:Mamifero .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Impact
@@ -1885,12 +1897,20 @@ d3f:InitialAccess
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#Isolated
-d3f:Isolated rdf:type owl:Class .
+d3f:Isolated
+    rdf:type owl:Class .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#LateralMovement
-d3f:LateralMovement rdf:type owl:Class ;
-                    rdfs:subClassOf d3f:OffensiveTactic .
+d3f:LateralMovement
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:OffensiveTactic .
+
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#Mamifero
+d3f:Mamifero
+    rdf:type        owl:Class ;
+    rdfs:subClassOf d3f:Animal .
 
 
 ###  http://d3fend.mitre.org/ontologies/d3fend.owl#OffensiveTactic
