@@ -115,5 +115,8 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): As log files are getting big, maybe it is going to be necessary to compact them into a zip file.
 # TODO (@pedropaulofb): It must be possible to print in a file the current state of the ontology during interactions
 #   with the user, so he can open and evaluate the current status of the ontology.
+# TODO (@pedropaulofb): Also, the user must be able to add other information whenever he/she considers necessary.
 # TODO (@pedropaulofb): Add option to skip interactive rule iteration (to add other processing first).
 # TODO (@pedropaulofb): Ordinate all lists that are exhibited to the user.
+# TODO (@pedropaulofb): Run automatic only for some different configurations and figure out which is the best order
+#  for executing the rules.

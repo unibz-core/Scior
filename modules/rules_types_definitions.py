@@ -18,11 +18,20 @@ GUFO_NON_SORTAL = "gufo:NonSortal"
 
 def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list):
     """
-    - DESCRIPTION: All direct or indirect superclasses of an ontology class that is a type of gufo:Kind
-                    cannot be a type of gufo:Sortal.
-        Inverse of rule_s_k_sub.
-    - DEFAULT: Automatic
-    - CODE: k_s_sup
+    - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
+
+    - RULE: A gufo:Kind cannot have gufo:Sortals as its direct or indirect supertypes.
+
+    - BEHAVIOUR:
+
+        - Complete + Automatic Only: Enforce. (IMPLEMENTED)
+        - Complete + Automatic: Enforce. (IMPLEMENTED)
+        - Complete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+
+        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
+        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
+        - Incomplete + Interactive: User can apply or include new. (NOT IMPLEMENTED)
+
     """
 
     rule_code = "k_s_sup"
@@ -40,11 +49,21 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list):
 
 def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list):
     """
-    - DESCRIPTION: All direct or indirect subclasses of an ontology class that is a type of gufo:Sortal
-                    cannot be a type of gufo:Kind.
-        Inverse of rule_k_s_sup.
-    - DEFAULT: Automatic
-    - CODE: s_k_sub
+    - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
+
+    - RULE: gufo:Sortals cannot have a gufo:Kind as direct or indirect subtypes.
+
+    - BEHAVIOUR:
+
+        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
+        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
+        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+
+        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
+        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
+        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+
+
     """
 
     rule_code = "s_k_sub"
@@ -61,10 +80,19 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list):
 
 def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list):
     """
-    - DESCRIPTION: If a class has a direct or indirect superclass that is a gufo:Kind, all others direct or indirect
-                    superclasses are not gufo:Kinds.
-    - DEFAULT: Automatic
-    - CODE: t_k_sup
+    - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
+
+    - RULE: A type cannot have more than one Kind as its direct or indirect supertypes.
+
+    - BEHAVIOUR:
+
+        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
+        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
+        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+
+        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
+        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
+        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
     """
 
     rule_code = "t_k_sup"
@@ -102,11 +130,19 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list):
 
 def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list):
     """
-    - DESCRIPTION: All direct or indirect superclasses of an ontology class that is a type of gufo:NonSortal
-                    cannot be a type of gufo:Sortal.
-        Inverse of rule_s_ns_sub.
-    - DEFAULT: Automatic
-    - CODE: ns_s_sup
+    - REASON: NonSortals aggregates identities from at least two different identity principles providers.
+
+    - RULE: A gufo:NonSortal cannot have a gufo:Sortal as its direct or indirect supertype.
+
+    - BEHAVIOUR:
+
+        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
+        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
+        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+
+        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
+        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
+        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
     """
 
     rule_code = "ns_s_sup"
@@ -123,11 +159,19 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list):
 
 def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list):
     """
-    - DESCRIPTION: All direct or indirect subclasses of an ontology class that is a type of gufo:Sortal
-                    cannot be a type of gufo:NonSortal.
-        Inverse of rule_ns_s_sup.
-    - DEFAULT: Automatic
-    - CODE: s_ns_sub
+    - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
+
+    - RULE: A gufo:Sortal cannot have a gufo:NonSortal as its direct or indirect subtype.
+
+    - BEHAVIOUR:
+
+        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
+        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
+        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+
+        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
+        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
+        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
     """
 
     rule_code = "s_ns_sub"
@@ -144,10 +188,19 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list):
 
 def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list):
     """
-    - DESCRIPTION: No rigid or semi-rigid type can have an anti-rigid type as direct or indirect superclass.
-        Inverse of rule_ar_r_sub.
-    - DEFAULT: Automatic
-    - CODE: r_ar_sup
+    - REASON: Rigid types cannot specialize AntiRigid types.
+
+    - RULE: A Rigid or SemiRigid type cannot have an AntiRigid type as its direct or indirect supertypes.
+
+    - BEHAVIOUR:
+
+        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
+        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
+        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+
+        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
+        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
+        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
     """
 
     rule_code = "r_ar_sup"
@@ -169,10 +222,19 @@ def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list):
 
 def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list):
     """
-    - DESCRIPTION: No AntiRigidType can have RigidType or SemiRigidType as direct or indirect subclasses.
-        Inverse of rule_r_ar_sup.
-    - DEFAULT: Automatic
-    - CODE: ar_r_sub
+    - REASON: Rigid types cannot specialize AntiRigid types.
+
+    - RULE: A AntiRigid type cannot have a Rigid or SemiRigid type as its direct or indirect subtypes.
+
+    - BEHAVIOUR:
+
+        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
+        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
+        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+
+        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
+        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
+        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
     """
 
     rule_code = "ar_r_sub"
@@ -191,20 +253,22 @@ def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list):
 
 def rule_n_r_t(list_ontology_dataclasses, nodes_list):
     """
-    - CAUSE: Every type must supply (Kinds) or carry (Non-Kind Sortals) a single identity principle or
+    - REASON: Every type must supply (Kinds) or carry (Non-Kind Sortals) a single identity principle or
     aggregate (NonSortals) multiple identity principles.
 
-    - CONSEQUENCE: In complete models, every type without supertypes and without subtypes must be a gufo:Kind.
+    - RULE: In complete models, every type without supertypes and without subtypes must be a gufo:Kind.
 
     - BEHAVIOUR:
 
-        - Complete + Automatic Only: Enforce. (IMPLEMENTED)
-        - Complete + Automatic: Enforce. (IMPLEMENTED)
+        - Complete + Automatic Only: Enforce. If it is set as something else than a Kind, report error.
+        (PARTIALLY IMPLEMENTED)
+        - Complete + Automatic: Enforce. If it is set as something else than a Kind, report error.
+        (PARTIALLY IMPLEMENTED)
         - Complete + Interactive: User can: apply or report deficiency. (NOT IMPLEMENTED)
 
-        - Incomplete + Automatic Only: Not available. No action. (NOT IMPLEMENTED)
-        - Incomplete + Automatic: User can: apply or include. (NOT IMPLEMENTED)
-        - Incomplete + Interactive: User can: apply or include. (NOT IMPLEMENTED)
+        - Incomplete + Automatic Only: Not available. No action. (IMPLEMENTED)
+        - Incomplete + Automatic: User can: apply or include new. (NOT IMPLEMENTED)
+        - Incomplete + Interactive: User can: apply or include new. (NOT IMPLEMENTED)
     """
 
     rule_code = "n_r_t"
@@ -231,9 +295,9 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list):
 # TODO (@pedropaulofb): Treat the special case of a NonSortal single class (root and leaf at the same time).
 def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
     """
-    - CAUSE: NonSortals aggregates identities from at least two different identity principles providers.
+    - REASON: NonSortals aggregates identities from at least two different identity principles providers.
 
-    - CONSEQUENCE: Given a gufo:NonSortal N, there must be at least two gufo:Sortals S1 and S2 with different
+    - RULE: Given a gufo:NonSortal N, there must be at least two gufo:Sortals S1 and S2 with different
     identity principles (i.e., that are specializations of different gufo:Kinds) that:
         (1) directly or indirectly specializes N, OR
         (2) directly or indirectly specializes
@@ -242,6 +306,24 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
 
     In other words, from any gufo:NonSortal at least two gufo:Kinds must be reachable by navigating its
     generalization/specialization relations.
+
+    BEHAVIOUR:
+
+        - Complete + Automatic Only: Enforce. Verify number of possibilities. (PARTIALLY IMPLEMENTED)
+            1) If the possibilities are equal to the necessary number, set as Kind.
+            2) If the possibilities are higher than the necessary number, do nothing.
+            3) If the possibilities are smaller than the necessary number, report problem.
+        - Complete + Automatic: Enforce. Verify number of possibilities. (PARTIALLY IMPLEMENTED)
+            1) If the possibilities are equal to the necessary number, set as Kind.
+            2) If the possibilities are higher than the necessary number, do nothing.
+            3) If the possibilities are smaller than the necessary number, report problem.
+        - Complete + Interactive: Verify number of possibilities. User can: (PARTIALLY IMPLEMENTED)
+            1) If the possibilities are higher or equal to the necessary number: apply.
+            2) If the possibilities are smaller than the necessary number: apply and report problem.
+
+        - Incomplete + Automatic Only: Not available. No action. (IMPLEMENTED)
+        - Incomplete + Automatic: User can: apply or include new. (PARTIALLY IMPLEMENTED)
+        - Incomplete + Interactive: User can: apply or include new. (PARTIALLY IMPLEMENTED)
     """
 
     rule_code = "ns_s_spe"
@@ -318,11 +400,21 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
 
 def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
     """
-    - DESCRIPTION: Every non-Kind Sortal must have a Kind as direct or indirect supertype.
-                    I.e., there must be an identity provider for them.
-                    Non-Kind Sortal = is_type: Sortal AND not_type: Kind
-    - DEFAULT: Interactive
-    - CODE: nk_k_sup
+    - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
+
+    - RULE: Every non-Kind gufo:Sortal (is gufo:Sortal and is not gufo:Kind) must have exactly one gufo:Kind
+    as direct or indirect supertype.
+
+    - BEHAVIOUR:
+
+        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
+        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
+        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+
+        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
+        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
+        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+
     """
 
     rule_code = "nk_k_sup"
@@ -390,10 +482,10 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
 
 def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list):
     """
-        - CAUSE: Every Sortal (types that carry or supply an identity principle) must have exactly
+        - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly
         one identity principle, which is provided by a Kind.
 
-        - CONSEQUENCE: In complete models, every gufo:Sortal without supertypes is a gufo:Kind.
+        - RULE: In complete models, every gufo:Sortal without supertypes is a gufo:Kind.
 
         - BEHAVIOUR:
 
@@ -401,9 +493,9 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list):
             - Complete + Automatic: Enforce. (IMPLEMENTED)
             - Complete + Interactive: User can: apply or report deficiency. (NOT IMPLEMENTED)
 
-            - Incomplete + Automatic Only: Not available. No action. (NOT IMPLEMENTED)
-            - Incomplete + Automatic: User can: apply or include. (NOT IMPLEMENTED)
-            - Incomplete + Interactive: User can: apply or include. (NOT IMPLEMENTED)
+            - Incomplete + Automatic Only: Not available. No action. (IMPLEMENTED)
+            - Incomplete + Automatic: User can: apply or include new. (NOT IMPLEMENTED)
+            - Incomplete + Interactive: User can: apply or include new. (NOT IMPLEMENTED)
         """
 
     rule_code = "s_nsup_k"
