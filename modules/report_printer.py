@@ -138,19 +138,25 @@ def print_class_summary(ontology_dataclass_list, nodes_list):
     table.add_row(["Type", "Solved", solved_types, solved_types_percentage])
     table.add_row(["Type", "Reduced", reduced_types, reduced_types_percentage])
     table.add_row(["Type", "Improved", improved_types, improved_types_percentage])
-    table.add_row(["Type", "Not Improved", improved_types, round(100 - improved_types_percentage, 2)])
+    table.add_row(["Type", "Not Improved", total_number_of_classes - improved_types,
+                   round(100 - improved_types_percentage, 2)])
     table.add_row(["-----", "-----", "-----", "-----"])
 
     table.add_row(["Individual", "Inputted", total_number_of_classes, 100.0])
     table.add_row(["Individual", "Solved", solved_individuals, solved_individuals_percentage])
     table.add_row(["Individual", "Reduced", reduced_individuals, reduced_individuals_percentage])
     table.add_row(["Individual", "Improved", improved_individuals, improved_individuals_percentage])
+    table.add_row(["Individual", "Not Improved", total_number_of_classes - improved_individuals,
+                   round(100 - improved_individuals_percentage, 2)])
+    table.add_row(["-----", "-----", "-----", "-----"])
     table.add_row(["-----", "-----", "-----", "-----"])
 
     table.add_row(["Total", "Inputted", total_number_of_classes, 100.0])
     table.add_row(["Total", "Solved", solved_total, solved_total_percentage])
     table.add_row(["Total", "Reduced", reduced_total, reduced_total_percentage])
     table.add_row(["Total", "Improved", improved_total, improved_total_percentage])
+    table.add_row(["Total", "Not Improved", total_number_of_classes - improved_total,
+                   round(100 - improved_total_percentage, 2)])
 
     table.align["GROUP"] = "l"
     table.align["ITEM"] = "l"

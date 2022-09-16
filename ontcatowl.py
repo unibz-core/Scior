@@ -11,26 +11,7 @@ Arguments: TO BE IMPLEMENTED
 -c: Complete. New classes cannot be created.
 -i: (DEFAULT) Incomplete model. New classes can be created by the user.
 
-
-
-
--m: ask for user confirmation before any modifications
--n: do not ask for user confirmation before any modifications (DEFAULT)
-
--i: when inconsistencies are found, treat them
--x: when inconsistencies are found, inform user and exit program (DEFAULT)
-
--c: allows possibility to reclassificate classes.
-
--a: run only automatic rules
--m: run automatic and interactive rules (DEFAULT)
-
--j: prints to user justification for every classification performed
 -t: prints to user the execution times of all functions
--v: verbose mode (same as -jt)
-
--s: print options (j|t|v) in the console (DEFAULT)
--l: print options (j|t|v) in the log file
 
 """
 

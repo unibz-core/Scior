@@ -1,7 +1,5 @@
 """ Rules applied to the TYPES HIERARCHY. """
 
-import time
-
 from modules.logger_config import initialize_logger
 from modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, rule_t_k_sup, rule_ns_s_sup, rule_s_ns_sub, \
     rule_r_ar_sup, \
@@ -35,15 +33,7 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, stile):
         initial_hash = final_hash
 
         for rule in list_of_rules:
-            # TODO (@pedropaulofb): Correct time counting.
-            # Time counter cannot be performed here, as it includes user interactions that must be removed.
-            st = time.perf_counter()
-
             switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule)
-
-            et = time.perf_counter()
-            elapsed_time = round((et - st), 3)
-            logger.info(f"Execution time for rule {rule}: {elapsed_time} seconds.")
 
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
