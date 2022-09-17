@@ -11,7 +11,11 @@ Arguments: TO BE IMPLEMENTED
 -c: Complete. New classes cannot be created.
 -i: (DEFAULT) Incomplete model. New classes can be created by the user.
 
--t: prints to user the execution times of all functions
+-t: prints to user the execution times of all functions (IMPLEMENTED)
+-r: generate partial ontology and reports before any user interaction
+-g: save output ontology importing GUFO (IMPLEMENTED)
+
+-h: usage and help instructions
 
 """
 
@@ -24,6 +28,7 @@ from modules.data_initialization_graph import initialize_nodes_lists
 from modules.data_initialization_gufo import initialize_gufo_dictionary
 from modules.data_initialization_ontology_dataclass import initialize_ontology_dataclasses
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
+from modules.graph_save_ontology import save_ontology_file, save_ontology_gufo_statements
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
 from modules.rules_types_run import execute_rules_types
@@ -73,6 +78,9 @@ if __name__ == "__main__":
 
     execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, stile)
 
+    ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
+
+    save_ontology_file(ontology_graph)
     print_report_file(ontology_dataclass_list, ontology_nodes)
 
     ############################## END TESTS
@@ -101,3 +109,4 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Ordinate all lists that are exhibited to the user.
 # TODO (@pedropaulofb): Run automatic only for some different configurations and figure out which is the best order
 #  for executing the rules.
+# TODO (@pedropaulofb): Verify inclusion of menus: https://pypi.org/project/simple-term-menu/
