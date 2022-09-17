@@ -29,7 +29,7 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph):
     return ontology_graph
 
 
-# TODO (@pedropaulofb): Use the same input name, appending "-out", for generating the output TTL file.
+# TODO (@pedropaulofb): Use the same input name, appending time and date, for generating the output TTL file.
 def save_ontology_file(ontology_graph):
     """
     Saves the ontology graph into a TTL file.
@@ -46,5 +46,10 @@ def save_ontology_file(ontology_graph):
 
 
 def treat_name(gufo_short_name):
+    """
+    Receives a short GUFO URI string (e.g., gufo:Kind) and
+    returns a full GUFO URI string (e.g., http://purl.org/nemo/gufo#Kind).
+    """
+
     gufo_url = "http://purl.org/nemo/gufo#"
     return gufo_url + gufo_short_name[5:]

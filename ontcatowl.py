@@ -76,14 +76,12 @@ if __name__ == "__main__":
 
     stile = "all"
 
+    ############################## END TESTS
+
     execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, stile)
-
     ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
-
     save_ontology_file(ontology_graph)
     print_report_file(ontology_dataclass_list, ontology_nodes)
-
-    ############################## END TESTS
 
     now = datetime.now()
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")

@@ -73,5 +73,7 @@ def insert_new_element_type_hierarchy(ontology_graph, class_name, gufo_type_shor
 
 def get_ontology_uri(ontology_graph):
     """ Return the URI of the ontology graph. """
-    for subj in ontology_graph.subjects(RDF.type, OWL.Ontology):
-        return subj
+
+    ontology_uri = ontology_graph.value(predicate=RDF.type, object=OWL.Ontology)
+
+    return ontology_uri
