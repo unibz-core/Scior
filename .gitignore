@@ -131,3 +131,5 @@ dmypy.json
 # Personal tests and backups
 trash/
 /modules/backups - not used/
+log/
+report/
