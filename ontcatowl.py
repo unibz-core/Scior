@@ -15,7 +15,9 @@ from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
 from modules.rules_types_run import execute_rules_types
 
-SOFTWARE_VERSION = "OntCatOWL version 0.1"
+SOFTWARE_VERSION = "OntCatOWL - Identification of Ontological Categories for OWL Ontologies\n" \
+                   "Version 1.0 - 20221011\n" \
+                   "Github Repository: https://github.com/unibz-core/OntCatOWL/"
 
 if __name__ == "__main__":
 
