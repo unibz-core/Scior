@@ -3,7 +3,6 @@ import time
 
 from prettytable import PrettyTable
 
-from modules.global_configurations import PRINT_TIME
 from modules.logger_config import initialize_logger
 from modules.propagation import execute_and_propagate_down, execute_and_propagate_up
 from modules.utils_dataclass import get_list_gufo_classification, get_element_list, external_move_to_is_list
@@ -17,7 +16,7 @@ GUFO_SORTAL = "gufo:Sortal"
 GUFO_NON_SORTAL = "gufo:NonSortal"
 
 
-def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list):
+def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
 
@@ -35,7 +34,7 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list):
 
     """
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st = time.perf_counter()
 
     rule_code = "k_s_sup"
@@ -50,13 +49,13 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list):
                                      rule_code, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
-def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list):
+def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
 
@@ -75,7 +74,7 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list):
 
     """
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st = time.perf_counter()
 
     rule_code = "s_k_sub"
@@ -89,13 +88,13 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list):
                                        ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
-def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list):
+def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
 
@@ -112,7 +111,7 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list):
         - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
     """
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st = time.perf_counter()
 
     rule_code = "t_k_sup"
@@ -145,13 +144,13 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list):
                                              return_list)
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
-def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list):
+def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: NonSortals aggregates identities from at least two different identity principles providers.
 
@@ -167,7 +166,7 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list):
         - Incomplete + Automatic: Enforce. (IMPLEMENTED)
         - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
     """
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st = time.perf_counter()
 
     rule_code = "ns_s_sup"
@@ -181,13 +180,13 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list):
                                      ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
-def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list):
+def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
 
@@ -204,7 +203,7 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list):
         - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
     """
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st = time.perf_counter()
 
     rule_code = "s_ns_sub"
@@ -218,13 +217,13 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list):
                                        ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
-def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list):
+def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: Rigid types cannot specialize AntiRigid types.
 
@@ -241,7 +240,7 @@ def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list):
         - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
     """
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st = time.perf_counter()
 
     rule_code = "r_ar_sup"
@@ -260,13 +259,13 @@ def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list):
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
-def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list):
+def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: Rigid types cannot specialize AntiRigid types.
 
@@ -283,7 +282,7 @@ def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list):
         - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
     """
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st = time.perf_counter()
 
     rule_code = "ar_r_sub"
@@ -299,13 +298,13 @@ def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list):
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
-def rule_n_r_t(list_ontology_dataclasses, nodes_list):
+def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
     """
     - REASON: Every type must supply (Kinds) or carry (Non-Kind Sortals) a single identity principle or
     aggregate (NonSortals) multiple identity principles.
@@ -325,7 +324,7 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list):
         - Incomplete + Interactive: User can: apply or include new. (NOT IMPLEMENTED)
     """
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st = time.perf_counter()
 
     rule_code = "n_r_t"
@@ -347,14 +346,14 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list):
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 # TODO (@pedropaulofb): Treat the special case of a NonSortal single class (root and leaf at the same time).
-def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
+def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: NonSortals aggregates identities from at least two different identity principles providers.
 
@@ -387,7 +386,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
         - Incomplete + Interactive: User can: apply or include new. (PARTIALLY IMPLEMENTED)
     """
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st1 = time.perf_counter()
         # Necessary for the calculation when interactive mode.
         st2 = -1
@@ -427,7 +426,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
                                  f"Aborting the program.")
                     exit(1)
 
-                if PRINT_TIME:
+                if configurations["print_time"]:
                     et1 = time.perf_counter()
 
                 logger.info(INTERVENTION_WARNING)
@@ -461,7 +460,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
 
                 print(f"The chosen class is: {related_can_kinds_list[new_sortal_id - 1]}")
 
-                if PRINT_TIME:
+                if configurations["print_time"]:
                     st2 = time.perf_counter()
 
                 external_move_to_is_list(list_ontology_dataclasses, related_can_kinds_list[new_sortal_id - 1],
@@ -469,7 +468,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et2 = time.perf_counter()
         if st2 > 0:
             elapsed_time_final = round((et1 - st1 + et2 - st2), 3)
@@ -478,7 +477,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list):
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time_final} seconds.")
 
 
-def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
+def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
 
@@ -497,7 +496,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
 
     """
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st1 = time.perf_counter()
         # Necessary for the calculation when interactive mode.
         st2 = -1
@@ -549,7 +548,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
         # Case multiple possibilities, user must choose.
         elif len(list_possibilities) > 1:
 
-            if PRINT_TIME:
+            if configurations["print_time"]:
                 et1 = time.perf_counter()
 
             logger.info(INTERVENTION_WARNING)
@@ -563,12 +562,12 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
             new_kind = input(f"Enter the class to be set as gufo:Kind: ")
             new_kind.strip()
 
-            if PRINT_TIME:
+            if configurations["print_time"]:
                 st2 = time.perf_counter()
 
             external_move_to_is_list(list_ontology_dataclasses, new_kind, GUFO_KIND)
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et2 = time.perf_counter()
         if st2 > 0:
             elapsed_time_final = round((et1 - st1 + et2 - st2), 3)
@@ -577,7 +576,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time_final} seconds.")
 
 
-def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list):
+def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
         - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly
         one identity principle, which is provided by a Kind.
@@ -595,7 +594,7 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list):
             - Incomplete + Interactive: User can: apply or include new. (NOT IMPLEMENTED)
         """
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         st = time.perf_counter()
 
     rule_code = "s_nsup_k"
@@ -618,7 +617,7 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list):
         if len(all_superclasses) == 0:
             ontology_dataclass.move_element_to_is_list(GUFO_KIND)
 
-    if PRINT_TIME:
+    if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")

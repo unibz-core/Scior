@@ -1,7 +1,6 @@
 """ Functions related to reading and writing OWL files using RDFLib. """
 from rdflib import URIRef, RDF, RDFS, OWL
 
-from modules.global_configurations import IMPORT_GUFO
 from modules.utils_rdf import get_ontology_uri
 
 
@@ -30,19 +29,19 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph):
 
 
 # TODO (@pedropaulofb): Use the same input name, appending time and date, for generating the output TTL file.
-def save_ontology_file(ontology_graph):
+def save_ontology_file(ontology_graph, configurations):
     """
     Saves the ontology graph into a TTL file.
     If import_gufo parameter is set as True, the saved output is going to import the GUFO ontology.
     """
 
-    if IMPORT_GUFO:
+    if configurations["import_gufo"]:
         ontology_uri = get_ontology_uri(ontology_graph)
         gufo_import = URIRef("https://purl.org/nemo/gufo#")
         ontology_graph.add((ontology_uri, OWL.imports, gufo_import))
 
     # TODO (@pedropaulofb): Perform I/O output verifications
-    ontology_graph.serialize(destination="resources/ontology-out.ttl")
+    ontology_graph.serialize(destination=configurations["ontology_path"])
 
 
 def treat_name(gufo_short_name):

@@ -15,15 +15,21 @@ from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
 from modules.rules_types_run import execute_rules_types
 
-if __name__ == "__main__":
+SOFTWARE_VERSION = "OntCatOWL version 0.1"
 
-    SOFTWARE_VERSION = "OntCatOWL version 0.1"
+if __name__ == "__main__":
 
     # DATA LOADINGS AND INITIALIZATIONS
 
-    configuration = treat_arguments(SOFTWARE_VERSION)
-    print(configuration)
-    exit(1)
+    global_configurations = {"partial_results",
+                             "import_gufo",
+                             "interactivity_level",
+                             "is_complete",
+                             "print_time",
+                             "ontology_path"}
+
+    global_configurations = treat_arguments(SOFTWARE_VERSION)
+    print(global_configurations)
 
     # Logger initialization
     logger = initialize_logger()
@@ -33,12 +39,11 @@ if __name__ == "__main__":
     logger.info(f"OntCatOWL started on {date_time}!")
 
     # Input ontology_graph to be evaluated
-    graph_file = "resources/d3fend.ttl"
     ontology_graph = Graph()
     try:
-        ontology_graph.parse(graph_file)
+        ontology_graph.parse(global_configurations["ontology_path"])
     except OSError:
-        logger.error("Could not load resources/d3fend.ttl file. Exiting program.")
+        logger.error(f"Could not load {global_configurations['ontology_path']} file. Exiting program.")
         exit(1)
 
     gufo_dictionary = initialize_gufo_dictionary()
@@ -67,16 +72,15 @@ if __name__ == "__main__":
 
     ############################## END TESTS
 
-    execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, stile)
+    execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, stile, global_configurations)
     ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
-    save_ontology_file(ontology_graph)
+    save_ontology_file(ontology_graph, global_configurations)
     print_report_file(ontology_dataclass_list, ontology_nodes)
 
     now = datetime.now()
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL concluded on {date_time}!")
 
-# TODO (@pedropaulofb): Use argparse module for loading arguments
 # TODO (@pedropaulofb): Currently reasoning cannot be done after the initialization (e.g., after the rules exec).
 # TODO (@pedropaulofb): Read input ontology from user"s argument
 # TODO (@pedropaulofb): The ontology_graph may already contain relations with GUFO. Treat that.

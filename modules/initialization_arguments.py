@@ -116,10 +116,11 @@ def treat_arguments(software_version):
     # Execute arguments parser
     arguments = arguments_parser.parse_args()
 
-    global_configurations = {"PARTIAL_RESULTS": arguments.partial,
-                             "IMPORT_GUFO": arguments.gufo,
-                             "INTERACTIVITY_LEVEL": treat_interactivity_level_options(arguments),
-                             "IS_COMPLETE": treat_completeness_options(arguments),
-                             "PRINT_TIME": arguments.times}
+    global_configurations = {"partial_results": arguments.partial,
+                             "import_gufo": arguments.gufo,
+                             "interactivity_level": treat_interactivity_level_options(arguments),
+                             "is_complete": treat_completeness_options(arguments),
+                             "print_time": arguments.times,
+                             "ontology_path": arguments.ontology_file}
 
     return global_configurations
