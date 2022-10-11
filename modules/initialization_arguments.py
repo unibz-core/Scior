@@ -1,25 +1,8 @@
-""" Argument Treatments
-
-# INTERACTIVITY LEVEL OPTIONS:
--1: Always interactive. No modifications are performed without the agreement of the user.
--2: (DEFAULT) Automatic when possible, interactive if necessary.
--3: Automatic only. No manual intervention needed.
-
-# MODEL COMPLETENESS ASSUMPTION OPTIONS:
--c: Complete. New classes cannot be created.
--i: (DEFAULT) Incomplete model. New classes can be created by the user.
-
-# GENERAL OPTIONS
--t: prints to user the execution times of all functions (IMPLEMENTED)
--p: generate partial ontology and reports before any user interaction
--g: save output ontology importing GUFO (IMPLEMENTED)
-
--h: prints usage and help instructions
--v: prints software version
-
-"""
+""" Argument Treatments """
 
 import argparse
+
+from modules.logger_config import initialize_logger
 
 
 def treat_interactivity_level_options(arguments):
@@ -55,6 +38,9 @@ def treat_completeness_options(arguments):
 
 def treat_arguments(software_version):
     """ Treats user input arguments. """
+
+    logger = initialize_logger()
+    logger.INFO("Parsing arguments...")
 
     # PARSING ARGUMENTS
     arguments_parser = argparse.ArgumentParser(prog="OntCatOWL",
@@ -122,5 +108,7 @@ def treat_arguments(software_version):
                              "is_complete": treat_completeness_options(arguments),
                              "print_time": arguments.times,
                              "ontology_path": arguments.ontology_file}
+
+    logger.INFO(f"Arguments Parsed. Values obtained are: {global_configurations}")
 
     return global_configurations

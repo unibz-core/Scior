@@ -21,13 +21,6 @@ if __name__ == "__main__":
 
     # DATA LOADINGS AND INITIALIZATIONS
 
-    global_configurations = {"partial_results",
-                             "import_gufo",
-                             "interactivity_level",
-                             "is_complete",
-                             "print_time",
-                             "ontology_path"}
-
     global_configurations = treat_arguments(SOFTWARE_VERSION)
     print(global_configurations)
 
@@ -68,6 +61,7 @@ if __name__ == "__main__":
 
     ont_dataclass.move_element_to_is_list("gufo:Mixin")
 
+    # TODO (@pedropaulofb): CORRECT THIS STYLE
     stile = "all"
 
     ############################## END TESTS
@@ -81,11 +75,9 @@ if __name__ == "__main__":
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL concluded on {date_time}!")
 
-# TODO (@pedropaulofb): Currently reasoning cannot be done after the initialization (e.g., after the rules exec).
-# TODO (@pedropaulofb): Read input ontology from user"s argument
-# TODO (@pedropaulofb): The ontology_graph may already contain relations with GUFO. Treat that.
-# TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
 # TODO (@pedropaulofb): Verify possibility to check consistency using a reasoner.
+# TODO (@pedropaulofb): Currently reasoning cannot be done after the initialization (e.g., after the rules exec).
+# TODO (@pedropaulofb): The ontology_graph may already contain relations with GUFO. Treat that.
 # TODO (@pedropaulofb): Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
 # TODO (@pedropaulofb): Is there a way to define the GUFO list as read-only?
 # TODO (@pedropaulofb): Verify if there is any unused module, function or method
@@ -94,9 +86,6 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Treat problem with huge ontologies (stack overflow)
 # TODO (@pedropaulofb): Verify "dataclass with slots" and the use of __slot__ for better performance.
 # TODO (@pedropaulofb): As log files are getting big, maybe it is going to be necessary to compact them into a zip file.
-# TODO (@pedropaulofb): It must be possible to print in a file the current state of the ontology during interactions
-#   with the user, so he can open and evaluate the current status of the ontology.
-# TODO (@pedropaulofb): Also, the user must be able to add other information whenever he/she considers necessary.
 # TODO (@pedropaulofb): Add option to skip interactive rule iteration (to add other processing first).
 # TODO (@pedropaulofb): Ordinate all lists that are exhibited to the user.
 # TODO (@pedropaulofb): Run automatic only for some different configurations and figure out which is the best order
