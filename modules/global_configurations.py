@@ -1,8 +1,7 @@
-""" User parameters used globally in rules. """
+""" Configurations made available globally obtained from input arguments. """
+# Configurations from arguments globally available and initialized with default values:
 
-# Default values
 PARTIAL_RESULTS = False
 IMPORT_GUFO = True
-INTERACTIVITY_LEVEL = 2
 IS_COMPLETE = False
 PRINT_TIME = True

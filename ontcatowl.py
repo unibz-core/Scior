@@ -1,122 +1,29 @@
-"""Main module  for OntCatOWL
+""" Main module  for OntCatOWL """
 
-Arguments: TO BE IMPLEMENTED
-
-# INTERACTIVITY LEVEL OPTIONS:
--1: Always interactive. No modifications are performed without the agreement of the user.
--2: (DEFAULT) Automatic when possible, interactive if necessary.
--3: Automatic only. No manual intervention needed.
-
-# MODEL COMPLETENESS ASSUMPTION OPTIONS:
--c: Complete. New classes cannot be created.
--i: (DEFAULT) Incomplete model. New classes can be created by the user.
-
-# GENERAL OPTIONS
--t: prints to user the execution times of all functions (IMPLEMENTED)
--p: generate partial ontology and reports before any user interaction
--g: save output ontology importing GUFO (IMPLEMENTED)
-
--h: prints usage and help instructions
--v: prints software version
-
-"""
-
-import argparse
 import time
 from datetime import datetime
 
 from rdflib import Graph
 
-from modules.data_initialization_graph import initialize_nodes_lists
-from modules.data_initialization_gufo import initialize_gufo_dictionary
-from modules.data_initialization_ontology_dataclass import initialize_ontology_dataclasses
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.graph_save_ontology import save_ontology_file, save_ontology_gufo_statements
+from modules.initialization_arguments import treat_arguments
+from modules.initialization_data_graph import initialize_nodes_lists
+from modules.initialization_data_gufo import initialize_gufo_dictionary
+from modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
 from modules.rules_types_run import execute_rules_types
 
 if __name__ == "__main__":
 
-    SOFTWARE_VERSION = "0.1"
-
-    # PARSING ARGUMENTS
-    arguments_parser = argparse.ArgumentParser(prog="OntCatOWL",
-                                               usage="ontcatowl.py "
-                                                     "[INTERACTIVITY OPTIONS] [COMPLETENESS OPTIONS] [GENERAL OPTIONS] "
-                                                     "ontology_file",
-                                               description="Identification of ontological categories for "
-                                                           "OWL Ontologies.",
-                                               epilog="Access https://github.com/unibz-core/OntCatOWL/ "
-                                                      "for more information.")
-
-    arguments_parser.version = SOFTWARE_VERSION
-
-    # Optional arguments
-
-    arguments_parser.add_argument("-1",
-                                  "--always_interactive",
-                                  action='store_true',
-                                  help="Run in 'Always Interactive' mode. "
-                                       "No modifications are performed without the agreement of the user.")
-
-    arguments_parser.add_argument("-2",
-                                  "--automatic",
-                                  action='store_true',
-                                  help="(DEFAULT) Run in 'Automatic' mode. "
-                                       "Automatic when possible, interactive if necessary.")
-
-    arguments_parser.add_argument("-3",
-                                  "--always_automatic",
-                                  action='store_true',
-                                  help="Run in 'Always Automatic' mode. "
-                                       "Automatic only. No manual intervention is needed.")
-
-    arguments_parser.add_argument("-c",
-                                  "--complete",
-                                  action='store_true',
-                                  help="The loaded ontology is a complete model. "
-                                       "New classes cannot be created by the user.")
-
-    arguments_parser.add_argument("-i",
-                                  "--incomplete",
-                                  action='store_true',
-                                  help="(DEFAULT) The loaded ontology is an incomplete model. "
-                                       "New classes can be created by the user.")
-
-    arguments_parser.add_argument("-t",
-                                  "--times",
-                                  action='store_true',
-                                  help="Prints the execution times of all functions.")
-
-    arguments_parser.add_argument("-p",
-                                  "--partial",
-                                  action='store_true',
-                                  help="Saves in files the partial ontology and reports before any user interaction.")
-
-    arguments_parser.add_argument("-g",
-                                  "--gufo",
-                                  action='store_true',
-                                  help="Imports GUFO ontology in the output ontology file.")
-
-    arguments_parser.add_argument("-v",
-                                  "--version",
-                                  action="version",
-                                  help="Prints the software version.")
-
-    # Positional argument
-    arguments_parser.add_argument("ontology_file",
-                                  type=str,
-                                  help="The ontology file to be loaded.")
-
-    # Execute arguments parser
-    arguments = arguments_parser.parse_args()
-
-    print(vars(arguments))
-
-    exit(0)
+    SOFTWARE_VERSION = "OntCatOWL version 0.1"
 
     # DATA LOADINGS AND INITIALIZATIONS
+
+    configuration = treat_arguments(SOFTWARE_VERSION)
+    print(configuration)
+    exit(1)
 
     # Logger initialization
     logger = initialize_logger()
@@ -126,9 +33,10 @@ if __name__ == "__main__":
     logger.info(f"OntCatOWL started on {date_time}!")
 
     # Input ontology_graph to be evaluated
+    graph_file = "resources/d3fend.ttl"
     ontology_graph = Graph()
     try:
-        ontology_graph.parse("resources/d3fend.ttl")
+        ontology_graph.parse(graph_file)
     except OSError:
         logger.error("Could not load resources/d3fend.ttl file. Exiting program.")
         exit(1)

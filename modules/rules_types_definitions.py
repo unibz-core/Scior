@@ -576,6 +576,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list):
             elapsed_time_final = round((et2 - st1), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time_final} seconds.")
 
+
 def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list):
     """
         - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly
