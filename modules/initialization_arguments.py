@@ -40,7 +40,7 @@ def treat_arguments(software_version):
     """ Treats user input arguments. """
 
     logger = initialize_logger()
-    logger.INFO("Parsing arguments...")
+    logger.debug("Parsing arguments...")
 
     # PARSING ARGUMENTS
     arguments_parser = argparse.ArgumentParser(prog="OntCatOWL",
@@ -109,6 +109,6 @@ def treat_arguments(software_version):
                              "print_time": arguments.times,
                              "ontology_path": arguments.ontology_file}
 
-    logger.INFO(f"Arguments Parsed. Values obtained are: {global_configurations}")
+    logger.debug(f"Arguments Parsed. Obtained values are: {global_configurations}")
 
     return global_configurations
