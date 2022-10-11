@@ -1,7 +1,7 @@
 """ Functions related to reading and writing OWL files using RDFLib. """
 from rdflib import URIRef, RDF, RDFS, OWL
 
-from modules.rules_global_configs import IMPORT_GUFO
+from modules.global_configurations import IMPORT_GUFO
 from modules.utils_rdf import get_ontology_uri
 
 

@@ -2,23 +2,26 @@
 
 Arguments: TO BE IMPLEMENTED
 
-# INTERACTIVITY LEVEL:
+# INTERACTIVITY LEVEL OPTIONS:
 -1: Always interactive. No modifications are performed without the agreement of the user.
 -2: (DEFAULT) Automatic when possible, interactive if necessary.
 -3: Automatic only. No manual intervention needed.
 
-# MODEL COMPLETENESS ASSUMPTION:
+# MODEL COMPLETENESS ASSUMPTION OPTIONS:
 -c: Complete. New classes cannot be created.
 -i: (DEFAULT) Incomplete model. New classes can be created by the user.
 
+# GENERAL OPTIONS
 -t: prints to user the execution times of all functions (IMPLEMENTED)
--r: generate partial ontology and reports before any user interaction
+-p: generate partial ontology and reports before any user interaction
 -g: save output ontology importing GUFO (IMPLEMENTED)
 
--h: usage and help instructions
+-h: prints usage and help instructions
+-v: prints software version
 
 """
 
+import argparse
 import time
 from datetime import datetime
 
@@ -34,6 +37,84 @@ from modules.report_printer import print_report_file
 from modules.rules_types_run import execute_rules_types
 
 if __name__ == "__main__":
+
+    SOFTWARE_VERSION = "0.1"
+
+    # PARSING ARGUMENTS
+    arguments_parser = argparse.ArgumentParser(prog="OntCatOWL",
+                                               usage="ontcatowl.py "
+                                                     "[INTERACTIVITY OPTIONS] [COMPLETENESS OPTIONS] [GENERAL OPTIONS] "
+                                                     "ontology_file",
+                                               description="Identification of ontological categories for "
+                                                           "OWL Ontologies.",
+                                               epilog="Access https://github.com/unibz-core/OntCatOWL/ "
+                                                      "for more information.")
+
+    arguments_parser.version = SOFTWARE_VERSION
+
+    # Optional arguments
+
+    arguments_parser.add_argument("-1",
+                                  "--always_interactive",
+                                  action='store_true',
+                                  help="Run in 'Always Interactive' mode. "
+                                       "No modifications are performed without the agreement of the user.")
+
+    arguments_parser.add_argument("-2",
+                                  "--automatic",
+                                  action='store_true',
+                                  help="(DEFAULT) Run in 'Automatic' mode. "
+                                       "Automatic when possible, interactive if necessary.")
+
+    arguments_parser.add_argument("-3",
+                                  "--always_automatic",
+                                  action='store_true',
+                                  help="Run in 'Always Automatic' mode. "
+                                       "Automatic only. No manual intervention is needed.")
+
+    arguments_parser.add_argument("-c",
+                                  "--complete",
+                                  action='store_true',
+                                  help="The loaded ontology is a complete model. "
+                                       "New classes cannot be created by the user.")
+
+    arguments_parser.add_argument("-i",
+                                  "--incomplete",
+                                  action='store_true',
+                                  help="(DEFAULT) The loaded ontology is an incomplete model. "
+                                       "New classes can be created by the user.")
+
+    arguments_parser.add_argument("-t",
+                                  "--times",
+                                  action='store_true',
+                                  help="Prints the execution times of all functions.")
+
+    arguments_parser.add_argument("-p",
+                                  "--partial",
+                                  action='store_true',
+                                  help="Saves in files the partial ontology and reports before any user interaction.")
+
+    arguments_parser.add_argument("-g",
+                                  "--gufo",
+                                  action='store_true',
+                                  help="Imports GUFO ontology in the output ontology file.")
+
+    arguments_parser.add_argument("-v",
+                                  "--version",
+                                  action="version",
+                                  help="Prints the software version.")
+
+    # Positional argument
+    arguments_parser.add_argument("ontology_file",
+                                  type=str,
+                                  help="The ontology file to be loaded.")
+
+    # Execute arguments parser
+    arguments = arguments_parser.parse_args()
+
+    print(vars(arguments))
+
+    exit(0)
 
     # DATA LOADINGS AND INITIALIZATIONS
 
@@ -87,8 +168,9 @@ if __name__ == "__main__":
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL concluded on {date_time}!")
 
+# TODO (@pedropaulofb): Use argparse module for loading arguments
 # TODO (@pedropaulofb): Currently reasoning cannot be done after the initialization (e.g., after the rules exec).
-# TODO (@pedropaulofb): Read input ontology from user's argument
+# TODO (@pedropaulofb): Read input ontology from user"s argument
 # TODO (@pedropaulofb): The ontology_graph may already contain relations with GUFO. Treat that.
 # TODO (@pedropaulofb): Future argument options: save in one file (ont + gufo), save inferences as assertions
 # TODO (@pedropaulofb): Verify possibility to check consistency using a reasoner.
@@ -107,4 +189,6 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Ordinate all lists that are exhibited to the user.
 # TODO (@pedropaulofb): Run automatic only for some different configurations and figure out which is the best order
 #  for executing the rules.
-# TODO (@pedropaulofb): Verify inclusion of menus: https://pypi.org/project/simple-term-menu/
+# TODO (@pedropaulofb): Verify inclusion of menus:
+#  https://pypi.org/project/simple-term-menu/ or https://python-inquirer.readthedocs.io/en/latest/
+# TODO (@pedropaulofb): Verify https://github.com/chriskiehl/Gooey

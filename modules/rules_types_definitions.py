@@ -3,9 +3,9 @@ import time
 
 from prettytable import PrettyTable
 
+from modules.global_configurations import PRINT_TIME
 from modules.logger_config import initialize_logger
 from modules.propagation import execute_and_propagate_down, execute_and_propagate_up
-from modules.rules_global_configs import PRINT_TIME
 from modules.utils_dataclass import get_list_gufo_classification, get_element_list, external_move_to_is_list
 from modules.utils_graph import get_all_related_nodes, get_subclasses, get_superclasses, get_all_superclasses
 
