@@ -16,15 +16,13 @@ from modules.report_printer import print_report_file
 from modules.rules_types_run import execute_rules_types
 
 SOFTWARE_VERSION = "OntCatOWL - Identification of Ontological Categories for OWL Ontologies\n" \
-                   "Version 1.0 - 20221011\n" \
-                   "Github Repository: https://github.com/unibz-core/OntCatOWL/"
+                   "Version 0.20221011 - https://github.com/unibz-core/OntCatOWL/\n"
 
 if __name__ == "__main__":
 
     # DATA LOADINGS AND INITIALIZATIONS
 
     global_configurations = treat_arguments(SOFTWARE_VERSION)
-    print(global_configurations)
 
     # Logger initialization
     logger = initialize_logger()
