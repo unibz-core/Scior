@@ -75,21 +75,24 @@ if __name__ == "__main__":
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL concluded on {date_time}!")
 
-# TODO (@pedropaulofb): Verify possibility to check consistency using a reasoner.
-# TODO (@pedropaulofb): Currently reasoning cannot be done after the initialization (e.g., after the rules exec).
-# TODO (@pedropaulofb): The ontology_graph may already contain relations with GUFO. Treat that.
-# TODO (@pedropaulofb): Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
-# TODO (@pedropaulofb): Is there a way to define the GUFO list as read-only?
-# TODO (@pedropaulofb): Verify if there is any unused module, function or method
-# TODO (@pedropaulofb): Evaluate on Linux before release first version
-# TODO (@pedropaulofb): Update requirements.txt
-# TODO (@pedropaulofb): Treat problem with huge ontologies (stack overflow)
-# TODO (@pedropaulofb): Verify "dataclass with slots" and the use of __slot__ for better performance.
-# TODO (@pedropaulofb): As log files are getting big, maybe it is going to be necessary to compact them into a zip file.
-# TODO (@pedropaulofb): Add option to skip interactive rule iteration (to add other processing first).
-# TODO (@pedropaulofb): Ordinate all lists that are exhibited to the user.
-# TODO (@pedropaulofb): Run automatic only for some different configurations and figure out which is the best order
-#  for executing the rules.
-# TODO (@pedropaulofb): Verify inclusion of menus:
-#  https://pypi.org/project/simple-term-menu/ or https://python-inquirer.readthedocs.io/en/latest/
-# TODO (@pedropaulofb): Verify https://github.com/chriskiehl/Gooey
+# TODO (@pedropaulofb): IMPROVEMENTS
+# Verify possibility to check consistency using a reasoner.
+# Currently reasoning cannot be done after the initialization (e.g., after the rules exec).
+# The ontology_graph may already contain relations with GUFO. Treat that.
+# Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
+
+# TODO (@pedropaulofb): USER INTERACTIONS
+# Add option to skip interactive rule iteration (to add other processing first).
+# Ordinate all lists that are exhibited to the user.
+# Create menus for better user interactions: https://pypi.org/project/simple-term-menu/
+
+# TODO (@pedropaulofb): PERFORMANCE
+# Treat problem with huge ontologies (stack overflow)
+# Verify "dataclass with slots" and the use of __slot__ for better performance.
+# As log files are getting big, maybe it is going to be necessary to compact them into a zip file.
+# Run automatic only for some different configurations and figure out which is the best order for executing the rules.
+
+# TODO (@pedropaulofb): BEFORE RELEASE OF VERSION 1.0
+# Evaluate on Linux before release first version
+# Update requirements.txt
+# Verify if there is any unused module, function or methods

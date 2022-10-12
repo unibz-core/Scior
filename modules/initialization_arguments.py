@@ -5,24 +5,24 @@ import argparse
 from modules.logger_config import initialize_logger
 
 
-def treat_interactivity_level_options(arguments):
+def treat_automation_level_options(arguments):
     """ Treats argument option for the user's level of interactiveness with OntCatOWL. """
 
-    # Default interactivity value
-    interactivity_level = "automatic"
+    # Default automation value
+    automation_level = "automatic"
 
     if arguments.automatic:
-        interactivity_level = "automatic"
+        automation_level = "automatic"
     else:
         # In case of more than one value for these fields the default values are kept.
         if arguments.always_interactive and arguments.always_automatic:
-            interactivity_level = "automatic"
+            automation_level = "automatic"
         elif arguments.always_interactive:
-            interactivity_level = "always_interactive"
+            automation_level = "always_interactive"
         elif arguments.always_automatic:
-            interactivity_level = "always_automatic"
+            automation_level = "always_automatic"
 
-    return interactivity_level
+    return automation_level
 
 
 def treat_completeness_options(arguments):
@@ -45,7 +45,7 @@ def treat_arguments(software_version):
     # PARSING ARGUMENTS
     arguments_parser = argparse.ArgumentParser(prog="OntCatOWL",
                                                usage="ontcatowl.py "
-                                                     "[INTERACTIVITY_OPTION] [COMPLETENESS_OPTION] [GENERAL_OPTIONS] "
+                                                     "[AUTOMATION_OPTION] [COMPLETENESS_OPTION] [GENERAL_OPTIONS] "
                                                      "ontology_file",
                                                description="Identification of ontological categories for "
                                                            "OWL ontologies (https://github.com/unibz-core/OntCatOWL/).",
@@ -104,7 +104,7 @@ def treat_arguments(software_version):
 
     global_configurations = {"partial_results": arguments.partial,
                              "import_gufo": arguments.gufo,
-                             "interactivity_level": treat_interactivity_level_options(arguments),
+                             "automation_level": treat_automation_level_options(arguments),
                              "is_complete": treat_completeness_options(arguments),
                              "print_time": arguments.times,
                              "ontology_path": arguments.ontology_file}
