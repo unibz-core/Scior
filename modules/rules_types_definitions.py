@@ -1,10 +1,20 @@
-""" Implementation of rules related to the GUFO types hierarchy. """
+""" Implementation of rules related to the GUFO types hierarchy.
+
+PREMISES:
+    - NEW CLASSES CANNOT BE CREATED DURING THE EXECUTION OF ONTCATOWL
+    - ALL STEREOTYPES ALREADY SET AS IS OR NOT ARE IMMUTABLE. I.E., THERE CAN BE NO MOVEMENT FROM LISTS IS OR NOT.
+
+    - interactions are only available when there are more than one options that the user must choose.
+
+"""
+
 import time
 
 from prettytable import PrettyTable
 
 from modules.logger_config import initialize_logger
 from modules.propagation import execute_and_propagate_down, execute_and_propagate_up
+from modules.rules_types_definitions_aux import treat_rule
 from modules.utils_dataclass import get_list_gufo_classification, get_element_list, external_move_to_is_list
 from modules.utils_graph import get_all_related_nodes, get_subclasses, get_superclasses, get_all_superclasses
 
@@ -22,16 +32,15 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     - RULE: A gufo:Kind cannot have gufo:Sortals as its direct or indirect supertypes.
 
-    - BEHAVIOUR:
+    - DESCRIPTION: When a class is identified as a gufo:Kind, this rule identifies all its supertypes and set them as
+    not gufo:Sortal.
 
-        - Complete + Automatic Only: Enforce. (IMPLEMENTED)
-        - Complete + Automatic: Enforce. (IMPLEMENTED)
-        - Complete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+    - BEHAVIOR:
 
-        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
-        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
-        - Incomplete + Interactive: User can apply or include new. (NOT IMPLEMENTED)
+        - Executed for complete and incomplete models.
+        - Executed for all types of automation levels.
 
+        - Totally automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -43,10 +52,12 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     for ontology_dataclass in list_ontology_dataclasses:
         if GUFO_KIND in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+
             # The selected dataclass is included in the exclusion list because the action must not be performed on it.
             execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list,
                                      ontology_dataclass.uri,
                                      rule_code, [ontology_dataclass.uri])
+
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
@@ -61,17 +72,15 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     - RULE: gufo:Sortals cannot have a gufo:Kind as direct or indirect subtypes.
 
-    - BEHAVIOUR:
+    - DESCRIPTION: When a class is identified as a gufo:Sortal, this rule identifies all its subtypes and set them as
+    not gufo:Kind.
 
-        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
-        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
-        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+    - BEHAVIOR:
 
-        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
-        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
-        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+        - Executed for complete and incomplete models.
+        - Executed for all types of automation levels.
 
-
+        - Totally automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -83,9 +92,11 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
     for ontology_dataclass in list_ontology_dataclasses:
         if GUFO_SORTAL in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+
             # The selected dataclass is included in the exclusion list because the action must not be performed on it.
             execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list,
                                        ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
+
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
@@ -100,15 +111,15 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     - RULE: A type cannot have more than one Kind as its direct or indirect supertypes.
 
-    - BEHAVIOUR:
+    - DESCRIPTION: Identifies a Kind. With the exception for the Kind itself,
+    all direct and indirect superclasses of all subclasses of this Kind are set as not Kinds.
 
-        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
-        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
-        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+    - BEHAVIOR:
 
-        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
-        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
-        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+        - Executed for complete and incomplete models.
+        - Executed for all types of automation levels.
+
+        - Totally automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -126,22 +137,26 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
             # For all subclasses
             for subclass in all_subclasses:
+
                 # Get all superclasses
                 all_superclasses_of_subclasses = get_superclasses(graph, nodes_list["all"], subclass).copy()
+
                 # Return all superclasses that are of type Kind
                 return_list = get_list_gufo_classification(list_ontology_dataclasses, all_superclasses_of_subclasses,
                                                            "IS", GUFO_KIND)
                 counter = len(return_list)
+                # If there are more than one Kind superclass, report error and abort program.
                 if counter != 1:
                     logger.error(f"Inconsistency detected. Number of gufo:Kinds types as supertypes "
                                  f"of {ontology_dataclass.uri} is {counter}, while it must be exactly 1. "
                                  f"Program aborted.")
                     exit(1)
+                # If only one Kind superclass, proceed with rule.
                 else:
-                    # set all supertypes as NOT KIND (except for the one that is already a kind)
+                    # set all supertypes as NOT KIND (except for the one that is already a Kind)
                     execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list, subclass,
-                                             "t_k_sup",
-                                             return_list)
+                                             "t_k_sup", return_list)
+
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
@@ -156,15 +171,14 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     - RULE: A gufo:NonSortal cannot have a gufo:Sortal as its direct or indirect supertype.
 
-    - BEHAVIOUR:
+    - DESCRIPTION: For each NonSortal identified, set all its direct and indirect superclasses as not Sortals.
 
-        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
-        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
-        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+    - BEHAVIOR:
 
-        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
-        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
-        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+        - Executed for complete and incomplete models.
+        - Executed for all types of automation levels.
+
+        - Totally automatic rule. Interaction is not needed in any case.
     """
     if configurations["print_time"]:
         st = time.perf_counter()
@@ -176,8 +190,10 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     for ontology_dataclass in list_ontology_dataclasses:
         if GUFO_NON_SORTAL in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+
             execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list,
                                      ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
+
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
@@ -192,15 +208,14 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     - RULE: A gufo:Sortal cannot have a gufo:NonSortal as its direct or indirect subtype.
 
-    - BEHAVIOUR:
+    - DESCRIPTION: For each Sortal identified, set all its direct and indirect subclasses as not NonSortal.
 
-        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
-        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
-        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+    - BEHAVIOR:
 
-        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
-        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
-        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+        - Executed for complete and incomplete models.
+        - Executed for all types of automation levels.
+
+        - Totally automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -213,8 +228,10 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
     for ontology_dataclass in list_ontology_dataclasses:
         if GUFO_SORTAL in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+
             execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list,
                                        ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
+
             logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
@@ -229,15 +246,15 @@ def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     - RULE: A Rigid or SemiRigid type cannot have an AntiRigid type as its direct or indirect supertypes.
 
-    - BEHAVIOUR:
+    - DESCRIPTION: For each Rigid or SemiRigid class identified,
+    set all its direct and indirect superclasses as not AntiRigid.
 
-        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
-        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
-        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+    - BEHAVIOR:
 
-        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
-        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
-        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+        - Executed for complete and incomplete models.
+        - Executed for all types of automation levels.
+
+        - Totally automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -271,15 +288,15 @@ def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     - RULE: A AntiRigid type cannot have a Rigid or SemiRigid type as its direct or indirect subtypes.
 
-    - BEHAVIOUR:
+    - DESCRIPTION: For each AntiRigid class identified,
+    set all its direct and indirect subclasses as not Rigid and as not SemiRigid.
 
-        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
-        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
-        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+    - BEHAVIOR:
 
-        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
-        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
-        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+        - Executed for complete and incomplete models.
+        - Executed for all types of automation levels.
+
+        - Totally automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -311,40 +328,48 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
 
     - RULE: In complete models, every type without supertypes and without subtypes must be a gufo:Kind.
 
-    - BEHAVIOUR:
+    - DESCRIPTION:
 
-        - Complete + Automatic Only: Enforce. If it is set as something else than a Kind, report error.
-        (PARTIALLY IMPLEMENTED)
-        - Complete + Automatic: Enforce. If it is set as something else than a Kind, report error.
-        (PARTIALLY IMPLEMENTED)
-        - Complete + Interactive: User can: apply or report deficiency. (NOT IMPLEMENTED)
+    - BEHAVIOR:
 
-        - Incomplete + Automatic Only: Not available. No action. (IMPLEMENTED)
-        - Incomplete + Automatic: User can: apply or include new. (NOT IMPLEMENTED)
-        - Incomplete + Interactive: User can: apply or include new. (NOT IMPLEMENTED)
+        - For complete mode:
+            - Interactive: Set as Kind. If it cannot be, user can reset class stereotypes or report the deficiency.
+            - Automatic: Set as Kind. If it cannot be, user can reset class stereotypes or report the deficiency.
+            - Automatic only: Set as Kind. If it cannot be, report the deficiency.
+
+        - For incomplete mode:
+            - Interactive level:
+                - If can be a Kind: user must define if the class (a) is a Kind, (b) set IS or NOT stereotypes, or (c) skip if he/she doesn't have this information.
+                - If cannot be a Kind: user must define if the class (a) is a Kind, (b) set IS or NOT stereotypes, or (c) skip if he/she doesn't have this information.
+            - Automatic level:
+            - Automatic only level: Reports the identified deficiency, but doesn't treat it.
+
+            Treat:
     """
 
     if configurations["print_time"]:
         st = time.perf_counter()
 
     rule_code = "n_r_t"
-    gufo_kind = GUFO_KIND
 
     logger = initialize_logger()
 
     for ontology_dataclass in list_ontology_dataclasses:
-        if gufo_kind not in ontology_dataclass.is_type:
-            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
 
-            if (ontology_dataclass.uri in nodes_list["roots"]) and (ontology_dataclass.uri in nodes_list["leaves"]):
-                if gufo_kind in ontology_dataclass.can_type:
-                    ontology_dataclass.move_element_to_is_list(gufo_kind)
-                else:
-                    logger.error(f"Cannot set class {ontology_dataclass.uri} as {gufo_kind}. "
-                                 f"Inconsistency detected. Program aborted.")
-                    exit(1)
+        # CONDITION 1
+        if GUFO_KIND in ontology_dataclass.is_type:
+            continue
 
-            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+        # CONDITION 2
+        if (ontology_dataclass.uri not in nodes_list["roots"]) or (ontology_dataclass.uri not in nodes_list["leaves"]):
+            continue
+
+        # Rule treatment when conditions are met
+        logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+
+        treat_rule()
+
+        logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et = time.perf_counter()
@@ -367,7 +392,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
     In other words, from any gufo:NonSortal at least two gufo:Kinds must be reachable by navigating its
     generalization/specialization relations.
 
-    BEHAVIOUR:
+    BEHAVIOR:
 
         - Complete + Automatic Only: Enforce. Verify number of possibilities. (PARTIALLY IMPLEMENTED)
             1) If the possibilities are equal to the necessary number, set as Kind.
@@ -484,7 +509,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     - RULE: Every non-Kind gufo:Sortal (is gufo:Sortal and is not gufo:Kind) must have exactly one gufo:Kind
     as direct or indirect supertype.
 
-    - BEHAVIOUR:
+    - BEHAVIOR:
 
         - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
         - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
@@ -583,7 +608,7 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         - RULE: In complete models, every gufo:Sortal without supertypes is a gufo:Kind.
 
-        - BEHAVIOUR:
+        - BEHAVIOR:
 
             - Complete + Automatic Only: Enforce. (IMPLEMENTED)
             - Complete + Automatic: Enforce. (IMPLEMENTED)

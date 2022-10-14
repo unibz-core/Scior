@@ -21,7 +21,7 @@ def print_report_file(ontology_dataclass_list, nodes_list):
     """ printing in file a report of the current state of the ontology dataclass list in a readable format."""
 
     logger = initialize_logger()
-    logger.info("Printing report of the current state of the ontology dataclass list...")
+    logger.debug("Printing report of the current state of the ontology dataclass list...")
 
     # If directory "/report" does not exist, create it
     report_dir = "report/"
@@ -75,7 +75,7 @@ def print_report_file(ontology_dataclass_list, nodes_list):
     with open(f"{report_dir}{date_time}.report", 'w') as f:
         f.write(format_report_hash + report)
 
-    logger.info("Report successfully printed.")
+    logger.debug("Report successfully printed.")
 
 
 def print_class_summary(ontology_dataclass_list, nodes_list):

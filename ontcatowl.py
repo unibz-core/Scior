@@ -23,6 +23,7 @@ if __name__ == "__main__":
     # DATA LOADINGS AND INITIALIZATIONS
 
     global_configurations = treat_arguments(SOFTWARE_VERSION)
+    exit(0)
 
     # Logger initialization
     logger = initialize_logger()
@@ -56,17 +57,14 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Root2":
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Isolated":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Mixin")
-
-    # TODO (@pedropaulofb): CORRECT THIS STYLE
-    stile = "all"
+    ont_dataclass.move_element_to_is_list("gufo:Role")
 
     ############################## END TESTS
 
-    execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, stile, global_configurations)
+    execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, global_configurations)
     ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
     save_ontology_file(ontology_graph, global_configurations)
     print_report_file(ontology_dataclass_list, ontology_nodes)
