@@ -1,12 +1,4 @@
-""" Implementation of rules related to the GUFO types hierarchy.
-
-PREMISES:
-    - NEW CLASSES CANNOT BE CREATED DURING THE EXECUTION OF ONTCATOWL
-    - ALL STEREOTYPES ALREADY SET AS IS OR NOT ARE IMMUTABLE. I.E., THERE CAN BE NO MOVEMENT FROM LISTS IS OR NOT.
-
-    - interactions are only available when there are more than one options that the user must choose.
-
-"""
+""" Implementation of rules related to the GUFO types hierarchy. """
 
 import time
 
@@ -36,11 +28,8 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     not gufo:Sortal.
 
     - BEHAVIOR:
-
-        - Executed for complete and incomplete models.
-        - Executed for all types of automation levels.
-
-        - Totally automatic rule. Interaction is not needed in any case.
+        - AUTOMATION: Same execution for both complete and incomplete models.
+        - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -51,14 +40,14 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     for ontology_dataclass in list_ontology_dataclasses:
         if GUFO_KIND in ontology_dataclass.is_type:
-            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
             # The selected dataclass is included in the exclusion list because the action must not be performed on it.
             execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list,
                                      ontology_dataclass.uri,
                                      rule_code, [ontology_dataclass.uri])
 
-            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+            logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et = time.perf_counter()
@@ -76,11 +65,8 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
     not gufo:Kind.
 
     - BEHAVIOR:
-
-        - Executed for complete and incomplete models.
-        - Executed for all types of automation levels.
-
-        - Totally automatic rule. Interaction is not needed in any case.
+        - AUTOMATION: Same execution for both complete and incomplete models.
+        - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -91,13 +77,13 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     for ontology_dataclass in list_ontology_dataclasses:
         if GUFO_SORTAL in ontology_dataclass.is_type:
-            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
             # The selected dataclass is included in the exclusion list because the action must not be performed on it.
             execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list,
                                        ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
 
-            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+            logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et = time.perf_counter()
@@ -115,11 +101,8 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     all direct and indirect superclasses of all subclasses of this Kind are set as not Kinds.
 
     - BEHAVIOR:
-
-        - Executed for complete and incomplete models.
-        - Executed for all types of automation levels.
-
-        - Totally automatic rule. Interaction is not needed in any case.
+        - AUTOMATION: Same execution for both complete and incomplete models.
+        - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -130,7 +113,7 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     for ontology_dataclass in list_ontology_dataclasses:
         if GUFO_KIND in ontology_dataclass.is_type:
-            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
             # Get all subclasses
             all_subclasses = get_subclasses(graph, nodes_list["all"], ontology_dataclass.uri).copy()
@@ -157,7 +140,7 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
                     execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list, subclass,
                                              "t_k_sup", return_list)
 
-            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+            logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et = time.perf_counter()
@@ -174,11 +157,8 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     - DESCRIPTION: For each NonSortal identified, set all its direct and indirect superclasses as not Sortals.
 
     - BEHAVIOR:
-
-        - Executed for complete and incomplete models.
-        - Executed for all types of automation levels.
-
-        - Totally automatic rule. Interaction is not needed in any case.
+        - AUTOMATION: Same execution for both complete and incomplete models.
+        - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
     if configurations["print_time"]:
         st = time.perf_counter()
@@ -189,12 +169,12 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     for ontology_dataclass in list_ontology_dataclasses:
         if GUFO_NON_SORTAL in ontology_dataclass.is_type:
-            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
             execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list,
                                      ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
 
-            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+            logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et = time.perf_counter()
@@ -211,11 +191,8 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
     - DESCRIPTION: For each Sortal identified, set all its direct and indirect subclasses as not NonSortal.
 
     - BEHAVIOR:
-
-        - Executed for complete and incomplete models.
-        - Executed for all types of automation levels.
-
-        - Totally automatic rule. Interaction is not needed in any case.
+        - AUTOMATION: Same execution for both complete and incomplete models.
+        - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -227,12 +204,12 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     for ontology_dataclass in list_ontology_dataclasses:
         if GUFO_SORTAL in ontology_dataclass.is_type:
-            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
             execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list,
                                        ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
 
-            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+            logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et = time.perf_counter()
@@ -250,11 +227,8 @@ def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     set all its direct and indirect superclasses as not AntiRigid.
 
     - BEHAVIOR:
-
-        - Executed for complete and incomplete models.
-        - Executed for all types of automation levels.
-
-        - Totally automatic rule. Interaction is not needed in any case.
+        - AUTOMATION: Same execution for both complete and incomplete models.
+        - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -267,14 +241,14 @@ def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     for ontology_dataclass in list_ontology_dataclasses:
         # Getting RigidType or SemiRigidType types
         if ("gufo:RigidType" in ontology_dataclass.is_type) or ("gufo:SemiRigidType" in ontology_dataclass.is_type):
-            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
             # No RigidType or SemiRigidType can have AntiRigidType as direct or indirect superclasses and (... cont.)
             execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list,
                                      ontology_dataclass.uri,
                                      rule_code, [ontology_dataclass.uri])
 
-            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+            logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et = time.perf_counter()
@@ -292,11 +266,8 @@ def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
     set all its direct and indirect subclasses as not Rigid and as not SemiRigid.
 
     - BEHAVIOR:
-
-        - Executed for complete and incomplete models.
-        - Executed for all types of automation levels.
-
-        - Totally automatic rule. Interaction is not needed in any case.
+        - AUTOMATION: Same execution for both complete and incomplete models.
+        - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
     if configurations["print_time"]:
@@ -308,12 +279,12 @@ def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     for ontology_dataclass in list_ontology_dataclasses:
         if "gufo:AntiRigidType" in ontology_dataclass.is_type:
-            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
             execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list,
                                        ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
 
-            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+            logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et = time.perf_counter()
@@ -331,20 +302,11 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
     - DESCRIPTION:
 
     - BEHAVIOR:
-
-        - For complete mode:
-            - Interactive: Set as Kind. If it cannot be, user can reset class stereotypes or report the deficiency.
-            - Automatic: Set as Kind. If it cannot be, user can reset class stereotypes or report the deficiency.
-            - Automatic only: Set as Kind. If it cannot be, report the deficiency.
-
-        - For incomplete mode:
-            - Interactive level:
-                - If can be a Kind: user must define if the class (a) is a Kind, (b) set IS or NOT stereotypes, or (c) skip if he/she doesn't have this information.
-                - If cannot be a Kind: user must define if the class (a) is a Kind, (b) set IS or NOT stereotypes, or (c) skip if he/she doesn't have this information.
-            - Automatic level:
-            - Automatic only level: Reports the identified deficiency, but doesn't treat it.
-
-            Treat:
+        - COMPLETENESS:
+            - COMPLETE: Set the class as a gufo:Kind for both automation level options.
+            - INCOMPLETE:
+                - AUTOMATIC: Ask the user to set the class stereotype (IS or NOT options, also SKIP possibilities).
+                - INTERACTIVE: Reports incompleteness.
     """
 
     if configurations["print_time"]:
@@ -365,11 +327,11 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
             continue
 
         # Rule treatment when conditions are met
-        logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+        logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
         treat_rule()
 
-        logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+        logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et = time.perf_counter()
@@ -422,7 +384,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     for ontology_dataclass in list_ontology_dataclasses:
         if GUFO_NON_SORTAL in ontology_dataclass.is_type:
-            logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+            logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
             # Get all ontology dataclasses that are reachable from the input dataclass
             list_all_related_nodes = get_all_related_nodes(graph, nodes_list, ontology_dataclass.uri)
@@ -491,7 +453,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
                 external_move_to_is_list(list_ontology_dataclasses, related_can_kinds_list[new_sortal_id - 1],
                                          GUFO_KIND)
 
-            logger.debug(f"Rule {rule_code} successfully concluded for ontology dataclass {ontology_dataclass.uri}.")
+            logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et2 = time.perf_counter()
@@ -536,7 +498,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
         if (GUFO_SORTAL not in ontology_dataclass.is_type) or (GUFO_KIND not in ontology_dataclass.not_type):
             continue
 
-        logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+        logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
         # Get all ontology dataclasses that are directly or indirectly superclasses of ontology_dataclass
         list_superclasses = get_all_superclasses(graph, nodes_list, ontology_dataclass.uri)
@@ -632,7 +594,7 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
         if GUFO_SORTAL not in ontology_dataclass.is_type:
             continue
 
-        logger.debug(f"Starting rule {rule_code} for ontology dataclass {ontology_dataclass.uri}...")
+        logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
         # Get list of all superclasses up to leaves.
         all_superclasses = get_all_superclasses(graph, nodes_list, ontology_dataclass.uri)

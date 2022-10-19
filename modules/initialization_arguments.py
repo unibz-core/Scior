@@ -48,6 +48,7 @@ def treat_arguments(software_version):
     arguments_parser.add_argument("-t", "--times", action='store_true',
                                   help="Prints the execution times of all functions.")
 
+    # TODO (@pedropaulofb): Arguments -p and -g are not implemented yet.
     arguments_parser.add_argument("-p", "--partial", action='store_true',
                                   help="Saves in files the partial ontology and reports before any user interaction.")
 

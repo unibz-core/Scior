@@ -27,3 +27,11 @@ python ontcatowl.py <input file OR URL>
 ```
 
 The input file syntax is automatically detected by the **OntCatOWL**.
+
+## Software Functioning
+
+### Rules Premises
+
+- new classes cannot be created during the execution of OntCatOWL.
+- all stereotypes already set as is or not are immutable. i e., there can be no movement from lists is or not.
+- When interactivity is enabled, interactions are only available when there are more than one option.
