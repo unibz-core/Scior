@@ -4,47 +4,6 @@ from modules.logger_config import initialize_logger
 from modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, rule_t_k_sup, rule_ns_s_sup, rule_s_ns_sub, \
     rule_r_ar_sup, rule_ar_r_sub, rule_n_r_t, rule_ns_s_spe, rule_nk_k_sup, rule_s_nsup_k
 from modules.utils_dataclass import generate_hash_ontology_dataclass_list
-from modules.utils_general import lists_intersection
-
-
-def select_list(configurations):
-    """ Receives information about the arguments and returns the corresponding list of rules to be executed. """
-
-    logger = initialize_logger()
-    logger.debug("Selecting list of rules to be executed according to the provided arguments.")
-
-    automation_level_list = []
-
-    # List classifications according to the automation level
-    list_rules_interactive = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub"]
-    list_rules_automatic = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub"]
-
-    # List selection according to the automation level
-    if configurations["automation_level"] == "interactive":
-        automation_level_list = list_rules_interactive
-    elif configurations["automation_level"] == "automatic":
-        automation_level_list = list_rules_automatic
-    else:
-        logger.error(f"Unknown configuration for automation level. "
-                     f"Current automation level is {configurations['automation_level']}.")
-        exit(1)
-
-    # List classifications according to the ontology completeness
-    list_rules_complete = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub"]
-    list_rules_incomplete = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub"]
-
-    # List selection according to the automation level
-    if configurations["is_complete"]:
-        completeness_list = list_rules_complete
-    else:
-        completeness_list = list_rules_incomplete
-
-    selected_list = lists_intersection(automation_level_list, completeness_list)
-
-    logger.debug(f"Selection successfully performed. "
-                 f"The list of rules to be executed according the the arguments is: {selected_list}.")
-
-    return selected_list
 
 
 def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configurations):
@@ -52,8 +11,10 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
     logger = initialize_logger()
     logger.info("Starting GUFO types hierarchy rules ...")
 
-    list_not_evaluated_rules = ["n_r_t", "s_nsup_k", "ns_s_spe", "nk_k_sup"]
-    list_of_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub"]
+    always_automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub"]
+    general_rules = ["n_r_t", "s_nsup_k", "ns_s_spe", "nk_k_sup"]
+
+    list_of_rules = always_automatic_rules + general_rules
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = 0

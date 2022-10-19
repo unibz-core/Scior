@@ -2,13 +2,11 @@
 
 import time
 
-from prettytable import PrettyTable
-
 from modules.logger_config import initialize_logger
 from modules.propagation import execute_and_propagate_down, execute_and_propagate_up
-from modules.rules_types_definitions_aux import treat_rule
+from modules.rule_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe
 from modules.utils_dataclass import get_list_gufo_classification, get_element_list, external_move_to_is_list
-from modules.utils_graph import get_all_related_nodes, get_subclasses, get_superclasses, get_all_superclasses
+from modules.utils_graph import get_subclasses, get_superclasses, get_all_superclasses
 
 INTERVENTION_WARNING = "MANUAL INTERVENTION NEEDED!\n"
 
@@ -302,13 +300,13 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
     - DESCRIPTION:
 
     - BEHAVIOR:
-        - COMPLETENESS:
-            - COMPLETE: Set the class as a gufo:Kind for both automation level options.
-            - INCOMPLETE:
-                - AUTOMATIC: Ask the user to set the class stereotype (IS or NOT options, also SKIP possibilities).
-                - INTERACTIVE: Reports incompleteness.
+        - C: If can be a Kind, set as Kind. If cannot be, report inconsistency.
+        - N+A: Report incompleteness.
+        - N+I: User receives information and can set the class type (using IS, NOT, or SKIP).
+            After the user option, if not Kind, report incompleteness.
     """
 
+    # TODO (@pedropaulofb): Must treat interactive case.
     if configurations["print_time"]:
         st = time.perf_counter()
 
@@ -329,10 +327,11 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
         # Rule treatment when conditions are met
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
-        treat_rule()
+        treat_rule_n_r_t(ontology_dataclass, configurations)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
+    # TODO (@pedropaulofb): Must treat interactive case.
     if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
@@ -351,117 +350,50 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
             (i) a supertype of N OR
             (ii) a supertype of one of the subtypes of N.
 
-    In other words, from any gufo:NonSortal at least two gufo:Kinds must be reachable by navigating its
+        In other words, from any gufo:NonSortal at least two gufo:Kinds must be reachable by navigating its
     generalization/specialization relations.
 
     BEHAVIOR:
-
-        - Complete + Automatic Only: Enforce. Verify number of possibilities. (PARTIALLY IMPLEMENTED)
-            1) If the possibilities are equal to the necessary number, set as Kind.
-            2) If the possibilities are higher than the necessary number, do nothing.
-            3) If the possibilities are smaller than the necessary number, report problem.
-        - Complete + Automatic: Enforce. Verify number of possibilities. (PARTIALLY IMPLEMENTED)
-            1) If the possibilities are equal to the necessary number, set as Kind.
-            2) If the possibilities are higher than the necessary number, do nothing.
-            3) If the possibilities are smaller than the necessary number, report problem.
-        - Complete + Interactive: Verify number of possibilities. User can: (PARTIALLY IMPLEMENTED)
-            1) If the possibilities are higher or equal to the necessary number: apply.
-            2) If the possibilities are smaller than the necessary number: apply and report problem.
-
-        - Incomplete + Automatic Only: Not available. No action. (IMPLEMENTED)
-        - Incomplete + Automatic: User can: apply or include new. (PARTIALLY IMPLEMENTED)
-        - Incomplete + Interactive: User can: apply or include new. (PARTIALLY IMPLEMENTED)
+        Considering P the number of possibilities and N the necessary number. # IMPROVE
+        - C+A:
+            - If P=N, set all possibilities as Kind.
+            - If P>N, report incompleteness
+            - If P<N, set all possibilities as Kind, report incompleteness
+        - C+I:
+            - If P=N, set all possibilities as Kind.
+            - If P>N, user MUST select which possibilities are Kinds up to N=0 (no SKIP allowed).
+            - If P<N, set all possibilities as Kind, report incompleteness.
+        - N+A:
+            - Report incompleteness.
+        - N+I:
+            - If P>=N, user CAN select which possibilities are Kinds up to N=0.
+            - If P<N, user CAN select which possibilities are Kinds up to N=0 and report incompleteness.
     """
-
+    # TODO (@pedropaulofb): Must treat interactive case.
     if configurations["print_time"]:
-        st1 = time.perf_counter()
-        # Necessary for the calculation when interactive mode.
-        st2 = -1
+        st = time.perf_counter()
 
     rule_code = "ns_s_spe"
 
     logger = initialize_logger()
 
     for ontology_dataclass in list_ontology_dataclasses:
-        if GUFO_NON_SORTAL in ontology_dataclass.is_type:
-            logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
-            # Get all ontology dataclasses that are reachable from the input dataclass
-            list_all_related_nodes = get_all_related_nodes(graph, nodes_list, ontology_dataclass.uri)
+        # CONDITION 1
+        if GUFO_NON_SORTAL not in ontology_dataclass.is_type:
+            continue
 
-            logger.debug(f"Related nodes of {ontology_dataclass.uri} are: {list_all_related_nodes}")
+        logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
-            # From the previous list, get all the ones that ARE gufo:Kinds
-            related_can_kinds_list = get_list_gufo_classification(list_ontology_dataclasses, list_all_related_nodes,
-                                                                  "IS", GUFO_KIND)
-            number_related_kinds = len(related_can_kinds_list)
+        treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations)
 
-            # Get all related classes that CAN be classified as gufo:Kinds
-            related_can_kinds_list = get_list_gufo_classification(list_ontology_dataclasses, list_all_related_nodes,
-                                                                  "CAN", GUFO_KIND)
-            related_can_kinds_list.sort()
+        logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
-            number_can_kinds_list = len(related_can_kinds_list)
-
-            if number_related_kinds < 2:
-
-                # A number of possibilities lower than the necessary indicates a deficiency in complete models.
-                if (number_can_kinds_list + number_related_kinds) < 2:
-                    logger.error(f"Inconsistency detected for {ontology_dataclass.uri}. The number of related Kinds is "
-                                 f"{number_related_kinds} and the number of possible Kinds is {number_can_kinds_list}, "
-                                 f"which is lower than the necessary number (2). "
-                                 f"Aborting the program.")
-                    exit(1)
-
-                if configurations["print_time"]:
-                    et1 = time.perf_counter()
-
-                logger.info(INTERVENTION_WARNING)
-                time.sleep(0.2)
-
-                print(f"\nAs a gufo:NonSortal, the class {ontology_dataclass.uri} must aggregate entities with "
-                      f"at least two different identity principles, which are provided by gufo:Kinds. "
-                      f"Currently, there is {number_related_kinds} gufo:Kinds related to this class. ")
-
-                print(
-                    f"\nThe following list presents all classes that are related to {ontology_dataclass.uri} and that "
-                    f"can possibly be classified as gufo:Kinds.")
-
-                table = PrettyTable(['ID', 'URI', 'Known IS Types', "Known CAN Types", "Known NOT Types"])
-
-                node_id = 0
-                for related_node in related_can_kinds_list:
-                    node_id += 1
-                    related_node_is_types = get_element_list(list_ontology_dataclasses, related_node, "is_type")
-                    related_node_can_types = get_element_list(list_ontology_dataclasses, related_node, "can_type")
-                    related_node_not_types = get_element_list(list_ontology_dataclasses, related_node, "not_type")
-                    table.add_row([node_id, related_node, related_node_is_types,
-                                   related_node_can_types, related_node_not_types])
-
-                table.align = "l"
-                print(table)
-
-                new_sortal_id = input("Enter the ID of the class to be classified as a gufo:Kind: ")
-                new_sortal_id.strip()
-                new_sortal_id = int(new_sortal_id)
-
-                print(f"The chosen class is: {related_can_kinds_list[new_sortal_id - 1]}")
-
-                if configurations["print_time"]:
-                    st2 = time.perf_counter()
-
-                external_move_to_is_list(list_ontology_dataclasses, related_can_kinds_list[new_sortal_id - 1],
-                                         GUFO_KIND)
-
-            logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
+    # TODO (@pedropaulofb): Must treat interactive case.
     if configurations["print_time"]:
-        et2 = time.perf_counter()
-        if st2 > 0:
-            elapsed_time_final = round((et1 - st1 + et2 - st2), 3)
-        else:
-            elapsed_time_final = round((et2 - st1), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time_final} seconds.")
+        et = time.perf_counter()
+        elapsed_time = round((et - st), 3)
+        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
@@ -471,7 +403,13 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     - RULE: Every non-Kind gufo:Sortal (is gufo:Sortal and is not gufo:Kind) must have exactly one gufo:Kind
     as direct or indirect supertype.
 
-    - BEHAVIOR:
+    BEHAVIOR:
+        - C+A:
+        - C+I:
+        - N+A:
+        - N+I:
+
+
 
         - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
         - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
@@ -571,6 +509,10 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
         - RULE: In complete models, every gufo:Sortal without supertypes is a gufo:Kind.
 
         - BEHAVIOR:
+            - C+A:
+            - C+I:
+            - N+A:
+            - N+I:
 
             - Complete + Automatic Only: Enforce. (IMPLEMENTED)
             - Complete + Automatic: Enforce. (IMPLEMENTED)

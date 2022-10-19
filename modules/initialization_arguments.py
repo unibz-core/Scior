@@ -73,6 +73,4 @@ def treat_arguments(software_version):
 
     logger.debug(f"Arguments Parsed. Obtained values are: {global_configurations}")
 
-    print(vars(arguments))
-
     return global_configurations

@@ -107,3 +107,13 @@ def external_move_to_is_list(list_ontology_dataclasses, class_name, classificati
     for ontology_dataclass in list_ontology_dataclasses:
         if ontology_dataclass.uri == class_name:
             ontology_dataclass.move_element_to_is_list(classification)
+
+
+def external_move_list_to_is_list(list_ontology_dataclasses, list_classes_to_move, classification):
+    """ Receives a list of URIs of ontology classes and moves the classification (e.g., 'gufo:Kind')
+    to their is_list. """
+
+    for dataclass_to_move in list_classes_to_move:
+        for ontology_dataclass in list_ontology_dataclasses:
+            if ontology_dataclass.uri == dataclass_to_move:
+                ontology_dataclass.move_element_to_is_list(classification)

@@ -23,7 +23,6 @@ if __name__ == "__main__":
     # DATA LOADINGS AND INITIALIZATIONS
 
     global_configurations = treat_arguments(SOFTWARE_VERSION)
-    exit(0)
 
     # Logger initialization
     logger = initialize_logger()
@@ -60,7 +59,7 @@ if __name__ == "__main__":
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Isolated":
             break
 
-    ont_dataclass.move_element_to_is_list("gufo:Role")
+    # ont_dataclass.move_element_to_is_list("gufo:Role")
 
     ############################## END TESTS
 
