@@ -1,8 +1,8 @@
 """ Implementation of rules for types. """
-from prettytable import PrettyTable
 
 from modules.logger_config import initialize_logger
-from modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, get_element_list, \
+from modules.user_interactions import select_class_from_list
+from modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, \
     external_move_list_to_is_list
 from modules.utils_graph import get_all_related_nodes
 
@@ -37,36 +37,36 @@ def treat_rule_n_r_t(ontology_dataclass, configurations):
 def interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
                               related_can_kinds_list):
     """ Implements the user interaction for rule ns_s_spe for types. """
+
     print(f"\nAs a gufo:NonSortal, the class {ontology_dataclass.uri} must aggregate entities with "
           f"at least two different identity principles, which are provided by gufo:Kinds. "
-          f"Currently, there is {number_related_kinds} gufo:Kinds related to this class. ")
+          f"Currently, there is/are {number_related_kinds} gufo:Kind(s) related to this class. ")
 
-    print(
-        f"\nThe following list presents all classes that are related to {ontology_dataclass.uri} and that "
-        f"can possibly be classified as gufo:Kinds.")
+    print(f"\nThe following list presents all classes that are related to {ontology_dataclass.uri} and that "
+          f"can possibly be classified as gufo:Kinds.")
 
-    table = PrettyTable(['ID', 'URI', 'Known IS Types', "Known CAN Types", "Known NOT Types"])
+    selected_class = select_class_from_list(list_ontology_dataclasses, related_can_kinds_list)
 
-    node_id = 0
-    for related_node in related_can_kinds_list:
-        node_id += 1
-        related_node_is_types = get_element_list(list_ontology_dataclasses, related_node, "is_type")
-        related_node_can_types = get_element_list(list_ontology_dataclasses, related_node, "can_type")
-        related_node_not_types = get_element_list(list_ontology_dataclasses, related_node, "not_type")
-        table.add_row([node_id, related_node, related_node_is_types,
-                       related_node_can_types, related_node_not_types])
+    if selected_class != "skipped":
+        external_move_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
 
-    table.align = "l"
-    print(table)
 
-    new_sortal_id = input("Enter the ID of the class to be classified as a gufo:Kind: ")
-    new_sortal_id.strip()
-    new_sortal_id = int(new_sortal_id)
+def decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary):
+    """ Returns the action to be performed for rule ns_s_spe. """
 
-    print(f"The chosen class is: {related_can_kinds_list[new_sortal_id - 1]}")
+    ni = not (configurations["is_complete"] or configurations["is_automatic"])
+    ci = configurations["is_complete"] and not configurations["is_automatic"]
 
-    external_move_to_is_list(list_ontology_dataclasses, related_can_kinds_list[new_sortal_id - 1],
-                             GUFO_KIND)
+    if number_possibilities <= 0:
+        action = "report_incompleteness"
+    elif configurations["is_complete"] and number_possibilities <= number_necessary:
+        action = "set_all_as_kinds"
+    elif ni or (ci and number_possibilities > number_necessary):
+        action = "user_can_set"
+    else:
+        action = "report_incompleteness"
+
+    return action
 
 
 def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations):
@@ -79,16 +79,15 @@ def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, no
     logger.debug(f"Related nodes of {ontology_dataclass.uri} are: {list_all_related_nodes}")
 
     # From the previous list, get all the ones that ARE gufo:Kinds
-    related_is_kinds_list = get_list_gufo_classification(list_ontology_dataclasses, list_all_related_nodes,
-                                                         "IS", GUFO_KIND)
+    related_is_kinds_list = get_list_gufo_classification(list_ontology_dataclasses, list_all_related_nodes, "IS",
+                                                         GUFO_KIND)
     number_related_kinds = len(related_is_kinds_list)
 
     logger.debug(f"Related nodes of {ontology_dataclass.uri} that ARE Kinds: {list_all_related_nodes}")
 
     # Get all related classes that CAN be classified as gufo:Kinds
-    related_can_kinds_list = get_list_gufo_classification(list_ontology_dataclasses, list_all_related_nodes,
-                                                          "CAN", GUFO_KIND)
-    related_can_kinds_list.sort()
+    related_can_kinds_list = get_list_gufo_classification(list_ontology_dataclasses, list_all_related_nodes, "CAN",
+                                                          GUFO_KIND)
 
     logger.debug(f"Related nodes of {ontology_dataclass.uri} that CAN BE Kinds: {list_all_related_nodes}")
 
@@ -97,45 +96,23 @@ def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, no
     number_possibilities = number_can_kinds_list - number_related_kinds
     number_necessary = 2 - number_related_kinds
 
-    if configurations["is_complete"]:
-        # Case P=N for C+A and C+I
-        if number_possibilities == number_necessary:
-            external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
-        # Case P<N for C+A and C+I
-        elif number_possibilities < number_necessary:
-            external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
-            logger.error(f"Inconsistency detected (rule ns_s_spe)! "
-                         f"The class {ontology_dataclass.uri} "
-                         f"is associated to only {number_necessary - number_possibilities} Kinds, "
-                         f"but it should be related to 2 Kinds.")
-        # Case P>N for C+A
-        elif configurations["is_automatic"]:
-            logger.warning(f"Incompleteness detected (rule ns_s_spe)! "
-                           f"The class {ontology_dataclass.uri} "
-                           f"is associated to only {number_necessary} Kinds, "
-                           f"but it should be related to 2 Kinds. "
-                           f"The following classes are possibilities for the completion: {related_can_kinds_list}.")
-        # Case P>N for C+I
-        else:
-            interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
-                                      related_can_kinds_list)
+    # The rule is already accomplished, so there is no need to do any action.
+    if number_necessary <= 0:
+        return
+
+    action = decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary)
+
+    if action == "return_incompleteness":
+        logger.warning(f"Incompleteness detected (rule ns_s_spe)! "
+                       f"The class {ontology_dataclass.uri} "
+                       f"is associated to only {number_necessary} Kinds, "
+                       f"but it should be related to 2 Kinds.")
+    elif action == "set_all_as_kinds":
+        external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
+    elif action == "user_can_set":
+        # TODO (@pedropaulofb): Correct.
+        interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
+                                  related_can_kinds_list)
     else:
-        # All cases for N+A
-        if configurations["is_automatic"]:
-            logger.warning(f"Incompleteness detected (rule ns_s_spe)! "
-                           f"The class {ontology_dataclass.uri} "
-                           f"is associated to only {number_necessary} Kinds, "
-                           f"but it should be related to 2 Kinds.")
-        # Case P>=N for N+I
-        elif number_possibilities >= number_necessary:
-            interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
-                                      related_can_kinds_list)
-            print("Create user interaction.")
-        # Case P<N for N+I
-        else:
-            interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
-                                      related_can_kinds_list)
-            logger.warning(f"Incompleteness detected (rule ns_s_spe)! "
-                           f"The class {ontology_dataclass.uri} "
-                           f"is associated to only {number_necessary} Kinds, "
-                           f"but it should be related to 2 Kinds.")
+        logger.error("Unexpected evaluation result! Program aborted.")
+        exit(1)

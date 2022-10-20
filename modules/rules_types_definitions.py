@@ -306,7 +306,7 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
             After the user option, if not Kind, report incompleteness.
     """
 
-    # TODO (@pedropaulofb): Must treat interactive case.
+    # TODO (@pedropaulofb): Time counter must treat interactive case.
     if configurations["print_time"]:
         st = time.perf_counter()
 
@@ -331,7 +331,7 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
-    # TODO (@pedropaulofb): Must treat interactive case.
+    # TODO (@pedropaulofb): Time counter must treat interactive case.
     if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
@@ -354,22 +354,22 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
     generalization/specialization relations.
 
     BEHAVIOR:
-        Considering P the number of possibilities and N the necessary number. # IMPROVE
-        - C+A:
-            - If P=N, set all possibilities as Kind.
-            - If P>N, report incompleteness
-            - If P<N, set all possibilities as Kind, report incompleteness
-        - C+I:
-            - If P=N, set all possibilities as Kind.
-            - If P>N, user MUST select which possibilities are Kinds up to N=0 (no SKIP allowed).
-            - If P<N, set all possibilities as Kind, report incompleteness.
-        - N+A:
-            - Report incompleteness.
-        - N+I:
-            - If P>=N, user CAN select which possibilities are Kinds up to N=0.
-            - If P<N, user CAN select which possibilities are Kinds up to N=0 and report incompleteness.
+        Considering P the number of possibilities and N the necessary number (N>0).
+
+        If N < 0: do nothing.
+
+        Actions:
+            - US: User can set a class as Kind or SKIP.
+            - SA: Automatically set all P as Kinds.
+            - RI: Report incompleteness.
+
+        - RI: P<=0 or N+A or (C+A and P>N)
+        - SA: P>0 and (C and P<=N)
+        - US: P>0 and (N+I or (C+I and P>N))
+
+
     """
-    # TODO (@pedropaulofb): Must treat interactive case.
+    # TODO (@pedropaulofb): Time counter must treat interactive case.
     if configurations["print_time"]:
         st = time.perf_counter()
 
@@ -389,7 +389,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
-    # TODO (@pedropaulofb): Must treat interactive case.
+    # TODO (@pedropaulofb): Time counter must treat interactive case.
     if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
