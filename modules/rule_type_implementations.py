@@ -92,8 +92,7 @@ def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, no
     # Get all ontology dataclasses that are reachable from the input dataclass
     list_all_related_nodes = get_all_related_nodes(graph, nodes_list, ontology_dataclass.uri)
 
-    # TODO (@pedropaulofb): Change back to DEBUG
-    logger.info(f"Related nodes of {ontology_dataclass.uri} are: {list_all_related_nodes}")
+    logger.debug(f"Related nodes of {ontology_dataclass.uri} are: {list_all_related_nodes}")
 
     # From the previous list, get all the ones that ARE gufo:Kinds
     related_is_kinds_list = get_list_gufo_classification(list_ontology_dataclasses, list_all_related_nodes, "IS",
@@ -121,8 +120,6 @@ def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, no
         return
 
     action = decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary)
-
-    print(f"action = {action}")
 
     if action == "report_incompleteness":
         logger.warning(f"Incompleteness detected during rule ns_s_spe! "
