@@ -117,3 +117,35 @@ def external_move_list_to_is_list(list_ontology_dataclasses, list_classes_to_mov
         for ontology_dataclass in list_ontology_dataclasses:
             if ontology_dataclass.uri == dataclass_to_move:
                 ontology_dataclass.move_element_to_is_list(classification)
+
+
+def return_dataclass_from_class_name(list_ontology_dataclasses, class_name):
+    """ Receives a class name and returns the corresponding dataclass element from the list of dataclasses. """
+
+    logger = initialize_logger()
+
+    for ontology_dataclass in list_ontology_dataclasses:
+        if ontology_dataclass.name == class_name:
+            return ontology_dataclass
+
+    logger.error("Class not found in the list of ontology dataclasses. Program aborted.")
+    exit(1)
+
+
+def select_list(list_of_options):
+    """ User can select between one of the lists received in the parameter list_of_options.
+    Possible return values are lowercase strings. """
+
+    valid_option = False
+    selected_list = "invalid"
+
+    while not valid_option:
+        selected_list = input(f"Select a list. Options are: {list_of_options}")
+        selected_list.strip().lower()
+        if selected_list not in list_of_options:
+            print("Invalid selection. Please try again.")
+        else:
+            print(f"The chosen list was: {selected_list} list.")
+            valid_option = True
+
+    return selected_list
