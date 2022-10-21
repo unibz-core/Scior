@@ -14,6 +14,7 @@ from modules.initialization_data_ontology_dataclass import initialize_ontology_d
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
 from modules.rules_types_run import execute_rules_types
+from modules.utils_graph import get_all_related_nodes
 
 SOFTWARE_VERSION = "OntCatOWL - Identification of Ontological Categories for OWL Ontologies\n" \
                    "Version 0.20221011 - https://github.com/unibz-core/OntCatOWL/\n"
@@ -56,10 +57,16 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Isolated":
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Impact":
             break
 
-    # ont_dataclass.move_element_to_is_list("gufo:Role")
+    ont_dataclass.move_element_to_is_list("gufo:Mixin")
+
+    related = get_all_related_nodes(ontology_graph, ontology_nodes, ont_dataclass.uri)
+    for r in related:
+        print(r)
+
+    exit(10)
 
     ############################## END TESTS
 

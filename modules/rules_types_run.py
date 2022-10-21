@@ -12,10 +12,12 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
     logger.info("Starting GUFO types hierarchy rules ...")
 
     always_automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub"]
-    general_rules = ["n_r_t"]
+    general_rules = ["ns_s_spe"]
+
+    treated_not_performed = ["n_r_t"]
 
     # TODO (@pedropaulofb): Test or treat
-    not_performed_rules = ["s_nsup_k", "ns_s_spe", "nk_k_sup"]
+    not_treated_not_performed_rules = ["s_nsup_k", "nk_k_sup"]
 
     list_of_rules = always_automatic_rules + general_rules
 

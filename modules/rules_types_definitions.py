@@ -365,6 +365,20 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
         - SA: P>0 and (C and P<=N)
         - US: P>0 and (N+I or (C+I and P>N))
 
+        Resume:
+        - C+A:
+            - RI when P<=0 or when (P>0 and P>N)
+            - SA when (P>0 and P<=N)
+        - C+I:
+            - RI when P<=0
+            - US when (P>0 and P>N)
+            - SA when (P>0 and P<=N)
+        - N+A:
+            - RI always
+        - N+I:
+            - RI when P<=0
+            - US when P>0
+
 
     """
 

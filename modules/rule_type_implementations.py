@@ -92,7 +92,8 @@ def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, no
     # Get all ontology dataclasses that are reachable from the input dataclass
     list_all_related_nodes = get_all_related_nodes(graph, nodes_list, ontology_dataclass.uri)
 
-    logger.debug(f"Related nodes of {ontology_dataclass.uri} are: {list_all_related_nodes}")
+    # TODO (@pedropaulofb): Change back to DEBUG
+    logger.info(f"Related nodes of {ontology_dataclass.uri} are: {list_all_related_nodes}")
 
     # From the previous list, get all the ones that ARE gufo:Kinds
     related_is_kinds_list = get_list_gufo_classification(list_ontology_dataclasses, list_all_related_nodes, "IS",
@@ -112,17 +113,24 @@ def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, no
     number_possibilities = number_can_kinds_list - number_related_kinds
     number_necessary = 2 - number_related_kinds
 
+    logger.info(f"For {ontology_dataclass.uri}, K = {number_related_kinds}, "
+                f"P = {number_possibilities}, N = {number_necessary}")
+
     # The rule is already accomplished, so there is no need to do any action.
     if number_necessary <= 0:
         return
 
     action = decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary)
 
-    if action == "return_incompleteness":
+    print(f"action = {action}")
+
+    if action == "report_incompleteness":
         logger.warning(f"Incompleteness detected during rule ns_s_spe! "
                        f"The class {ontology_dataclass.uri} "
-                       f"is associated to only {number_necessary} Kinds, "
-                       f"but it should be related to 2 Kinds.")
+                       f"is associated to {2 - number_necessary} Kind(s), "
+                       f"but it should be related to at least 2 Kinds. ")
+        logger.info(f"Classes that are associated with {ontology_dataclass.uri} and that "
+                    f"can be Kinds are: {related_can_kinds_list}")
     elif action == "set_all_as_kinds":
         external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
     elif action == "user_can_set":

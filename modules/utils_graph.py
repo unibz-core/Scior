@@ -162,28 +162,45 @@ def get_all_subclasses(graph, nodes_list, element):
     return all_subclasses
 
 
-def get_all_related_nodes(graph, nodes_list, element):
-    """ Return list of all nodes of the given graph that are directly or indirectly related to the given element.
-        I.e., return all nodes that are reachable from the input node (element).
-        The return list DOES NOT INCLUDE the own element.
+def get_all_related_nodes_inc(graph, nodes_list, node, queue=None, visited=None, related=None):
+    """ Implements the BFS algorithm to return the list of all nodes of the given graph that are directly or indirectly
+    related to the given element. I.e., return all nodes that are reachable from the input node (element).
+
+    The return list DOES INCLUDE the own element.
     """
 
-    related_nodes = []
+    if visited is None:
+        visited = []
+    if queue is None:
+        queue = []
+    if related is None:
+        related = []
 
-    # get all related roots
-    related_roots = get_related_roots(graph, nodes_list, element)
-    if len(related_roots) == 0:
-        related_roots.append(element)
+    visited.append(node)
+    queue.append(node)
 
-    # add related roots
-    related_nodes.extend(related_roots)
+    while queue:
+        related.append(queue.pop(0))
 
-    # add all subclasses (up to leaf nodes) of all related roots
-    for root in related_roots:
-        temp = get_all_subclasses(graph, nodes_list, root)
-        related_nodes.extend(temp)
+    neighbours_list = get_subclasses(graph, nodes_list["all"], node) + get_superclasses(graph, nodes_list["all"], node)
 
-    related_nodes.remove(element)
-    related_nodes = remove_duplicates(related_nodes)
+    for neighbour in neighbours_list:
+        if neighbour not in visited:
+            result = get_all_related_nodes_inc(graph, nodes_list, neighbour, queue, visited, related)
+            for r in result:
+                if r not in related:
+                    related.append(r)
 
-    return related_nodes
+    return related
+
+
+def get_all_related_nodes(graph, nodes_list, node):
+    """ Return the list of all nodes of the given graph that are directly or indirectly
+        related to the given element. I.e., return all nodes that are reachable from the input node (element).
+
+        The return list DOES NOT INCLUDE the own element.
+        """
+
+    result = get_all_related_nodes_inc(graph, nodes_list, node)
+
+    return result[1:]
