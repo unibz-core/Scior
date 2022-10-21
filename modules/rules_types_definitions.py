@@ -306,7 +306,6 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
             After the user option, if not Kind, report incompleteness.
     """
 
-    # TODO (@pedropaulofb): Time counter must treat interactive case.
     if configurations["print_time"]:
         st = time.perf_counter()
 
@@ -331,7 +330,6 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
-    # TODO (@pedropaulofb): Time counter must treat interactive case.
     if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
@@ -369,7 +367,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
 
 
     """
-    # TODO (@pedropaulofb): Time counter must treat interactive case.
+
     if configurations["print_time"]:
         st = time.perf_counter()
 
@@ -389,7 +387,6 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
-    # TODO (@pedropaulofb): Time counter must treat interactive case.
     if configurations["print_time"]:
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
@@ -477,7 +474,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
                 et1 = time.perf_counter()
 
             logger.info(INTERVENTION_WARNING)
-            time.sleep(0.2)
+            time.sleep(0.1)
 
             # User must choose an option to become a Kind.
             print(f"No identity provider (Kind) was identified for the class {ontology_dataclass.uri}.")

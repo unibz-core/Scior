@@ -1,15 +1,33 @@
 """ Implementation of rules for types. """
+import time
 
 from modules.logger_config import initialize_logger
-from modules.user_interactions import select_class_from_list
+from modules.user_interactions import select_class_from_list, set_type_for_class, print_class_types
 from modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, \
     external_move_list_to_is_list
 from modules.utils_graph import get_all_related_nodes
 
 # Frequent GUFO types
 GUFO_KIND = "gufo:Kind"
-GUFO_SORTAL = "gufo:Sortal"
-GUFO_NON_SORTAL = "gufo:NonSortal"
+
+
+def interaction_rule_n_r_t(ontology_dataclass):
+    """ User interaction for rule n_r_t. """
+
+    option = None
+    valid = False
+
+    while not valid:
+        time.sleep(0.1)
+        option = input(f"Would you like to set the type of {ontology_dataclass.uri} ('y' or 'n')? ")
+        option = option.strip().lower()
+        valid = (option == "y") or (option == "n")
+        if not valid:
+            print("Invalid input. Please retry.")
+
+    if option == "y":
+        print("The list of possible types to be associated with the class are:\n")
+        set_type_for_class(ontology_dataclass)
 
 
 def treat_rule_n_r_t(ontology_dataclass, configurations):
@@ -21,17 +39,15 @@ def treat_rule_n_r_t(ontology_dataclass, configurations):
             ontology_dataclass.move_element_to_is_list(GUFO_KIND)
         else:
             logger.error(f"Inconsistency detected! Class {ontology_dataclass.uri} must be a gufo:Kind, "
-                         f"however it cannot be. Program aborted.\n"
-                         f"\t{ontology_dataclass.uri} is: {ontology_dataclass.is_type}\n"
-                         f"\t{ontology_dataclass.uri} can be: {ontology_dataclass.can_type}\n"
-                         f"\t{ontology_dataclass.uri} cannot be: {ontology_dataclass.not_type}\n")
+                         f"however it cannot be. Program aborted.")
+            print_class_types(ontology_dataclass)
+
             exit(1)
-    elif configurations["is_automatic"]:
+    else:
         logger.warning(f"Incompleteness detected. "
                        f"There is not identity principle associated to class {ontology_dataclass.uri}.")
-    else:
-        # TODO (@pedropaulofb): Create user interaction.
-        print("User interaction to be created.")
+        if (not configurations["is_automatic"]) and (len(ontology_dataclass.can_type) > 0):
+            interaction_rule_n_r_t(ontology_dataclass)
 
 
 def interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,

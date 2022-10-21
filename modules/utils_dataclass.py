@@ -127,9 +127,9 @@ def return_dataclass_from_class_name(list_ontology_dataclasses, class_name):
     for ontology_dataclass in list_ontology_dataclasses:
         if ontology_dataclass.name == class_name:
             return ontology_dataclass
-
-    logger.error("Class not found in the list of ontology dataclasses. Program aborted.")
-    exit(1)
+    else:
+        logger.error("Class not found in the list of ontology dataclasses. Program aborted.")
+        exit(1)
 
 
 def select_list(list_of_options):
@@ -140,8 +140,8 @@ def select_list(list_of_options):
     selected_list = "invalid"
 
     while not valid_option:
-        selected_list = input(f"Select a list. Options are: {list_of_options}")
-        selected_list.strip().lower()
+        selected_list = input(f"Select a list. Options are: {list_of_options}: ")
+        selected_list = selected_list.strip().lower()
         if selected_list not in list_of_options:
             print("Invalid selection. Please try again.")
         else:

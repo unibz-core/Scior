@@ -2,16 +2,16 @@
 from prettytable import PrettyTable
 
 from modules.logger_config import initialize_logger
-from modules.utils_dataclass import get_element_list, return_dataclass_from_class_name, select_list
+from modules.utils_dataclass import get_element_list, select_list
 
 
 def print_class_types(ontology_dataclass):
     """ Print current status of a dataclass (internal lists). """
 
     print(f"The current status of the class {ontology_dataclass.uri} is:")
-    print(f"\tIS: {ontology_dataclass.is_type}")
-    print(f"\tCAN: {ontology_dataclass.can_type}")
-    print(f"\tNOT: {ontology_dataclass.not_type}")
+    print(f"\t- IS\t: {ontology_dataclass.is_type}")
+    print(f"\t- CAN\t: {ontology_dataclass.can_type}")
+    print(f"\t- NOT\t: {ontology_dataclass.not_type}")
 
 
 def print_list_classes_and_types(list_ontology_dataclasses, list_option_classes):
@@ -62,15 +62,18 @@ def select_class_from_list(list_ontology_dataclasses, list_option_classes):
     return selected_class
 
 
-def set_type_for_class(list_ontology_dataclasses, class_name):
+def set_type_for_class(ontology_dataclass):
     """ The user can set a type for the class received as parameter.
     Possible return values are: ok (valid situations: correct selection or skip option), nok (invalid situations).
+
+    When dataclass is not known (i.e., only name is known), use the follwoing before calling this function:
+        ontology_dataclass = return_dataclass_from_class_name(list_ontology_dataclasses, class_name)
     """
 
     logger = initialize_logger()
 
-    ontology_dataclass = return_dataclass_from_class_name(list_ontology_dataclasses, class_name)
     print_class_types(ontology_dataclass)
+    print("\n")
 
     number_of_options = len(ontology_dataclass.can_type)
 
@@ -89,6 +92,7 @@ def set_type_for_class(list_ontology_dataclasses, class_name):
 
     table.align = "l"
     print(table)
+    print("\n")
 
     selected_id = input("Enter the ID of the type to be selected or enter 0 to skip the selection: ")
     selected_id.strip()
@@ -108,5 +112,5 @@ def set_type_for_class(list_ontology_dataclasses, class_name):
     else:
         ontology_dataclass.move_element_to_not_list(selected_type)
 
-    logger.debug(f"For class {class_name}, type {selected_type} successfully moved to {selected_list} list")
+    logger.debug(f"For class {ontology_dataclass.uri}, type {selected_type} successfully moved to {selected_list} list")
     return "ok"

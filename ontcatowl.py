@@ -88,7 +88,7 @@ if __name__ == "__main__":
 # Verify "dataclass with slots" and the use of __slot__ for better performance.
 # As log files are getting big, maybe it is going to be necessary to compact them into a zip file.
 # Run automatic only for some different configurations and figure out which is the best order for executing the rules.
-# Insert "break" after moving commands (name == class.uri) because there are no repetitions.
+# Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verifiy for/break statement
 
 # TODO (@pedropaulofb): BEFORE RELEASE OF VERSION 1.0
 # Evaluate on Linux before release first version

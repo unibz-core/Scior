@@ -3105,16 +3105,16 @@ d3f:verifies
     rdfs:subPropertyOf d3f:analyzes, d3f:associated-with .
 
 d3f:version
-    a                                                                            owl:DatatypeProperty,
-                                                                                 owl:FunctionalProperty ;
-    rdfs:label                                                                   "version"@en ;
-    rdfs:comment                                                                 "x version y: The product or service x has the version y." ;
-    rdfs:range                                                                   [ a           rdfs:Datatype ;
-                                                                                   owl:unionOf ( xsd:decimal
-                                                                                                 xsd:integer
-                                                                                                 xsd:string ) ],
-                                                                                 xsd:string ;
-    rdfs:subPropertyOf                                                           d3f:d3fend-catalog-data-property .
+    a                                                                                                    owl:DatatypeProperty,
+                                                                                                         owl:FunctionalProperty ;
+    rdfs:label                                                                                           "version"@en ;
+    rdfs:comment                                                                                         "x version y: The product or service x has the version y." ;
+    rdfs:range                                                                                           [ a           rdfs:Datatype ;
+                                                                                                           owl:unionOf ( xsd:decimal
+                                                                                                                         xsd:integer
+                                                                                                                         xsd:string ) ],
+                                                                                                         xsd:string ;
+    rdfs:subPropertyOf                                                                                   d3f:d3fend-catalog-data-property .
 
 d3f:windows-registry-key
     a                  owl:DatatypeProperty ;
