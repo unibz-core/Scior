@@ -3149,7 +3149,7 @@ d3f:writes
     rdfs:subPropertyOf d3f:accesses .
 
 <http://pedropaulo.com.br/teste123>
-    a owl:Class .
+    a gufo:Category, gufo:Kind, gufo:NonSortal, gufo:RigidType, gufo:Sortal, owl:Class .
 
 dcterms:description
     a          owl:AnnotationProperty ;
@@ -8339,12 +8339,6 @@ d3f:semantic-relation
     a                  owl:ObjectProperty ;
     rdfs:subPropertyOf d3f:associated-with .
 
-gufo:Kind
-    a owl:Class .
-
-gufo:RigidType
-    a owl:Class .
-
 d3f:AccessToken
     a owl:NamedIndividual .
 
@@ -8398,6 +8392,12 @@ d3f:modifies
     rdfs:subPropertyOf d3f:accesses, d3f:associated-with, d3f:may-modify ;
     skos:altLabel      "alters" .
 
+gufo:Kind
+    a owl:Class .
+
+gufo:RigidType
+    a owl:Class .
+
 d3f:Credential
     a                 owl:NamedIndividual ;
     d3f:authenticates d3f:UserAccount .
@@ -8447,9 +8447,6 @@ d3f:hardens
     rdfs:label         "hardens" ;
     rdfs:subPropertyOf d3f:counters, d3f:d3fend-tactical-verb-property .
 
-gufo:NonSortal
-    a owl:Class .
-
 d3f:Email
     a               owl:NamedIndividual ;
     d3f:may-contain d3f:File, d3f:URL .
@@ -8471,6 +8468,9 @@ d3f:StackFrame
 d3f:SystemCall
     a            owl:NamedIndividual ;
     d3f:executes d3f:Subroutine .
+
+gufo:NonSortal
+    a owl:Class .
 
 d3f:URL
     a             owl:NamedIndividual ;

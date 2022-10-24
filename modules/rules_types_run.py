@@ -12,9 +12,9 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
     logger.info("Starting GUFO types hierarchy rules ...")
 
     always_automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub"]
-    general_rules = ["ns_s_spe"]
+    general_rules = ["n_r_t", "ns_s_spe"]
 
-    treated_not_performed = ["n_r_t"]
+    treated_not_performed = []
 
     # TODO (@pedropaulofb): TO BE TREATED
     not_treated_not_performed_rules = ["s_nsup_k", "nk_k_sup"]
@@ -24,14 +24,20 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = 0
 
-    # TODO (@pedropaulofb): LOOP(LOOP(automatic) + interactive)
-
+    # LOOP(LOOP(automatic) + interactive)
     while initial_hash != final_hash:
-        initial_hash = final_hash
 
+        # Loop always_automatic_rules only
+        while initial_hash != final_hash:
+            initial_hash = final_hash
+            for automatic_rule in always_automatic_rules:
+                switch_rule_execution(ontology_dataclass_list, graph, nodes_list, automatic_rule, configurations)
+            final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
+
+        # Loop always_automatic_rules + general_rules
+        initial_hash = final_hash
         for rule in list_of_rules:
             switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule, configurations)
-
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
         if initial_hash == final_hash:
@@ -73,3 +79,17 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
     else:
         logger.error("Unexpected rule code received as parameter! Program aborted.")
         exit(1)
+
+    # while initial_hash != final_hash:
+    #     initial_hash = final_hash
+    #
+    #     for rule in list_of_rules:
+    #         switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule, configurations)
+    #
+    #     final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
+    #
+    #     if initial_hash == final_hash:
+    #         logger.debug("Final hash equals initial hash for the dataclass list. "
+    #                      "GUFO types hierarchy rules successfully concluded.")
+    #     else:
+    #         logger.debug("Final hash does not equals initial hash for the dataclass list. Re-executing rules.")

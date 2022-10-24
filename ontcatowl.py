@@ -60,8 +60,8 @@ if __name__ == "__main__":
             ont_dataclass.move_element_to_is_list("gufo:Mixin")
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAB":
             ont_dataclass.move_element_to_is_list("gufo:Kind")
-        # if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AA":
-        #     ont_dataclass.move_element_to_is_list("gufo:Kind")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Root2":
+            ont_dataclass.move_element_to_is_list("gufo:Kind")
 
 ############################## END TESTS
 
