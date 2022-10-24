@@ -16,7 +16,7 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
 
     treated_not_performed = ["n_r_t"]
 
-    # TODO (@pedropaulofb): Test or treat
+    # TODO (@pedropaulofb): TO BE TREATED
     not_treated_not_performed_rules = ["s_nsup_k", "nk_k_sup"]
 
     list_of_rules = always_automatic_rules + general_rules

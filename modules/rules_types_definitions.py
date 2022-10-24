@@ -378,8 +378,6 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
         - N+I:
             - RI when P<=0
             - US when P>0
-
-
     """
 
     if configurations["print_time"]:

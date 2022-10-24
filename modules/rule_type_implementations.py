@@ -123,14 +123,17 @@ def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, no
 
     action = decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary)
 
+    logger.warning(f"Incompleteness detected during rule ns_s_spe! "
+                   f"The class {ontology_dataclass.uri} "
+                   f"is associated to {2 - number_necessary} Kind(s), "
+                   f"but it should be related to at least 2 Kinds. ")
+
     if action == "report_incompleteness":
-        logger.warning(f"Incompleteness detected during rule ns_s_spe! "
-                       f"The class {ontology_dataclass.uri} "
-                       f"is associated to {2 - number_necessary} Kind(s), "
-                       f"but it should be related to at least 2 Kinds. ")
         logger.info(f"Classes that are associated with {ontology_dataclass.uri} and that "
                     f"can be Kinds are: {related_can_kinds_list}")
     elif action == "set_all_as_kinds":
+        logger.info(f"The following classes are going to be set as Kinds "
+                    f"to solve the incompleteness: {related_can_kinds_list}.")
         external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
     elif action == "user_can_set":
         interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,

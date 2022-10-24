@@ -32,7 +32,8 @@ d3f:AAB
     rdfs:subClassOf d3f:AAA .
 
 d3f:AAC
-    a               gufo:Kind, gufo:RigidType, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a               gufo:Kind, gufo:Mixin, gufo:NonRigidType, gufo:NonSortal, gufo:RigidType, gufo:SemiRigidType,
+                    gufo:Sortal, owl:Class, owl:NamedIndividual ;
     rdfs:subClassOf d3f:AA, d3f:AAA .
 
 d3f:AC
@@ -3185,7 +3186,7 @@ skos:altLabel
     d3f:kb-author "Alessandro Vesely" .
 
 d3f:AA
-    a gufo:Kind, gufo:RigidType, gufo:Sortal, owl:Class .
+    a gufo:Kind, gufo:NonSortal, gufo:RigidType, gufo:Sortal, owl:Class .
 
 d3f:AccessPermissionModification_MITRE
     a                      owl:NamedIndividual ;
@@ -7916,12 +7917,6 @@ d3f:process-property
     rdfs:comment       "x process-property y: Process x has the a process-property y.  This is generalization for specific process object properties." ;
     rdfs:subPropertyOf d3f:associated-with .
 
-gufo:Mixin
-    a owl:Class .
-
-gufo:SemiRigidType
-    a owl:Class .
-
 d3f:AuthenticationCacheInvalidation
     a                owl:NamedIndividual ;
     d3f:d3fend-id    "D3-ANCI" ;
@@ -8050,7 +8045,10 @@ d3f:process-data-property
     rdfs:comment       "x process-data-property y: The process x has the data property y." ;
     rdfs:subPropertyOf d3f:d3fend-artifact-data-property .
 
-gufo:NonRigidType
+gufo:Mixin
+    a owl:Class .
+
+gufo:SemiRigidType
     a owl:Class .
 
 d3f:ApplicationConfigurationHardening
@@ -8267,6 +8265,9 @@ d3f:may-counter-attack
     rdfs:label         "may-counter-attack" ;
     rdfs:subPropertyOf d3f:may-be-tactically-associated-with .
 
+gufo:NonRigidType
+    a owl:Class .
+
 d3f:ApplicationConfiguration
     a owl:NamedIndividual .
 
@@ -8339,9 +8340,6 @@ d3f:semantic-relation
     rdfs:subPropertyOf d3f:associated-with .
 
 gufo:Kind
-    a owl:Class .
-
-gufo:NonSortal
     a owl:Class .
 
 gufo:RigidType
@@ -8448,6 +8446,9 @@ d3f:hardens
     a                  owl:ObjectProperty ;
     rdfs:label         "hardens" ;
     rdfs:subPropertyOf d3f:counters, d3f:d3fend-tactical-verb-property .
+
+gufo:NonSortal
+    a owl:Class .
 
 d3f:Email
     a               owl:NamedIndividual ;

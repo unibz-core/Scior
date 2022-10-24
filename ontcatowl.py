@@ -56,12 +56,12 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAA":
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAC":
             ont_dataclass.move_element_to_is_list("gufo:Mixin")
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAB":
             ont_dataclass.move_element_to_is_list("gufo:Kind")
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AA":
-            ont_dataclass.move_element_to_is_list("gufo:Kind")
+        # if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AA":
+        #     ont_dataclass.move_element_to_is_list("gufo:Kind")
 
 ############################## END TESTS
 
@@ -80,6 +80,7 @@ logger.info(f"OntCatOWL concluded on {date_time}!")
 # The ontology_graph may already contain relations with GUFO. Treat that.
 # Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
 # Present to user all different namespaces of different classes found and ask him in which ones he wants to execute.
+# Create a (much) better deficiency (incompleteness)(inconsistency?) report.
 
 # TODO (@pedropaulofb): USER INTERACTIONS
 # Ordinate all lists that are exhibited to the user.
