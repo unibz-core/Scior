@@ -55,11 +55,13 @@ if __name__ == "__main__":
 
     ############################## BEGIN TESTS
 
-    for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Impact":
-            break
+    print(ontology_nodes["roots"])
+    exit(1)
 
-    ont_dataclass.move_element_to_is_list("gufo:Mixin")
+    # for ont_dataclass in ontology_dataclass_list:
+    # if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Impact":
+    #     ont_dataclass.move_element_to_is_list("gufo:Mixin")
+    #     break
 
     ############################## END TESTS
 
@@ -77,9 +79,9 @@ if __name__ == "__main__":
 # Currently reasoning cannot be done after the initialization (e.g., after the rules exec).
 # The ontology_graph may already contain relations with GUFO. Treat that.
 # Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
+# Present to user all different namespaces of different classes found and ask him in which ones he wants to execute.
 
 # TODO (@pedropaulofb): USER INTERACTIONS
-# Add option to skip interactive rule iteration (to add other processing first).
 # Ordinate all lists that are exhibited to the user.
 # Create menus for better user interactions: https://pypi.org/project/simple-term-menu/
 

@@ -1,7 +1,7 @@
 """ Initialization of node lists """
-
+from modules.initialization_data_ontology_dataclass import get_list_of_all_classes_no_gufo
 from modules.logger_config import initialize_logger
-from modules.utils_graph import get_list_all_classes, get_list_root_classes, get_list_leaf_classes
+from modules.utils_graph import get_list_root_classes, get_list_leaf_classes
 
 
 def initialize_nodes_lists(ontology_graph):
@@ -11,10 +11,7 @@ def initialize_nodes_lists(ontology_graph):
     logger = initialize_logger()
     logger.debug("Initializing list of Ontology nodes...")
 
-    nodes = {"all": get_list_all_classes(ontology_graph),
-             "roots": [],
-             "leaves": []
-             }
+    nodes = {"all": get_list_of_all_classes_no_gufo(ontology_graph), "roots": [], "leaves": []}
 
     nodes["roots"] = get_list_root_classes(ontology_graph, nodes["all"])
     nodes["leaves"] = get_list_leaf_classes(ontology_graph, nodes["all"])

@@ -1,9 +1,8 @@
 """ Module for initializing data read from the ontology to be evaluated """
 
-from rdflib import RDF, OWL
-
 from modules.dataclass_definitions_ontology import OntologyDataClass
 from modules.logger_config import initialize_logger
+from modules.utils_rdf import get_list_of_all_classes
 
 
 def initialize_ontology_dataclasses(ontology_graph, gufo_input_yaml):
@@ -13,7 +12,7 @@ def initialize_ontology_dataclasses(ontology_graph, gufo_input_yaml):
     logger.debug("Initializing list of Ontology concepts...")
 
     ontology_list = []
-    classes_list = get_list_of_classes(ontology_graph)
+    classes_list = get_list_of_all_classes_no_gufo(ontology_graph)
     gufo_can_list_types, gufo_can_list_individuals = get_gufo_possibilities(gufo_input_yaml)
 
     # - URI: Ontology class name
@@ -32,23 +31,15 @@ def initialize_ontology_dataclasses(ontology_graph, gufo_input_yaml):
     return ontology_list
 
 
-def get_list_of_classes(ontology_graph):
-    """ Returns a list of all classes as URI strings without repetitions available in a Graph """
+def get_list_of_all_classes_no_gufo(ontology_graph):
+    """ Returns a list of all classes *that are not GUFO classes* as URI strings without
+    repetitions available in a Graph. """
 
-    classes_list = []
+    list_exceptions = ["http://purl.org/nemo/gufo"]
 
-    for sub, pred, obj in ontology_graph:
-        if (sub, RDF.type, OWL.Class) in ontology_graph:
-            # N3 necessary for returning string and [1:-1] necessary for removing <>
-            classes_list.append(sub.n3()[1:-1])
-        if (obj, RDF.type, OWL.Class) in ontology_graph:
-            # N3 necessary for returning string and [1:-1] necessary for removing <>
-            classes_list.append(obj.n3()[1:-1])
+    classes_list_no_gufo = get_list_of_all_classes(ontology_graph, list_exceptions)
 
-    # Removing repetitions
-    classes_list = [*set(classes_list)]
-
-    return classes_list
+    return classes_list_no_gufo
 
 
 def get_gufo_possibilities(gufo_input_yaml):

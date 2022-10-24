@@ -77,3 +77,34 @@ def get_ontology_uri(ontology_graph):
     ontology_uri = ontology_graph.value(predicate=RDF.type, object=OWL.Ontology)
 
     return ontology_uri
+
+
+def get_list_of_all_classes(ontology_graph, exceptions_list=None):
+    """ Returns a list of all classes as URI strings without repetitions available in a Graph.
+    Classes that have namespaces included in the exception_list parameter are not included in the returned list. """
+
+    if exceptions_list == None:
+        exceptions_list = []
+
+    classes_list = []
+
+    for sub, pred, obj in ontology_graph:
+        if (sub, RDF.type, OWL.Class) in ontology_graph:
+            # N3 necessary for returning string and [1:-1] necessary for removing <>
+            classes_list.append(sub.n3()[1:-1])
+        if (obj, RDF.type, OWL.Class) in ontology_graph:
+            # N3 necessary for returning string and [1:-1] necessary for removing <>
+            classes_list.append(obj.n3()[1:-1])
+
+    # Removing repetitions
+    no_rep_classes_list = [*set(classes_list)]
+
+    # Removing classes that have namespace in the exceptions_list
+    classes_list = no_rep_classes_list.copy()
+    for class_uri in no_rep_classes_list:
+        for exception_item in exceptions_list:
+            if class_uri.startswith(exception_item):
+                classes_list.remove(class_uri)
+                break
+
+    return classes_list

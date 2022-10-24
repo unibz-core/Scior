@@ -1,22 +1,8 @@
 """ Auxiliary functions for extending and complementing RDFLib's graph functions """
-from rdflib import RDF, OWL, RDFS, URIRef
+from rdflib import RDFS, URIRef
 
 from modules.logger_config import initialize_logger
 from modules.utils_general import remove_duplicates, lists_subtraction
-
-
-def get_list_all_classes(graph):
-    """ Returns a list without repetitions with the URI of all classes in a graph. """
-
-    list_classes = []
-
-    for subj, pred, obj in graph.triples((None, RDF.type, OWL.Class)):
-        # N3 necessary for returning string and [1:-1] necessary for removing <>
-        list_classes.append(subj.n3()[1:-1])
-
-    list_classes = remove_duplicates(list_classes)
-
-    return list_classes
 
 
 def get_superclasses(graph, all_classes, element):
