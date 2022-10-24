@@ -4,8 +4,8 @@ import time
 from modules.logger_config import initialize_logger
 from modules.user_interactions import select_class_from_list, set_type_for_class, print_class_types
 from modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, \
-    external_move_list_to_is_list
-from modules.utils_graph import get_all_related_nodes
+    external_move_list_to_is_list, get_element_list
+from modules.utils_graph import get_all_related_nodes, get_all_superclasses
 
 # Frequent GUFO types
 GUFO_KIND = "gufo:Kind"
@@ -87,7 +87,10 @@ def decide_action_rule_ns_s_spe(configurations, number_possibilities, number_nec
 
 def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations):
     """ Implements rule ns_s_spe for types."""
+
     logger = initialize_logger()
+
+    rule_code = "ns_s_spe"
 
     # Get all ontology dataclasses that are reachable from the input dataclass
     list_all_related_nodes = get_all_related_nodes(graph, nodes_list, ontology_dataclass.uri)
@@ -123,7 +126,7 @@ def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, no
 
     action = decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary)
 
-    logger.warning(f"Incompleteness detected during rule ns_s_spe! "
+    logger.warning(f"Incompleteness detected during rule {rule_code}! "
                    f"The class {ontology_dataclass.uri} "
                    f"is associated to {2 - number_necessary} Kind(s), "
                    f"but it should be related to at least 2 Kinds. ")
@@ -141,3 +144,68 @@ def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, no
     else:
         logger.error("Unexpected evaluation result! Program aborted.")
         exit(1)
+
+
+def interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities):
+    """ User interaction for rule nk_k_sup. """
+
+    logger = initialize_logger()
+
+    print(f"The following classes were identified as possible identity providers:")
+    selected_class = select_class_from_list(list_ontology_dataclasses, list_possibilities)
+
+    if selected_class != "skipped":
+        external_move_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
+        logger.info(f"Class {selected_class} was correctly set as gufo:Kind.")
+
+
+def treat_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations):
+    """ Implements rule nk_k_sup for types."""
+
+    rule_code = "nk_k_sup"
+
+    logger = initialize_logger()
+
+    # Get all ontology dataclasses that are directly or indirectly superclasses of ontology_dataclass
+    list_superclasses = get_all_superclasses(graph, nodes_list, ontology_dataclass.uri)
+    logger.debug(f"Superclasses of {ontology_dataclass.uri} are: {list_superclasses}")
+
+    # Verify if there is a Kind in the superclass list
+    kind_sortals = get_list_gufo_classification(list_ontology_dataclasses, list_superclasses, "IS", GUFO_KIND)
+
+    # CONDITION 2: Kind not found in list of superclasses (i.e., if a Kind is found, the rule execution is interrupted)
+    if len(kind_sortals) != 0:
+        return
+
+    list_possibilities = []
+    # select which can be kind (can_type)
+    for possible_kind in list_superclasses:
+
+        possible_kind_can = get_element_list(list_ontology_dataclasses, possible_kind, "can_type")
+
+        if GUFO_KIND in possible_kind_can:
+            list_possibilities.append(possible_kind)
+
+    logger.warning(f"Incompleteness detected during rule {rule_code}! "
+                   f"The class {ontology_dataclass.uri} does not have an identity provider. "
+                   f"It must have exactly one gufo:Kind as direct or indirect supertype, but has none.")
+
+    # If no identity provider available, report incompleteness for all configurations
+    if len(list_possibilities) == 0:
+        logger.info(f"No classes were identified as possible candidates for "
+                    f"identity provider for {ontology_dataclass.uri}.")
+    elif len(list_possibilities) == 1:
+        if configurations["is_complete"]:
+            external_move_to_is_list(list_ontology_dataclasses, list_possibilities[0], GUFO_KIND)
+            logger.info(f"Class {list_possibilities[0]} is the unique possible identity provider "
+                        f"for {ontology_dataclass.uri}. Hence, it was automatically asserted as gufo:Kind.")
+        elif configurations["is_automatic"]:
+            logger.info(f"The following classes were identified as possible identity providers "
+                        f"for {ontology_dataclass.uri}: {list_possibilities}.")
+        else:
+            interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities)
+    elif len(list_possibilities) > 1:
+        if configurations["is_automatic"]:
+            logger.info(f"The following classes were identified as possible identity providers: {list_possibilities}.")
+        else:
+            interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities)

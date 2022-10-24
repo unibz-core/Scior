@@ -247,8 +247,8 @@ d3f:InternetArticle
     a owl:NamedIndividual .
 
 d3f:Isolated
-    a gufo:AntiRigidType, gufo:Kind, gufo:NonRigidType, gufo:RigidType, gufo:Role, gufo:Sortal, owl:Class,
-      owl:NamedIndividual .
+    a gufo:AntiRigidType, gufo:Kind, gufo:NonRigidType, gufo:NonSortal, gufo:RigidType, gufo:Role, gufo:Sortal,
+      owl:Class, owl:NamedIndividual .
 
 d3f:Kernel-basedProcessIsolation
     a                owl:NamedIndividual ;
@@ -649,7 +649,7 @@ d3f:PeripheralFirmwareVerification
     d3f:verifies     d3f:PeripheralFirmware .
 
 d3f:PersistenceDOWN
-    a               gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a               gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, owl:Class, owl:NamedIndividual ;
     rdfs:subClassOf d3f:Persistence .
 
 d3f:PersistenceTechnique
@@ -814,7 +814,7 @@ d3f:ReverseResolutionIPDenylisting
     d3f:kb-reference d3f:Reference-UseDNSPolicyForApplyingFiltersOnDNSQueries .
 
 d3f:Root3
-    a               gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a               gufo:AntiRigidType, gufo:NonRigidType, gufo:Role, gufo:Sortal, owl:Class, owl:NamedIndividual ;
     rdfs:subClassOf d3f:Root2 .
 
 d3f:RubyScriptFile
@@ -3277,6 +3277,8 @@ d3f:CodeRepository
 
 d3f:Collection
     a                                                                                             d3f:OffensiveTactic,
+                                                                                                  gufo:AntiRigidType,
+                                                                                                  gufo:NonRigidType,
                                                                                                   gufo:Sortal,
                                                                                                   owl:Class,
                                                                                                   owl:NamedIndividual ;
@@ -3289,7 +3291,8 @@ d3f:Collection
                                                                                                   d3f:OffensiveTactic .
 
 d3f:CommandAndControl
-    a                 d3f:OffensiveTactic, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, owl:Class,
+                      owl:NamedIndividual ;
     rdfs:label        "Command And Control" ;
     d3f:display-order 10 ;
     rdfs:subClassOf   d3f:OffensiveTactic .
@@ -3349,7 +3352,8 @@ d3f:CreateThread
     a owl:NamedIndividual .
 
 d3f:CredentialAccess
-    a                 d3f:OffensiveTactic, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, owl:Class,
+                      owl:NamedIndividual ;
     rdfs:label        "Credential Access" ;
     d3f:display-order 6 ;
     rdfs:subClassOf   d3f:OffensiveTactic .
@@ -3491,7 +3495,8 @@ d3f:DirectoryService
     a owl:NamedIndividual .
 
 d3f:Discovery
-    a                 d3f:OffensiveTactic, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:NonRigidType, gufo:Role, gufo:Sortal, owl:Class,
+                      owl:NamedIndividual ;
     rdfs:label        "Discovery" ;
     d3f:display-order 7 ;
     rdfs:subClassOf   d3f:OffensiveTactic .
@@ -3506,7 +3511,8 @@ d3f:EndpointSensor
     a owl:NamedIndividual .
 
 d3f:Execution
-    a                 d3f:OffensiveTactic, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, owl:Class,
+                      owl:NamedIndividual ;
     rdfs:label        "Execution" ;
     d3f:display-order 2 ;
     rdfs:subClassOf   d3f:OffensiveTactic .
@@ -3534,7 +3540,8 @@ d3f:ExecutionWithSchtasks_
     d3f:kb-reference-title "CAR-2013-08-001: Execution with schtasks" .
 
 d3f:Exfiltration
-    a                 d3f:OffensiveTactic, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, owl:Class,
+                      owl:NamedIndividual ;
     rdfs:label        "Exfiltration" ;
     d3f:display-order 11 ;
     rdfs:subClassOf   d3f:OffensiveTactic .
@@ -3644,8 +3651,8 @@ d3f:ImageDataSegment
     a owl:NamedIndividual .
 
 d3f:Impact
-    a                 d3f:OffensiveTactic, gufo:Mixin, gufo:NonRigidType, gufo:NonSortal, gufo:SemiRigidType,
-                      gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:Mixin, gufo:NonRigidType, gufo:NonSortal,
+                      gufo:SemiRigidType, gufo:Sortal, owl:Class, owl:NamedIndividual ;
     rdfs:label        "Impact" ;
     d3f:display-order 12 ;
     rdfs:subClassOf   d3f:OffensiveTactic .
@@ -3662,7 +3669,8 @@ d3f:IndirectBranchCallAnalysis
     d3f:kb-reference d3f:Reference-IndirectBranchingCalss .
 
 d3f:InitialAccess
-    a                 d3f:OffensiveTactic, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, owl:Class,
+                      owl:NamedIndividual ;
     rdfs:label        "Initial Access" ;
     d3f:display-order 1 ;
     rdfs:subClassOf   d3f:OffensiveTactic .
@@ -3710,7 +3718,8 @@ d3f:LUKS1On-DiskFormatSpecificationVersion1.2.3
     d3f:kb-reference-title "LUKS1 On-Disk Format SpecificationVersion 1.2.3" .
 
 d3f:LateralMovement
-    a                 d3f:OffensiveTactic, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, owl:Class,
+                      owl:NamedIndividual ;
     rdfs:label        "Lateral Movement" ;
     d3f:display-order 8 ;
     rdfs:subClassOf   d3f:OffensiveTactic .
@@ -3824,7 +3833,7 @@ d3f:PeripheralFirmware
     a owl:NamedIndividual .
 
 d3f:PersistenceUP
-    a owl:Class .
+    a gufo:Kind, gufo:NonSortal, gufo:RigidType, gufo:Sortal, owl:Class .
 
 d3f:PlatformHardening
     a             owl:NamedIndividual ;
@@ -6633,12 +6642,6 @@ d3f:step-2
     d3f:creates d3f:Authentication ;
     d3f:invokes d3f:ImpersonateUser .
 
-gufo:AntiRigidType
-    a owl:Class .
-
-gufo:Role
-    a owl:Class .
-
 rdfs:label
     a owl:AnnotationProperty .
 
@@ -6649,7 +6652,7 @@ d3f:AAA
     a gufo:Mixin, gufo:NonRigidType, gufo:NonSortal, gufo:SemiRigidType, owl:Class, owl:NamedIndividual .
 
 d3f:ATTACKThing
-    a            gufo:NonSortal, owl:Class, owl:NamedIndividual ;
+    a            gufo:Kind, gufo:NonSortal, gufo:RigidType, gufo:Sortal, owl:Class, owl:NamedIndividual ;
     rdfs:label   "ATTACK Thing" ;
     rdfs:comment "ATTACK things are concepts defined in the ATT&CK Framework." .
 
@@ -6773,7 +6776,8 @@ d3f:DecoyPersona
     d3f:spoofs    d3f:User .
 
 d3f:DefenseEvasion
-    a                 d3f:OffensiveTactic, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, owl:Class,
+                      owl:NamedIndividual ;
     rdfs:label        "Defense Evasion" ;
     d3f:display-order 5 ;
     rdfs:subClassOf   d3f:OffensiveTactic .
@@ -6949,7 +6953,8 @@ d3f:PedroPaulo2
     rdfs:subClassOf d3f:PedroPaulo-A, d3f:PedroPaulo-B .
 
 d3f:Persistence
-    a                 d3f:OffensiveTactic, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:Mixin, gufo:NonRigidType, gufo:NonSortal, gufo:Role,
+                      gufo:RoleMixin, gufo:SemiRigidType, gufo:Sortal, owl:Class, owl:NamedIndividual ;
     rdfs:label        "Persistence" ;
     d3f:display-order 3 ;
     rdfs:subClassOf   d3f:OffensiveTactic, d3f:PersistenceUP .
@@ -6964,7 +6969,8 @@ d3f:PointerAuthentication
     d3f:kb-reference  d3f:Reference-PointerAuthenticationOnARMv8.3, d3f:Reference-PointerAuthenticationProjectZero .
 
 d3f:PrivilegeEscalation
-    a                 d3f:OffensiveTactic, gufo:Sortal, owl:Class, owl:NamedIndividual ;
+    a                 d3f:OffensiveTactic, gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, owl:Class,
+                      owl:NamedIndividual ;
     rdfs:label        "Privilege Escalation" ;
     d3f:display-order 4 ;
     rdfs:subClassOf   d3f:OffensiveTactic .
@@ -7321,7 +7327,8 @@ d3f:ReverseResolutionDomainDenylisting
     d3f:d3fend-id "D3-RRDD" .
 
 d3f:Root2
-    a gufo:Kind, gufo:NonSortal, gufo:RigidType, gufo:Sortal, owl:Class, owl:NamedIndividual .
+    a gufo:AntiRigidType, gufo:Category, gufo:Kind, gufo:NonRigidType, gufo:NonSortal, gufo:RigidType, gufo:Role,
+      gufo:Sortal, owl:Class, owl:NamedIndividual .
 
 d3f:SMBSessionSetups_MITRE
     a                      owl:NamedIndividual ;
@@ -8045,12 +8052,6 @@ d3f:process-data-property
     rdfs:comment       "x process-data-property y: The process x has the data property y." ;
     rdfs:subPropertyOf d3f:d3fend-artifact-data-property .
 
-gufo:Mixin
-    a owl:Class .
-
-gufo:SemiRigidType
-    a owl:Class .
-
 d3f:ApplicationConfigurationHardening
     a                owl:NamedIndividual ;
     d3f:d3fend-id    "D3-ACH" ;
@@ -8265,7 +8266,13 @@ d3f:may-counter-attack
     rdfs:label         "may-counter-attack" ;
     rdfs:subPropertyOf d3f:may-be-tactically-associated-with .
 
-gufo:NonRigidType
+gufo:Mixin
+    a owl:Class .
+
+gufo:Role
+    a owl:Class .
+
+gufo:SemiRigidType
     a owl:Class .
 
 d3f:ApplicationConfiguration
@@ -8392,12 +8399,6 @@ d3f:modifies
     rdfs:subPropertyOf d3f:accesses, d3f:associated-with, d3f:may-modify ;
     skos:altLabel      "alters" .
 
-gufo:Kind
-    a owl:Class .
-
-gufo:RigidType
-    a owl:Class .
-
 d3f:Credential
     a                 owl:NamedIndividual ;
     d3f:authenticates d3f:UserAccount .
@@ -8469,7 +8470,10 @@ d3f:SystemCall
     a            owl:NamedIndividual ;
     d3f:executes d3f:Subroutine .
 
-gufo:NonSortal
+gufo:Kind
+    a owl:Class .
+
+gufo:RigidType
     a owl:Class .
 
 d3f:URL
@@ -8491,6 +8495,9 @@ d3f:d3fend-catalog-data-property
     rdfs:label         "d3fend-catalog-data-property" ;
     rdfs:subPropertyOf d3f:d3fend-data-property ;
     skos:altLabel      "d3fend-vendor-registry-data-property"@en .
+
+gufo:NonSortal
+    a owl:Class .
 
 d3f:Authentication
     a                   owl:NamedIndividual ;
@@ -8531,6 +8538,9 @@ d3f:UserAccount
 d3f:ExecutableFile
     a owl:NamedIndividual .
 
+gufo:AntiRigidType
+    a owl:Class .
+
 d3f:ProcessLineageAnalysis
     a                owl:NamedIndividual ;
     d3f:analyzes     d3f:Process, d3f:ProcessTree ;
@@ -8558,8 +8568,13 @@ d3f:may-be-associated-with
 d3f:SystemConfigurationDatabaseRecord
     a owl:NamedIndividual .
 
+gufo:NonRigidType
+    a owl:Class .
+
 d3f:OffensiveTactic
-    a                                                                                        gufo:NonSortal,
+    a                                                                                        gufo:AntiRigidType,
+                                                                                             gufo:NonRigidType,
+                                                                                             gufo:NonSortal,
                                                                                              gufo:Sortal, owl:Class,
                                                                                              owl:NamedIndividual ;
     rdfs:label                                                                               "Offensive Tactic" ;
@@ -8588,7 +8603,7 @@ gufo:Sortal
     a owl:Class .
 
 d3f:ATTACKMitigation
-    a                                                                                     owl:Class ;
+    a                                                                                     gufo:Sortal, owl:Class ;
     rdfs:label                                                                            "ATTACK Mitigation" ;
     rdfs:subClassOf                                                                       [ a owl:Restriction ;
                                                                                             owl:onProperty

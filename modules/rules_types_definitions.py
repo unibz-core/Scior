@@ -4,8 +4,8 @@ import time
 
 from modules.logger_config import initialize_logger
 from modules.propagation import execute_and_propagate_down, execute_and_propagate_up
-from modules.rule_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe
-from modules.utils_dataclass import get_list_gufo_classification, get_element_list, external_move_to_is_list
+from modules.rule_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe, treat_rule_nk_k_sup
+from modules.utils_dataclass import get_list_gufo_classification
 from modules.utils_graph import get_subclasses, get_superclasses, get_all_superclasses
 
 INTERVENTION_WARNING = "MANUAL INTERVENTION NEEDED!\n"
@@ -306,6 +306,8 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
             After the user option, if not Kind, report incompleteness.
     """
 
+    # TODO (@pedropaulofb): VERIFY IF IT IS BETTER TO ALLOW THE USER ONLY TO SET AS KIND WHEN N+I
+
     if configurations["print_time"]:
         st = time.perf_counter()
 
@@ -336,7 +338,6 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
-# TODO (@pedropaulofb): Treat the special case of a NonSortal single class (root and leaf at the same time).
 def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: NonSortals aggregates identities from at least two different identity principles providers.
@@ -412,28 +413,43 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     - RULE: Every non-Kind gufo:Sortal (is gufo:Sortal and is not gufo:Kind) must have exactly one gufo:Kind
     as direct or indirect supertype.
 
-    BEHAVIOR:
-        - C+A:
-        - C+I:
-        - N+A:
-        - N+I:
+    BEHAVIOR: Only executed if no direct or indirect supertype is classified as a Kind.
 
+        P = number of directly or indirectly related supertypes that can be Kinds.
 
+        -- RESULTS ACCORDING TO ACTIONS:
+            Actions:
+                - US: User can choose a class and set it as Kind or SKIP.
+                - SA: Automatically set the possible class as Kind.
+                - RI: Report incompleteness.
 
-        - Complete + Automatic Only: Enforce. If not possible, report deficiency. (NOT IMPLEMENTED)
-        - Complete + Automatic: Enforce. If not possible, report deficiency. (PARTIALLY IMPLEMENTED)
-        - Complete + Interactive: User can apply or report deficiency. (PARTIALLY IMPLEMENTED)
+            - RI: P=0 or N+A or (P>1 and C+A)
+            - SA: P=1 and C
+            - US: (P=1 and N+I) or (P>1 and I)
 
-        - Incomplete + Automatic Only: Enforce. (IMPLEMENTED)
-        - Incomplete + Automatic: Enforce. (IMPLEMENTED)
-        - Incomplete + Interactive: User can apply or report deficiency. (NOT IMPLEMENTED)
+        -- RESULTS ACCORDING TO CONFIGURATIONS:
+            - C+A:
+                - RI when P=0 or when P>1
+                - SA when P=1
+            - C+I:
+                - RI when P=0
+                - SA when P=1
+                - US when P>1
+            - N+A:
+                - RI always
+            - N+I:
+                - RI when P=0
+                - US when P>=1
+
+        -- RESULTS ACCORDING TO NUMBER OF POSSIBILITIES:
+            - P=0: allways RI
+            - P=1: (SA when C) or (RI when N+A) or (US when N+I)
+            - P>1: (RI when A) or (US when I)
 
     """
 
     if configurations["print_time"]:
-        st1 = time.perf_counter()
-        # Necessary for the calculation when interactive mode.
-        st2 = -1
+        st = time.perf_counter()
 
     rule_code = "nk_k_sup"
 
@@ -447,67 +463,14 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
-        # Get all ontology dataclasses that are directly or indirectly superclasses of ontology_dataclass
-        list_superclasses = get_all_superclasses(graph, nodes_list, ontology_dataclass.uri)
-        logger.debug(f"Superclasses from {ontology_dataclass.uri} are: {list_superclasses}")
+        treat_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations)
 
-        # Verify if there is a Kind in the superclass list
-        kind_sortals = get_list_gufo_classification(list_ontology_dataclasses, list_superclasses, "IS", GUFO_KIND)
-
-        # CONDITION 2: Kind not found in list of superclasses
-        if len(kind_sortals) != 0:
-            continue
-
-        list_possibilities = []
-        # select which can be kind (can_type)
-        for possible_kind in list_superclasses:
-
-            possible_kind_can = get_element_list(list_ontology_dataclasses, possible_kind, "can_type")
-
-            if GUFO_KIND in possible_kind_can:
-                list_possibilities.append(possible_kind)
-
-            # TODO (@pedropaulofb): Treat the case where there is no possibility (e.g., root class or a class
-            # that all supertypes are have kind in its not_type list. In this case an incompleteness was found
-            # and the user must (a) create a new kind class and define its relation with one of the classes in
-            # the list_superclasses or (b) reclassify one of the classes.
-
-        # If automatic, then the unique possibility can be directly asserted.
-        # TODO (@pedropaulofb): Treat case not automatic.
-        if len(list_possibilities) == 1:
-            external_move_to_is_list(list_ontology_dataclasses, list_possibilities[0], GUFO_KIND)
-            logger.debug(f"Class {list_possibilities[0]} is the unique possible identity provider "
-                         f"for {ontology_dataclass.uri}. Hence, it was automatically asserted as gufo:Kind.")
-
-        # Case multiple possibilities, user must choose.
-        elif len(list_possibilities) > 1:
-
-            if configurations["print_time"]:
-                et1 = time.perf_counter()
-
-            logger.info(INTERVENTION_WARNING)
-            time.sleep(0.1)
-
-            # User must choose an option to become a Kind.
-            print(f"No identity provider (Kind) was identified for the class {ontology_dataclass.uri}.")
-            print(f"The following classes were identified as possible identity providers:")
-            for item in list_possibilities:
-                print(f"\t - {item}")
-            new_kind = input(f"Enter the class to be set as gufo:Kind: ")
-            new_kind.strip()
-
-            if configurations["print_time"]:
-                st2 = time.perf_counter()
-
-            external_move_to_is_list(list_ontology_dataclasses, new_kind, GUFO_KIND)
+        logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
-        et2 = time.perf_counter()
-        if st2 > 0:
-            elapsed_time_final = round((et1 - st1 + et2 - st2), 3)
-        else:
-            elapsed_time_final = round((et2 - st1), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time_final} seconds.")
+        et = time.perf_counter()
+        elapsed_time = round((et - st), 3)
+        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
