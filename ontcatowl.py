@@ -55,24 +55,24 @@ if __name__ == "__main__":
 
     ############################## BEGIN TESTS
 
-    print(ontology_nodes["roots"])
-    exit(1)
+    for ont_dataclass in ontology_dataclass_list:
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAA":
+            ont_dataclass.move_element_to_is_list("gufo:Mixin")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAB":
+            ont_dataclass.move_element_to_is_list("gufo:Kind")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AA":
+            ont_dataclass.move_element_to_is_list("gufo:Kind")
 
-    # for ont_dataclass in ontology_dataclass_list:
-    # if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Impact":
-    #     ont_dataclass.move_element_to_is_list("gufo:Mixin")
-    #     break
+############################## END TESTS
 
-    ############################## END TESTS
+execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, global_configurations)
+ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
+save_ontology_file(ontology_graph, global_configurations)
+print_report_file(ontology_dataclass_list, ontology_nodes)
 
-    execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, global_configurations)
-    ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
-    save_ontology_file(ontology_graph, global_configurations)
-    print_report_file(ontology_dataclass_list, ontology_nodes)
-
-    now = datetime.now()
-    date_time = now.strftime("%d-%m-%Y %H:%M:%S")
-    logger.info(f"OntCatOWL concluded on {date_time}!")
+now = datetime.now()
+date_time = now.strftime("%d-%m-%Y %H:%M:%S")
+logger.info(f"OntCatOWL concluded on {date_time}!")
 
 # TODO (@pedropaulofb): IMPROVEMENTS
 # Verify possibility to check consistency using a reasoner.
@@ -90,7 +90,7 @@ if __name__ == "__main__":
 # Verify "dataclass with slots" and the use of __slot__ for better performance.
 # As log files are getting big, maybe it is going to be necessary to compact them into a zip file.
 # Run automatic only for some different configurations and figure out which is the best order for executing the rules.
-# Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verifiy for/break statement
+# Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verify for/break statement
 
 # TODO (@pedropaulofb): BEFORE RELEASE OF VERSION 1.0
 # Evaluate on Linux before release first version

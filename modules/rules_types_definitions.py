@@ -354,7 +354,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
     BEHAVIOR:
         Considering P the number of possibilities and N the necessary number (N>0).
 
-        If N < 0: do nothing.
+        If N <= 0: do nothing.
 
         Actions:
             - US: User can set a class as Kind or SKIP.
@@ -365,7 +365,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
         - SA: P>0 and (C and P<=N)
         - US: P>0 and (N+I or (C+I and P>N))
 
-        Resume:
+        Resume (All cases only if N > 0):
         - C+A:
             - RI when P<=0 or when (P>0 and P>N)
             - SA when (P>0 and P<=N)

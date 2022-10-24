@@ -109,11 +109,13 @@ def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, no
 
     number_can_kinds_list = len(related_can_kinds_list)
 
-    number_possibilities = number_can_kinds_list - number_related_kinds
+    number_possibilities = number_can_kinds_list
     number_necessary = 2 - number_related_kinds
 
-    logger.info(f"For {ontology_dataclass.uri}, K = {number_related_kinds}, "
-                f"P = {number_possibilities}, N = {number_necessary}")
+    logger.info(f"For {ontology_dataclass.uri}: K = {number_related_kinds}, "
+                f"P = {number_possibilities}, N = {number_necessary}"
+                f"\n\t K = {related_is_kinds_list}"
+                f"\n\t P = {related_can_kinds_list}")
 
     # The rule is already accomplished, so there is no need to do any action.
     if number_necessary <= 0:
