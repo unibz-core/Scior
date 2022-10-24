@@ -4,9 +4,10 @@ import time
 
 from modules.logger_config import initialize_logger
 from modules.propagation import execute_and_propagate_down, execute_and_propagate_up
-from modules.rule_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe, treat_rule_nk_k_sup
+from modules.rule_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe, treat_rule_nk_k_sup, \
+    treat_rule_s_nsup_k
 from modules.utils_dataclass import get_list_gufo_classification
-from modules.utils_graph import get_subclasses, get_superclasses, get_all_superclasses
+from modules.utils_graph import get_subclasses, get_superclasses
 
 INTERVENTION_WARNING = "MANUAL INTERVENTION NEEDED!\n"
 
@@ -327,7 +328,7 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
         # Rule treatment when conditions are met
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
-        treat_rule_n_r_t(ontology_dataclass, configurations)
+        treat_rule_n_r_t(rule_code, ontology_dataclass, configurations)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
@@ -395,7 +396,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
-        treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations)
+        treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
@@ -462,7 +463,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
-        treat_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations)
+        treat_rule_nk_k_sup(rule_code, ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
@@ -477,21 +478,15 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
         - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly
         one identity principle, which is provided by a Kind.
 
-        - RULE: In complete models, every gufo:Sortal without supertypes is a gufo:Kind.
+        - RULE: In complete models, every non-Kind gufo:Sortal without supertypes is a gufo:Kind.
 
         - BEHAVIOR:
-            - C+A:
-            - C+I:
-            - N+A:
-            - N+I:
 
-            - Complete + Automatic Only: Enforce. (IMPLEMENTED)
-            - Complete + Automatic: Enforce. (IMPLEMENTED)
-            - Complete + Interactive: User can: apply or report deficiency. (NOT IMPLEMENTED)
+            - Complete + Automatic: Set as gufo:Kind.
+            - Complete + Interactive: Set as gufo:Kind.
 
-            - Incomplete + Automatic Only: Not available. No action. (IMPLEMENTED)
-            - Incomplete + Automatic: User can: apply or include new. (NOT IMPLEMENTED)
-            - Incomplete + Interactive: User can: apply or include new. (NOT IMPLEMENTED)
+            - Incomplete + Automatic: Report incompleteness.
+            - Incomplete + Interactive: User can set as gufo:Kind.
         """
 
     if configurations["print_time"]:
@@ -503,19 +498,15 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     for ontology_dataclass in list_ontology_dataclasses:
 
-        # CONDITION 1: ontology_dataclass must be a gufo:Sortal
-        if GUFO_SORTAL not in ontology_dataclass.is_type:
+        # CONDITION 1: ontology_dataclass must be a gufo:Sortal and must not be a gufo:Kind
+        if (GUFO_SORTAL not in ontology_dataclass.is_type) or (GUFO_KIND in ontology_dataclass.is_type):
             continue
 
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
-        # Get list of all superclasses up to leaves.
-        all_superclasses = get_all_superclasses(graph, nodes_list, ontology_dataclass.uri)
+        treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, configurations)
 
-        # CONDITION 2: list of superclasses must be empty
-
-        if len(all_superclasses) == 0:
-            ontology_dataclass.move_element_to_is_list(GUFO_KIND)
+        logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
     if configurations["print_time"]:
         et = time.perf_counter()

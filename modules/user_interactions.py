@@ -1,8 +1,13 @@
 """ Generic functions used for user interaction. """
+import time
+
 from prettytable import PrettyTable
 
 from modules.logger_config import initialize_logger
 from modules.utils_dataclass import get_element_list, select_list
+
+# Frequent GUFO types
+GUFO_KIND = "gufo:Kind"
 
 
 def print_class_types(ontology_dataclass):
@@ -62,11 +67,32 @@ def select_class_from_list(list_ontology_dataclasses, list_option_classes):
     return selected_class
 
 
+def set_interactively_class_as_kind(ontology_dataclass):
+    """ User interaction for setting the parameter ontology_dataclass as a gufo:Kind. """
+
+    logger = initialize_logger()
+
+    option = None
+    valid = False
+
+    while not valid:
+        time.sleep(0.1)
+        option = input(f"Would you like to set the class {ontology_dataclass.uri} as a gufo:Kind ('y' or 'n')? ")
+        option = option.strip().lower()
+        valid = (option == "y") or (option == "n")
+        if not valid:
+            print("Invalid input. Please retry.")
+
+    if option == "y":
+        ontology_dataclass.move_element_to_is_list(GUFO_KIND)
+        logger.debug(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
+
+
 def set_type_for_class(ontology_dataclass):
     """ The user can set a type for the class received as parameter.
     Possible return values are: ok (valid situations: correct selection or skip option), nok (invalid situations).
 
-    When dataclass is not known (i.e., only name is known), use the follwoing before calling this function:
+    When dataclass is not known (i.e., only name is known), use the following before calling this function:
         ontology_dataclass = return_dataclass_from_class_name(list_ontology_dataclasses, class_name)
     """
 

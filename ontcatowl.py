@@ -56,8 +56,8 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#Persistence":
-            ont_dataclass.move_element_to_is_list("gufo:Role")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AA":
+            ont_dataclass.move_element_to_is_list("gufo:Sortal")
 
 ############################## END TESTS
 

@@ -1,8 +1,7 @@
 """ Implementation of rules for types. """
-import time
 
 from modules.logger_config import initialize_logger
-from modules.user_interactions import select_class_from_list, print_class_types
+from modules.user_interactions import select_class_from_list, print_class_types, set_interactively_class_as_kind
 from modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, \
     external_move_list_to_is_list, get_element_list
 from modules.utils_graph import get_all_related_nodes, get_all_superclasses
@@ -11,32 +10,9 @@ from modules.utils_graph import get_all_related_nodes, get_all_superclasses
 GUFO_KIND = "gufo:Kind"
 
 
-def interaction_rule_n_r_t(ontology_dataclass):
-    """ User interaction for rule n_r_t. """
-
-    logger = initialize_logger()
-
-    option = None
-    valid = False
-
-    while not valid:
-        time.sleep(0.1)
-        option = input(f"Would you like to set the class {ontology_dataclass.uri} as a gufo:Kind ('y' or 'n')? ")
-        option = option.strip().lower()
-        valid = (option == "y") or (option == "n")
-        if not valid:
-            print("Invalid input. Please retry.")
-
-    if option == "y":
-        ontology_dataclass.move_element_to_is_list(GUFO_KIND)
-        logger.debug(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
-
-
-def treat_rule_n_r_t(ontology_dataclass, configurations):
+def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
     """ Implements rule n_r_t for types."""
     logger = initialize_logger()
-
-    rule_code = "n_r_t"
 
     if configurations["is_complete"]:
         if GUFO_KIND in ontology_dataclass.can_type:
@@ -53,7 +29,7 @@ def treat_rule_n_r_t(ontology_dataclass, configurations):
         logger.warning(f"Incompleteness detected during rule {rule_code}! "
                        f"There is not identity principle associated to class {ontology_dataclass.uri}.")
         if (not configurations["is_automatic"]) and (len(ontology_dataclass.can_type) > 0):
-            interaction_rule_n_r_t(ontology_dataclass)
+            set_interactively_class_as_kind(ontology_dataclass)
 
 
 def interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
@@ -91,12 +67,10 @@ def decide_action_rule_ns_s_spe(configurations, number_possibilities, number_nec
     return action
 
 
-def treat_rule_ns_s_spe(ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations):
+def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations):
     """ Implements rule ns_s_spe for types."""
 
     logger = initialize_logger()
-
-    rule_code = "ns_s_spe"
 
     # Get all ontology dataclasses that are reachable from the input dataclass
     list_all_related_nodes = get_all_related_nodes(graph, nodes_list, ontology_dataclass.uri)
@@ -165,10 +139,8 @@ def interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities):
         logger.info(f"Class {selected_class} was correctly set as gufo:Kind.")
 
 
-def treat_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations):
+def treat_rule_nk_k_sup(rule_code, ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations):
     """ Implements rule nk_k_sup for types."""
-
-    rule_code = "nk_k_sup"
 
     logger = initialize_logger()
 
@@ -215,3 +187,24 @@ def treat_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, graph, no
             logger.info(f"The following classes were identified as possible identity providers: {list_possibilities}.")
         else:
             interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities)
+
+
+def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, configurations):
+    """ Implements the treatment of rule n_nsup_k for types. """
+    logger = initialize_logger()
+
+    # Get list of all superclasses up to leaves.
+    all_superclasses = get_all_superclasses(graph, nodes_list, ontology_dataclass.uri)
+
+    # CONDITION 2: list of superclasses must be empty
+    if len(all_superclasses) != 0:
+        return
+
+    logger.warning(f"Incompleteness detected during rule {rule_code}! "
+                   f"The class {ontology_dataclass.uri} does not have an identity provider. ")
+
+    if configurations["is_complete"]:
+        ontology_dataclass.move_element_to_is_list(GUFO_KIND)
+        logger.info(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
+    elif not configurations["is_automatic"]:
+        set_interactively_class_as_kind(ontology_dataclass)
