@@ -300,10 +300,9 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
     - DESCRIPTION:
 
     - BEHAVIOR:
-        - C: If can be a Kind, set as Kind. If cannot be, report inconsistency.
+        - C: Set as gufo:Kind.
         - N+A: Report incompleteness.
-        - N+I: User receives information and can set the class type (using IS, NOT, or SKIP).
-            After the user option, if not Kind, report incompleteness.
+        - N+I: User can set as gufo:Kind or skip.
     """
 
     # TODO (@pedropaulofb): VERIFY IF IT IS BETTER TO ALLOW THE USER ONLY TO SET AS KIND WHEN N+I
