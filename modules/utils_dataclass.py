@@ -125,7 +125,7 @@ def return_dataclass_from_class_name(list_ontology_dataclasses, class_name):
     logger = initialize_logger()
 
     for ontology_dataclass in list_ontology_dataclasses:
-        if ontology_dataclass.name == class_name:
+        if ontology_dataclass.uri == class_name:
             return ontology_dataclass
     else:
         logger.error("Class not found in the list of ontology dataclasses. Program aborted.")

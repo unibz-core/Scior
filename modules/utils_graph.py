@@ -6,7 +6,7 @@ from modules.utils_general import remove_duplicates, lists_subtraction
 
 
 def get_superclasses(graph, all_classes, element):
-    """ Returns a list of all superclasses of the given element of a graph.
+    """ Returns a list of all direct superclasses of the given element of a graph.
         Analogous to function get_subclasses.
     """
 
@@ -27,7 +27,7 @@ def get_superclasses(graph, all_classes, element):
 
 
 def get_subclasses(graph, all_classes, element):
-    """ Returns a list of all subclasses of the given element of a graph.
+    """ Returns a list of all direct subclasses of the given element of a graph.
         Analogous to function get_superclasses.
     """
 

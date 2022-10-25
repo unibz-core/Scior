@@ -56,8 +56,12 @@ if __name__ == "__main__":
     ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AA":
-            ont_dataclass.move_element_to_is_list("gufo:Sortal")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAA":
+            ont_dataclass.move_element_to_is_list("gufo:NonSortal")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAB":
+            ont_dataclass.move_element_to_is_list("gufo:Category")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAC":
+            ont_dataclass.move_element_to_is_list("gufo:Category")
 
 ############################## END TESTS
 

@@ -3,8 +3,8 @@
 from modules.logger_config import initialize_logger
 from modules.user_interactions import select_class_from_list, print_class_types, set_interactively_class_as_kind
 from modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, \
-    external_move_list_to_is_list, get_element_list
-from modules.utils_graph import get_all_related_nodes, get_all_superclasses
+    external_move_list_to_is_list, get_element_list, return_dataclass_from_class_name
+from modules.utils_graph import get_all_related_nodes, get_all_superclasses, get_subclasses
 
 # Frequent GUFO types
 GUFO_KIND = "gufo:Kind"
@@ -28,7 +28,7 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
     else:
         logger.warning(f"Incompleteness detected during rule {rule_code}! "
                        f"There is not identity principle associated to class {ontology_dataclass.uri}.")
-        if (not configurations["is_automatic"]) and (len(ontology_dataclass.can_type) > 0):
+        if (not configurations["is_automatic"]) and (GUFO_KIND in ontology_dataclass.can_type):
             set_interactively_class_as_kind(ontology_dataclass)
 
 
@@ -95,10 +95,10 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
     number_possibilities = number_can_kinds_list
     number_necessary = 2 - number_related_kinds
 
-    logger.info(f"For {ontology_dataclass.uri}: K = {number_related_kinds}, "
-                f"P = {number_possibilities}, N = {number_necessary}"
-                f"\n\t K = {related_is_kinds_list}"
-                f"\n\t P = {related_can_kinds_list}")
+    logger.debug(f"For {ontology_dataclass.uri}: K = {number_related_kinds}, "
+                 f"P = {number_possibilities}, N = {number_necessary} "
+                 f"K list = {related_is_kinds_list} "
+                 f"P list = {related_can_kinds_list} ")
 
     # The rule is already accomplished, so there is no need to do any action.
     if number_necessary <= 0:
@@ -112,8 +112,11 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
                    f"but it should be related to at least 2 Kinds. ")
 
     if action == "report_incompleteness":
-        logger.info(f"Classes that are associated with {ontology_dataclass.uri} and that "
-                    f"can be Kinds are: {related_can_kinds_list}")
+        if number_can_kinds_list > 0:
+            logger.info(f"Classes that are associated with {ontology_dataclass.uri} and that "
+                        f"can be Kinds are: {related_can_kinds_list}.")
+        else:
+            logger.debug(f"There are no classes associated with {ontology_dataclass.uri} and that can be set as Kinds.")
     elif action == "set_all_as_kinds":
         logger.info(f"The following classes are going to be set as Kinds "
                     f"to solve the incompleteness: {related_can_kinds_list}.")
@@ -208,3 +211,28 @@ def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, config
         logger.info(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
     elif not configurations["is_automatic"]:
         set_interactively_class_as_kind(ontology_dataclass)
+
+
+def treat_rule_ns_sub_r(list_ontology_dataclasses, ontology_dataclass, graph, nodes_list):
+    """ Implements the treatment of rule ns_sub_r for types. """
+
+    logger = initialize_logger()
+
+    # Get list of all direct subclasses of the ontolgy_dataclass
+    direct_subclasses = get_subclasses(graph, nodes_list["all"], ontology_dataclass.uri)
+
+    # CONDITION 2: list of subclasses cannot be empty
+    if len(direct_subclasses) == 0:
+        return
+
+    for subclass_name in direct_subclasses:
+        subclass = return_dataclass_from_class_name(list_ontology_dataclasses, subclass_name)
+
+        # If one of the subclasses is not a RigidType, nothing can be asserted for the superclass.
+        if "gufo:RigidType" not in subclass.is_type:
+            break
+    else:
+        # Only executed when the loop had no break. All subclasses were RigidTypes.
+        logger.debug(f"The NonSortal class {ontology_dataclass.uri} "
+                     f"is only specialized into RigidTypes and, hence, was set as a gufo:Category.")
+        ontology_dataclass.move_element_to_is_list("gufo:Category")
