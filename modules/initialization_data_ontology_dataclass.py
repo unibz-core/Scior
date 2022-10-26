@@ -50,3 +50,84 @@ def get_gufo_possibilities(gufo_input_yaml):
     can_list_individuals = list(gufo_input_yaml["individuals"].keys())
 
     return can_list_types, can_list_individuals
+
+
+def get_known_gufo_types(united_graph):
+    """ For each class in the ontology_graph, return all its known GUFO TYPES in a tuple format.
+    Returned tuple format is: (ontology_class,gufo_type), being both fields strings.
+    Analogous to get_known_gufo_individuals.
+    """
+
+    list_subjects = []
+    list_objects = []
+
+    query = """
+    PREFIX gufo: <http://purl.org/nemo/gufo#>
+    SELECT DISTINCT ?subject ?object
+    WHERE {
+        ?subject rdf:type owl:Class .
+        ?object rdf:type owl:Class .
+        ?subject rdf:type ?object .
+        ?object rdfs:subClassOf+ gufo:EndurantType .
+        FILTER(STRSTARTS(STR(?object), STR(gufo:)))
+    } """
+
+    query_result = united_graph.query(query)
+
+    for row in query_result:
+        list_subjects.append(row.subject.n3()[1:-1])
+        list_objects.append(row.object.n3()[1:-1])
+
+    list_tuples = list(zip(list_subjects, list_objects))
+
+    print(list_tuples)
+
+    return list_tuples
+
+
+def get_known_gufo_individuals(united_graph):
+    """ For each class in the ontology_graph, return all its known GUFO INDIVIDUALS in a tuple format.
+    Returned tuple format is: (ontology_class,gufo_type), being both fields strings.
+    Analogous to get_known_gufo_types.
+    """
+
+    list_subjects = []
+    list_objects = []
+
+    query = """
+        PREFIX gufo: <http://purl.org/nemo/gufo#>
+        SELECT DISTINCT ?subject ?object
+        WHERE {
+            ?subject rdf:type owl:Class .
+            ?object rdf:type owl:Class .
+            ?subject rdfs:subClassOf ?object .
+            ?object rdfs:subClassOf gufo:EndurantType .
+            FILTER(STRSTARTS(STR(?object), STR(gufo:)))
+        } """
+
+    query_result = united_graph.query(query)
+
+    for row in query_result:
+        list_subjects.append(row.subject.n3()[1:-1])
+        list_objects.append(row.object.n3()[1:-1])
+
+    list_tuples = list(zip(list_subjects, list_objects))
+
+    return list_tuples
+
+
+def load_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list):
+    """ Leads GUFO information about types and instances that are available in the inputted ontology file.
+    I.e., if a class is already known to have any GUFO type, this information is updated in the ontology_dataclass_list.
+    E.g., if the class Person is set as a gufo:Kind in the loaded ontology, this stereotype is moved from the
+    dataclass's can_type (default) list to its is_type list.
+    """
+
+    united_graph = gufo_graph + ontology_graph
+
+    list_known_gufo_types = get_known_gufo_types(united_graph)
+    list_known_gufo_individuals = get_known_gufo_individuals(united_graph)
+
+    # implement the ontology_dataclass_list update.
+
+    pass

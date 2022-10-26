@@ -41,7 +41,7 @@ def save_ontology_file(ontology_graph, configurations):
         ontology_graph.add((ontology_uri, OWL.imports, gufo_import))
 
     # TODO (@pedropaulofb): Perform I/O output verifications
-    ontology_graph.serialize(destination=configurations["ontology_path"])
+    ontology_graph.serialize(destination=configurations["ontology_path"][:-4] + "-out.ttl")
 
 
 def treat_name(gufo_short_name):

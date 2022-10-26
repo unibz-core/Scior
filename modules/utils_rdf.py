@@ -1,7 +1,24 @@
 """ Auxiliary functions for extending and complementing RDFLib's RDF treatment functions """
-from rdflib import URIRef, RDF, OWL
+from rdflib import URIRef, RDF, OWL, Graph
 
 from modules.logger_config import initialize_logger
+
+
+def load_graph_safely(ontology_file):
+    """ Safely load graph from file to working memory. """
+
+    logger = initialize_logger()
+
+    ontology_graph = Graph()
+    try:
+        ontology_graph.parse(ontology_file)
+    except OSError:
+        logger.error(f"Could not load {ontology_file} file. Exiting program.")
+        exit(1)
+
+    logger.debug(f"Ontology file {ontology_file} successfully loaded to working memory.")
+
+    return ontology_graph
 
 
 def has_prefix(ontology_graph, prefix):
@@ -49,6 +66,7 @@ def list_namespaces(ontology_graph):
 
 
 # TODO (@pedropaulofb): The input gufo_type_short must still be treated!
+# TODO (@pedropaulofb): THIS FILE MUST NOT CONTAIN ANY SPECIFIC GUFO FUNCTION! MAKE THIS GENERIC.
 def insert_new_element_type_hierarchy(ontology_graph, class_name, gufo_type_short):
     """ Allows user to manually insert a triple into the ontology for verifying its effects """
 
