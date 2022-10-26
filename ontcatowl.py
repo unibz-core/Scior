@@ -9,7 +9,7 @@ from modules.graph_save_ontology import save_ontology_file, save_ontology_gufo_s
 from modules.initialization_arguments import treat_arguments
 from modules.initialization_data_graph import initialize_nodes_lists
 from modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
-from modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, load_gufo_information
+from modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, load_known_gufo_information
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
 from modules.rules_types_run import execute_rules_types
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     ontology_nodes = initialize_nodes_lists(ontology_graph)
 
     # Loading the GUFO information already known from the ontology and updating the ontology_dataclass_list
-    load_gufo_information(ontology_graph, gufo_graph)
+    load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list)
 
     ############################## BEGIN TESTS
 
@@ -86,6 +86,7 @@ if __name__ == "__main__":
 # Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
 # Present to user all different namespaces of different classes found and ask him in which ones he wants to execute.
 # Create a (much) better deficiency (incompleteness)(inconsistency?) report.
+# Hash is generated differently when list is [A, B] and [B, A]. So maybe is the case to keep it always sorted.
 
 # TODO (@pedropaulofb): USER INTERACTIONS
 # Ordinate all lists that are exhibited to the user.

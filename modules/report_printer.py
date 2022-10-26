@@ -76,6 +76,7 @@ def print_report_file(ontology_dataclass_list, nodes_list):
     logger.debug("Report successfully printed.")
 
 
+# TODO (@pedropaulofb): Now that the software loads previous known GUFO information, this calculation must be updated.
 def print_class_summary(ontology_dataclass_list, nodes_list):
     """ Prints evaluation metrics. """
 

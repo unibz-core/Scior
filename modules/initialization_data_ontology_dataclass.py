@@ -57,8 +57,8 @@ def get_known_gufo_types(united_graph):
     Analogous to get_known_gufo_individuals.
     """
 
-    list_subjects = []
-    list_objects = []
+    list_elements = []
+    list_types = []
 
     query_string = """
     PREFIX gufo: <http://purl.org/nemo/gufo#>
@@ -74,12 +74,10 @@ def get_known_gufo_types(united_graph):
     query_result = united_graph.query(query_string)
 
     for row in query_result:
-        list_subjects.append(row.ontology_element.n3()[1:-1])
-        list_objects.append(row.element_type.n3()[1:-1])
+        list_elements.append(row.ontology_element.n3()[1:-1])
+        list_types.append(row.element_type.n3()[1:-1].replace("http://purl.org/nemo/gufo#", "gufo:"))
 
-    list_tuples = list(zip(list_subjects, list_objects))
-
-    print(list_tuples)
+    list_tuples = list(zip(list_elements, list_types))
 
     return list_tuples
 
@@ -90,8 +88,8 @@ def get_known_gufo_individuals(united_graph):
     Analogous to get_known_gufo_types.
     """
 
-    list_subjects = []
-    list_objects = []
+    list_elements = []
+    list_individuals = []
 
     query_string = """
         PREFIX gufo: <http://purl.org/nemo/gufo#>
@@ -107,15 +105,15 @@ def get_known_gufo_individuals(united_graph):
     query_result = united_graph.query(query_string)
 
     for row in query_result:
-        list_subjects.append(row.ontology_element.n3()[1:-1])
-        list_objects.append(row.element_type.n3()[1:-1])
+        list_elements.append(row.ontology_element.n3()[1:-1])
+        list_individuals.append(row.element_type.n3()[1:-1].replace("http://purl.org/nemo/gufo#", "gufo:"))
 
-    list_tuples = list(zip(list_subjects, list_objects))
+    list_tuples = list(zip(list_elements, list_individuals))
 
     return list_tuples
 
 
-def load_gufo_information(ontology_graph, gufo_graph):
+def load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list):
     """ Leads GUFO information about types and instances that are available in the inputted ontology file.
     I.e., if a class is already known to have any GUFO type, this information is updated in the ontology_dataclass_list.
     E.g., if the class Person is set as a gufo:Kind in the loaded ontology, this stereotype is moved from the
@@ -125,8 +123,12 @@ def load_gufo_information(ontology_graph, gufo_graph):
     united_graph = gufo_graph + ontology_graph
 
     list_known_gufo_types = get_known_gufo_types(united_graph)
-    # list_known_gufo_individuals = get_known_gufo_individuals(united_graph)
+    list_known_gufo_individuals = get_known_gufo_individuals(united_graph)
 
-    # implement the ontology_dataclass_list update.
-
-    pass
+    for ontology_dataclass in ontology_dataclass_list:
+        for known_gufo_type in list_known_gufo_types:
+            if known_gufo_type[0] == ontology_dataclass.uri:
+                ontology_dataclass.move_element_to_is_list(known_gufo_type[1])
+        for known_gufo_individual in list_known_gufo_individuals:
+            if known_gufo_individual[0] == ontology_dataclass.uri:
+                ontology_dataclass.move_element_to_is_list(known_gufo_individual[1])
