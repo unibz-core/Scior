@@ -59,7 +59,7 @@ if __name__ == "__main__":
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAA":
             ont_dataclass.move_element_to_is_list("gufo:NonSortal")
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAB":
-            ont_dataclass.move_element_to_is_list("gufo:Category")
+            ont_dataclass.move_element_to_is_list("gufo:SubKind")
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAC":
             ont_dataclass.move_element_to_is_list("gufo:Category")
 

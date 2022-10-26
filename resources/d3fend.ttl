@@ -42,8 +42,8 @@
     owl:topObjectProperty              d3f:ReverseResolutionDomainDenylisting .
 
 d3f:AAB
-    a               gufo:Category, gufo:Kind, gufo:NonSortal, gufo:RigidType, gufo:Sortal, gufo:SubKind, rdfs:Resource,
-                    owl:Class, owl:NamedIndividual ;
+    a               gufo:AntiRigidType, gufo:Category, gufo:Kind, gufo:NonRigidType, gufo:NonSortal, gufo:RigidType,
+                    gufo:Role, gufo:Sortal, gufo:SubKind, rdfs:Resource, owl:Class, owl:NamedIndividual ;
     rdfs:subClassOf d3f:AAA .
 
 d3f:AAC
@@ -514,7 +514,7 @@ d3f:LuaScriptFile
     rdfs:label "Lua Script File" .
 
 d3f:M1013
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "Application Developer Guidance" ;
     d3f:d3fend-comment          "A future release of D3FEND will define a taxonomy of Source Code Hardening Techniques." ;
@@ -523,7 +523,7 @@ d3f:M1013
     owl:topDataProperty         "A future release of D3FEND will define a taxonomy of Source Code Hardening Techniques." .
 
 d3f:M1015
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "Active Directory Configuration" ;
     d3f:associated-with         d3f:AuthenticationCacheInvalidation, d3f:DomainTrustPolicy, d3f:UserAccountPermissions ;
@@ -538,7 +538,7 @@ d3f:M1015
     owl:topObjectProperty       d3f:AuthenticationCacheInvalidation, d3f:DomainTrustPolicy, d3f:UserAccountPermissions .
 
 d3f:M1016
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "Vulnerability Scanning" ;
     d3f:d3fend-comment          "Future D3FEND releases will model the scanning and inventory domains." ;
@@ -547,7 +547,7 @@ d3f:M1016
     owl:topDataProperty         "Future D3FEND releases will model the scanning and inventory domains." .
 
 d3f:M1017
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "User Training" ;
     d3f:d3fend-comment          "Modeling user training is  outside the scope of D3FEND." ;
@@ -556,7 +556,7 @@ d3f:M1017
     owl:topDataProperty         "Modeling user training is  outside the scope of D3FEND." .
 
 d3f:M1018
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "User Account Management" ;
     d3f:associated-with        d3f:LocalFilePermissions, d3f:MandatoryAccessControl,
@@ -573,7 +573,7 @@ d3f:M1018
                                d3f:SystemConfigurationPermissions .
 
 d3f:M1019
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "Threat Intelligence Program" ;
     d3f:d3fend-comment          "Establishing and running a Threat Intelligence Program is outside the scope of D3FEND." ;
@@ -582,7 +582,7 @@ d3f:M1019
     owl:topDataProperty         "Establishing and running a Threat Intelligence Program is outside the scope of D3FEND." .
 
 d3f:M1020
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "SSL/TLS Inspection" ;
     d3f:associated-with         d3f:NetworkTrafficAnalysis ;
@@ -597,7 +597,7 @@ d3f:M1020
     owl:topObjectProperty       d3f:NetworkTrafficAnalysis .
 
 d3f:M1021
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "Restrict Web-Based Content" ;
     d3f:associated-with         d3f:DNSAllowlisting, d3f:DNSDenylisting, d3f:FileAnalysis, d3f:InboundTrafficFiltering,
@@ -618,7 +618,7 @@ d3f:M1021
                                 d3f:NetworkTrafficAnalysis, d3f:OutboundTrafficFiltering, d3f:URLAnalysis .
 
 d3f:M1022
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Restrict File and Directory Permissions" ;
     d3f:associated-with        d3f:LocalFilePermissions ;
@@ -629,7 +629,7 @@ d3f:M1022
     owl:topObjectProperty      d3f:LocalFilePermissions .
 
 d3f:M1024
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Restrict Registry Permission" ;
     d3f:associated-with        d3f:SystemConfigurationPermissions ;
@@ -640,7 +640,7 @@ d3f:M1024
     owl:topObjectProperty      d3f:SystemConfigurationPermissions .
 
 d3f:M1025
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Privileged Process Integrity" ;
     d3f:associated-with        d3f:BootloaderAuthentication, d3f:DriverLoadIntegrityChecking,
@@ -657,7 +657,7 @@ d3f:M1025
                                d3f:MandatoryAccessControl, d3f:ProcessSegmentExecutionPrevention .
 
 d3f:M1026
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Privileged Account Management" ;
     d3f:associated-with        d3f:DomainAccountMonitoring, d3f:LocalAccountMonitoring, d3f:StrongPasswordPolicy ;
@@ -668,7 +668,7 @@ d3f:M1026
     owl:topObjectProperty      d3f:DomainAccountMonitoring, d3f:LocalAccountMonitoring, d3f:StrongPasswordPolicy .
 
 d3f:M1027
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Password Policies" ;
     d3f:associated-with        d3f:One-timePassword, d3f:StrongPasswordPolicy ;
@@ -679,7 +679,7 @@ d3f:M1027
     owl:topObjectProperty      d3f:One-timePassword, d3f:StrongPasswordPolicy .
 
 d3f:M1028
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Operating System Configuration" ;
     d3f:associated-with        d3f:PlatformHardening ;
@@ -690,7 +690,7 @@ d3f:M1028
     owl:topObjectProperty      d3f:PlatformHardening .
 
 d3f:M1029
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "Remote Data Storage" ;
     d3f:d3fend-comment          "IT disaster recovery plans are outside the current scope of D3FEND." ;
@@ -699,7 +699,7 @@ d3f:M1029
     owl:topDataProperty         "IT disaster recovery plans are outside the current scope of D3FEND." .
 
 d3f:M1030
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Network Segmentation" ;
     d3f:associated-with        d3f:BroadcastDomainIsolation, d3f:EncryptedTunnels, d3f:InboundSessionVolumeAnalysis,
@@ -716,7 +716,7 @@ d3f:M1030
                                d3f:InboundTrafficFiltering .
 
 d3f:M1031
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Network Intrusion Prevention" ;
     d3f:associated-with        d3f:InboundTrafficFiltering, d3f:NetworkTrafficAnalysis, d3f:OutboundTrafficFiltering ;
@@ -727,7 +727,7 @@ d3f:M1031
     owl:topObjectProperty      d3f:InboundTrafficFiltering, d3f:NetworkTrafficAnalysis, d3f:OutboundTrafficFiltering .
 
 d3f:M1032
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Multi-factor Authentication" ;
     d3f:associated-with        d3f:Multi-factorAuthentication ;
@@ -738,7 +738,7 @@ d3f:M1032
     owl:topObjectProperty      d3f:Multi-factorAuthentication .
 
 d3f:M1033
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Limit Software Installation" ;
     d3f:associated-with        d3f:ExecutableAllowlisting, d3f:ExecutableDenylisting ;
@@ -749,7 +749,7 @@ d3f:M1033
     owl:topObjectProperty      d3f:ExecutableAllowlisting, d3f:ExecutableDenylisting .
 
 d3f:M1034
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Limit Hardware Installation" ;
     d3f:associated-with        d3f:IOPortRestriction ;
@@ -760,7 +760,7 @@ d3f:M1034
     owl:topObjectProperty      d3f:IOPortRestriction .
 
 d3f:M1035
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Limit Access to Resource Over Network" ;
     d3f:associated-with        d3f:NetworkIsolation ;
@@ -771,7 +771,7 @@ d3f:M1035
     owl:topObjectProperty      d3f:NetworkIsolation .
 
 d3f:M1036
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Account Use Policies" ;
     d3f:associated-with        d3f:AccountLocking, d3f:AuthenticationCacheInvalidation,
@@ -793,7 +793,7 @@ d3f:M1036
                                d3f:AuthenticationEventThresholding .
 
 d3f:M1037
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Filter Network Traffic" ;
     d3f:associated-with        d3f:NetworkIsolation ;
@@ -804,7 +804,7 @@ d3f:M1037
     owl:topObjectProperty      d3f:NetworkIsolation .
 
 d3f:M1038
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Execution Prevention" ;
     d3f:associated-with        d3f:DriverLoadIntegrityChecking, d3f:ExecutableAllowlisting, d3f:ExecutableDenylisting,
@@ -821,7 +821,7 @@ d3f:M1038
                                d3f:ProcessSegmentExecutionPrevention .
 
 d3f:M1039
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Environment Variable Permissions" ;
     d3f:associated-with        d3f:ApplicationConfigurationHardening, d3f:SystemFileAnalysis ;
@@ -832,7 +832,7 @@ d3f:M1039
     owl:topObjectProperty      d3f:ApplicationConfigurationHardening, d3f:SystemFileAnalysis .
 
 d3f:M1040
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Behavior Prevention on Endpoint" ;
     d3f:associated-with        d3f:AuthenticationEventThresholding, d3f:AuthorizationEventThresholding,
@@ -861,7 +861,7 @@ d3f:M1040
                                d3f:UserGeolocationLogonPatternAnalysis, d3f:WebSessionActivityAnalysis .
 
 d3f:M1041
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Encrypt Sensitive Information" ;
     d3f:associated-with        d3f:DiskEncryption, d3f:EncryptedTunnels, d3f:FileEncryption, d3f:MessageEncryption ;
@@ -872,7 +872,7 @@ d3f:M1041
     owl:topObjectProperty      d3f:DiskEncryption, d3f:EncryptedTunnels, d3f:FileEncryption, d3f:MessageEncryption .
 
 d3f:M1042
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Disable or Remove Feature or Program" ;
     d3f:associated-with        d3f:ApplicationConfigurationHardening, d3f:ExecutableDenylisting,
@@ -889,7 +889,7 @@ d3f:M1042
                                d3f:MandatoryAccessControl .
 
 d3f:M1043
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Credential Access Protection" ;
     d3f:associated-with        d3f:Hardware-basedProcessIsolation ;
@@ -900,7 +900,7 @@ d3f:M1043
     owl:topObjectProperty      d3f:Hardware-basedProcessIsolation .
 
 d3f:M1044
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "Restrict Library Loading" ;
     d3f:associated-with         d3f:SystemCallFiltering ;
@@ -915,7 +915,7 @@ d3f:M1044
     owl:topObjectProperty       d3f:SystemCallFiltering .
 
 d3f:M1045
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Code Signing" ;
     d3f:associated-with        d3f:DriverLoadIntegrityChecking, d3f:ExecutableAllowlisting,
@@ -932,7 +932,7 @@ d3f:M1045
                                d3f:ServiceBinaryVerification .
 
 d3f:M1046
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Boot Integrity" ;
     d3f:associated-with        d3f:BootloaderAuthentication, d3f:TPMBootIntegrity ;
@@ -943,7 +943,7 @@ d3f:M1046
     owl:topObjectProperty      d3f:BootloaderAuthentication, d3f:TPMBootIntegrity .
 
 d3f:M1047
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "Audit" ;
     d3f:associated-with         d3f:DomainAccountMonitoring, d3f:LocalAccountMonitoring, d3f:SystemFileAnalysis ;
@@ -958,7 +958,7 @@ d3f:M1047
     owl:topObjectProperty       d3f:DomainAccountMonitoring, d3f:LocalAccountMonitoring, d3f:SystemFileAnalysis .
 
 d3f:M1048
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Application Isolation and Sandboxing" ;
     d3f:associated-with        d3f:DynamicAnalysis, d3f:Hardware-basedProcessIsolation, d3f:MandatoryAccessControl,
@@ -980,7 +980,7 @@ d3f:M1048
                                d3f:SystemCallFiltering .
 
 d3f:M1049
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "Antivirus/Antimalware" ;
     d3f:associated-with         d3f:FileContentRules, d3f:FileHashing, d3f:ProcessAnalysis ;
@@ -995,7 +995,7 @@ d3f:M1049
     owl:topObjectProperty       d3f:FileContentRules, d3f:FileHashing, d3f:ProcessAnalysis .
 
 d3f:M1050
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Exploit Protection" ;
     d3f:associated-with        d3f:ApplicationHardening, d3f:ExceptionHandlerPointerValidation,
@@ -1012,7 +1012,7 @@ d3f:M1050
                                d3f:InboundTrafficFiltering, d3f:ShadowStackComparisons .
 
 d3f:M1051
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Update Software" ;
     d3f:associated-with        d3f:SoftwareUpdate ;
@@ -1023,7 +1023,7 @@ d3f:M1051
     owl:topObjectProperty      d3f:SoftwareUpdate .
 
 d3f:M1052
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "User Account Control" ;
     d3f:associated-with        d3f:MandatoryAccessControl ;
@@ -1034,7 +1034,7 @@ d3f:M1052
     owl:topObjectProperty      d3f:MandatoryAccessControl .
 
 d3f:M1053
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                 rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                  "Data Backup" ;
     d3f:d3fend-comment          "Comprehensive IT disaster recovery plans are outside the current scope of D3FEND." ;
@@ -1043,7 +1043,7 @@ d3f:M1053
     owl:topDataProperty         "Comprehensive IT disaster recovery plans are outside the current scope of D3FEND." .
 
 d3f:M1054
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Software Configuration" ;
     d3f:associated-with        d3f:ApplicationConfigurationHardening, d3f:CertificatePinning ;
@@ -1054,12 +1054,12 @@ d3f:M1054
     owl:topObjectProperty      d3f:ApplicationConfigurationHardening, d3f:CertificatePinning .
 
 d3f:M1055
-    a          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test, rdfs:Resource,
+    a          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test, rdfs:Resource,
                owl:NamedIndividual ;
     rdfs:label "Do Not Mitigate" .
 
 d3f:M1056
-    a                          _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
+    a                          _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKMitigation, d3f:ATTACKThing, d3f:Test,
                                rdfs:Resource, owl:NamedIndividual ;
     rdfs:label                 "Pre-compromise" ;
     d3f:associated-with        d3f:DecoyEnvironment, d3f:DecoyObject ;
@@ -1337,7 +1337,7 @@ d3f:PeripheralFirmwareVerification
 
 d3f:PersistenceDOWN
     a               gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, rdfs:Resource, owl:Class, owl:NamedIndividual ;
-    rdfs:subClassOf _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Persistence,
+    rdfs:subClassOf _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Persistence,
                     d3f:PersistenceUP, d3f:Root2 .
 
 d3f:PersistenceTechnique
@@ -22443,39 +22443,39 @@ rdfs:Resource
         , xsd:string .
 
 d3f:Collection
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
     rdfs:label                  "Collection" ;
     d3f:d3fend-data-property    9 ;
     d3f:d3fend-display-property 9 ;
     d3f:display-order           9 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, [ a              rdfs:Resource, owl:Restriction ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, [ a              rdfs:Resource, owl:Restriction ;
                                                                          owl:hasValue   2 ;
                                                                          owl:onProperty d3f:display-order ],
                                 d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         9 .
 
 d3f:CommandAndControl
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
     rdfs:label                  "Command And Control" ;
     d3f:d3fend-data-property    10 ;
     d3f:d3fend-display-property 10 ;
     d3f:display-order           10 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         10 .
 
 d3f:CredentialAccess
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
     rdfs:label                  "Credential Access" ;
     d3f:d3fend-data-property    6 ;
     d3f:d3fend-display-property 6 ;
     d3f:display-order           6 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         6 .
 
 d3f:DecoyArtifact
@@ -22495,14 +22495,14 @@ d3f:DirectoryService
     a rdfs:Resource, owl:NamedIndividual .
 
 d3f:Discovery
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:NonRigidType, gufo:Role, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
     rdfs:label                  "Discovery" ;
     d3f:d3fend-data-property    7 ;
     d3f:d3fend-display-property 7 ;
     d3f:display-order           7 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         7 .
 
 d3f:DisplayAdapter
@@ -22512,61 +22512,61 @@ d3f:EmailRule
     a rdfs:Resource, owl:NamedIndividual .
 
 d3f:Execution
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
     rdfs:label                  "Execution" ;
     d3f:d3fend-data-property    2 ;
     d3f:d3fend-display-property 2 ;
     d3f:display-order           2 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         2 .
 
 d3f:Exfiltration
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
     rdfs:label                  "Exfiltration" ;
     d3f:d3fend-data-property    11 ;
     d3f:d3fend-display-property 11 ;
     d3f:display-order           11 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         11 .
 
 d3f:Impact
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:Mixin, gufo:NonRigidType, gufo:NonSortal, gufo:SemiRigidType,
                                 gufo:Sortal, rdfs:Resource, owl:Class, owl:NamedIndividual ;
     rdfs:label                  "Impact" ;
     d3f:d3fend-data-property    12 ;
     d3f:d3fend-display-property 12 ;
     d3f:display-order           12 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         12 .
 
 d3f:InitialAccess
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
     rdfs:label                  "Initial Access" ;
     d3f:d3fend-data-property    1 ;
     d3f:d3fend-display-property 1 ;
     d3f:display-order           1 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         1 .
 
 d3f:KerberosTicket
     a rdfs:Resource, owl:NamedIndividual .
 
 d3f:LateralMovement
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
     rdfs:label                  "Lateral Movement" ;
     d3f:d3fend-data-property    8 ;
     d3f:d3fend-display-property 8 ;
     d3f:display-order           8 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         8 .
 
 d3f:ResourceFork
@@ -22886,7 +22886,7 @@ d3f:PasswordStore
     a rdfs:Resource, owl:NamedIndividual .
 
 d3f:Persistence
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:Mixin, gufo:NonRigidType, gufo:NonSortal, gufo:Role,
                                 gufo:RoleMixin, gufo:SemiRigidType, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
@@ -22894,7 +22894,7 @@ d3f:Persistence
     d3f:d3fend-data-property    3 ;
     d3f:d3fend-display-property 3 ;
     d3f:display-order           3 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic,
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic,
                                 d3f:PersistenceUP, d3f:Root2 ;
     owl:topDataProperty         3 .
 
@@ -22979,9 +22979,6 @@ d3f:may-run
 
 gufo:Category
     a rdfs:Resource .
-
-gufo:Role
-    a rdfs:Resource, owl:Class .
 
 "ARXAN TECHNOLOGIES Inc" a
 rdfs:Resource
@@ -23093,6 +23090,9 @@ d3f:semantic-relation
                        d3f:semantic-relation, owl:topObjectProperty .
 
 gufo:Mixin
+    a rdfs:Resource, owl:Class .
+
+gufo:Role
     a rdfs:Resource, owl:Class .
 
 gufo:SemiRigidType
@@ -24722,14 +24722,14 @@ d3f:Deceive
     owl:topDataProperty         3 .
 
 d3f:DefenseEvasion
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
     rdfs:label                  "Defense Evasion" ;
     d3f:d3fend-data-property    5 ;
     d3f:d3fend-display-property 5 ;
     d3f:display-order           5 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         5 .
 
 d3f:DiskEncryption
@@ -24910,14 +24910,14 @@ d3f:PhysicalLocation
     a rdfs:Resource, owl:NamedIndividual .
 
 d3f:PrivilegeEscalation
-    a                           _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
+    a                           _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2,
                                 gufo:AntiRigidType, gufo:NonRigidType, gufo:Sortal, rdfs:Resource, owl:Class,
                                 owl:NamedIndividual ;
     rdfs:label                  "Privilege Escalation" ;
     d3f:d3fend-data-property    4 ;
     d3f:d3fend-display-property 4 ;
     d3f:display-order           4 ;
-    rdfs:subClassOf             _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
+    rdfs:subClassOf             _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:OffensiveTactic, d3f:Root2 ;
     owl:topDataProperty         4 .
 
 d3f:ProcessTree
@@ -26285,9 +26285,6 @@ d3f:Storage
     d3f:may-contain            d3f:FileSystem ;
     owl:topObjectProperty      d3f:FileSystem .
 
-gufo:AntiRigidType
-    a rdfs:Resource, owl:Class .
-
 "Sophos Ltd" a
 rdfs:Resource
          .
@@ -26301,6 +26298,9 @@ d3f:may-be-tactically-associated-with
     rdfs:comment       "x may-be-tactically-associated-with y: the defensive technique x may be a tactic that counters offensive technique y." ;
     rdfs:subPropertyOf d3f:d3fend-object-property, d3f:may-be-associated-with, d3f:may-be-tactically-associated-with,
                        owl:topObjectProperty .
+
+gufo:AntiRigidType
+    a rdfs:Resource, owl:Class .
 
 d3f:AuthenticationCacheInvalidation
     a                                     rdfs:Resource, owl:NamedIndividual ;
@@ -26705,9 +26705,6 @@ d3f:counters
     rdfs:subPropertyOf d3f:counters, d3f:d3fend-catalog-object-property, d3f:d3fend-object-property,
                        d3f:may-be-associated-with, d3f:may-counter, owl:topObjectProperty .
 
-gufo:NonRigidType
-    a rdfs:Resource, owl:Class .
-
 d3f:AuthorizationEventThresholding
     a                                  rdfs:Resource, owl:NamedIndividual ;
     d3f:analyzes                       d3f:Authorization ;
@@ -26800,6 +26797,9 @@ d3f:WebSessionActivityAnalysis
                                        d3f:Reference_SystemAndMethodForNetworkSecurityIncludingDetectionOfAttacksThroughPartnerWebsites_EMCIPHoldingCoLLC,
                                        d3f:Reference_SystemAndMethodThereofForIdentifyingAndRespondingToSecurityIncidentsBasedOnPreemptiveForensics_PaloAltoNetworksInc,
                                        d3f:WebResourceAccess .
+
+gufo:NonRigidType
+    a rdfs:Resource, owl:Class .
 
 d3f:AccessControlConfiguration
     a rdfs:Resource, owl:NamedIndividual .
@@ -26921,7 +26921,7 @@ d3f:OffensiveTactic
     rdfs:label       "Offensive Tactic" ;
     rdfs:comment     "Per ATT&CK, these are defined as Tactical Goals, not Tactics per se. Many children also fit definition of tactics.  Some are neither tactics or tactical goals really (e.g., Execution, which is a useful grouping, but an action, not really a tactic or technique." ;
     rdfs:isDefinedBy <https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf> ;
-    rdfs:subClassOf  _:n74e8d021f9d1475db7f7cc49322e0279b2, d3f:ATTACKThing, d3f:Root2 .
+    rdfs:subClassOf  _:nbbee96f8ec9e4831a97ed424accc27aab2, d3f:ATTACKThing, d3f:Root2 .
 
 d3f:OperatingSystemConfigurationFile
     a rdfs:Resource, owl:NamedIndividual .
@@ -27414,7 +27414,7 @@ d3f:ExecutableBinary
 d3f:ATTACKMitigation
     a               gufo:Sortal, rdfs:Resource, owl:Class ;
     rdfs:label      "ATTACK Mitigation" ;
-    rdfs:subClassOf _:n74e8d021f9d1475db7f7cc49322e0279b1, d3f:ATTACKThing, d3f:Test .
+    rdfs:subClassOf _:nbbee96f8ec9e4831a97ed424accc27aab1, d3f:ATTACKThing, d3f:Test .
 
 d3f:InternetNetworkTraffic
     a rdfs:Resource, owl:NamedIndividual .
@@ -27960,12 +27960,12 @@ xsd:string
 owl:NamedIndividual
     a rdfs:Resource .
 
-_:n74e8d021f9d1475db7f7cc49322e0279b2
+_:nbbee96f8ec9e4831a97ed424accc27aab2
     a                  rdfs:Resource, owl:Restriction ;
     owl:onProperty     d3f:display-order ;
     owl:someValuesFrom xsd:integer .
 
-_:n74e8d021f9d1475db7f7cc49322e0279b1
+_:nbbee96f8ec9e4831a97ed424accc27aab1
     a                  rdfs:Resource, owl:Restriction ;
     owl:onProperty     d3f:d3fend-comment ;
     owl:someValuesFrom xsd:string .
