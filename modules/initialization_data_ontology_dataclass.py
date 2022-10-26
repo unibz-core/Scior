@@ -22,8 +22,7 @@ def initialize_ontology_dataclasses(ontology_graph, gufo_input_yaml):
     # - GUFO DICTIONARY: Receives a POINTER (not values) to the dictionary loaded from the gufo_data.yaml file.
     # It is used inside the dataclass for updating the other lists. The information is read-only.
     for new_class in classes_list:
-        ontology_list.append(OntologyDataClass(uri=new_class,
-                                               can_type=gufo_can_list_types.copy(),
+        ontology_list.append(OntologyDataClass(uri=new_class, can_type=gufo_can_list_types.copy(),
                                                can_individual=gufo_can_list_individuals.copy(),
                                                gufo_dictionary=gufo_input_yaml))
 
@@ -61,22 +60,22 @@ def get_known_gufo_types(united_graph):
     list_subjects = []
     list_objects = []
 
-    query = """
+    query_string = """
     PREFIX gufo: <http://purl.org/nemo/gufo#>
-    SELECT DISTINCT ?subject ?object
+    SELECT DISTINCT ?ontology_element ?element_type
     WHERE {
-        ?subject rdf:type owl:Class .
-        ?object rdf:type owl:Class .
-        ?subject rdf:type ?object .
-        ?object rdfs:subClassOf+ gufo:EndurantType .
-        FILTER(STRSTARTS(STR(?object), STR(gufo:)))
+        ?ontology_element rdf:type owl:Class .
+        ?element_type rdf:type owl:Class .
+        ?ontology_element rdf:type ?element_type .
+        ?element_type rdfs:subClassOf+ gufo:EndurantType .
+        FILTER(STRSTARTS(STR(?element_type), STR(gufo:)))
     } """
 
-    query_result = united_graph.query(query)
+    query_result = united_graph.query(query_string)
 
     for row in query_result:
-        list_subjects.append(row.subject.n3()[1:-1])
-        list_objects.append(row.object.n3()[1:-1])
+        list_subjects.append(row.ontology_element.n3()[1:-1])
+        list_objects.append(row.element_type.n3()[1:-1])
 
     list_tuples = list(zip(list_subjects, list_objects))
 
@@ -94,29 +93,29 @@ def get_known_gufo_individuals(united_graph):
     list_subjects = []
     list_objects = []
 
-    query = """
+    query_string = """
         PREFIX gufo: <http://purl.org/nemo/gufo#>
-        SELECT DISTINCT ?subject ?object
+        SELECT DISTINCT ?ontology_element ?element_type
         WHERE {
-            ?subject rdf:type owl:Class .
-            ?object rdf:type owl:Class .
-            ?subject rdfs:subClassOf ?object .
-            ?object rdfs:subClassOf gufo:EndurantType .
-            FILTER(STRSTARTS(STR(?object), STR(gufo:)))
+            ?ontology_element rdf:type owl:Class .
+            ?element_type rdf:type owl:Class .
+            ?ontology_element rdfs:subClassOf ?element_type .
+            ?element_type rdfs:subClassOf+ gufo:Endurant .
+            FILTER(STRSTARTS(STR(?element_type), STR(gufo:)))
         } """
 
-    query_result = united_graph.query(query)
+    query_result = united_graph.query(query_string)
 
     for row in query_result:
-        list_subjects.append(row.subject.n3()[1:-1])
-        list_objects.append(row.object.n3()[1:-1])
+        list_subjects.append(row.ontology_element.n3()[1:-1])
+        list_objects.append(row.element_type.n3()[1:-1])
 
     list_tuples = list(zip(list_subjects, list_objects))
 
     return list_tuples
 
 
-def load_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list):
+def load_gufo_information(ontology_graph, gufo_graph):
     """ Leads GUFO information about types and instances that are available in the inputted ontology file.
     I.e., if a class is already known to have any GUFO type, this information is updated in the ontology_dataclass_list.
     E.g., if the class Person is set as a gufo:Kind in the loaded ontology, this stereotype is moved from the
@@ -126,7 +125,7 @@ def load_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list):
     united_graph = gufo_graph + ontology_graph
 
     list_known_gufo_types = get_known_gufo_types(united_graph)
-    list_known_gufo_individuals = get_known_gufo_individuals(united_graph)
+    # list_known_gufo_individuals = get_known_gufo_individuals(united_graph)
 
     # implement the ontology_dataclass_list update.
 

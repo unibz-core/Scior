@@ -3,11 +3,11 @@ a readable format. """
 
 import hashlib
 import os
-from datetime import datetime
 
 from prettytable import PrettyTable
 
 from modules.logger_config import initialize_logger
+from modules.utils_general import get_date_time
 
 SECTION_SEPARATOR = "\n##########################################################\n"
 
@@ -70,9 +70,7 @@ def print_report_file(ontology_dataclass_list, nodes_list):
     print_class_summary(ontology_dataclass_list, nodes_list)
 
     # Creating report file
-    now = datetime.now()
-    date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
-    with open(f"{report_dir}{date_time}.report", 'w') as f:
+    with open(f"{report_dir}{get_date_time()}.report", 'w') as f:
         f.write(format_report_hash + report)
 
     logger.debug("Report successfully printed.")

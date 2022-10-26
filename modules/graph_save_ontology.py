@@ -1,6 +1,8 @@
 """ Functions related to reading and writing OWL files using RDFLib. """
+
 from rdflib import URIRef, RDF, RDFS, OWL
 
+from modules.utils_general import get_date_time
 from modules.utils_rdf import get_ontology_uri
 
 
@@ -40,8 +42,9 @@ def save_ontology_file(ontology_graph, configurations):
         gufo_import = URIRef("https://purl.org/nemo/gufo#")
         ontology_graph.add((ontology_uri, OWL.imports, gufo_import))
 
-    # TODO (@pedropaulofb): Perform I/O output verifications
-    ontology_graph.serialize(destination=configurations["ontology_path"][:-4] + "-out.ttl")
+    # Creating report file
+    output_file_name = configurations["ontology_path"][:-4] + "-" + get_date_time() + ".ttl"
+    ontology_graph.serialize(destination=output_file_name)
 
 
 def treat_name(gufo_short_name):

@@ -1,5 +1,7 @@
 """ General auxiliary functions. """
 
+from datetime import datetime
+
 
 def has_duplicates(input_list):
     """ Check if given list contains any duplicated element """
@@ -30,3 +32,14 @@ def lists_subtraction(list1, list2):
     list3 = list(set(list1) - set(list2))
 
     return list3
+
+
+def get_date_time():
+    """ Return a string in a specified format with date and time.
+    Format example: 2022.10.23-14.43
+    """
+
+    now = datetime.now()
+    date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
+
+    return date_time

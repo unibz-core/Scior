@@ -1,5 +1,8 @@
 """ Main module  for OntCatOWL """
+import time
 from datetime import datetime
+
+from owlrl import DeductiveClosure, RDFS_Semantics
 
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.graph_save_ontology import save_ontology_file, save_ontology_gufo_statements
@@ -16,7 +19,6 @@ SOFTWARE_VERSION = "OntCatOWL - Identification of Ontological Categories for OWL
                    "Version 0.20221026 - https://github.com/unibz-core/OntCatOWL/\n"
 
 if __name__ == "__main__":
-
     # DATA LOADINGS AND INITIALIZATIONS
 
     global_configurations = treat_arguments(SOFTWARE_VERSION)
@@ -32,12 +34,13 @@ if __name__ == "__main__":
     ontology_graph = load_graph_safely(global_configurations["ontology_path"])
     gufo_graph = load_graph_safely("resources/gufoEndurantsOnly.ttl")
 
-    # logger.info("Initializing RDFS reasoning. This may take a while...")
-    # st = time.perf_counter()
-    # DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
-    # et = time.perf_counter()
-    # elapsed_time = round((et - st), 4)
-    # logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
+    if global_configurations["reasoning"]:
+        logger.info("Initializing RDFS reasoning. This may take a while...")
+        st = time.perf_counter()
+        DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
+        et = time.perf_counter()
+        elapsed_time = round((et - st), 4)
+        logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
 
     gufo_dictionary = initialize_gufo_dictionary()
 
@@ -47,25 +50,29 @@ if __name__ == "__main__":
     ontology_nodes = initialize_nodes_lists(ontology_graph)
 
     # Loading the GUFO information already known from the ontology and updating the ontology_dataclass_list
-    load_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list)
+    load_gufo_information(ontology_graph, gufo_graph)
 
     ############################## BEGIN TESTS
 
-    # for ont_dataclass in ontology_dataclass_list:
-    #     if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAA":
-    #         ont_dataclass.move_element_to_is_list("gufo:NonSortal")
-    #     if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAB":
-    #         ont_dataclass.move_element_to_is_list("gufo:SubKind")
-    #     if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAC":
-    #         ont_dataclass.move_element_to_is_list("gufo:Category")
+    for ont_dataclass in ontology_dataclass_list:
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAA":
+            ont_dataclass.move_element_to_is_list("gufo:NonSortal")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAB":
+            ont_dataclass.move_element_to_is_list("gufo:SubKind")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAC":
+            ont_dataclass.move_element_to_is_list("gufo:Category")
 
     ############################## END TESTS
 
     execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, global_configurations)
 
-    # TODO (@pedropaulofb): VERIFY IF IT IS WORKING!
     ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
-    save_ontology_file(ontology_graph, global_configurations)
+    if global_configurations["import_gufo"]:
+        united_graph = ontology_graph + gufo_graph
+        save_ontology_file(ontology_graph, global_configurations)
+    else:
+        save_ontology_file(ontology_graph, global_configurations)
+
     print_report_file(ontology_dataclass_list, ontology_nodes)
 
     now = datetime.now()
@@ -83,6 +90,7 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): USER INTERACTIONS
 # Ordinate all lists that are exhibited to the user.
 # Create menus for better user interactions: https://pypi.org/project/simple-term-menu/
+# Provide option for the user to print report and ontology in every interaction. Do not use an argument.
 
 # TODO (@pedropaulofb): PERFORMANCE
 # Treat problem with huge ontologies (stack overflow)

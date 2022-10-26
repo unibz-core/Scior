@@ -2,7 +2,8 @@
 
 import logging
 import os
-from datetime import datetime
+
+from modules.utils_general import get_date_time
 
 
 def initialize_logger():
@@ -25,9 +26,7 @@ def initialize_logger():
             os.makedirs(log_dir)
 
         # Creating FILE handler
-        now = datetime.now()
-        date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
-        file_handler = logging.FileHandler(f"{log_dir}{date_time}.log")
+        file_handler = logging.FileHandler(f"{log_dir}{get_date_time()}.log")
         file_handler.setLevel(logging.DEBUG)
 
         # Create formatters and add it to handlers

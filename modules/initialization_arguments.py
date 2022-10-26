@@ -45,12 +45,11 @@ def treat_arguments(software_version):
                                     help="The loaded ontology is a complete model.")
 
     # General arguments
+    arguments_parser.add_argument("-r", "--reasoning", action='store_true',
+                                  help="Enable RDF reasoning for graph expansion.")
+
     arguments_parser.add_argument("-t", "--times", action='store_true',
                                   help="Prints the execution times of all functions.")
-
-    # TODO (@pedropaulofb): Arguments -p and -g are not implemented yet.
-    arguments_parser.add_argument("-p", "--partial", action='store_true',
-                                  help="Saves in files the partial ontology and reports before any user interaction.")
 
     arguments_parser.add_argument("-g", "--gufo", action='store_true',
                                   help="Imports GUFO ontology in the output ontology file.")
@@ -64,10 +63,10 @@ def treat_arguments(software_version):
     # Execute arguments parser
     arguments = arguments_parser.parse_args()
 
-    global_configurations = {"partial_results": arguments.partial,
-                             "import_gufo": arguments.gufo,
+    global_configurations = {"import_gufo": arguments.gufo,
                              "is_automatic": arguments.automatic,
                              "is_complete": arguments.complete,
+                             "reasoning": arguments.reasoning,
                              "print_time": arguments.times,
                              "ontology_path": arguments.ontology_file}
 
