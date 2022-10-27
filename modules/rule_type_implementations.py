@@ -246,7 +246,6 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
     # Get all direct superclasses
     superclasses_list = get_superclasses(graph, nodes_list["all"], ontology_dataclass.uri)
 
-
     # For each superclass, verify the number of direct subclasses. If only one, perform action (else, do nothing).
     for superclass in superclasses_list:
         superclass_children = get_subclasses(graph, nodes_list["all"], superclass)
@@ -273,3 +272,16 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
                        f"at least another gufo:Phase sibling class is missing, representing an incompleteness.")
         if not configurations["is_automatic"]:
             set_interactively_class_as_gufo_type(ontology_dataclass, "gufo:Role")
+
+
+def treat_rule_ks_sf_in(rule_code, ontology_dataclass, graph, nodes_list, configurations):
+    """ Implements the treatment of rule ks_sf_in for types. """
+
+    logger = initialize_logger()
+
+    # If a class (i) has only known direct subtypes and (ii) if only one of these is a phase, it represents an incompleteness.
+
+    # Get class subclasses
+    # Count number of subclasses and how many of them are phases
+
+    pass
