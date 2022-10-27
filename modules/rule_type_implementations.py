@@ -246,12 +246,14 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
     # Get all direct superclasses
     superclasses_list = get_superclasses(graph, nodes_list["all"], ontology_dataclass.uri)
 
+
     # For each superclass, verify the number of direct subclasses. If only one, perform action (else, do nothing).
     for superclass in superclasses_list:
         superclass_children = get_subclasses(graph, nodes_list["all"], superclass)
         number_children = len(superclass_children)
+
         if number_children > 1:
-            continue
+            return
         elif number_children == 1:
             break
         else:

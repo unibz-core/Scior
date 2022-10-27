@@ -47,12 +47,18 @@ if __name__ == "__main__":
     # ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAA":
-            ont_dataclass.move_element_to_is_list("gufo:NonSortal")
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAB":
-            ont_dataclass.move_element_to_is_list("gufo:SubKind")
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAC":
-            ont_dataclass.move_element_to_is_list("gufo:Category")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#B":
+            ont_dataclass.move_element_to_is_list("gufo:Sortal")
+            ont_dataclass.move_element_to_is_list("gufo:NonRigidType")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#E":
+            ont_dataclass.move_element_to_is_list("gufo:Sortal")
+            ont_dataclass.move_element_to_is_list("gufo:NonRigidType")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#H":
+            ont_dataclass.move_element_to_is_list("gufo:Sortal")
+            ont_dataclass.move_element_to_is_list("gufo:NonRigidType")
+        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#M":
+            ont_dataclass.move_element_to_is_list("gufo:Sortal")
+            ont_dataclass.move_element_to_is_list("gufo:NonRigidType")
 
     # ############################## END TESTS
 
@@ -79,6 +85,7 @@ if __name__ == "__main__":
 # Present to user all different namespaces of different classes found and ask him in which ones he wants to execute.
 # Create a (much) better deficiency (incompleteness)(inconsistency?) report.
 # Hash is generated differently when list is [A, B] and [B, A]. So maybe is the case to keep it always sorted.
+# Create argument for cleaning all generated logs and reports (e.g., ontcatowl.py --clean)
 
 # TODO (@pedropaulofb): USER INTERACTIONS
 # Ordinate all lists that are exhibited to the user.

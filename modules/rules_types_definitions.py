@@ -583,12 +583,12 @@ def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         # CONDITION 2: ontology_dataclass must be a gufo:Sortals and must be a gufo:NonRigidType
         if ("gufo:Sortal" not in ontology_dataclass.is_type) \
-                or ("gufo:NonRigidType" not in ontology_dataclass.can_type):
+                or ("gufo:NonRigidType" not in ontology_dataclass.is_type):
             continue
 
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
-        treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list)
+        treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, configurations)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
