@@ -604,8 +604,9 @@ def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
         - REASON: Phases always occur in phase partitions.
 
-        - RULE: If a class (i) has only known direct subtypes and (ii) if only one of these is a
-        phase, it represents an incompleteness.
+        - RULE: For every class classified as a gufo:Phase, there is an incompleteness if:
+            (i) the Phase has no sibling classes, OR
+            (ii) all its siblings are (NonSortals OR RigidType).
 
         - BEHAVIOR: Report incompleteness in all cases.
         """
@@ -619,13 +620,13 @@ def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     for ontology_dataclass in list_ontology_dataclasses:
 
-        # CONDITION 1: ontology_dataclass must NOT be a leaf node
-        if ontology_dataclass.uri in nodes_list["leaves"]:
+        # CONDITION 1: ontology_dataclass must be a Phase
+        if "gufo:Phase" not in ontology_dataclass.is_type:
             continue
 
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
-        treat_rule_ks_sf_in(rule_code, ontology_dataclass, graph, nodes_list, configurations)
+        treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass, graph, nodes_list)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 

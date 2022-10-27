@@ -256,7 +256,8 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
         elif number_children == 1:
             break
         else:
-            logger.error("Unexpected number of children. At least one subclass was expected. Program aborted.")
+            logger.error(f"Unexpected number of children in rule {rule_code}. At least one subclass was expected. "
+                         f"Program aborted.")
             exit(1)
 
     # All conditions are met. Perform possible actions.
@@ -274,14 +275,35 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
             set_interactively_class_as_gufo_type(ontology_dataclass, "gufo:Role")
 
 
-def treat_rule_ks_sf_in(rule_code, ontology_dataclass, graph, nodes_list, configurations):
+def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass, graph, nodes_list):
     """ Implements the treatment of rule ks_sf_in for types. """
 
     logger = initialize_logger()
 
-    # If a class (i) has only known direct subtypes and (ii) if only one of these is a phase, it represents an incompleteness.
+    # Get all direct superclasses
+    superclasses_list = get_superclasses(graph, nodes_list["all"], ontology_dataclass.uri)
 
-    # Get class subclasses
-    # Count number of subclasses and how many of them are phases
+    # For each superclass, verify the number of siblings.
+    for superclass in superclasses_list:
+        superclass_children = get_subclasses(graph, nodes_list["all"], superclass)
+        siblings_list = superclass_children.remove(ontology_dataclass.uri)
+        number_siblings = len(siblings_list)
 
-    pass
+        if number_siblings == 0:
+            # Report incompleteness
+            logger.warning(f"Incompleteness detected during rule {rule_code}! "
+                           f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass of {superclass}. "
+                           f"All phases always occur in phase partitions.")
+        elif number_siblings > 0:
+            for sibling in siblings_list:
+                sibling_dataclass = return_dataclass_from_class_name(list_ontology_dataclasses, sibling)
+                if ("gufo:NonSortal" in sibling_dataclass.is_type) or ("gufo:RigidType" in sibling_dataclass.is_type):
+                    break
+            else:
+                # Report incompleteness
+                logger.warning(f"Incompleteness detected during rule {rule_code}! "
+                               f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass of {superclass}. "
+                               f"All phases always occur in phase partitions.")
+        else:
+            logger.error(f"Unexpected number of siblings in rule {rule_code}. Program aborted.")
+            exit(1)
