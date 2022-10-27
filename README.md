@@ -35,3 +35,9 @@ The input file syntax is automatically detected by the **OntCatOWL**.
 - new classes cannot be created during the execution of OntCatOWL.
 - all stereotypes already set as is or not are immutable. i e., there can be no movement from lists is or not.
 - When interactivity is enabled, interactions are only available when there are more than one option.
+
+## Software Limitations
+
+### Version X (to be completed)
+
+- Disjoint and Complete are not supported.

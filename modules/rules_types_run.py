@@ -2,7 +2,8 @@
 
 from modules.logger_config import initialize_logger
 from modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, rule_t_k_sup, rule_ns_s_sup, rule_s_ns_sub, \
-    rule_r_ar_sup, rule_ar_r_sub, rule_n_r_t, rule_ns_s_spe, rule_nk_k_sup, rule_s_nsup_k, rule_ns_sub_r, rule_nrs_ns_r
+    rule_r_ar_sup, rule_ar_r_sub, rule_n_r_t, rule_ns_s_spe, rule_nk_k_sup, rule_s_nsup_k, rule_ns_sub_r, rule_nrs_ns_r, \
+    rule_ks_sf_in
 from modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
@@ -12,13 +13,13 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
     logger.info("Starting GUFO types hierarchy rules ...")
 
     always_automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub",
-                              "ns_sub_r"]
+                              "ns_sub_r", "ks_sf_in"]
 
-    general_rules = ["nrs_ns_r"]
+    general_rules = []
 
     general_rules_not_running_for_tests = ["n_r_t", "ns_s_spe", "nk_k_sup", "s_nsup_k", "nrs_ns_r"]
 
-    list_of_rules = general_rules + always_automatic_rules
+    list_of_rules = always_automatic_rules + general_rules
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = 0
@@ -53,6 +54,8 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
 
     logger = initialize_logger()
 
+    logger.debug(f"Acessing rule {rule_code} ...")
+
     if rule_code == "k_s_sup":
         rule_k_s_sup(ontology_dataclass_list, graph, nodes_list, configurations)
     elif rule_code == "s_k_sub":
@@ -79,6 +82,10 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
         rule_ns_sub_r(ontology_dataclass_list, graph, nodes_list, configurations)
     elif rule_code == "nrs_ns_r":
         rule_nrs_ns_r(ontology_dataclass_list, graph, nodes_list, configurations)
+    elif rule_code == "ks_sf_in":
+        rule_ks_sf_in(ontology_dataclass_list, graph, nodes_list, configurations)
     else:
-        logger.error("Unexpected rule code received as parameter! Program aborted.")
+        logger.error(f"Unexpected rule code ({rule_code}) received as parameter! Program aborted.")
         exit(1)
+
+    logger.debug(f"Rule {rule_code} successfully performed.")

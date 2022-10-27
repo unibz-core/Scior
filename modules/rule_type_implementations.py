@@ -283,11 +283,27 @@ def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass
     # Get all direct superclasses
     superclasses_list = get_superclasses(graph, nodes_list["all"], ontology_dataclass.uri)
 
+    # Treating case of root classes
+    if len(superclasses_list) == 0:
+        superclasses_list.append("ROOT_CLASS")
+
     # For each superclass, verify the number of siblings.
     for superclass in superclasses_list:
-        superclass_children = get_subclasses(graph, nodes_list["all"], superclass)
-        siblings_list = superclass_children.remove(ontology_dataclass.uri)
-        number_siblings = len(siblings_list)
+
+        if superclass == "ROOT_CLASS":
+            number_siblings = 0
+        else:
+            siblings_list = get_subclasses(graph, nodes_list["all"], superclass)
+            siblings_list.remove(ontology_dataclass.uri)
+            number_siblings = len(siblings_list)
+
+        # logger.info("\n")
+        # logger.info(f"ontology_dataclass = {ontology_dataclass.uri}")
+        # logger.info(f"superclasses_list = {superclasses_list}")
+        # logger.info(f"current superclass = {superclass}")
+        # logger.info(f"siblings_list = {siblings_list}")
+        # logger.info(f"number_siblings = {number_siblings}")
+        # input()
 
         if number_siblings == 0:
             # Report incompleteness
@@ -297,9 +313,16 @@ def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass
         elif number_siblings > 0:
             for sibling in siblings_list:
                 sibling_dataclass = return_dataclass_from_class_name(list_ontology_dataclasses, sibling)
-                if ("gufo:NonSortal" in sibling_dataclass.is_type) or ("gufo:RigidType" in sibling_dataclass.is_type):
+
+                # logger.info(f"sibling_dataclass = {sibling_dataclass.uri}")
+                # logger.info(f"sibling_dataclass.is_type = {sibling_dataclass.is_type}")
+                # input()
+
+                if ("gufo:Sortal" in sibling_dataclass.is_type) or ("gufo:NonRigidType" in sibling_dataclass.is_type):
+                    # logger.info(f"ENTERED IF-BREAK")
                     break
             else:
+                # logger.info(f"ENTERED FOR-ELSE")
                 # Report incompleteness
                 logger.warning(f"Incompleteness detected during rule {rule_code}! "
                                f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass of {superclass}. "
