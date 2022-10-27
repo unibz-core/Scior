@@ -67,8 +67,8 @@ def select_class_from_list(list_ontology_dataclasses, list_option_classes):
     return selected_class
 
 
-def set_interactively_class_as_kind(ontology_dataclass):
-    """ User interaction for setting the parameter ontology_dataclass as a gufo:Kind. """
+def set_interactively_class_as_gufo_type(ontology_dataclass, gufo_type):
+    """ User interaction for setting the parameter ontology_dataclass as the gufo_type provided as parameter. """
 
     logger = initialize_logger()
 
@@ -77,15 +77,15 @@ def set_interactively_class_as_kind(ontology_dataclass):
 
     while not valid:
         time.sleep(0.1)
-        option = input(f"Would you like to set the class {ontology_dataclass.uri} as a gufo:Kind ('y' or 'n')? ")
+        option = input(f"Would you like to set the class {ontology_dataclass.uri} as a {gufo_type} ('y' or 'n')? ")
         option = option.strip().lower()
         valid = (option == "y") or (option == "n")
         if not valid:
-            print("Invalid ontologies. Please retry.")
+            print("Invalid option entered. Please retry.")
 
     if option == "y":
-        ontology_dataclass.move_element_to_is_list(GUFO_KIND)
-        logger.debug(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
+        ontology_dataclass.move_element_to_is_list(gufo_type)
+        logger.debug(f"The class {ontology_dataclass.uri} was successfully set as a {gufo_type}.")
 
 
 def set_type_for_class(ontology_dataclass):

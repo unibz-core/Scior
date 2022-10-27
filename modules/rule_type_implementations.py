@@ -1,7 +1,7 @@
 """ Implementation of rules for types. """
 
 from modules.logger_config import initialize_logger
-from modules.user_interactions import select_class_from_list, print_class_types, set_interactively_class_as_kind
+from modules.user_interactions import select_class_from_list, print_class_types, set_interactively_class_as_gufo_type
 from modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, \
     external_move_list_to_is_list, get_element_list, return_dataclass_from_class_name
 from modules.utils_graph import get_all_related_nodes, get_all_superclasses, get_subclasses, get_superclasses
@@ -29,7 +29,7 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
         logger.warning(f"Incompleteness detected during rule {rule_code}! "
                        f"There is not identity principle associated to class {ontology_dataclass.uri}.")
         if (not configurations["is_automatic"]) and (GUFO_KIND in ontology_dataclass.can_type):
-            set_interactively_class_as_kind(ontology_dataclass)
+            set_interactively_class_as_gufo_type(ontology_dataclass, GUFO_KIND)
 
 
 def interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
@@ -210,7 +210,7 @@ def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, config
         ontology_dataclass.move_element_to_is_list(GUFO_KIND)
         logger.info(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
     elif not configurations["is_automatic"]:
-        set_interactively_class_as_kind(ontology_dataclass)
+        set_interactively_class_as_gufo_type(ontology_dataclass, GUFO_KIND)
 
 
 def treat_rule_ns_sub_r(list_ontology_dataclasses, ontology_dataclass, graph, nodes_list):
@@ -238,7 +238,7 @@ def treat_rule_ns_sub_r(list_ontology_dataclasses, ontology_dataclass, graph, no
         ontology_dataclass.move_element_to_is_list("gufo:Category")
 
 
-def treat_rule_nrs_ns_r(list_ontology_dataclasses, ontology_dataclass, graph, nodes_list, configurations):
+def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, configurations):
     """ Implements the treatment of rule nrs_ns_r for types. """
 
     logger = initialize_logger()
@@ -251,7 +251,7 @@ def treat_rule_nrs_ns_r(list_ontology_dataclasses, ontology_dataclass, graph, no
         superclass_children = get_subclasses(graph, nodes_list["all"], superclass)
         number_children = len(superclass_children)
         if number_children > 1:
-            return
+            continue
         elif number_children == 1:
             break
         else:
@@ -260,9 +260,14 @@ def treat_rule_nrs_ns_r(list_ontology_dataclasses, ontology_dataclass, graph, no
 
     # All conditions are met. Perform possible actions.
     if configurations["is_complete"]:
-        pass
+        logger.info(f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings, "
+                    f"hence it was set as gufo:Role.")
+        ontology_dataclass.move_element_to_is_list("gufo:Role")
     else:
         # Report incompleteness.
+        logger.warning(f"Incompleteness detected during rule {rule_code}! "
+                       f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings. "
+                       f"This class must be set as a gufo:Role. If it is a gufo:Phase, "
+                       f"at least another gufo:Phase sibling class is missing, representing an incompleteness.")
         if not configurations["is_automatic"]:
-            # ask user
-            pass
+            set_interactively_class_as_gufo_type(ontology_dataclass, "gufo:Role")
