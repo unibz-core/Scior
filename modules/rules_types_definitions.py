@@ -577,11 +577,15 @@ def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     for ontology_dataclass in list_ontology_dataclasses:
 
-        # CONDITION 1: ontology_dataclass must be able to be classified as a gufo:Role
+        # CONDITION 1: ontology_dataclass must be a leaf node
+        if ontology_dataclass.uri not in nodes_list["leaves"]:
+            continue
+
+        # CONDITION 2: ontology_dataclass must be able to be classified as a gufo:Role
         if "gufo:Role" not in ontology_dataclass.can_type:
             continue
 
-        # CONDITION 2: ontology_dataclass must be a gufo:Sortals and must be a gufo:NonRigidType
+        # CONDITION 3: ontology_dataclass must be a gufo:Sortals and must be a gufo:NonRigidType
         if ("gufo:Sortal" not in ontology_dataclass.is_type) \
                 or ("gufo:NonRigidType" not in ontology_dataclass.is_type):
             continue
@@ -596,3 +600,44 @@ def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
         et = time.perf_counter()
         elapsed_time = round((et - st), 3)
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
+
+# TODO (@pedropaulofb): This rule must be improved with identification of partition sets. The rule to be created to
+#  substitute this one is: Partition sets with at least one known phase must have all its components as phases.
+# def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list, configurations):
+#     """
+#         - REASON: Phases always occur in phase partitions.
+#
+#         - RULE: If a class (i) has only known direct subtypes and (ii) if only one of these is a
+#         phase, it represents an incompleteness.
+#
+#         - BEHAVIOR: Report incompleteness in all cases.
+#         """
+#
+#     if configurations["print_time"]:
+#         st = time.perf_counter()
+#
+#     rule_code = "ks_sf_in"
+#
+#     logger = initialize_logger()
+#
+#     for ontology_dataclass in list_ontology_dataclasses:
+#
+#         # CONDITION 1: ontology_dataclass must not be a leaf node
+#         if ontology_dataclass.uri in nodes_list["leaves"]:
+#             continue
+#
+#         # CONDITION 2: ontology_dataclass must be a gufo:Sortals and must be a gufo:NonRigidType
+#         if ("gufo:Sortal" not in ontology_dataclass.is_type) \
+#                 or ("gufo:NonRigidType" not in ontology_dataclass.is_type):
+#             continue
+#
+#         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
+#
+#         treat_rule_ks_sf_in(rule_code, ontology_dataclass, graph, nodes_list, configurations)
+#
+#         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
+#
+#     if configurations["print_time"]:
+#         et = time.perf_counter()
+#         elapsed_time = round((et - st), 3)
+#         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} second

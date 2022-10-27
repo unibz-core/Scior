@@ -99,7 +99,9 @@ if __name__ == "__main__":
 # Run automatic only for some different configurations and figure out which is the best order for executing the rules.
 # Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verify for/break statement
 
-# TODO (@pedropaulofb): BEFORE RELEASE OF VERSION 1.0
+# TODO (@pedropaulofb): BEFORE RELEASE OF VERSION
 # Evaluate on Linux before release first version
 # Update requirements.txt
 # Verify if there is any unused module, function or methods
+# Create release notes file
+# Move TO DO comments to GitHub issues
