@@ -181,7 +181,6 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
         logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
-
 def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
     - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.

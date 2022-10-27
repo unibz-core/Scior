@@ -13,14 +13,14 @@ from modules.rules_types_run import execute_rules_types
 from modules.utils_rdf import load_graph_safely, perform_reasoning
 
 SOFTWARE_VERSION = "OntCatOWL - Identification of Ontological Categories for OWL Ontologies\n" \
-                   "Version 0.20221026 - https://github.com/unibz-core/OntCatOWL/\n"
+                   "Version 0.20221027 - https://github.com/unibz-core/OntCatOWL/\n"
 
 if __name__ == "__main__":
+
     # DATA LOADINGS AND INITIALIZATIONS
 
     global_configurations = treat_arguments(SOFTWARE_VERSION)
 
-    # Logger initialization
     logger = initialize_logger()
 
     now = datetime.now()
@@ -31,10 +31,11 @@ if __name__ == "__main__":
     ontology_graph = load_graph_safely(global_configurations["ontology_path"])
     gufo_graph = load_graph_safely("resources/gufoEndurantsOnly.ttl")
 
+    # Loading GUFO dictionary from yaml file
+    gufo_dictionary = initialize_gufo_dictionary()
+
     if global_configurations["reasoning"]:
         perform_reasoning(ontology_graph)
-
-    gufo_dictionary = initialize_gufo_dictionary()
 
     ontology_dataclass_list = initialize_ontology_dataclasses(ontology_graph, gufo_dictionary)
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
@@ -44,21 +45,14 @@ if __name__ == "__main__":
     # Loading the GUFO information already known from the ontology and updating the ontology_dataclass_list
     load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list)
 
-    # ############################## BEGIN TESTS
-
-    for ont_dataclass in ontology_dataclass_list:
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#1A":
-            ont_dataclass.move_element_to_is_list("gufo:NonSortal")
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#1D":
-            ont_dataclass.move_element_to_is_list("gufo:Phase")
-        if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#1H":
-            ont_dataclass.move_element_to_is_list("gufo:Phase")
-
-    # ############################## END TESTS
+    # EXECUTION
 
     execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, global_configurations)
 
+    # SAVING RESULTS - OUTPUT
+
     ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
+
     if global_configurations["import_gufo"]:
         united_graph = ontology_graph + gufo_graph
         save_ontology_file(ontology_graph, global_configurations)
@@ -98,5 +92,5 @@ if __name__ == "__main__":
 # Evaluate on Linux before release first version
 # Update requirements.txt
 # Verify if there is any unused module, function or methods
-# Create release notes file
+# Create release notes section at README.md
 # Move TO DO comments to GitHub issues

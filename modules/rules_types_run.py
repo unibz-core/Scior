@@ -15,9 +15,7 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
     always_automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub",
                               "ns_sub_r", "ks_sf_in"]
 
-    general_rules = []
-
-    general_rules_not_running_for_tests = ["n_r_t", "ns_s_spe", "nk_k_sup", "s_nsup_k", "nrs_ns_r"]
+    general_rules = ["n_r_t", "ns_s_spe", "nk_k_sup", "s_nsup_k", "nrs_ns_r"]
 
     list_of_rules = always_automatic_rules + general_rules
 
