@@ -1,8 +1,5 @@
 """ Main module  for OntCatOWL """
-import time
 from datetime import datetime
-
-from owlrl import DeductiveClosure, RDFS_Semantics
 
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.graph_save_ontology import save_ontology_file, save_ontology_gufo_statements
@@ -13,7 +10,7 @@ from modules.initialization_data_ontology_dataclass import initialize_ontology_d
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
 from modules.rules_types_run import execute_rules_types
-from modules.utils_rdf import load_graph_safely
+from modules.utils_rdf import load_graph_safely, perform_reasoning
 
 SOFTWARE_VERSION = "OntCatOWL - Identification of Ontological Categories for OWL Ontologies\n" \
                    "Version 0.20221026 - https://github.com/unibz-core/OntCatOWL/\n"
@@ -35,12 +32,7 @@ if __name__ == "__main__":
     gufo_graph = load_graph_safely("resources/gufoEndurantsOnly.ttl")
 
     if global_configurations["reasoning"]:
-        logger.info("Initializing RDFS reasoning. This may take a while...")
-        st = time.perf_counter()
-        DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 4)
-        logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
+        perform_reasoning(ontology_graph)
 
     gufo_dictionary = initialize_gufo_dictionary()
 
@@ -52,7 +44,7 @@ if __name__ == "__main__":
     # Loading the GUFO information already known from the ontology and updating the ontology_dataclass_list
     load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list)
 
-    ############################## BEGIN TESTS
+    # ############################## BEGIN TESTS
 
     for ont_dataclass in ontology_dataclass_list:
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAA":
@@ -62,7 +54,7 @@ if __name__ == "__main__":
         if ont_dataclass.uri == "http://d3fend.mitre.org/ontologies/d3fend.owl#AAC":
             ont_dataclass.move_element_to_is_list("gufo:Category")
 
-    ############################## END TESTS
+    # ############################## END TESTS
 
     execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, global_configurations)
 

@@ -1,4 +1,7 @@
 """ Auxiliary functions for extending and complementing RDFLib's RDF treatment functions """
+import time
+
+from owlrl import DeductiveClosure, RDFS_Semantics
 from rdflib import URIRef, RDF, OWL, Graph
 
 from modules.logger_config import initialize_logger
@@ -126,3 +129,18 @@ def get_list_of_all_classes(ontology_graph, exceptions_list=None):
                 break
 
     return classes_list
+
+
+def perform_reasoning(ontology_graph):
+    """Perform reasoner and consequently expands the ontology graph. """
+
+    logger = initialize_logger()
+
+    logger.info("Initializing RDFS reasoning. This may take a while...")
+
+    st = time.perf_counter()
+    DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
+    et = time.perf_counter()
+    elapsed_time = round((et - st), 4)
+
+    logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
