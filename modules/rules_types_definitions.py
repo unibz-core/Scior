@@ -5,7 +5,7 @@ import time
 from modules.logger_config import initialize_logger
 from modules.propagation import execute_and_propagate_down, execute_and_propagate_up
 from modules.rule_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe, treat_rule_nk_k_sup, \
-    treat_rule_s_nsup_k, treat_rule_ns_sub_r
+    treat_rule_s_nsup_k, treat_rule_ns_sub_r, treat_rule_nrs_ns_r
 from modules.utils_dataclass import get_list_gufo_classification
 from modules.utils_graph import get_subclasses, get_superclasses
 
@@ -515,7 +515,7 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
 
 def rule_ns_sub_r(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
-        - REASON: Rigid types cannot specialize AntiRigid types..
+        - REASON: Rigid types cannot specialize AntiRigid types.
 
         - RULE: In complete models, gufo:NonSortals with only gufo:Rigid direct subtypes are always gufo:Categories.
 
@@ -545,6 +545,50 @@ def rule_ns_sub_r(list_ontology_dataclasses, graph, nodes_list, configurations):
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
 
         treat_rule_ns_sub_r(list_ontology_dataclasses, ontology_dataclass, graph, nodes_list)
+
+        logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
+
+    if configurations["print_time"]:
+        et = time.perf_counter()
+        elapsed_time = round((et - st), 3)
+        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
+
+
+def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
+    """
+        - REASON: Phases always occur in phase partitions.
+
+        - RULE: In complete models, NonRigid Sortals with no sibling classes are always Roles.
+
+        - BEHAVIOR:
+
+            - Complete + Automatic: If can be role, Set as gufo:Role. If cannot, report incompleteness.
+            - Complete + Interactive: If can be role, Set as gufo:Role. If cannot, report incompleteness.
+            - Incomplete + Automatic: Report incompleteness.
+            - Incomplete + Interactive: Ask user if should be set to gufo:Role. If not, report incompleteness.
+        """
+
+    if configurations["print_time"]:
+        st = time.perf_counter()
+
+    rule_code = "nrs_ns_r"
+
+    logger = initialize_logger()
+
+    for ontology_dataclass in list_ontology_dataclasses:
+
+        # CONDITION 1: ontology_dataclass must be able to be classified as a gufo:Role
+        if "gufo:Role" not in ontology_dataclass.can_type:
+            continue
+
+        # CONDITION 2: ontology_dataclass must be a gufo:Sortals and must be a gufo:NonRigidType
+        if ("gufo:Sortal" not in ontology_dataclass.is_type) \
+                or ("gufo:NonRigidType" not in ontology_dataclass.can_type):
+            continue
+
+        logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri}...")
+
+        treat_rule_nrs_ns_r(list_ontology_dataclasses, ontology_dataclass, graph, nodes_list)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 

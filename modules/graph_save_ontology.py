@@ -30,7 +30,7 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph):
     return ontology_graph
 
 
-# TODO (@pedropaulofb): Use the same input name, appending time and date, for generating the output TTL file.
+# TODO (@pedropaulofb): Use the same ontologies name, appending time and date, for generating the output TTL file.
 def save_ontology_file(ontology_graph, configurations):
     """
     Saves the ontology graph into a TTL file.
@@ -43,7 +43,7 @@ def save_ontology_file(ontology_graph, configurations):
         ontology_graph.add((ontology_uri, OWL.imports, gufo_import))
 
     # Creating report file
-    output_file_name = configurations["ontology_path"][:-4] + "-" + get_date_time() + ".ttl"
+    output_file_name = configurations["ontology_path"][:-4] + "-" + get_date_time() + ".out.ttl"
     ontology_graph.serialize(destination=output_file_name)
 
 

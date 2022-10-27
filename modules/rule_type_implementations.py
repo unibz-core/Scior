@@ -4,7 +4,7 @@ from modules.logger_config import initialize_logger
 from modules.user_interactions import select_class_from_list, print_class_types, set_interactively_class_as_kind
 from modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, \
     external_move_list_to_is_list, get_element_list, return_dataclass_from_class_name
-from modules.utils_graph import get_all_related_nodes, get_all_superclasses, get_subclasses
+from modules.utils_graph import get_all_related_nodes, get_all_superclasses, get_subclasses, get_superclasses
 
 # Frequent GUFO types
 GUFO_KIND = "gufo:Kind"
@@ -72,7 +72,7 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
 
     logger = initialize_logger()
 
-    # Get all ontology dataclasses that are reachable from the input dataclass
+    # Get all ontology dataclasses that are reachable from the ontologies dataclass
     list_all_related_nodes = get_all_related_nodes(graph, nodes_list, ontology_dataclass.uri)
 
     logger.debug(f"Related nodes of {ontology_dataclass.uri} are: {list_all_related_nodes}")
@@ -236,3 +236,33 @@ def treat_rule_ns_sub_r(list_ontology_dataclasses, ontology_dataclass, graph, no
         logger.debug(f"The NonSortal class {ontology_dataclass.uri} "
                      f"is only specialized into RigidTypes and, hence, was set as a gufo:Category.")
         ontology_dataclass.move_element_to_is_list("gufo:Category")
+
+
+def treat_rule_nrs_ns_r(list_ontology_dataclasses, ontology_dataclass, graph, nodes_list, configurations):
+    """ Implements the treatment of rule nrs_ns_r for types. """
+
+    logger = initialize_logger()
+
+    # Get all direct superclasses
+    superclasses_list = get_superclasses(graph, nodes_list["all"], ontology_dataclass.uri)
+
+    # For each superclass, verify the number of direct subclasses. If only one, perform action (else, do nothing).
+    for superclass in superclasses_list:
+        superclass_children = get_subclasses(graph, nodes_list["all"], superclass)
+        number_children = len(superclass_children)
+        if number_children > 1:
+            return
+        elif number_children == 1:
+            break
+        else:
+            logger.error("Unexpected number of children. At least one subclass was expected. Program aborted.")
+            exit(1)
+
+    # All conditions are met. Perform possible actions.
+    if configurations["is_complete"]:
+        pass
+    else:
+        # Report incompleteness.
+        if not configurations["is_automatic"]:
+            # ask user
+            pass

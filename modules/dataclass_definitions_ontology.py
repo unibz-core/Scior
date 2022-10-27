@@ -1,4 +1,4 @@
-""" Definition of dataclass as the data structure used for loading the input ontology in OntCatOWL.
+""" Definition of dataclass as the data structure used for loading the ontologies ontology in OntCatOWL.
     This module contains the data structure fields, initial value assignments and methods.
 """
 

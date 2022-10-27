@@ -81,7 +81,7 @@ def set_interactively_class_as_kind(ontology_dataclass):
         option = option.strip().lower()
         valid = (option == "y") or (option == "n")
         if not valid:
-            print("Invalid input. Please retry.")
+            print("Invalid ontologies. Please retry.")
 
     if option == "y":
         ontology_dataclass.move_element_to_is_list(GUFO_KIND)

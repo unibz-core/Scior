@@ -7,6 +7,7 @@ from modules.utils_general import remove_duplicates, lists_subtraction
 
 def get_superclasses(graph, all_classes, element):
     """ Returns a list of all direct superclasses of the given element of a graph.
+        Element received as parameter is of type string.
         Analogous to function get_subclasses.
     """
 
@@ -28,6 +29,7 @@ def get_superclasses(graph, all_classes, element):
 
 def get_subclasses(graph, all_classes, element):
     """ Returns a list of all direct subclasses of the given element of a graph.
+        Element received as parameter is of type string.
         Analogous to function get_superclasses.
     """
 
@@ -150,7 +152,7 @@ def get_all_subclasses(graph, nodes_list, element):
 
 def get_all_related_nodes_inc(graph, nodes_list, node, queue=None, visited=None, related=None):
     """ Implements the BFS algorithm to return the list of all nodes of the given graph that are directly or indirectly
-    related to the given element. I.e., return all nodes that are reachable from the input node (element).
+    related to the given element. I.e., return all nodes that are reachable from the ontologies node (element).
 
     The return list DOES INCLUDE the own element.
     """
@@ -182,7 +184,7 @@ def get_all_related_nodes_inc(graph, nodes_list, node, queue=None, visited=None,
 
 def get_all_related_nodes(graph, nodes_list, node):
     """ Return the list of all nodes of the given graph that are directly or indirectly
-        related to the given element. I.e., return all nodes that are reachable from the input node (element).
+        related to the given element. I.e., return all nodes that are reachable from the ontologies node (element).
 
         The return list DOES NOT INCLUDE the own element.
         """

@@ -6,7 +6,7 @@ from modules.logger_config import initialize_logger
 
 
 def treat_arguments(software_version):
-    """ Treats user input arguments. """
+    """ Treats user ontologies arguments. """
 
     logger = initialize_logger()
     logger.debug("Parsing arguments...")

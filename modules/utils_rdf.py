@@ -68,7 +68,7 @@ def list_namespaces(ontology_graph):
     return result
 
 
-# TODO (@pedropaulofb): The input gufo_type_short must still be treated!
+# TODO (@pedropaulofb): The ontologies gufo_type_short must still be treated!
 # TODO (@pedropaulofb): THIS FILE MUST NOT CONTAIN ANY SPECIFIC GUFO FUNCTION! MAKE THIS GENERIC.
 def insert_new_element_type_hierarchy(ontology_graph, class_name, gufo_type_short):
     """ Allows user to manually insert a triple into the ontology for verifying its effects """
