@@ -2,7 +2,7 @@
 import time
 
 from owlrl import DeductiveClosure, RDFS_Semantics
-from rdflib import URIRef, RDF, OWL, Graph
+from rdflib import RDF, OWL, Graph
 
 from modules.logger_config import initialize_logger
 
@@ -66,30 +66,6 @@ def list_namespaces(ontology_graph):
         result.append(nam.n3()[1:-1])
 
     return result
-
-
-# TODO (@pedropaulofb): The ontologies gufo_type_short must still be treated!
-# TODO (@pedropaulofb): THIS FILE MUST NOT CONTAIN ANY SPECIFIC GUFO FUNCTION! MAKE THIS GENERIC.
-def insert_new_element_type_hierarchy(ontology_graph, class_name, gufo_type_short):
-    """ Allows user to manually insert a triple into the ontology for verifying its effects """
-
-    gufo_base_prefix = "http://purl.org/nemo/gufo#"
-    gufo_type = gufo_base_prefix + gufo_type_short
-
-    logger = initialize_logger()
-
-    logger.debug(f"Inserting the following triple into the ontology: "
-                 f"{class_name} rdf:type {gufo_type} ...")
-
-    subject_uri = URIRef(class_name)
-    object_uri = URIRef(gufo_type)
-
-    ontology_graph.add((subject_uri, RDF.type, object_uri))
-
-    logger.debug(f"The following triple was successfully inserted into the ontology: "
-                 f"{class_name} rdf:type {gufo_type}.")
-
-    return ontology_graph
 
 
 def get_ontology_uri(ontology_graph):

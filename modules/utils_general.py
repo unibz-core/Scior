@@ -1,5 +1,4 @@
 """ General auxiliary functions. """
-
 from datetime import datetime
 
 

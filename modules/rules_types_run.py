@@ -2,8 +2,8 @@
 
 from modules.logger_config import initialize_logger
 from modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, rule_t_k_sup, rule_ns_s_sup, rule_s_ns_sub, \
-    rule_r_ar_sup, rule_ar_r_sub, rule_n_r_t, rule_ns_s_spe, rule_nk_k_sup, rule_s_nsup_k, rule_ns_sub_r, rule_nrs_ns_r, \
-    rule_ks_sf_in
+    rule_r_ar_sup, rule_ar_r_sub, rule_n_r_t, rule_ns_s_spe, rule_nk_k_sup, rule_s_nsup_k, rule_ns_sub_r, \
+    rule_nrs_ns_r, rule_ks_sf_in
 from modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 

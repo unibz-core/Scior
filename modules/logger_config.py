@@ -21,7 +21,7 @@ def initialize_logger():
         console_handler.setLevel(logging.INFO)
 
         # If directory "/log" does not exist, create it
-        log_dir = "log/"
+        log_dir = "logs/"
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
 

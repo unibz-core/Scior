@@ -24,7 +24,7 @@ def print_report_file(ontology_dataclass_list, nodes_list):
     logger.debug("Printing report of the current state of the ontology dataclass list...")
 
     # If directory "/report" does not exist, create it
-    report_dir = "report/"
+    report_dir = "reports/"
     if not os.path.exists(report_dir):
         os.makedirs(report_dir)
 

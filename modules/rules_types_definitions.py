@@ -305,8 +305,6 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
         - N+I: User can set as gufo:Kind or skip.
     """
 
-    # TODO (@pedropaulofb): VERIFY IF IT IS BETTER TO ALLOW THE USER ONLY TO SET AS KIND WHEN N+I
-
     if configurations["print_time"]:
         st = time.perf_counter()
 

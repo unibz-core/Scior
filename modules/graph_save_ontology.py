@@ -30,7 +30,6 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph):
     return ontology_graph
 
 
-# TODO (@pedropaulofb): Use the same ontologies name, appending time and date, for generating the output TTL file.
 def save_ontology_file(ontology_graph, configurations):
     """
     Saves the ontology graph into a TTL file.

@@ -261,7 +261,6 @@ class OntologyDataClass(object):
                 hash_before = self.create_hash()
 
                 # If no element in can_type list, the solution for type was already found.
-
                 # Update FROM TYPE (IS) LIST
                 if len(self.can_type) > 0:
                     self.update_type_list_from_gufo()

@@ -75,30 +75,41 @@ def get_element_list(ontology_dataclass_list, element, desired_list):
 
     logger = initialize_logger()
 
+    returned_object = None
+
     for ontology_dataclass in ontology_dataclass_list:
 
+        # Element identified. Returning list.
         if ontology_dataclass.uri == element:
-
             if desired_list == "is_type":
-                return ontology_dataclass.is_type
+                returned_object = ontology_dataclass.is_type
+                break
             elif desired_list == "can_type":
-                return ontology_dataclass.can_type
+                returned_object = ontology_dataclass.can_type
+                break
             elif desired_list == "not_type":
-                return ontology_dataclass.not_type
+                returned_object = ontology_dataclass.not_type
+                break
             elif desired_list == "is_individual":
-                return ontology_dataclass.is_individual
+                returned_object = ontology_dataclass.is_individual
+                break
             elif desired_list == "can_individual":
-                return ontology_dataclass.can_individual
+                returned_object = ontology_dataclass.can_individual
+                break
             elif desired_list == "not_individual":
-                return ontology_dataclass.not_individual
+                returned_object = ontology_dataclass.not_individual
+                break
             else:
+                # Error. List unknown.
                 logger.error(f"Could not return the unknown list {desired_list} for "
                              f"element {element}. Program aborted.")
                 exit(1)
+    else:
+        # Error. Element not found, report problem and exit program.
+        logger.error(f"Could not return list {desired_list} for the unknown element {element}. Program aborted.")
+        exit(1)
 
-    # If not found, report problem and exit program.
-    logger.error(f"Could not return list {desired_list} for the unknown element {element}. Program aborted.")
-    exit(1)
+    return returned_object
 
 
 def external_move_to_is_list(list_ontology_dataclasses, class_name, classification):
@@ -124,12 +135,17 @@ def return_dataclass_from_class_name(list_ontology_dataclasses, class_name):
 
     logger = initialize_logger()
 
+    return_object = None
+
     for ontology_dataclass in list_ontology_dataclasses:
         if ontology_dataclass.uri == class_name:
-            return ontology_dataclass
+            return_object = ontology_dataclass
+            break
     else:
         logger.error("Class not found in the list of ontology dataclasses. Program aborted.")
         exit(1)
+
+    return return_object
 
 
 def select_list(list_of_options):
