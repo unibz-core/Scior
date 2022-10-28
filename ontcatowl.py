@@ -43,6 +43,7 @@ if __name__ == "__main__":
     ontology_nodes = initialize_nodes_lists(ontology_graph)
 
     # Loading the GUFO information already known from the ontology and updating the ontology_dataclass_list
+
     load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list)
 
     # EXECUTION
@@ -66,31 +67,18 @@ if __name__ == "__main__":
     logger.info(f"OntCatOWL concluded on {date_time}!")
 
 # TODO (@pedropaulofb): IMPROVEMENTS
-# Verify possibility to check consistency using a reasoner.
-# Currently reasoning cannot be done after the initialization (e.g., after the rules exec).
-# The ontology_graph may already contain relations with GUFO. Treat that.
 # Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
-# Present to user all different namespaces of different classes found and ask him in which ones he wants to execute.
 # Create a (much) better deficiency (incompleteness)(inconsistency?) report.
 # Hash is generated differently when list is [A, B] and [B, A]. So maybe is the case to keep it always sorted.
 # Create argument for cleaning all generated logs and reports (e.g., ontcatowl.py --clean)
-# Create a verbose mode where all INFOs are printed. DEBUG is allways only printed in the log file.
-
-# TODO (@pedropaulofb): USER INTERACTIONS
-# Ordinate all lists that are exhibited to the user.
+# Create a verbose mode where all INFOs are printed. DEBUG is always only printed in the log file.
 # Create menus for better user interactions: https://pypi.org/project/simple-term-menu/
-# Provide option for the user to print report and ontology in every interaction. Do not use an argument.
 
 # TODO (@pedropaulofb): PERFORMANCE
-# Treat problem with huge ontologies (stack overflow)
-# Verify "dataclass with slots" and the use of __slot__ for better performance.
-# As log files are getting big, maybe it is going to be necessary to compact them into a zip file.
-# Run automatic only for some different configurations and figure out which is the best order for executing the rules.
 # Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verify for/break statement
 
 # TODO (@pedropaulofb): BEFORE RELEASE OF VERSION
 # Evaluate on Linux before release first version
-# Update requirements.txt
 # Verify if there is any unused module, function or methods
-# Create release notes section at README.md
-# Move TO DO comments to GitHub issues
+# Move TO DO comments from this module to GitHub issues
+# Evaluate all Lints from all modules

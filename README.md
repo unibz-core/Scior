@@ -1,6 +1,6 @@
 # OntCatOWL
 
-Identification of ontological categories for OWL ontologies.
+Identification of Ontological Categories for OWL Ontologies.
 
 ## Software requirements
 
@@ -9,8 +9,10 @@ developed and tested using [Python](https://www.python.org/) v3.10.5.
 
 The following external libraries are necessary:
 
-- [RDFLib](https://pypi.org/project/rdflib/) (version ~= 6.2.0).
-- [PyYAML](https://pypi.org/project/PyYAML/) (version ~= 6.0).
+- [RDFLib](https://pypi.org/project/rdflib/) - version ~= 6.2.0
+- [OWL-RL](https://pypi.org/project/owlrl/) - version ~= 6.0.2
+- [PyYAML](https://pypi.org/project/PyYAML/) - version ~= 6.0
+- [PrettyTable](https://pypi.org/project/prettytable/) - version ~= 3.4.1
 
 For installing them, run the following command on the terminal:
 
@@ -18,12 +20,32 @@ For installing them, run the following command on the terminal:
 pip install -r requirements.txt
 ```
 
-## Code execution
+## Code Execution
 
 After the external libraries are installed, run the following command on the terminal for executing **OntCatOWL**:
 
-```
+```shell
 python ontcatowl.py <input file OR URL>
+```
+
+## Usage
+
+```
+usage: OntCatOWL [-h] [-i | -a] [-n | -c] [-r] [-t] [-g] [-v] ontology_file
+
+positional arguments:
+  ontology_file      The path of the ontology file to be loaded.
+
+options:
+  -h, --help         show this help message and exit
+  -i, --interactive  Executes automatic rules whenever possible. Executes interactive rules only if necessary.
+  -a, --automatic    Executes only automatic rules. Interactive rules are not performed.
+  -n, --incomplete   The loaded ontology is an incomplete model.
+  -c, --complete     The loaded ontology is a complete model.
+  -r, --reasoning    Enable RDF reasoning for graph expansion.
+  -t, --times        Prints the execution times of all functions.
+  -g, --gufo         Imports GUFO ontology in the output ontology file.
+  -v, --version      Prints the software version and exit.
 ```
 
 The input file syntax is automatically detected by the **OntCatOWL**.
@@ -41,3 +63,7 @@ The input file syntax is automatically detected by the **OntCatOWL**.
 ### Version X (to be completed)
 
 - Disjoint and Complete are not supported.
+
+## Release Notes
+
+### Release 1

@@ -58,7 +58,8 @@ def treat_arguments(software_version):
     arguments_parser.add_argument("-v", "--version", action="version", help="Prints the software version and exit.")
 
     # POSITIONAL ARGUMENT
-    arguments_parser.add_argument("ontology_file", type=str, action="store", help="The ontology file to be loaded.")
+    arguments_parser.add_argument("ontology_file", type=str, action="store", help="The path of the ontology file to "
+                                                                                  "be loaded.")
 
     # Execute arguments parser
     arguments = arguments_parser.parse_args()

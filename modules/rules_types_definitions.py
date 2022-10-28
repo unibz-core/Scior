@@ -441,7 +441,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
                 - US when P>=1
 
         -- RESULTS ACCORDING TO NUMBER OF POSSIBILITIES:
-            - P=0: allways RI
+            - P=0: always RI
             - P=1: (SA when C) or (RI when N+A) or (US when N+I)
             - P>1: (RI when A) or (US when I)
 
