@@ -10,10 +10,12 @@ from modules.initialization_data_ontology_dataclass import initialize_ontology_d
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
 from modules.rules_types_run import execute_rules_types
+from modules.statistics_calculation import generates_partial_statistics_list, calculate_final_statistics
+from modules.statistics_printing import print_tables_statistics
 from modules.utils_rdf import load_graph_safely, perform_reasoning
 
 SOFTWARE_VERSION = "OntCatOWL - Identification of Ontological Categories for OWL Ontologies\n" \
-                   "Version 0.20221027 - https://github.com/unibz-core/OntCatOWL/\n"
+                   "Version 0.20221101 - https://github.com/unibz-core/OntCatOWL/\n"
 
 if __name__ == "__main__":
 
@@ -42,9 +44,9 @@ if __name__ == "__main__":
 
     ontology_nodes = initialize_nodes_lists(ontology_graph)
 
-    # Loading the GUFO information already known from the ontology and updating the ontology_dataclass_list
-
+    # Loading the GUFO information already known from the ontology
     load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list)
+    before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
 
@@ -52,7 +54,12 @@ if __name__ == "__main__":
 
     # SAVING RESULTS - OUTPUT
 
+    after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
     ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
+
+    statistics = calculate_final_statistics(before_statistics, after_statistics)
+    # In this version of OntCatOWL, only types are executed and, hence, only them should be printed.
+    print_tables_statistics(statistics, "TYPES_ONLY")
 
     if global_configurations["import_gufo"]:
         united_graph = ontology_graph + gufo_graph

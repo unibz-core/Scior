@@ -21,7 +21,7 @@ def print_report_file(ontology_dataclass_list, nodes_list):
     """ printing in file a report of the current state of the ontology dataclass list in a readable format."""
 
     logger = initialize_logger()
-    logger.debug("Printing report of the current state of the ontology dataclass list...")
+    logger.info("Printing report of the current state of the ontology dataclass list...")
 
     # If directory "/report" does not exist, create it
     report_dir = "reports/"
@@ -67,17 +67,17 @@ def print_report_file(ontology_dataclass_list, nodes_list):
     format_report_hash = "CONTENT HASH SHA256 = " + str(report_hash) + "\n\n"
 
     # Creating summary
-    print_class_summary(ontology_dataclass_list, nodes_list)
+    # TODO (@pedropaulofb): Evaluate if there is something that be used and, after that, delete this function
+    # print_class_summary(ontology_dataclass_list, nodes_list)
 
     # Creating report file
     with open(f"{report_dir}{get_date_time()}.report", 'w') as f:
         f.write(format_report_hash + report)
 
-    logger.debug("Report successfully printed.")
+    logger.info("Report successfully printed.")
 
 
-# TODO (@pedropaulofb): Now that the software loads previous known GUFO information, this calculation must be updated.
-def print_class_summary(ontology_dataclass_list, nodes_list):
+def print_class_summary(ontology_dataclass_list, nodes_list, final_stats):
     """ Prints evaluation metrics. """
 
     section_title = "\t\tONTOLOGICAL CLASSIFICATION SUMMARY\t\t"
