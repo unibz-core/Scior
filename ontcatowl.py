@@ -80,6 +80,7 @@ if __name__ == "__main__":
 # Create argument for cleaning all generated logs and reports (e.g., ontcatowl.py --clean)
 # Create a verbose mode where all INFOs are printed. DEBUG is always only printed in the log file.
 # Create menus for better user interactions: https://pypi.org/project/simple-term-menu/
+# At the report, after execution, create lists of classes that were improved or not for a better user identification.
 
 # TODO (@pedropaulofb): PERFORMANCE
 # Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verify for/break statement
