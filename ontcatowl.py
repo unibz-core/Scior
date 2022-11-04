@@ -9,9 +9,9 @@ from modules.initialization_data_gufo_dictionary import initialize_gufo_dictiona
 from modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, load_known_gufo_information
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
+from modules.results_calculation import generates_partial_statistics_list
+from modules.results_printer import print_statistics_screen
 from modules.rules_types_run import execute_rules_types
-from modules.statistics_calculation import generates_partial_statistics_list, calculate_final_statistics
-from modules.statistics_printing import print_tables_statistics
 from modules.utils_rdf import load_graph_safely, perform_reasoning
 
 SOFTWARE_VERSION = "OntCatOWL - Identification of Ontological Categories for OWL Ontologies\n" \
@@ -57,9 +57,9 @@ if __name__ == "__main__":
     after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
     ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
 
-    statistics = calculate_final_statistics(before_statistics, after_statistics)
-    # In this version of OntCatOWL, only types are executed and, hence, only them should be printed.
-    print_tables_statistics(statistics, "TYPES_ONLY")
+    # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
+    print_statistics_screen(before_statistics, after_statistics, "TYPES_ONLY")
+    print_report_file(before_statistics, after_statistics, "TYPES_ONLY")
 
     if global_configurations["import_gufo"]:
         united_graph = ontology_graph + gufo_graph
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     else:
         save_ontology_file(ontology_graph, global_configurations)
 
-    print_report_file(ontology_dataclass_list, ontology_nodes)
+    # print_report_file(report_values)
 
     now = datetime.now()
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")

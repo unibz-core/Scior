@@ -2,7 +2,23 @@
 
 Identification of Ontological Categories for OWL Ontologies.
 
-## Software requirements
+## Table of Contents
+
+<!-- TOC -->
+
+* [Software requirements](#software-requirements)
+* [Code Execution](#code-execution)
+* [Usage](#usage)
+* [Software Functioning](#software-functioning)
+  * [Rules Premises](#rules-premises)
+* [Software Limitations](#software-limitations)
+  * [Version X (to be completed)](#version-x--to-be-completed-)
+* [Release Notes](#release-notes)
+  * [Release 1](#release-1)
+
+<!-- TOC -->
+
+## Software Requirements
 
 You need to [download and install Python](https://www.python.org/downloads/) for executing **OntCatOWL**. The code was
 developed and tested using [Python](https://www.python.org/) v3.11.0
