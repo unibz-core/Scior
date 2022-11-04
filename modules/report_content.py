@@ -1,5 +1,6 @@
 """ Functions that returns the strings to be printed in the Final Results Report. """
 from modules.logger_config import initialize_logger
+from modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
 def get_content100(restrictions):
@@ -54,14 +55,57 @@ def get_content100(restrictions):
               "(#final-classifications-of-partially-and-completely-known-classes)\n"
     line_16 = "\t* [Final Classifications of All Classes](#final-classifications-of-all-classes)\n"
 
-    return_string = line_01 + line_02 + line_03 + line_04 + line_05 + line_06 + line_07 + line_08 + line_09 + \
-                    line_10 + line_11 + line_12 + line_13 + line_14 + line_15 + line_16
+    return_string = line_01 + line_02 + line_03 + line_04 + line_05 + line_06 + line_07 + line_08 + line_09 + line_10 + line_11 + line_12 + line_13 + line_14 + line_15 + line_16
 
     return return_string
 
 
-def get_content200():
-    return_string = "\n"
+def get_content200(ontology_dataclass_list, start_date_time, end_date_time, end_date_time_out, elapsed_time,
+                   configurations):
+    """ Presents some information about the software execution."""
+
+    line_01 = f"OntCatOWL successfully performed.\n" \
+              f"* Start time {start_date_time}\n" \
+              f"* End time {end_date_time}\n" \
+              f"* Total elapsed time: {elapsed_time} seconds.\n\n"
+
+    automation_level = ""
+    completion = ""
+    if configurations["is_automatic"]:
+        automation_level = "automatic"
+    else:
+        automation_level = "interactive"
+    if configurations["is_complete"]:
+        completion = "complete"
+    else:
+        completion = "incomplete"
+
+    line_02 = f"Configurations:\n" \
+              f"* Automation level: {automation_level}\n" \
+              f"* Model completion assumption: {completion}\n" \
+              f"* Reasoning enabled: {configurations['reasoning']}\n" \
+              f"* Execution times printed: {configurations['print_time']}\n" \
+              f"* GUFO imported in output: {configurations['import_gufo']}\n\n"
+
+    output_file_name = configurations["ontology_path"][:-4] + "-" + end_date_time_out + ".out.ttl"
+
+    line_03 = f"Processed files:\n" \
+              f"* Input ontology file: {configurations['ontology_path']}\n" \
+              f"* Output ontology file: {output_file_name}\n" \
+              f"* Report file in /report folder\n" \
+              f"* Log file in /log folder\n\n"
+
+    hash_types = generate_hash_ontology_dataclass_list(ontology_dataclass_list, "TYPES_ONLY")
+    hash_individuals = generate_hash_ontology_dataclass_list(ontology_dataclass_list, "INDIVIDUALS_ONLY")
+    hash_total = generate_hash_ontology_dataclass_list(ontology_dataclass_list, "TOTAL")
+
+    line_04 = f"Solution hashes:\n" \
+              f"* Hash for types: {hash_types}\n" \
+              f"* Hash for individuals: {hash_individuals}\n" \
+              f"* Total hash: {hash_total}\n\n"
+
+    return_string = line_01 + line_02 + line_03 + line_04
+
     return return_string
 
 

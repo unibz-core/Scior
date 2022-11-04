@@ -1,7 +1,7 @@
 """ Definition of dataclass as the data structure used for loading the ontologies ontology in OntCatOWL.
     This module contains the data structure fields, initial value assignments and methods.
 """
-
+import hashlib
 from dataclasses import dataclass, field
 
 from modules.dataclass_verifications import verify_duplicates_in_lists_ontology
@@ -192,6 +192,15 @@ class OntologyDataClass(object):
 
         return containing_list_name
 
+    def sort_all_internal_lists(self):
+        """ Sorts all internal lists. """
+        self.is_type.sort()
+        self.is_individual.sort()
+        self.can_type.sort()
+        self.can_individual.sort()
+        self.not_type.sort()
+        self.not_individual.sort()
+
     def create_partial_hash(self, input_list):
         """ Creates a hash for a single list inside an Ontology DataClass.
             Hashes are the concatenation of all the names of all elements inside a list.
@@ -222,24 +231,43 @@ class OntologyDataClass(object):
 
         return partial_hash
 
-    def create_hash(self):
+    def create_hash(self, hash_type="TOTAL"):
         """ Creates a hash of the Ontology DataClass using all its lists.
             The python builtin function hash is applied to the concatenation
                 of the dataclass uri with all partial hashes of all the dataclass lists.
             The hash function can be used for verifying if the state of the class was modified after an operation.
+
+            hash_type allowed values are:
+                - TOTAL: creates a hash with all six lists of a dataclass
+                - TYPES_ONLY: creates a hash with only the three types' lists of a dataclass
+                - INDIVIDUALS_ONLY: creates a hash with only the three individuals' lists of a dataclass
         """
 
-        hash_is_type = self.create_partial_hash("is_type")
-        hash_is_individual = self.create_partial_hash("is_individual")
-        hash_can_type = self.create_partial_hash("can_type")
-        hash_can_individual = self.create_partial_hash("can_individual")
-        hash_not_type = self.create_partial_hash("not_type")
-        hash_not_individual = self.create_partial_hash("not_individual")
+        # self.sort_all_internal_lists()
+
+        hash_is_type = ""
+        hash_is_individual = ""
+        hash_can_type = ""
+        hash_can_individual = ""
+        hash_not_type = ""
+        hash_not_individual = ""
+
+        if (hash_type == "TOTAL") or (hash_type == "TYPES_ONLY"):
+            hash_is_type = self.create_partial_hash("is_type")
+            hash_can_type = self.create_partial_hash("can_type")
+            hash_not_type = self.create_partial_hash("not_type")
+
+        if (hash_type == "TOTAL") or (hash_type == "INDIVIDUALS_ONLY"):
+            hash_is_individual = self.create_partial_hash("is_individual")
+            hash_can_individual = self.create_partial_hash("can_individual")
+            hash_not_individual = self.create_partial_hash("not_individual")
 
         class_hash = self.uri + hash_is_type + hash_is_individual + hash_can_type + \
                      hash_can_individual + hash_not_type + hash_not_individual
 
-        final_hash = hash(class_hash)
+        # Used for generating fix hashes
+        enc_hash = class_hash.encode('utf-8')
+        final_hash = int(hashlib.sha256(enc_hash).hexdigest(), 16)
 
         return final_hash
 

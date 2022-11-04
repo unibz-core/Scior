@@ -2,7 +2,6 @@
 from prettytable import PrettyTable, SINGLE_BORDER
 
 from modules.logger_config import initialize_logger
-from modules.results_calculation import calculate_final_statistics
 
 # Global values
 CL = " Classes "
@@ -11,7 +10,7 @@ PK = "Partially Known"
 TK = " Totally Known "
 
 
-def print_tables_statistics(list_values, restriction="PRINT_ALL"):
+def print_statistics_screen(list_values, restriction="PRINT_ALL"):
     """ Receives lists of before and after values and prints them in a table.
 
     Restrictions:
@@ -89,17 +88,3 @@ def print_tables_statistics(list_values, restriction="PRINT_ALL"):
 
         print(table_total)
         print()
-
-
-def print_statistics_screen(before_statistics, after_statistics, restrictions):
-    """ Calculate statistics and print them in the screen according to the restrictions.
-
-    Restrictions:
-        - "PRINT_ALL" - prints types, individuals, and total tables.
-        - "TYPES_ONLY" - prints only types table.
-        - "INDIVIDUALS_ONLY" - prints only individuals table.
-        - "TOTAL_ONLY" - prints only total table.
-    """
-
-    statistics = calculate_final_statistics(before_statistics, after_statistics)
-    print_tables_statistics(statistics, restrictions)

@@ -10,7 +10,9 @@ from modules.results_calculation import generate_result_classes_lists
 from modules.utils_general import get_date_time
 
 
-def print_report_file(before_statistics, after_statistics, restrictions):
+def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, end_date_time_out, elapsed_time,
+                      global_configurations,
+                      before_statistics, after_statistics, restrictions):
     """ Printing a file report, in MarkDown syntax, containing the state of the ontology before and after
     the execution of OntCatOWL.
 
@@ -65,12 +67,12 @@ def print_report_file(before_statistics, after_statistics, restrictions):
     title_620 = "### Final Classifications of All Classes\n"
 
     content_100 = get_content100(restrictions)
-    content_200 = get_content200()  # TO BE DONE
+    content_200 = get_content200(ontology_dataclass_list, start_date_time, end_date_time, end_date_time_out,
+                                 elapsed_time,
+                                 global_configurations)
     content_300 = get_content300_400(lists_before, restrictions)
     content_400 = get_content300_400(lists_after, restrictions)
-    # content_41 = get_content41()
-    # content_42 = get_content42()
-    # content_43 = get_content43()
+
     # content_5 = get_content5()
     # content_51 = get_content51()
     # content_52 = get_content52()
@@ -78,7 +80,7 @@ def print_report_file(before_statistics, after_statistics, restrictions):
     # content_6 = get_content6()
     # content_61 = get_content61()
     # content_62 = get_content62()
-    #
+
     report = title_000 + title_100 + content_100 + title_200 + content_200 + title_300 + content_300 + title_400 + content_400
 
     # # Creating hash

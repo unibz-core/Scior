@@ -2,7 +2,6 @@
 
 from rdflib import URIRef, RDF, RDFS, OWL
 
-from modules.utils_general import get_date_time
 from modules.utils_rdf import get_ontology_uri
 
 
@@ -30,7 +29,7 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph):
     return ontology_graph
 
 
-def save_ontology_file(ontology_graph, configurations):
+def save_ontology_file(end_date_time, ontology_graph, configurations):
     """
     Saves the ontology graph into a TTL file.
     If import_gufo parameter is set as True, the saved output is going to import the GUFO ontology.
@@ -42,7 +41,7 @@ def save_ontology_file(ontology_graph, configurations):
         ontology_graph.add((ontology_uri, OWL.imports, gufo_import))
 
     # Creating report file
-    output_file_name = configurations["ontology_path"][:-4] + "-" + get_date_time() + ".out.ttl"
+    output_file_name = configurations["ontology_path"][:-4] + "-" + end_date_time + ".out.ttl"
     ontology_graph.serialize(destination=output_file_name)
 
 

@@ -15,8 +15,15 @@ def update_all_ontology_dataclass_list(ontology_dataclass_list):
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
 
-def generate_hash_ontology_dataclass_list(ontology_dataclass_list):
-    """ Generates a hash for the complete list of ontology dataclasses. """
+def generate_hash_ontology_dataclass_list(ontology_dataclass_list, hash_type="TOTAL"):
+    """ Generates a hash for the complete list of ontology dataclasses.
+
+    hash_type allowed values are:
+        - TOTAL: creates a hash with all six lists of the dataclasses
+        - TYPES_ONLY: creates a hash with only the three types' lists of the dataclasses
+        - INDIVIDUALS_ONLY: creates a hash with only the three individuals' lists of the dataclasses
+
+    """
 
     logger = initialize_logger()
     logger.debug("Generating hash for the complete list of ontology dataclasses...")
@@ -24,7 +31,7 @@ def generate_hash_ontology_dataclass_list(ontology_dataclass_list):
     total_hash = 0
 
     for ontology_dataclass in ontology_dataclass_list:
-        class_hash = ontology_dataclass.create_hash()
+        class_hash = ontology_dataclass.create_hash(hash_type)
         total_hash += class_hash
 
     logger.debug(
