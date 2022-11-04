@@ -8,48 +8,39 @@ def get_content100(restrictions):
 
     line_01 = "* [Execution Information](#execution-information)\n"
     line_02 = "* [Lists of Classes Before OntCatOWL](#lists-of-classes-before-ontcatowl)\n"
-
-    if restrictions == "PRINT_ALL" or restrictions == "TYPE_ONLY":
-        line_03 = "\t* [List of Totally Unknown Classes Before OntCatOWL]" \
-                  "(#list-of-totally-unknown-classes-before-ontcatowl)\n"
-    else:
-        line_03 = ""
-    if restrictions == "PRINT_ALL" or restrictions == "INDIVIDUALS_ONLY":
-        line_04 = "\t* [List of Partially Known Classes Before OntCatOWL]" \
-                  "(#list-of-partially-known-classes-before-ontcatowl)\n"
-    else:
-        line_04 = ""
-    if restrictions == "PRINT_ALL" or restrictions == "TOTAL_ONLY":
-        line_05 = "\t* [List of Totally Known Classes Before OntCatOWL]" \
-                  "(#list-of-totally-known-classes-before-ontcatowl)\n"
-    else:
-        line_05 = ""
-
+    line_03 = "\t* [List of Totally Unknown Classes Before OntCatOWL]" \
+              "(#list-of-totally-unknown-classes-before-ontcatowl)\n"
+    line_04 = "\t* [List of Partially Known Classes Before OntCatOWL]" \
+              "(#list-of-partially-known-classes-before-ontcatowl)\n"
+    line_05 = "\t* [List of Totally Known Classes Before OntCatOWL]" \
+              "(#list-of-totally-known-classes-before-ontcatowl)\n"
     line_06 = "* [Lists of Classes After OntCatOWL](#lists-of-classes-after-ontcatowl)\n"
+    line_07 = "\t* [List of Totally Unknown Classes After OntCatOWL]" \
+              "(#list-of-totally-unknown-classes-after-ontcatowl)\n"
+    line_08 = "\t* [List of Partially Known Classes After OntCatOWL]" \
+              "(#list-of-partially-known-classes-after-ontcatowl)\n"
+    line_09 = "\t* [List of Totally Known Classes After OntCatOWL]" \
+              "(#list-of-totally-known-classes-after-ontcatowl)\n"
+    line_10 = "* [Results Statistics](#results-statistics)\n"
 
     if restrictions == "PRINT_ALL" or restrictions == "TYPE_ONLY":
-        line_07 = "\t* [List of Totally Unknown Classes After OntCatOWL]" \
-                  "(#list-of-totally-unknown-classes-after-ontcatowl)\n"
+        line_11 = "\t* [Results' Statistics for Types](#results-statistics-for-types)\n"
     else:
-        line_07 = ""
-    if restrictions == "PRINT_ALL" or restrictions == "INDIVIDUALS_ONLY":
-        line_08 = "\t* [List of Partially Known Classes After OntCatOWL]" \
-                  "(#list-of-partially-known-classes-after-ontcatowl)\n"
-    else:
-        line_08 = ""
-    if restrictions == "PRINT_ALL" or restrictions == "TOTAL_ONLY":
-        line_09 = "\t* [List of Totally Known Classes After OntCatOWL]" \
-                  "(#list-of-totally-known-classes-after-ontcatowl)\n"
-    else:
-        line_09 = ""
+        line_11 = ""
 
-    line_10 = "* [Results Statistics](#results-statistics)\n"
-    line_11 = "\t* [Results' Statistics for Types](#results-statistics-for-types)\n"
-    line_12 = "\t* [Results' Statistics for Individuals]" \
-              "(#results-statistics-for-individuals)\n"
-    line_13 = "\t* [Results' Statistics for Total (Types + Individuals)]" \
-              "(#results-statistics-for-total--types--individuals-)\n"
-    line_14 = "* [Final Classes Classifications (IS, CAN, and NOT lists)]" \
+    if restrictions == "PRINT_ALL" or restrictions == "INDIVIDUALS_ONLY":
+        line_12 = "\t* [Results' Statistics for Individuals]" \
+                  "(#results-statistics-for-individuals)\n"
+    else:
+        line_12 = ""
+
+    if restrictions == "PRINT_ALL" or restrictions == "TOTAL_ONLY":
+        line_13 = "\t* [Results' Statistics for Total (Types + Individuals)]" \
+                  "(#results-statistics-for-total--types--individuals-)\n"
+    else:
+        line_13 = ""
+
+    line_14 = "\t* [Final Classes Classifications (IS, CAN, and NOT lists)]" \
               "(#final-classes-classifications--is-can-and-not-lists-)\n"
     line_15 = "\t* [Final Classifications of Partially and Completely Known Classes]" \
               "(#final-classifications-of-partially-and-completely-known-classes)\n"
