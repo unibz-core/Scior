@@ -4,7 +4,8 @@ from prettytable import PrettyTable, SINGLE_BORDER
 from modules.logger_config import initialize_logger
 
 # Global values
-CL = " Classes "
+TITLE_SITUATION = "  Situation  "
+CL = " Classes Total "
 TU = "Totally Unknown"
 PK = "Partially Known"
 TK = " Totally Known "
@@ -48,7 +49,7 @@ def print_statistics_screen(list_values, restriction="PRINT_ALL"):
         # Printing TYPES
 
         print(f"\nResults of OntCatOWL execution when evaluating TYPES for {list_values[0]} classes:")
-        table_types = PrettyTable(["Situation", CL, TU, PK, TK])
+        table_types = PrettyTable([TITLE_SITUATION, CL, TU, PK, TK])
 
         table_types.add_row(["Before", list_values[0], list_values[1], list_values[4], list_values[7]])
         table_types.add_row(["After", list_values[10], list_values[11], list_values[14], list_values[17]])
@@ -63,7 +64,7 @@ def print_statistics_screen(list_values, restriction="PRINT_ALL"):
         # Printing INDIVIDUALS
 
         print(f"\nResults of OntCatOWL execution when evaluating INDIVIDUALS for {list_values[0]} classes:")
-        table_individuals = PrettyTable(["Situation", CL, TU, PK, TK])
+        table_individuals = PrettyTable([TITLE_SITUATION, CL, TU, PK, TK])
 
         table_individuals.add_row(["Before", list_values[0], list_values[2], list_values[5], list_values[8]])
         table_individuals.add_row(["After", list_values[10], list_values[12], list_values[15], list_values[18]])
@@ -78,7 +79,7 @@ def print_statistics_screen(list_values, restriction="PRINT_ALL"):
         # Printing TOTAL
 
         print(f"\nResults of OntCatOWL execution when evaluating TYPES and INDIVIDUALS for {list_values[0]} classes:")
-        table_total = PrettyTable(["Situation", CL, TU, PK, TK])
+        table_total = PrettyTable([TITLE_SITUATION, CL, TU, PK, TK])
 
         table_total.add_row(["Before", list_values[0], list_values[3], list_values[6], list_values[9]])
         table_total.add_row(["After", list_values[10], list_values[13], list_values[16], list_values[19]])
