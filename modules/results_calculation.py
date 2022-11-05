@@ -1,5 +1,6 @@
 """ Provides class and functions to calculate statistics of the improvement OntCatOWL has caused on
 the inputted ontology. """
+
 from modules.logger_config import initialize_logger
 
 # These values must be updated for newer versions of OntCatOWL, after including elements other than Endurants.
@@ -67,6 +68,7 @@ def get_values_statistics(statistics_list):
         return_list[8] = totally_known_individuals
         return_list[9] = totally_known_all
     """
+    logger = initialize_logger()
 
     # Initialization of variables
     return_list = []
@@ -140,13 +142,16 @@ def get_values_statistics(statistics_list):
     return_list.append(totally_known_all)
 
     if (totally_unknown_types + partially_known_types + totally_known_types) != total_size:
-        print("ERRO 1")
+        logger.error("Sum of number of classes is incorrect when calculating statistics - Totally Unknown. "
+                     "Program aborted.")
         exit(1)
     if (totally_unknown_individuals + partially_known_individuals + totally_known_individuals) != total_size:
-        print("ERRO 2")
+        logger.error("Sum of number of classes is incorrect when calculating statistics - Partially Known. "
+                     "Program aborted.")
         exit(1)
     if (totally_unknown_all + partially_known_all + totally_known_all) != total_size:
-        print("ERRO 3")
+        logger.error("Sum of number of classes is incorrect when calculating statistics - Totally Known. "
+                     "Program aborted.")
         exit(1)
 
     return return_list

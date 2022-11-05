@@ -47,7 +47,7 @@ def print_statistics_screen(list_values, restriction="PRINT_ALL"):
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
         # Printing TYPES
 
-        print(f"\nOntCatOWL results the evaluation of TYPES in {list_values[0]} classes:")
+        print(f"\nResults of OntCatOWL execution when evaluating TYPES for {list_values[0]} classes:")
         table_types = PrettyTable(["Situation", CL, TU, PK, TK])
 
         table_types.add_row(["Before", list_values[0], list_values[1], list_values[4], list_values[7]])
@@ -62,7 +62,7 @@ def print_statistics_screen(list_values, restriction="PRINT_ALL"):
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
         # Printing INDIVIDUALS
 
-        print(f"\nOntCatOWL results the evaluation of INDIVIDUALS in {list_values[0]} classes:")
+        print(f"\nResults of OntCatOWL execution when evaluating INDIVIDUALS for {list_values[0]} classes:")
         table_individuals = PrettyTable(["Situation", CL, TU, PK, TK])
 
         table_individuals.add_row(["Before", list_values[0], list_values[2], list_values[5], list_values[8]])
@@ -77,7 +77,7 @@ def print_statistics_screen(list_values, restriction="PRINT_ALL"):
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
         # Printing TOTAL
 
-        print(f"\nOntCatOWL results the evaluation of TYPES and INDIVIDUALS in {list_values[0]} classes:")
+        print(f"\nResults of OntCatOWL execution when evaluating TYPES and INDIVIDUALS for {list_values[0]} classes:")
         table_total = PrettyTable(["Situation", CL, TU, PK, TK])
 
         table_total.add_row(["Before", list_values[0], list_values[3], list_values[6], list_values[9]])

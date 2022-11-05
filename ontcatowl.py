@@ -11,7 +11,7 @@ from modules.initialization_data_ontology_dataclass import initialize_ontology_d
 from modules.logger_config import initialize_logger
 from modules.report_printer import print_report_file
 from modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
-from modules.results_printer import print_statistics_screen
+from modules.results_screen_printer import print_statistics_screen
 from modules.rules_types_run import execute_rules_types
 from modules.utils_rdf import load_graph_safely, perform_reasoning
 
