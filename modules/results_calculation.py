@@ -24,7 +24,7 @@ class dataclass_statistics(object):
 class list_classes_by_situation(object):
     """ Class that contains the uri of all classes in a specific situation.
 
-    Situation field admitted values: "totally unknown", "partially known", "totally known".
+    Situation field admitted values: "Totally Unknown", "Partially Known", "Totally Known".
     """
 
     def __init__(self, situation, list_uris_types, list_uris_individuals, list_uris_all):
@@ -41,7 +41,9 @@ class list_classes_by_situation(object):
 
 
 def generates_partial_statistics_list(ontology_dataclass_list):
-    """ Collects the statistics of an ontology_dataclass_list. """
+    """ Collects the statistics of an ontology_dataclass_list.
+    Returns a list of instances of the dataclass_statistics class.
+    """
 
     partial_statistics_list = []
 
@@ -52,113 +54,177 @@ def generates_partial_statistics_list(ontology_dataclass_list):
 
 
 def get_values_statistics(statistics_list):
-    """ Receives a statistics list and return basic values in a list.
+    """ Receives a statistics list and returns two lists:
+        list for classes: aggregated statistics for classes
+        list for classifications: aggregated statistics for possible classifications (stereotypes) of classes
 
-        return_list[0] = total_size
+        FOR NUMBERS OF CLASSES:
+            return_list_classes[0] = total_classes_number
 
-        return_list[1] = totally_unknown_types
-        return_list[2] = totally_unknown_individuals
-        return_list[3] = totally_unknown_all
+            return_list_classes[1] = totally_unknown_classes_types
+            return_list_classes[2] = totally_unknown_classes_individuals
+            return_list_classes[3] = totally_unknown_classes_all
 
-        return_list[4] = partially_known_types
-        return_list[5] = partially_known_individuals
-        return_list[6] = partially_known_all
+            return_list_classes[4] = partially_known_classes_types
+            return_list_classes[5] = partially_known_classes_individuals
+            return_list_classes[6] = partially_known_classes_all
 
-        return_list[7] = totally_known_types
-        return_list[8] = totally_known_individuals
-        return_list[9] = totally_known_all
+            return_list_classes[7] = totally_known_classes_types
+            return_list_classes[8] = totally_known_classes_individuals
+            return_list_classes[9] = totally_known_classes_all
+
+        FOR NUMBERS OF CLASSIFICATIONS:
+            return_list_classifications[0] = total_classifications_number
+            return_list_classifications[1] = total_classifications_types
+            return_list_classifications[2] = total_classifications_individuals
+
+            return_list_classifications[3] = number_unknown_classifications_types
+            return_list_classifications[4] = number_known_classifications_types
+
+            return_list_classifications[5] = number_unknown_classifications_individuals
+            return_list_classifications[6] = number_known_classifications_individuals
+
+            return_list_classifications[7] = number_unknown_classifications_total
+            return_list_classifications[8] = number_known_classifications_total
     """
     logger = initialize_logger()
 
-    # Initialization of variables
-    return_list = []
-    total_size = 0
-    totally_unknown_types = 0
-    totally_unknown_individuals = 0
-    totally_unknown_all = 0
-    totally_known_types = 0
-    totally_known_individuals = 0
-    totally_known_all = 0
-    partially_known_types = 0
-    partially_known_individuals = 0
-    partially_known_all = 0
+    # INITIALIZATION OF VARIABLES
+    return_list_classes = []
+    return_list_classifications = []
+    total_classes_number = 0
+    totally_unknown_classes_types = 0
+    totally_unknown_classes_individuals = 0
+    totally_unknown_classes_all = 0
+    totally_known_classes_types = 0
+    totally_known_classes_individuals = 0
+    totally_known_classes_all = 0
+    partially_known_classes_types = 0
+    partially_known_classes_individuals = 0
+    partially_known_classes_all = 0
 
-    # Calculation of values 
+    number_unknown_classifications_types = 0
+    number_unknown_classifications_individuals = 0
+    number_known_classifications_types = 0
+    number_known_classifications_individuals = 0
+    number_unknown_classifications_total = 0
+    number_known_classifications_total = 0
+
+    # CALCULATION OF VALUES
     for element in statistics_list:
 
-        total_size += 1
+        total_classes_number += 1
 
-        # Calculating for TYPES
+        # Calculating number of classifications for TYPES
+        number_unknown_classifications_types += element.number_unknown_types
+        number_known_classifications_types += element.number_known_types
 
-        is_totally_unknown_types = False
-        is_totally_known_types = False
+        # Calculating number of classifications for INDIVIDUALS
+        number_unknown_classifications_individuals += element.number_unknown_individuals
+        number_known_classifications_individuals += element.number_known_individuals
+
+        # Calculating number of classifications for TOTAL
+        number_unknown_classifications_total += number_unknown_classifications_types + \
+                                                number_unknown_classifications_individuals
+        number_known_classifications_total += number_known_classifications_types + \
+                                              number_known_classifications_individuals
+
+        # Calculating number of classes for TYPES
+
+        is_totally_unknown_classes_types = False
+        is_totally_known_classes_types = False
 
         if element.number_unknown_types == NUMBER_GUFO_TYPES:
-            totally_unknown_types += 1
-            is_totally_unknown_types = True
+            totally_unknown_classes_types += 1
+            is_totally_unknown_classes_types = True
         elif element.number_unknown_types == 0:
-            totally_known_types += 1
-            is_totally_known_types = True
+            totally_known_classes_types += 1
+            is_totally_known_classes_types = True
         else:
-            partially_known_types += 1
+            partially_known_classes_types += 1
 
-        # Calculating for INDIVIDUALS
+        # Calculating number of classes for INDIVIDUALS
 
-        is_totally_unknown_individuals = False
-        is_totally_known_individuals = False
+        is_totally_unknown_classes_individuals = False
+        is_totally_known_classes_individuals = False
 
         if element.number_unknown_individuals == NUMBER_GUFO_INDIVIDUALS:
-            totally_unknown_individuals += 1
-            is_totally_unknown_individuals = True
+            totally_unknown_classes_individuals += 1
+            is_totally_unknown_classes_individuals = True
         elif element.number_unknown_individuals == 0:
-            totally_known_individuals += 1
-            is_totally_known_individuals = True
+            totally_known_classes_individuals += 1
+            is_totally_known_classes_individuals = True
         else:
-            partially_known_individuals += 1
+            partially_known_classes_individuals += 1
 
-        # Calculating for ALL
+        # Calculating number of classes for ALL
 
-        if is_totally_known_types and is_totally_known_individuals:
-            totally_known_all += 1
-        elif is_totally_unknown_types and is_totally_unknown_individuals:
-            totally_unknown_all += 1
+        if is_totally_known_classes_types and is_totally_known_classes_individuals:
+            totally_known_classes_all += 1
+        elif is_totally_unknown_classes_types and is_totally_unknown_classes_individuals:
+            totally_unknown_classes_all += 1
         else:
-            partially_known_all += 1
+            partially_known_classes_all += 1
 
-    # Generating return list
+    # GENERATING RETURN LISTS
 
-    return_list.append(total_size)
+    # Generating lists of numbers for classes
+    return_list_classes.append(total_classes_number)
 
-    return_list.append(totally_unknown_types)
-    return_list.append(totally_unknown_individuals)
-    return_list.append(totally_unknown_all)
+    return_list_classes.append(totally_unknown_classes_types)
+    return_list_classes.append(totally_unknown_classes_individuals)
+    return_list_classes.append(totally_unknown_classes_all)
 
-    return_list.append(partially_known_types)
-    return_list.append(partially_known_individuals)
-    return_list.append(partially_known_all)
+    return_list_classes.append(partially_known_classes_types)
+    return_list_classes.append(partially_known_classes_individuals)
+    return_list_classes.append(partially_known_classes_all)
 
-    return_list.append(totally_known_types)
-    return_list.append(totally_known_individuals)
-    return_list.append(totally_known_all)
+    return_list_classes.append(totally_known_classes_types)
+    return_list_classes.append(totally_known_classes_individuals)
+    return_list_classes.append(totally_known_classes_all)
 
-    if (totally_unknown_types + partially_known_types + totally_known_types) != total_size:
+    # Generating lists of numbers for classifications
+    total_classifications_number = number_unknown_classifications_total + number_known_classifications_total
+    total_classifications_types = number_unknown_classifications_types + number_known_classifications_types
+    total_classifications_individuals = number_unknown_classifications_individuals + \
+                                        number_known_classifications_individuals
+
+    return_list_classifications.append(total_classifications_number)
+    return_list_classifications.append(total_classifications_types)
+    return_list_classifications.append(total_classifications_individuals)
+
+    return_list_classifications.append(number_unknown_classifications_types)
+    return_list_classifications.append(number_known_classifications_types)
+
+    return_list_classifications.append(number_unknown_classifications_individuals)
+    return_list_classifications.append(number_known_classifications_individuals)
+
+    return_list_classifications.append(number_unknown_classifications_total)
+    return_list_classifications.append(number_known_classifications_total)
+
+    if (totally_unknown_classes_types + partially_known_classes_types +
+        totally_known_classes_types) != total_classes_number:
         logger.error("Sum of number of classes is incorrect when calculating statistics - Totally Unknown. "
                      "Program aborted.")
         exit(1)
-    if (totally_unknown_individuals + partially_known_individuals + totally_known_individuals) != total_size:
+    if (totally_unknown_classes_individuals + partially_known_classes_individuals +
+        totally_known_classes_individuals) != total_classes_number:
         logger.error("Sum of number of classes is incorrect when calculating statistics - Partially Known. "
                      "Program aborted.")
         exit(1)
-    if (totally_unknown_all + partially_known_all + totally_known_all) != total_size:
+    if (totally_unknown_classes_all + partially_known_classes_all + totally_known_classes_all) != total_classes_number:
         logger.error("Sum of number of classes is incorrect when calculating statistics - Totally Known. "
                      "Program aborted.")
         exit(1)
 
-    return return_list
+    return return_list_classes, return_list_classifications
 
 
 def calculate_final_statistics(before_statistics, after_statistics):
-    """ Receives 'before' and 'after' statistics and calculates final statistics."""
+    """ Receives 'before' and 'after' statistic lists and calculates final statistics.
+    The 'before' and 'after' statistic lists are lists of statistics of all classes. I.e., it contains instances of
+    the class dataclass_statistics.
+    """
 
     list_values_before = get_values_statistics(before_statistics)
     list_values_after = get_values_statistics(after_statistics)
