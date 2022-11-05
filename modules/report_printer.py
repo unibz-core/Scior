@@ -11,7 +11,8 @@ from modules.utils_general import get_date_time
 
 
 def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, end_date_time_out, elapsed_time,
-                      global_configurations, before_statistics, after_statistics, restrictions):
+                      global_configurations, before_statistics, after_statistics,
+                      classes_statistics, classifications_statistics, restrictions):
     """ Printing a file report, in MarkDown syntax, containing the state of the ontology before and after
     the execution of OntCatOWL.
 

@@ -60,8 +60,8 @@ if __name__ == "__main__":
     ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
 
     # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
-    statistics = calculate_final_statistics(before_statistics, after_statistics)
-    print_statistics_screen(statistics, "TYPES_ONLY")
+    classes_statistics, classifications_statistics = calculate_final_statistics(before_statistics, after_statistics)
+    print_statistics_screen(classes_statistics, classifications_statistics, "PRINT_ALL")
 
     now = datetime.now()
     end_date_time_here = now.strftime("%d-%m-%Y %H:%M:%S")
@@ -71,7 +71,8 @@ if __name__ == "__main__":
     logger.info(f"OntCatOWL concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
-                      global_configurations, before_statistics, after_statistics, "TYPES_ONLY")
+                      global_configurations, before_statistics, after_statistics,
+                      classes_statistics, classifications_statistics, "TYPES_ONLY")
 
     if global_configurations["import_gufo"]:
         united_graph = ontology_graph + gufo_graph

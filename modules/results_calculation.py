@@ -75,6 +75,7 @@ def get_values_statistics(statistics_list):
 
         FOR NUMBERS OF CLASSIFICATIONS:
             return_list_classifications[0] = total_classifications_number
+
             return_list_classifications[1] = total_classifications_types
             return_list_classifications[2] = total_classifications_individuals
 
@@ -123,12 +124,6 @@ def get_values_statistics(statistics_list):
         number_unknown_classifications_individuals += element.number_unknown_individuals
         number_known_classifications_individuals += element.number_known_individuals
 
-        # Calculating number of classifications for TOTAL
-        number_unknown_classifications_total += number_unknown_classifications_types + \
-                                                number_unknown_classifications_individuals
-        number_known_classifications_total += number_known_classifications_types + \
-                                              number_known_classifications_individuals
-
         # Calculating number of classes for TYPES
 
         is_totally_unknown_classes_types = False
@@ -165,6 +160,12 @@ def get_values_statistics(statistics_list):
             totally_unknown_classes_all += 1
         else:
             partially_known_classes_all += 1
+
+    # Calculating number of classifications for TOTAL
+    number_unknown_classifications_total += number_unknown_classifications_types + \
+                                            number_unknown_classifications_individuals
+    number_known_classifications_total += number_known_classifications_types + \
+                                          number_known_classifications_individuals
 
     # GENERATING RETURN LISTS
 
@@ -226,15 +227,19 @@ def calculate_final_statistics(before_statistics, after_statistics):
     the class dataclass_statistics.
     """
 
-    list_values_before = get_values_statistics(before_statistics)
-    list_values_after = get_values_statistics(after_statistics)
+    list_classes_values_before, list_classifications_values_before = get_values_statistics(before_statistics)
+    list_classes_values_after, list_classifications_values_after = get_values_statistics(after_statistics)
 
-    aggregated_list_values = list_values_before + list_values_after
+    aggregated_classes_list_values = list_classes_values_before + list_classes_values_after
+    aggregated_classifications_list_values = list_classifications_values_before + list_classifications_values_after
 
-    # aggregated_list_values [0:9] - before values
-    # aggregated_list_values [10:19] - after values
+    # aggregated_classes_list_values [0:9] - before values
+    # aggregated_classes_list_values [10:19] - after values
 
-    return aggregated_list_values
+    # aggregated_classes_list_values [0:9] - before values
+    # aggregated_classes_list_values [10:19] - after values
+
+    return aggregated_classes_list_values, aggregated_classifications_list_values
 
 
 def get_list_totally_unknown_classes(class_statistics_list):
