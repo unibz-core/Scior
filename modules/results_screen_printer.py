@@ -115,16 +115,11 @@ def generate_classes_table_to_be_printed(list_values_classes, table_option, bord
     # TABLES GENERATION ----------------------------------------------------------------
 
     # Tables' columns' titles
-    columns_titles = ["Evaluation", "Before", "After", "Difference     "]
+    columns_titles = ["   Evaluation", "       Before", "        After", "   Difference"]
 
     pretty_table = PrettyTable(columns_titles)
 
     # Tables' rows' titles
-    row_1 = "Total number of classes"
-
-    pos_r1_c1 = f"{classes_before} ({100.00}%)"
-    pos_r1_c2 = f"{classes_after} ({100.00}%)"
-    pos_r1_c3 = f"{classes_before - classes_after} ({0.00}%)"
 
     row_2 = "Totally unknown classes"
     row_3 = "Partially known classes"
@@ -174,7 +169,6 @@ def generate_classes_table_to_be_printed(list_values_classes, table_option, bord
         logger.error("Invalid table option. Program aborted.")
         exit(1)
 
-    pretty_table.add_row([row_1, pos_r1_c1, pos_r1_c2, pos_r1_c3])
     pretty_table.add_row([row_2, pos_r2_c1, pos_r2_c2, pos_r2_c3])
     pretty_table.add_row([row_3, pos_r3_c1, pos_r3_c2, pos_r3_c3])
     pretty_table.add_row([row_4, pos_r4_c1, pos_r4_c2, pos_r4_c3])
@@ -235,7 +229,8 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
         table_classes_types = generate_classes_table_to_be_printed(list_values_classes, "types", SINGLE_BORDER)
         # table_classifications_types = generate_classifications_table_to_be_printed(list_values_classifications, "types", SINGLE_BORDER)
 
-        print(f"\nResults of OntCatOWL execution when evaluating TYPES:")
+        print(
+            f"\nResults of OntCatOWL execution when evaluating {list_values_classes[0]} classes considering only TYPES:")
 
         print(table_classes_types)
 
@@ -243,7 +238,8 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
         table_classes_individuals = generate_classes_table_to_be_printed(list_values_classes, "individuals",
                                                                          SINGLE_BORDER)
 
-        print(f"\nResults of OntCatOWL execution when evaluating INDIVIDUALS:")
+        print(
+            f"\nResults of OntCatOWL execution when evaluating {list_values_classes[0]} classes considering only INDIVIDUALS:")
 
         print(table_classes_individuals)
 
@@ -251,6 +247,6 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
         table_classes_total = generate_classes_table_to_be_printed(list_values_classes, "total", SINGLE_BORDER)
 
         print(
-            f"\nResults of OntCatOWL execution when evaluating TYPES and INDIVIDUALS:")
+            f"\nResults of OntCatOWL execution when evaluating {list_values_classes[0]} classes considering TYPES and INDIVIDUALS:")
 
         print(table_classes_total)
