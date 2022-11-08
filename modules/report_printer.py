@@ -5,14 +5,14 @@ import os
 
 from modules.logger_config import initialize_logger
 from modules.report_content import get_content100, get_content200, \
-    get_content300_400
+    get_content300_400, get_content500
 from modules.results_calculation import generate_result_classes_lists
 from modules.utils_general import get_date_time
 
 
 def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, end_date_time_out, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
-                      classes_statistics, classifications_statistics, restrictions):
+                      classes_statistics, classifications_statistics, restriction):
     """ Printing a file report, in MarkDown syntax, containing the state of the ontology before and after
     the execution of OntCatOWL.
 
@@ -53,22 +53,20 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
 
     lists_before, lists_after = generate_result_classes_lists(before_statistics, after_statistics)
 
-    title_000 = "# OntCatOWL Final Results Report\n"
-    title_100 = "## Table of Contents\n"
-    title_200 = "## Execution Information\n"
-    title_300 = "## Lists of Classes Before OntCatOWL\n"
-    title_400 = "## Lists of Classes After OntCatOWL\n"
-    title_500 = "## Results Statistics\n"
-    title_600 = "## Final Classes Classifications (IS, CAN, and NOT lists)\n"
-    title_610 = "### Final Classifications of Partially and Completely Known Classes\n"
-    title_620 = "### Final Classifications of All Classes\n"
+    title_000 = "# OntCatOWL Final Results Report\n\n"
+    title_100 = "\n## Table of Contents\n\n"
+    title_200 = "\n## Execution Information\n\n"
+    title_300 = "\n## Lists of Classes Before OntCatOWL\n\n"
+    title_400 = "\n## Lists of Classes After OntCatOWL\n\n"
+    title_500 = "\n## Results Statistics\n\n"
+    title_600 = "\n## Complete Final Classes' Classifications\n\n"
 
-    content_100 = get_content100(restrictions)
+    content_100 = get_content100(restriction)
     content_200 = get_content200(ontology_dataclass_list, start_date_time, end_date_time, end_date_time_out,
-                                 elapsed_time,
-                                 global_configurations)
-    content_300 = get_content300_400(lists_before, restrictions)
-    content_400 = get_content300_400(lists_after, restrictions)
+                                 elapsed_time, global_configurations)
+    content_300 = get_content300_400(lists_before, restriction)
+    content_400 = get_content300_400(lists_after, restriction)
+    content_500 = get_content500(classes_statistics, classifications_statistics, restriction)
 
     # content_5 = get_content5()
     # content_51 = get_content51()
@@ -78,7 +76,7 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
     # content_61 = get_content61()
     # content_62 = get_content62()
 
-    report = title_000 + title_100 + content_100 + title_200 + content_200 + title_300 + content_300 + title_400 + content_400
+    report = title_000 + title_100 + content_100 + title_200 + content_200 + title_300 + content_300 + title_400 + content_400 + title_500 + content_500
 
     # # Creating hash
     # enc_report = report.encode('utf-8')

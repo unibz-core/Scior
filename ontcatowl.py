@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
-                      classes_statistics, classifications_statistics, "TYPES_ONLY")
+                      classes_statistics, classifications_statistics, "PRINT_ALL")
 
     if global_configurations["import_gufo"]:
         united_graph = ontology_graph + gufo_graph

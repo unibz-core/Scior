@@ -136,6 +136,10 @@ def generate_classes_table_to_be_printed(list_values_classes, table_option, bord
     pos_r3_c3 = "undefined - error if printed"
 
     if table_option == "types":
+
+        message = f"\nResults of OntCatOWL execution when evaluating {classes_before} CLASSES " \
+                  f"considering only TYPES:\n"
+
         pos_r1_c1 = f"{tu_classes_types_b_v} ({round(tu_classes_types_b_p, 2)}%)"
         pos_r1_c2 = f"{tu_classes_types_a_v} ({round(tu_classes_types_a_p, 2)}%)"
         pos_r1_c3 = f"{tu_classes_types_ba_v} ({round(tu_classes_types_ba_p, 2)}%)"
@@ -146,6 +150,10 @@ def generate_classes_table_to_be_printed(list_values_classes, table_option, bord
         pos_r3_c2 = f"{tk_classes_types_a_v} ({round(tk_classes_types_a_p, 2)}%)"
         pos_r3_c3 = f"{tk_classes_types_ba_v} ({round(tk_classes_types_ba_p, 2)}%)"
     elif table_option == "individuals":
+
+        message = f"\nResults of OntCatOWL execution when evaluating {classes_before} CLASSES " \
+                  f"considering only INDIVIDUALS:\n"
+
         pos_r1_c1 = f"{tu_classes_individuals_b_v} ({round(tu_classes_individuals_b_p, 2)}%)"
         pos_r1_c2 = f"{tu_classes_individuals_a_v} ({round(tu_classes_individuals_a_p, 2)}%)"
         pos_r1_c3 = f"{tu_classes_individuals_ba_v} ({round(tu_classes_individuals_ba_p, 2)}%)"
@@ -156,6 +164,10 @@ def generate_classes_table_to_be_printed(list_values_classes, table_option, bord
         pos_r3_c2 = f"{tk_classes_individuals_a_v} ({round(tk_classes_individuals_a_p, 2)}%)"
         pos_r3_c3 = f"{tk_classes_individuals_ba_v} ({round(tk_classes_individuals_ba_p, 2)}%)"
     elif table_option == "total":
+
+        message = f"\nResults of OntCatOWL execution when evaluating {classes_before} CLASSES " \
+                  f"considering TYPES and  INDIVIDUALS:\n"
+
         pos_r1_c1 = f"{tu_classes_total_b_v} ({round(tu_classes_total_b_p, 2)}%)"
         pos_r1_c2 = f"{tu_classes_total_a_v} ({round(tu_classes_total_a_p, 2)}%)"
         pos_r1_c3 = f"{tu_classes_total_ba_v} ({round(tu_classes_total_ba_p, 2)}%)"
@@ -176,7 +188,10 @@ def generate_classes_table_to_be_printed(list_values_classes, table_option, bord
     pretty_table.align = "r"
     pretty_table.set_style(border_option)
 
-    return pretty_table
+    table_text = pretty_table.get_string()
+    return_string = message + table_text
+
+    return return_string
 
 
 def generate_classifications_table_to_be_printed(list_values_classifications, table_option, border_option):
@@ -299,7 +314,12 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
     pos_r2_c2 = "undefined - error if printed"
     pos_r2_c3 = "undefined - error if printed"
 
+    message = ""
     if table_option == "types":
+
+        message = f"\nResults of OntCatOWL execution when evaluating {total_classif_types_a_v} " \
+                  f"CLASSIFICATIONS considering only TYPES:\n"
+
         pos_r1_c1 = f"{number_unknown_classif_types_b_v} ({round(number_unknown_classif_types_b_p, 2)}%)"
         pos_r1_c2 = f"{number_unknown_classif_types_a_v} ({round(number_unknown_classif_types_a_p, 2)}%)"
         pos_r1_c3 = f"{number_unknown_classif_types_ba_v} ({round(number_unknown_classif_types_ba_p, 2)}%)"
@@ -307,6 +327,10 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
         pos_r2_c2 = f"{number_known_classif_types_a_v} ({round(number_known_classif_types_a_p, 2)}%)"
         pos_r2_c3 = f"{number_known_classif_types_ba_v} ({round(number_known_classif_types_ba_p, 2)}%)"
     elif table_option == "individuals":
+
+        message = f"\nResults of OntCatOWL execution when evaluating {total_classif_individuals_a_v} " \
+                  f"CLASSIFICATIONS considering only INDIVIDUALS:\n"
+
         pos_r1_c1 = f"{number_unknown_classif_individuals_b_v} ({round(number_unknown_classif_individuals_b_p, 2)}%)"
         pos_r1_c2 = f"{number_unknown_classif_individuals_a_v} ({round(number_unknown_classif_individuals_a_p, 2)}%)"
         pos_r1_c3 = f"{number_unknown_classif_individuals_ba_v} ({round(number_unknown_classif_individuals_ba_p, 2)}%)"
@@ -314,6 +338,10 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
         pos_r2_c2 = f"{number_known_classif_individuals_a_v} ({round(number_known_classif_individuals_a_p, 2)}%)"
         pos_r2_c3 = f"{number_known_classif_individuals_ba_v} ({round(number_known_classif_individuals_ba_p, 2)}%)"
     elif table_option == "total":
+
+        message = f"\nResults of OntCatOWL execution when evaluating {total_number_classif_a_v} " \
+                  f"CLASSIFICATIONS considering TYPES and INDIVIDUALS:\n"
+
         pos_r1_c1 = f"{number_unknown_classif_total_b_v} ({round(number_unknown_classif_total_b_p, 2)}%)"
         pos_r1_c2 = f"{number_unknown_classif_total_a_v} ({round(number_unknown_classif_total_a_p, 2)}%)"
         pos_r1_c3 = f"{number_unknown_classif_total_ba_v} ({round(number_unknown_classif_total_ba_p, 2)}%)"
@@ -330,7 +358,10 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
     pretty_table.align = "r"
     pretty_table.set_style(border_option)
 
-    return pretty_table
+    table_text = pretty_table.get_string()
+    return_string = message + table_text
+
+    return return_string
 
 
 def print_statistics_screen(list_values_classes, list_values_classifications, restriction="PRINT_ALL"):
@@ -338,7 +369,7 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
 
     Restrictions:
         - "PRINT_ALL" - prints total, individuals, and total tables.
-        - "total_ONLY" - prints only total table.
+        - "TYPES_ONLY" - prints only total table.
         - "INDIVIDUALS_ONLY" - prints only individuals table.
         - "TOTAL_ONLY" - prints only total table.
 
@@ -381,55 +412,25 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
 
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
         table_classes_types = generate_classes_table_to_be_printed(list_values_classes, "types", SINGLE_BORDER)
-
-        print(
-            f"\nResults of OntCatOWL execution when evaluating {list_values_classes[0]} classes "
-            f"considering only TYPES:")
-
-        print(table_classes_types)
-
         table_classifications_types = generate_classifications_table_to_be_printed(list_values_classifications, "types",
                                                                                    SINGLE_BORDER)
 
-        print(
-            f"\nResults of OntCatOWL execution when evaluating {list_values_classifications[1]} classifications "
-            f"considering only TYPES:")
-
+        print(table_classes_types)
         print(table_classifications_types)
 
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
         table_classes_individuals = generate_classes_table_to_be_printed(list_values_classes, "individuals",
                                                                          SINGLE_BORDER)
-
-        print(
-            f"\nResults of OntCatOWL execution when evaluating {list_values_classes[0]} classes "
-            f"considering only INDIVIDUALS:")
-
-        print(table_classes_individuals)
-
         table_classifications_individuals = generate_classifications_table_to_be_printed(list_values_classifications,
                                                                                          "individuals", SINGLE_BORDER)
 
-        print(
-            f"\nResults of OntCatOWL execution when evaluating {list_values_classifications[2]} classifications "
-            f"considering only INDIVIDUALS:")
-
+        print(table_classes_individuals)
         print(table_classifications_individuals)
 
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
         table_classes_total = generate_classes_table_to_be_printed(list_values_classes, "total", SINGLE_BORDER)
-
-        print(
-            f"\nResults of OntCatOWL execution when evaluating {list_values_classes[0]} classes "
-            f"considering TYPES and INDIVIDUALS:")
-
-        print(table_classes_total)
-
         table_classifications_total = generate_classifications_table_to_be_printed(list_values_classifications, "total",
                                                                                    SINGLE_BORDER)
 
-        print(
-            f"\nResults of OntCatOWL execution when evaluating {list_values_classifications[0]} classifications "
-            f"considering TYPES and INDIVIDUALS:")
-
+        print(table_classes_total)
         print(table_classifications_total)
