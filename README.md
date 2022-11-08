@@ -10,11 +10,11 @@ Identification of Ontological Categories for OWL Ontologies.
 * [Code Execution](#code-execution)
 * [Usage](#usage)
 * [Software Functioning](#software-functioning)
-  * [Rules Premises](#rules-premises)
+    * [Rules Premises](#rules-premises)
 * [Software Limitations](#software-limitations)
-  * [Version X (to be completed)](#version-x--to-be-completed-)
+    * [Version X (to be completed)](#version-x--to-be-completed-)
 * [Release Notes](#release-notes)
-  * [Release 1](#release-1)
+    * [Release 1](#release-1)
 
 <!-- TOC -->
 

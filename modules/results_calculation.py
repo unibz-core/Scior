@@ -371,4 +371,3 @@ def generate_result_classes_lists(before_statistics, after_statistics):
     lists_after.append(list_totally_known_classes_after)
 
     return lists_before, lists_after
-

@@ -60,8 +60,6 @@ def get_content200(ontology_dataclass_list, start_date_time, end_date_time, end_
               f"* End time {end_date_time}\n" \
               f"* Total elapsed time: {elapsed_time} seconds.\n\n"
 
-    automation_level = ""
-    completion = ""
     if configurations["is_automatic"]:
         automation_level = "automatic"
     else:
@@ -122,7 +120,6 @@ def get_content300_400(result_lists, restrictions="PRINT_ALL"):
 
     for i in range(1, 4):
 
-        title_x10 = ""
         title_x11 = ""
         title_x12 = ""
         title_x13 = ""

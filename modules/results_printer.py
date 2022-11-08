@@ -217,8 +217,8 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
     number_unknown_classif_types_b_p = (number_unknown_classif_types_b_v / total_classif_types_b_v) * 100
     number_known_classif_types_b_p = (number_known_classif_types_b_v / total_classif_types_b_v) * 100
 
-    number_unknown_classif_individuals_b_p = (
-                                                         number_unknown_classif_individuals_b_v / total_classif_individuals_b_v) * 100
+    number_unknown_classif_individuals_b_p = (number_unknown_classif_individuals_b_v /
+                                              total_classif_individuals_b_v) * 100
     number_known_classif_individuals_b_p = (number_known_classif_individuals_b_v / total_classif_individuals_b_v) * 100
 
     number_unknown_classif_total_b_p = (number_unknown_classif_total_b_v / total_number_classif_b_v) * 100
@@ -247,8 +247,8 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
     number_unknown_classif_types_a_p = (number_unknown_classif_types_a_v / total_classif_types_a_v) * 100
     number_known_classif_types_a_p = (number_known_classif_types_a_v / total_classif_types_a_v) * 100
 
-    number_unknown_classif_individuals_a_p = (
-                                                     number_unknown_classif_individuals_a_v / total_classif_individuals_a_v) * 100
+    number_unknown_classif_individuals_a_p = (number_unknown_classif_individuals_a_v /
+                                              total_classif_individuals_a_v) * 100
     number_known_classif_individuals_a_p = (number_known_classif_individuals_a_v / total_classif_individuals_a_v) * 100
 
     number_unknown_classif_total_a_p = (number_unknown_classif_total_a_v / total_number_classif_a_v) * 100
@@ -261,7 +261,8 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
     number_unknown_classif_types_ba_v = number_unknown_classif_types_a_v - number_unknown_classif_types_b_v
     number_known_classif_types_ba_v = number_known_classif_types_a_v - number_known_classif_types_b_v
 
-    number_unknown_classif_individuals_ba_v = number_unknown_classif_individuals_a_v - number_unknown_classif_individuals_b_v
+    number_unknown_classif_individuals_ba_v = number_unknown_classif_individuals_a_v - \
+                                              number_unknown_classif_individuals_b_v
     number_known_classif_individuals_ba_v = number_known_classif_individuals_a_v - number_known_classif_individuals_b_v
 
     number_unknown_classif_total_ba_v = number_unknown_classif_total_a_v - number_unknown_classif_total_b_v
@@ -272,7 +273,8 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
     number_unknown_classif_types_ba_p = number_unknown_classif_types_a_p - number_unknown_classif_types_b_p
     number_known_classif_types_ba_p = number_known_classif_types_a_p - number_known_classif_types_b_p
 
-    number_unknown_classif_individuals_ba_p = number_unknown_classif_individuals_a_p - number_unknown_classif_individuals_b_p
+    number_unknown_classif_individuals_ba_p = number_unknown_classif_individuals_a_p - \
+                                              number_unknown_classif_individuals_b_p
     number_known_classif_individuals_ba_p = number_known_classif_individuals_a_p - number_known_classif_individuals_b_p
 
     number_unknown_classif_total_ba_p = number_unknown_classif_total_a_p - number_unknown_classif_total_b_p

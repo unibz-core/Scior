@@ -90,12 +90,12 @@ if __name__ == "__main__":
 # At the report, after execution, create lists of classes that were improved or not for a better user identification.
 # OPTION TO SAVE NEGATIVE DISCOVERIES!!!
 # parameter for user saving report in txt or markdown format
+# reduce log size
 
 # TODO (@pedropaulofb): PERFORMANCE
 # Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verify for/break statement
 
 # TODO (@pedropaulofb): BEFORE RELEASE OF VERSION
 # Evaluate on Linux before release first version
-# Verify if there is any unused module, function or methods
 # Move TO DO comments from this module to GitHub issues
 # Evaluate all Lints from all modules
