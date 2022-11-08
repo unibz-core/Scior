@@ -87,6 +87,8 @@ def get_values_statistics(statistics_list):
 
             return_list_classifications[7] = number_unknown_classifications_total
             return_list_classifications[8] = number_known_classifications_total
+
+            return_list_classifications[9] = 0 (empty)
     """
     logger = initialize_logger()
 
@@ -188,6 +190,7 @@ def get_values_statistics(statistics_list):
     total_classifications_individuals = number_unknown_classifications_individuals + number_known_classifications_individuals
 
     return_list_classifications.append(total_classifications_number)
+
     return_list_classifications.append(total_classifications_types)
     return_list_classifications.append(total_classifications_individuals)
 
@@ -199,6 +202,8 @@ def get_values_statistics(statistics_list):
 
     return_list_classifications.append(number_unknown_classifications_total)
     return_list_classifications.append(number_known_classifications_total)
+
+    return_list_classifications.append(0)
 
     if (
             totally_unknown_classes_types + partially_known_classes_types + totally_known_classes_types) != total_classes_number:
@@ -227,14 +232,15 @@ def calculate_final_statistics(before_statistics, after_statistics):
     list_classes_values_before, list_classifications_values_before = get_values_statistics(before_statistics)
     list_classes_values_after, list_classifications_values_after = get_values_statistics(after_statistics)
 
+    # aggregated_classes_list_values [0:9] - before values
+    # aggregated_classes_list_values [10:19] - after values
+
     aggregated_classes_list_values = list_classes_values_before + list_classes_values_after
+
+    # aggregated_classifications_list_values [0:9] - before values
+    # aggregated_classifications_list_values [10:19] - after values
+
     aggregated_classifications_list_values = list_classifications_values_before + list_classifications_values_after
-
-    # aggregated_classes_list_values [0:9] - before values
-    # aggregated_classes_list_values [10:19] - after values
-
-    # aggregated_classes_list_values [0:9] - before values
-    # aggregated_classes_list_values [10:19] - after values
 
     return aggregated_classes_list_values, aggregated_classifications_list_values
 
@@ -366,87 +372,3 @@ def generate_result_classes_lists(before_statistics, after_statistics):
 
     return lists_before, lists_after
 
-
-def calculates_differences_before_after(list_values_classes, list_values_classifications):
-    """ Receives lists of statistics for classes and classifications and calculates relevant percentages to be printed.
-
-    INPUT LIST FOR NUMBERS OF CLASSES:
-            list_values_classes[(1)0] = total_classes_number
-
-            list_values_classes[(1)1] = totally_unknown_classes_types
-            list_values_classes[(1)2] = totally_unknown_classes_individuals
-            list_values_classes[(1)3] = totally_unknown_classes_all
-
-            list_values_classes[(1)4] = partially_known_classes_types
-            list_values_classes[(1)5] = partially_known_classes_individuals
-            list_values_classes[(1)6] = partially_known_classes_all
-
-            list_values_classes[(1)7] = totally_known_classes_types
-            list_values_classes[(1)8] = totally_known_classes_individuals
-            list_values_classes[(1)9] = totally_known_classes_all
-
-        INPUT LIST FOR NUMBERS OF CLASSIFICATIONS:
-            list_values_classifications[0] = total_classifications_number
-
-            list_values_classifications[1] = total_classifications_types
-            list_values_classifications[2] = total_classifications_individuals
-
-            list_values_classifications[3] = number_unknown_classifications_types
-            list_values_classifications[4] = number_known_classifications_types
-
-            list_values_classifications[5] = number_unknown_classifications_individuals
-            list_values_classifications[6] = number_known_classifications_individuals
-
-            list_values_classifications[7] = number_unknown_classifications_total
-            list_values_classifications[8] = number_known_classifications_total
-
-        OUTPUT LIST FOR NUMBERS OF CLASSES:
-            return_list_classes[0] = tu_classes_types_b_p
-            return_list_classes[1] = tu_classes_individuals_b_p
-            return_list_classes[2] = tu_classes_all_b_p
-
-            return_list_classes[3] = pk_classes_types_b_p
-            return_list_classes[4] = pk_classes_individuals_b_p
-            return_list_classes[5] = pk_classes_all_b_p
-
-            return_list_classes[6] = tk_classes_types_b_p
-            return_list_classes[7] = tk_classes_individuals_b_p
-            return_list_classes[8] = tk_classes_all_b_p
-
-            return_list_classes[9] = tu_classes_types_a_p
-            return_list_classes[10] = tu_classes_individuals_a_p
-            return_list_classes[11] = tu_classes_all_a_p
-
-            return_list_classes[12] = pk_classes_types_a_p
-            return_list_classes[13] = pk_classes_individuals_a_p
-            return_list_classes[14] = pk_classes_all_a_p
-
-            return_list_classes[15] = tk_classes_types_a_p
-            return_list_classes[16] = tk_classes_individuals_a_p
-            return_list_classes[17] = tk_classes_all_a_p
-
-            return_list_classes[18] = tu_classes_types_ba_v
-            return_list_classes[19] = tu_classes_individuals_ba_v
-            return_list_classes[20] = tu_classes_all_ba_v
-
-            return_list_classes[21] = pk_classes_types_ba_v
-            return_list_classes[22] = pk_classes_individuals_ba_v
-            return_list_classes[23] = pk_classes_all_ba_v
-
-            return_list_classes[24] = tk_classes_types_ba_v
-            return_list_classes[25] = tk_classes_individuals_ba_v
-            return_list_classes[26] = tk_classes_all_ba_v
-
-            return_list_classes[27] = tu_classes_types_ba_p
-            return_list_classes[28] = tu_classes_individuals_ba_p
-            return_list_classes[29] = tu_classes_all_ba_p
-
-            return_list_classes[30] = pk_classes_types_ba_p
-            return_list_classes[31] = pk_classes_individuals_ba_p
-            return_list_classes[32] = pk_classes_all_ba_p
-
-            return_list_classes[33] = tk_classes_types_ba_p
-            return_list_classes[34] = tk_classes_individuals_ba_p
-            return_list_classes[35] = tk_classes_all_ba_p
-
-    """
