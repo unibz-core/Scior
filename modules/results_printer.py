@@ -417,6 +417,7 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
 
         print(table_classes_types)
         print(table_classifications_types)
+        print()
 
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
         table_classes_individuals = generate_classes_table_to_be_printed(list_values_classes, "individuals",
@@ -426,6 +427,7 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
 
         print(table_classes_individuals)
         print(table_classifications_individuals)
+        print()
 
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
         table_classes_total = generate_classes_table_to_be_printed(list_values_classes, "total", SINGLE_BORDER)
@@ -434,3 +436,4 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
 
         print(table_classes_total)
         print(table_classifications_total)
+        print()

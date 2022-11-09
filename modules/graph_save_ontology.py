@@ -1,7 +1,9 @@
 """ Functions related to reading and writing OWL files using RDFLib. """
+import os
 
 from rdflib import URIRef, RDF, RDFS, OWL
 
+from modules.logger_config import initialize_logger
 from modules.utils_rdf import get_ontology_uri
 
 
@@ -35,6 +37,10 @@ def save_ontology_file(end_date_time, ontology_graph, configurations):
     If import_gufo parameter is set as True, the saved output is going to import the GUFO ontology.
     """
 
+    logger = initialize_logger()
+
+    logger.info("Saving the output ontology file...")
+
     if configurations["import_gufo"]:
         ontology_uri = get_ontology_uri(ontology_graph)
         gufo_import = URIRef("https://purl.org/nemo/gufo#")
@@ -43,6 +49,8 @@ def save_ontology_file(end_date_time, ontology_graph, configurations):
     # Creating report file
     output_file_name = configurations["ontology_path"][:-4] + "-" + end_date_time + ".out.ttl"
     ontology_graph.serialize(destination=output_file_name)
+
+    logger.info(f"Output ontology file saved. Access it in {os.path.abspath(output_file_name)}.")
 
 
 def treat_name(gufo_short_name):

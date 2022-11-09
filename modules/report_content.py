@@ -6,8 +6,15 @@ from modules.results_printer import generate_classes_table_to_be_printed, genera
 from modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
-def get_content100(restrictions):
-    """ Final Results Report - TABLE OF CONTENTS """
+def get_content100(restriction="PRINT_ALL"):
+    """ Final Results Report - TABLE OF CONTENTS
+
+    Allowed restriction values:
+        - "PRINT_ALL" - (DEFAULT) prints types, individuals, and total tables.
+        - "TYPES_ONLY" - prints only types table.
+        - "INDIVIDUALS_ONLY" - prints only individuals table.
+        - "TOTAL_ONLY" - prints only total table.
+    """
 
     line_01 = "* [Execution Information](#execution-information)\n"
     line_02 = "* [Lists of Classes Before OntCatOWL](#lists-of-classes-before-ontcatowl)\n"
@@ -26,26 +33,25 @@ def get_content100(restrictions):
               "(#list-of-totally-known-classes-after-ontcatowl)\n"
     line_10 = "* [Results Statistics](#results-statistics)\n"
 
-    if restrictions == "PRINT_ALL" or restrictions == "TYPES_ONLY":
+    if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
         line_11 = "\t* [Statistics of the OntCatOWL execution for TYPES]" \
                   "(#statistics-of-the-ontcatowl-execution-for-types)\n"
     else:
         line_11 = ""
 
-    if restrictions == "PRINT_ALL" or restrictions == "INDIVIDUALS_ONLY":
+    if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
         line_12 = "\t* [Statistics of the OntCatOWL execution for INDIVIDUALS]" \
                   "(#statistics-of-the-ontcatowl-execution-for-individuals)\n"
     else:
         line_12 = ""
 
-    if restrictions == "PRINT_ALL" or restrictions == "TOTAL_ONLY":
+    if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
         line_13 = "\t* [Statistics of the OntCatOWL execution for TYPES and INDIVIDUALS]" \
                   "(#statistics-of-the-ontcatowl-execution-for-types-and-individuals)\n"
     else:
         line_13 = ""
 
-    line_14 = "* [Complete Final Classes' Classifications]" \
-              "(#final-classes-classifications--is-can-and-not-lists-)\n"
+    line_14 = "* [Final Classes' Classifications](#final-classes-classifications)\n"
 
     return_string = line_01 + line_02 + line_03 + line_04 + line_05 + line_06 + line_07 + line_08 + line_09 + \
                     line_10 + line_11 + line_12 + line_13 + line_14
@@ -100,8 +106,16 @@ def get_content200(ontology_dataclass_list, start_date_time, end_date_time, end_
     return return_string
 
 
-def get_content300_400(result_lists, restrictions="PRINT_ALL"):
-    """ Prints lists of situations. """
+def get_content300_400(result_lists, restriction="PRINT_ALL"):
+    """ Prints lists of situations.
+
+    Allowed restriction values:
+        - "PRINT_ALL" - (DEFAULT) prints types, individuals, and total tables.
+        - "TYPES_ONLY" - prints only types table.
+        - "INDIVIDUALS_ONLY" - prints only individuals table.
+        - "TOTAL_ONLY" - prints only total table.
+
+    """
 
     logger = initialize_logger()
     intro = ""
@@ -133,19 +147,19 @@ def get_content300_400(result_lists, restrictions="PRINT_ALL"):
         title_x10 = f"\n### List of {result_lists[i].situation} Classes {result_lists[0]} OntCatOWL\n\n"
 
         # TU/PK/TK Classes Before/After - Types Only
-        if restrictions == "PRINT_ALL" or restrictions == "TYPES_ONLY":
+        if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
             title_x11 = f"\n#### {result_lists[i].situation} Classes {result_lists[0]} - Types Only\n\n"
             for element in result_lists[i].list_uris_types:
                 content_x11 += "* " + element + "\n"
 
         # TU/PK/TK Classes Before/After - Individuals Only
-        if restrictions == "PRINT_ALL" or restrictions == "INDIVIDUALS_ONLY":
+        if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
             title_x12 = f"\n#### {result_lists[i].situation} Classes {result_lists[0]} - Individuals Only\n\n"
             for element in result_lists[i].list_uris_individuals:
                 content_x12 += "* " + element + "\n"
 
         # TU/PK/TK Classes Before/After - Total
-        if restrictions == "PRINT_ALL" or restrictions == "TOTAL_ONLY":
+        if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
             title_x13 = f"\n#### {result_lists[i].situation} Classes {result_lists[0]} - TOTAL (Types + Individuals)\n\n"
             for element in result_lists[i].list_uris_all:
                 content_x13 += "* " + element + "\n"
@@ -157,8 +171,15 @@ def get_content300_400(result_lists, restrictions="PRINT_ALL"):
     return return_string
 
 
-def get_content500(list_values_classes, list_values_classifications, restriction):
-    """ Prints statistics for classes and classifications. """
+def get_content500(list_values_classes, list_values_classifications, restriction="PRINT_ALL"):
+    """ Prints statistics for classes and classifications.
+
+    Allowed restriction values:
+        - "PRINT_ALL" - (DEFAULT) prints types, individuals, and total tables.
+        - "TYPES_ONLY" - prints only types table.
+        - "INDIVIDUALS_ONLY" - prints only individuals table.
+        - "TOTAL_ONLY" - prints only total table.
+    """
 
     intro = "This section presents statistics of the execution of OntCatOWL considering classes and " \
             "possible classifications (gUFO elements).\n"
@@ -203,3 +224,50 @@ def get_content500(list_values_classes, list_values_classifications, restriction
     return_string = intro + content_all
 
     return return_string
+
+
+def get_content600(ontology_dataclass_list, restriction="PRINT_ALL"):
+    """ Prints final lists of classes according to the received restriction.
+
+    Allowed restriction values:
+        - "PRINT_ALL" - (DEFAULT) prints types, individuals, and total tables.
+        - "TYPES_ONLY" - prints only types table.
+        - "INDIVIDUALS_ONLY" - prints only individuals table.
+        - "TOTAL_ONLY" - prints only total table.
+    """
+
+    logger = initialize_logger()
+
+    class_print_information = ""
+
+    if restriction == "TYPES_ONLY":
+
+        for dataclass in ontology_dataclass_list:
+            class_print_information += f"\n* `Class URI` = {dataclass.uri}\n\n" \
+                                       f"\t* `is_type`\t\t=\t{dataclass.is_type}\n" \
+                                       f"\t* `can_type`\t=\t{dataclass.can_type}\n" \
+                                       f"\t* `not_type`\t=\t{dataclass.not_type}\n"
+
+    elif restriction == "INDIVIDUALS_ONLY":
+
+        for dataclass in ontology_dataclass_list:
+            class_print_information += f"\n* `Class URI` = {dataclass.uri}\n\n" \
+                                       f"\t* `is_individual`\t=\t{dataclass.is_individual}\n" \
+                                       f"\t* `can_individual`\t=\t{dataclass.can_individual}\n" \
+                                       f"\t* `not_individual`\t=\t{dataclass.not_individual}\n"
+
+    elif restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
+
+        for dataclass in ontology_dataclass_list:
+            class_print_information += f"\n* `Class URI` = {dataclass.uri}\n\n" \
+                                       f"\t* `is_type`\t\t\t=\t{dataclass.is_type}\n" \
+                                       f"\t* `is_individual`\t=\t{dataclass.is_individual}\n" \
+                                       f"\t* `can_type`\t\t=\t{dataclass.can_type}\n" \
+                                       f"\t* `can_individual`\t=\t{dataclass.can_individual}\n" \
+                                       f"\t* `not_type`\t\t=\t{dataclass.not_type}\n" \
+                                       f"\t* `not_individual`\t=\t{dataclass.not_individual}\n"
+    else:
+        logger.error("Restriction unknown. Program aborted.")
+        exit(1)
+
+    return class_print_information

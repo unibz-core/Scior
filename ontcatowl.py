@@ -16,7 +16,9 @@ from modules.rules_types_run import execute_rules_types
 from modules.utils_rdf import load_graph_safely, perform_reasoning
 
 SOFTWARE_VERSION = "OntCatOWL - Identification of Ontological Categories for OWL Ontologies\n" \
-                   "Version 0.20221101 - https://github.com/unibz-core/OntCatOWL/\n"
+                   "Version 0.20221109 - https://github.com/unibz-core/OntCatOWL/\n"
+
+RESTRICTION = "TYPES_ONLY"
 
 if __name__ == "__main__":
 
@@ -61,7 +63,7 @@ if __name__ == "__main__":
 
     # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
     classes_statistics, classifications_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    print_statistics_screen(classes_statistics, classifications_statistics, "PRINT_ALL")
+    print_statistics_screen(classes_statistics, classifications_statistics, RESTRICTION)
 
     now = datetime.now()
     end_date_time_here = now.strftime("%d-%m-%Y %H:%M:%S")
@@ -70,15 +72,15 @@ if __name__ == "__main__":
     elapsed_time = round((et - st), 3)
     logger.info(f"OntCatOWL concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
-    print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
-                      global_configurations, before_statistics, after_statistics,
-                      classes_statistics, classifications_statistics, "PRINT_ALL")
-
     if global_configurations["import_gufo"]:
         united_graph = ontology_graph + gufo_graph
         save_ontology_file(end_date_time, ontology_graph, global_configurations)
     else:
         save_ontology_file(end_date_time, ontology_graph, global_configurations)
+
+    print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
+                      global_configurations, before_statistics, after_statistics,
+                      classes_statistics, classifications_statistics, RESTRICTION)
 
 # TODO (@pedropaulofb): IMPROVEMENTS
 # Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
@@ -87,9 +89,7 @@ if __name__ == "__main__":
 # Create argument for cleaning all generated logs and reports (e.g., ontcatowl.py --clean)
 # Create a verbose mode where all INFOs are printed. DEBUG is always only printed in the log file.
 # Create menus for better user interactions: https://pypi.org/project/simple-term-menu/
-# At the report, after execution, create lists of classes that were improved or not for a better user identification.
 # OPTION TO SAVE NEGATIVE DISCOVERIES!!!
-# parameter for user saving report in txt or markdown format
 # reduce log size
 
 # TODO (@pedropaulofb): PERFORMANCE

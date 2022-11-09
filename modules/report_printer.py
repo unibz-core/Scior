@@ -1,12 +1,12 @@
 """ Functions for printing in file a report of the current state of the ontology dataclass list in
 MarkDown format. """
-
 import os
 
 from modules.logger_config import initialize_logger
 from modules.report_content import get_content100, get_content200, \
-    get_content300_400, get_content500
+    get_content300_400, get_content500, get_content600
 from modules.results_calculation import generate_result_classes_lists
+from modules.utils_dataclass import sort_all_ontology_dataclass_list
 from modules.utils_general import get_date_time
 
 
@@ -21,30 +21,12 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
         - "TYPES_ONLY" - prints only types table.
         - "INDIVIDUALS_ONLY" - prints only individuals table.
         - "TOTAL_ONLY" - prints only total table.
-
-    REPORT STRUCTURE:
-    # Title
-        ## Table of Contents (with links)
-        ## Execution Information (numbers, hash, etc.)
-        ## Lists of Classes Before OntCatOWL
-            ### List Totally Unknown Classes Before OntCatOWL
-            ### List Partially Known Classes Before OntCatOWL
-            ### List Totally Known Classes Before OntCatOWL
-        ## Lists of Classes After OntCatOWL
-            ### List Totally Unknown Classes After OntCatOWL
-            ### List Partially Known Classes After OntCatOWL
-            ### List Totally Known Classes After OntCatOWL
-        ## Results Statistics
-            ### Results Statistics for Types
-            ### Results Statistics for Individuals
-            ### Results Statistics for Total (Types + Individuals)
-        ## Final Classes Classifications (IS, CAN, and NOT lists)
-            ### Partially and Completely Known Classes
-            ### All Classes
     """
 
     logger = initialize_logger()
     logger.info("Printing report of the current state of the ontology dataclass list using markdown syntax ...")
+
+    sort_all_ontology_dataclass_list(ontology_dataclass_list)
 
     # If directory "/report" does not exist, create it
     report_dir = "reports/"
@@ -59,7 +41,7 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
     title_300 = "\n## Lists of Classes Before OntCatOWL\n\n"
     title_400 = "\n## Lists of Classes After OntCatOWL\n\n"
     title_500 = "\n## Results Statistics\n\n"
-    title_600 = "\n## Complete Final Classes' Classifications\n\n"
+    title_600 = "\n## Final Classes' Classifications\n\n"
 
     content_100 = get_content100(restriction)
     content_200 = get_content200(ontology_dataclass_list, start_date_time, end_date_time, end_date_time_out,
@@ -67,24 +49,16 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
     content_300 = get_content300_400(lists_before, restriction)
     content_400 = get_content300_400(lists_after, restriction)
     content_500 = get_content500(classes_statistics, classifications_statistics, restriction)
+    content_600 = get_content600(ontology_dataclass_list, restriction)
 
-    # content_5 = get_content5()
-    # content_51 = get_content51()
-    # content_52 = get_content52()
-    # content_53 = get_content53()
-    # content_6 = get_content6()
-    # content_61 = get_content61()
-    # content_62 = get_content62()
-
-    report = title_000 + title_100 + content_100 + title_200 + content_200 + title_300 + content_300 + title_400 + content_400 + title_500 + content_500
-
-    # # Creating hash
-    # enc_report = report.encode('utf-8')
-    # report_hash = hashlib.sha256(enc_report).hexdigest()
-    # format_report_hash = "CONTENT HASH SHA256 = " + str(report_hash) + "\n\n"
+    report = title_000 + title_100 + content_100 + title_200 + content_200 + title_300 + content_300 + \
+             title_400 + content_400 + title_500 + content_500 + title_600 + content_600
 
     # Creating report file
-    with open(f"{report_dir}{get_date_time()}.md", 'w') as f:
+
+    report_name = f"{report_dir}report-{get_date_time()}.md"
+
+    with open(report_name, 'w') as f:
         f.write(report)
 
-    logger.info("Report successfully printed.")
+    logger.info(f"Report successfully printed. Access it in {os.path.abspath(report_name)}.")

@@ -1,4 +1,6 @@
 """ Functions for Ontology Dataclasses """
+import operator
+
 from modules.logger_config import initialize_logger
 
 
@@ -172,3 +174,20 @@ def select_list(list_of_options):
             valid_option = True
 
     return selected_list
+
+
+def sort_all_ontology_dataclass_list(ontology_dataclass_list):
+    """ Receives an ontology_dataclass_list and:
+            1) Sorts it via its dataclasses' uris
+            2) Sorts all lists inside each dataclass of the list.
+    """
+
+    ontology_dataclass_list.sort(key=operator.attrgetter('uri'))
+
+    for ontology_dataclass in ontology_dataclass_list:
+        ontology_dataclass.is_type.sort()
+        ontology_dataclass.can_type.sort()
+        ontology_dataclass.not_type.sort()
+        ontology_dataclass.is_individual.sort()
+        ontology_dataclass.can_individual.sort()
+        ontology_dataclass.not_individual.sort()
