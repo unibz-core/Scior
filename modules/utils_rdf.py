@@ -87,11 +87,15 @@ def get_list_of_all_classes(ontology_graph, exceptions_list=None):
 
     for sub, pred, obj in ontology_graph:
         if (sub, RDF.type, OWL.Class) in ontology_graph:
-            # N3 necessary for returning string and [1:-1] necessary for removing <>
-            classes_list.append(sub.n3()[1:-1])
+            # Eliminating BNodes
+            if type(sub).__name__ != "BNode":
+                # N3 necessary for returning string and [1:-1] necessary for removing <>
+                classes_list.append(sub.n3()[1:-1])
         if (obj, RDF.type, OWL.Class) in ontology_graph:
-            # N3 necessary for returning string and [1:-1] necessary for removing <>
-            classes_list.append(obj.n3()[1:-1])
+            # Eliminating BNodes
+            if type(obj).__name__ != "BNode":
+                # N3 necessary for returning string and [1:-1] necessary for removing <>
+                classes_list.append(obj.n3()[1:-1])
 
     # Removing repetitions
     no_rep_classes_list = [*set(classes_list)]
