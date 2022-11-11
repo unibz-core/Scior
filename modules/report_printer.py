@@ -33,6 +33,8 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
     if not os.path.exists(report_dir):
         os.makedirs(report_dir)
 
+    report_name = f"{report_dir}report-{get_date_time()}.md"
+
     lists_before, lists_after = generate_result_classes_lists(before_statistics, after_statistics)
 
     title_000 = "# OntCatOWL Final Results Report\n\n"
@@ -44,7 +46,8 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
     title_600 = "\n## Final Classes' Classifications\n\n"
 
     content_100 = get_content100(restriction)
-    content_200 = get_content200(ontology_dataclass_list, start_date_time, end_date_time, end_date_time_out,
+    content_200 = get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time,
+                                 end_date_time_out,
                                  elapsed_time, global_configurations)
     content_300 = get_content300_400(lists_before, restriction)
     content_400 = get_content300_400(lists_after, restriction)
@@ -56,9 +59,16 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
 
     # Creating report file
 
-    report_name = f"{report_dir}report-{get_date_time()}.md"
-
     with open(report_name, 'w') as f:
         f.write(report)
 
     logger.info(f"Report successfully printed. Access it in {os.path.abspath(report_name)}.")
+
+    # TODO (@pedropaulofb): Used only for testing! Remove for the final version!
+    # Creating TEST report file
+
+    report_name = f"{report_dir}report.md"
+
+    with open(report_name, 'w') as f:
+        f.write(report)
+    logger.info(f"TEST Report successfully printed. Access it in {os.path.abspath(report_name)}.")

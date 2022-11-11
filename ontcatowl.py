@@ -15,17 +15,19 @@ from modules.results_printer import print_statistics_screen
 from modules.rules_types_run import execute_rules_types
 from modules.utils_rdf import load_graph_safely, perform_reasoning
 
-SOFTWARE_VERSION = "OntCatOWL - Identification of Ontological Categories for OWL Ontologies\n" \
-                   "Version 0.20221109 - https://github.com/unibz-core/OntCatOWL/\n"
-
-RESTRICTION = "TYPES_ONLY"
+SOFTWARE_ACRONYM = "OntCatOWL"
+SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
+SOFTWARE_VERSION = "0.20221111"
+SOFTWARE_URL = "https://github.com/unibz-core/OntCatOWL/"
+VERSION_RESTRICTION = "TYPES_ONLY"
 
 if __name__ == "__main__":
 
     # DATA LOADINGS AND INITIALIZATIONS
 
     st = time.perf_counter()
-    global_configurations = treat_arguments(SOFTWARE_VERSION)
+
+    global_configurations = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
     logger = initialize_logger()
 
@@ -63,7 +65,7 @@ if __name__ == "__main__":
 
     # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
     classes_statistics, classifications_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    print_statistics_screen(classes_statistics, classifications_statistics, RESTRICTION)
+    print_statistics_screen(classes_statistics, classifications_statistics, VERSION_RESTRICTION)
 
     now = datetime.now()
     end_date_time_here = now.strftime("%d-%m-%Y %H:%M:%S")
@@ -80,7 +82,7 @@ if __name__ == "__main__":
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
-                      classes_statistics, classifications_statistics, RESTRICTION)
+                      classes_statistics, classifications_statistics, VERSION_RESTRICTION)
 
 # TODO (@pedropaulofb): IMPROVEMENTS
 # Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
@@ -94,8 +96,13 @@ if __name__ == "__main__":
 
 # TODO (@pedropaulofb): PERFORMANCE
 # Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verify for/break statement
+# for reducing memory usage, I can upload only the graph taxonomy, as this version only deals with it.
 
 # TODO (@pedropaulofb): BEFORE RELEASE OF VERSION
 # Evaluate on Linux before release first version
 # Move TO DO comments from this module to GitHub issues
 # Evaluate all Lints from all modules
+
+# TODO (@pedropaulofb): RELATED SOFTWARE
+# GUFO cleaner
+# RDF cleaner (keep only parts of the ontology, e.g., types and taxonomy)

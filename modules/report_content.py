@@ -1,4 +1,6 @@
 """ Functions that returns the strings to be printed in the Final Results Report. """
+import os
+
 from prettytable import MARKDOWN
 
 from modules.logger_config import initialize_logger
@@ -59,8 +61,8 @@ def get_content100(restriction="PRINT_ALL"):
     return return_string
 
 
-def get_content200(ontology_dataclass_list, start_date_time, end_date_time, end_date_time_out, elapsed_time,
-                   configurations):
+def get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time, end_date_time_out,
+                   elapsed_time, configurations):
     """ Presents some information about the software execution."""
 
     line_01 = f"OntCatOWL successfully performed.\n" \
@@ -84,12 +86,15 @@ def get_content200(ontology_dataclass_list, start_date_time, end_date_time, end_
               f"* Execution times printed: {configurations['print_time']}\n" \
               f"* GUFO imported in output: {configurations['import_gufo']}\n"
 
+    input_file_name_path = os.path.abspath(configurations['ontology_path'])
     output_file_name = configurations["ontology_path"][:-4] + "-" + end_date_time_out + ".out.ttl"
+    output_file_name_path = os.path.abspath(output_file_name)
+    report_file_name_path = os.path.abspath(report_name)
 
     line_03 = f"\nProcessed files:\n" \
-              f"* Input ontology file: {configurations['ontology_path']}\n" \
-              f"* Output ontology file: {output_file_name}\n" \
-              f"* Report file in /report folder\n" \
+              f"* Input ontology file:\n\t* {input_file_name_path}\n" \
+              f"* Output ontology file:\n\t* {output_file_name_path}\n" \
+              f"* Report file:\n\t* {report_file_name_path}\n" \
               f"* Log file in /log folder\n"
 
     hash_types = generate_hash_ontology_dataclass_list(ontology_dataclass_list, "TYPES_ONLY")
@@ -97,9 +102,9 @@ def get_content200(ontology_dataclass_list, start_date_time, end_date_time, end_
     hash_total = generate_hash_ontology_dataclass_list(ontology_dataclass_list, "TOTAL")
 
     line_04 = f"\nSolution hashes:\n" \
-              f"* Hash for types: {hash_types}\n" \
-              f"* Hash for individuals: {hash_individuals}\n" \
-              f"* Total hash: {hash_total}\n"
+              f"* Hash for types:\n\t* {hash_types}\n" \
+              f"* Hash for individuals:\n\t* {hash_individuals}\n" \
+              f"* Total hash:\n\t* {hash_total}\n"
 
     return_string = line_01 + line_02 + line_03 + line_04
 

@@ -5,20 +5,21 @@ import argparse
 from modules.logger_config import initialize_logger
 
 
-def treat_arguments(software_version):
+def treat_arguments(software_acronym, software_name, software_version, software_url):
     """ Treats user ontologies arguments. """
 
     logger = initialize_logger()
     logger.debug("Parsing arguments...")
 
+    about_message = software_acronym + " - version " + software_version
+
     # PARSING ARGUMENTS
     arguments_parser = argparse.ArgumentParser(prog="OntCatOWL",
-                                               description="Identification of ontological categories for "
-                                                           "OWL ontologies.",
+                                               description=software_acronym + " - " + software_name,
                                                allow_abbrev=False,
-                                               epilog="https://github.com/unibz-core/OntCatOWL/")
+                                               epilog=software_url)
 
-    arguments_parser.version = software_version
+    arguments_parser.version = about_message
 
     # OPTIONAL ARGUMENTS
 
