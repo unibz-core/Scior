@@ -70,21 +70,13 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
               f"* End time {end_date_time}\n" \
               f"* Total elapsed time: {elapsed_time} seconds.\n"
 
-    if configurations["is_automatic"]:
-        automation_level = "automatic"
-    else:
-        automation_level = "interactive"
-    if configurations["is_complete"]:
-        completion = "complete"
-    else:
-        completion = "incomplete"
-
     line_02 = f"\nConfigurations:\n" \
-              f"* Automation level: {automation_level}\n" \
-              f"* Model completion assumption: {completion}\n" \
+              f"* Automatic execution: {not (configurations['is_automatic'])}\n" \
+              f"* Model is complete: {configurations['is_complete']}\n" \
               f"* Reasoning enabled: {configurations['reasoning']}\n" \
               f"* Execution times printed: {configurations['print_time']}\n" \
-              f"* GUFO imported in output: {configurations['import_gufo']}\n"
+              f"* GUFO imported in output file: {configurations['import_gufo']}\n" \
+              f"* GUFO saved in output file: {configurations['save_gufo']}\n"
 
     input_file_name_path = os.path.abspath(configurations['ontology_path'])
     output_file_name = configurations["ontology_path"][:-4] + "-" + end_date_time_out + ".out.ttl"

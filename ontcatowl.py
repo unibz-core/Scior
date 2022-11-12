@@ -3,7 +3,8 @@ import time
 from datetime import datetime
 
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
-from modules.graph_save_ontology import save_ontology_file, save_ontology_gufo_statements
+from modules.graph_save_ontology import save_ontology_gufo_statements, \
+    save_ontology_file_as_configuration
 from modules.initialization_arguments import treat_arguments
 from modules.initialization_data_graph import initialize_nodes_lists
 from modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
@@ -21,7 +22,9 @@ SOFTWARE_VERSION = "0.20221111"
 SOFTWARE_URL = "https://github.com/unibz-core/OntCatOWL/"
 VERSION_RESTRICTION = "TYPES_ONLY"
 
-if __name__ == "__main__":
+
+def run_ontcatowl():
+    """ Main function. """
 
     # DATA LOADINGS AND INITIALIZATIONS
 
@@ -74,25 +77,22 @@ if __name__ == "__main__":
     elapsed_time = round((et - st), 3)
     logger.info(f"OntCatOWL concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
-    if global_configurations["import_gufo"]:
-        united_graph = ontology_graph + gufo_graph
-        save_ontology_file(end_date_time, ontology_graph, global_configurations)
-    else:
-        save_ontology_file(end_date_time, ontology_graph, global_configurations)
+    save_ontology_file_as_configuration(end_date_time, ontology_graph, gufo_graph, global_configurations)
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
                       classes_statistics, classifications_statistics, VERSION_RESTRICTION)
 
+
+if __name__ == "__main__":
+    run_ontcatowl()
+
 # TODO (@pedropaulofb): IMPROVEMENTS
 # Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
 # Create a (much) better deficiency (incompleteness)(inconsistency?) report.
-# Hash is generated differently when list is [A, B] and [B, A]. So maybe is the case to keep it always sorted.
-# Create argument for cleaning all generated logs and reports (e.g., ontcatowl.py --clean)
 # Create a verbose mode where all INFOs are printed. DEBUG is always only printed in the log file.
-# Create menus for better user interactions: https://pypi.org/project/simple-term-menu/
 # OPTION TO SAVE NEGATIVE DISCOVERIES!!!
-# reduce log size
+# Reduce log size
 
 # TODO (@pedropaulofb): PERFORMANCE
 # Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verify for/break statement
@@ -102,6 +102,7 @@ if __name__ == "__main__":
 # Evaluate on Linux before release first version
 # Move TO DO comments from this module to GitHub issues
 # Evaluate all Lints from all modules
+# remove generation of test report!
 
 # TODO (@pedropaulofb): RELATED SOFTWARE
 # GUFO cleaner

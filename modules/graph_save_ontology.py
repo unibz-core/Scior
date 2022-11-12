@@ -31,6 +31,26 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph):
     return ontology_graph
 
 
+def save_ontology_file_as_configuration(end_date_time, ontology_graph, gufo_graph, global_configurations):
+    """Prints in a file the output ontology according to the related configuration, which can be:
+    global_configurations["save_gufo"] = True
+    global_configurations["import_gufo"] = True
+    global_configurations["save_gufo"] = False && global_configurations["import_gufo"] = False
+    """
+
+    if global_configurations["save_gufo"]:
+        graph = ontology_graph + gufo_graph
+    else:
+        graph = ontology_graph
+
+    if global_configurations["import_gufo"]:
+        ontology_uri = get_ontology_uri(ontology_graph)
+        gufo_import = URIRef("https://purl.org/nemo/gufo#")
+        graph.add((ontology_uri, OWL.imports, gufo_import))
+
+    save_ontology_file(end_date_time, graph, global_configurations)
+
+
 def save_ontology_file(end_date_time, ontology_graph, configurations):
     """
     Saves the ontology graph into a TTL file.
@@ -40,11 +60,6 @@ def save_ontology_file(end_date_time, ontology_graph, configurations):
     logger = initialize_logger()
 
     logger.info("Saving the output ontology file...")
-
-    if configurations["import_gufo"]:
-        ontology_uri = get_ontology_uri(ontology_graph)
-        gufo_import = URIRef("https://purl.org/nemo/gufo#")
-        ontology_graph.add((ontology_uri, OWL.imports, gufo_import))
 
     # Creating report file
     output_file_name = configurations["ontology_path"][:-4] + "-" + end_date_time + ".out.ttl"
