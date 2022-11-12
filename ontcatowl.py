@@ -64,7 +64,7 @@ def run_ontcatowl():
     # SAVING RESULTS - OUTPUT
 
     after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
-    ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph)
+    ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph, VERSION_RESTRICTION)
 
     # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
     classes_statistics, classifications_statistics = calculate_final_statistics(before_statistics, after_statistics)
@@ -90,8 +90,6 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): IMPROVEMENTS
 # Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
 # Create a (much) better deficiency (incompleteness)(inconsistency?) report.
-# Create a verbose mode where all INFOs are printed. DEBUG is always only printed in the log file.
-# OPTION TO SAVE NEGATIVE DISCOVERIES!!!
 # Reduce log size
 
 # TODO (@pedropaulofb): PERFORMANCE
@@ -103,7 +101,3 @@ if __name__ == "__main__":
 # Move TO DO comments from this module to GitHub issues
 # Evaluate all Lints from all modules
 # remove generation of test report!
-
-# TODO (@pedropaulofb): RELATED SOFTWARE
-# GUFO cleaner
-# RDF cleaner (keep only parts of the ontology, e.g., types and taxonomy)

@@ -1,32 +1,59 @@
 """ Functions related to reading and writing OWL files using RDFLib. """
 import os
 
-from rdflib import URIRef, RDF, RDFS, OWL
+from rdflib import URIRef, RDF, RDFS, OWL, BNode
 
 from modules.logger_config import initialize_logger
 from modules.utils_rdf import get_ontology_uri
 
 
-def save_ontology_gufo_statements(dataclass_list, ontology_graph):
+def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
     """ Receives the list of dataclasses and use its information for creating new statements in the ontology graph.
     Returns an updated ontology graph.
+
+
+    Restriction can be: TYPES_ONLY, INDIVIDUALS_ONLY, TOTAL
+
     """
     ontology_graph.bind("gufo", "http://purl.org/nemo/gufo#")
 
-    for dataclass in dataclass_list:
-        # Hierarchy of Types
-        for is_type in dataclass.is_type:
-            treated_name = treat_name(is_type)
-            new_type = URIRef(treated_name)
-            class_name = URIRef(dataclass.uri)
-            ontology_graph.add((class_name, RDF.type, new_type))
+    if restriction == "TOTAL" or restriction == "TYPES_ONLY":
+        for dataclass in dataclass_list:
 
-        # Hierarchy of Individuals
-        for is_individual in dataclass.is_individual:
-            treated_name = treat_name(is_individual)
-            new_individual = URIRef(treated_name)
-            class_name = URIRef(dataclass.uri)
-            ontology_graph.add((class_name, RDFS.subClassOf, new_individual))
+            # Hierarchy of Types - positive assertions
+            for is_type in dataclass.is_type:
+                gufo_treated_name = treat_name(is_type)
+                new_type = URIRef(gufo_treated_name)
+                class_name = URIRef(dataclass.uri)
+                ontology_graph.add((class_name, RDF.type, new_type))
+
+            # # Hierarchy of Types - negative assertions
+            for not_type in dataclass.not_type:
+                gufo_treated_name_not_type = treat_name(not_type)
+                new_gufo_type_not = URIRef(gufo_treated_name_not_type)
+                blank_node = BNode()
+                class_name_not = URIRef(dataclass.uri)
+                ontology_graph.add((class_name_not, RDF.type, blank_node))
+                ontology_graph.add((blank_node, OWL.complementOf, new_gufo_type_not))
+
+    if restriction == "TOTAL" or restriction == "INDIVIDUALS_ONLY":
+        for dataclass in dataclass_list:
+
+            # Hierarchy of Individuals - positive assertions
+            for is_individual in dataclass.is_individual:
+                gufo_treated_name_is = treat_name(is_individual)
+                new_gufo_individual_is = URIRef(gufo_treated_name_is)
+                class_name_is = URIRef(dataclass.uri)
+                ontology_graph.add((class_name_is, RDFS.subClassOf, new_gufo_individual_is))
+
+            # Hierarchy of Individuals - negative assertions - NOT TESTED YET!
+            for not_individual in dataclass.not_individual:
+                gufo_treated_name_not_individual = treat_name(not_individual)
+                new_gufo_individual_not = URIRef(gufo_treated_name_not_individual)
+                blank_node = BNode()
+                class_name_not = URIRef(dataclass.uri)
+                ontology_graph.add((class_name_not, RDFS.subClassOf, blank_node))
+                ontology_graph.add((blank_node, OWL.complementOf, new_gufo_individual_not))
 
     return ontology_graph
 
