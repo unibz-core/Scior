@@ -1,7 +1,5 @@
 """ Implementation of rules related to the GUFO types hierarchy. """
 
-import time
-
 from modules.logger_config import initialize_logger
 from modules.propagation import execute_and_propagate_down, execute_and_propagate_up
 from modules.rule_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe, treat_rule_nk_k_sup, \
@@ -31,9 +29,6 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
         - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
-    if configurations["print_time"]:
-        st = time.perf_counter()
-
     rule_code = "k_s_sup"
     logger = initialize_logger()
 
@@ -47,11 +42,6 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
                                      rule_code, [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
@@ -68,9 +58,6 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
         - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
-    if configurations["print_time"]:
-        st = time.perf_counter()
-
     rule_code = "s_k_sub"
     logger = initialize_logger()
 
@@ -83,11 +70,6 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
                                        ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
@@ -103,9 +85,6 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
         - AUTOMATION: Same execution for both complete and incomplete models.
         - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
-
-    if configurations["print_time"]:
-        st = time.perf_counter()
 
     rule_code = "t_k_sup"
     logger = initialize_logger()
@@ -141,11 +120,6 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
-
 
 def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
@@ -159,8 +133,6 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
         - AUTOMATION: Same execution for both complete and incomplete models.
         - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
-    if configurations["print_time"]:
-        st = time.perf_counter()
 
     rule_code = "ns_s_sup"
 
@@ -174,11 +146,6 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
                                      ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
@@ -194,9 +161,6 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
         - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
-    if configurations["print_time"]:
-        st = time.perf_counter()
-
     rule_code = "s_ns_sub"
 
     logger = initialize_logger()
@@ -209,11 +173,6 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
                                        ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
@@ -230,9 +189,6 @@ def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
         - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
-    if configurations["print_time"]:
-        st = time.perf_counter()
-
     rule_code = "r_ar_sup"
 
     logger = initialize_logger()
@@ -247,11 +203,6 @@ def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
                                      rule_code, [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
@@ -268,9 +219,6 @@ def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
         - COMPLETENESS: Automatic rule. Interaction is not needed in any case.
     """
 
-    if configurations["print_time"]:
-        st = time.perf_counter()
-
     rule_code = "ar_r_sub"
 
     logger = initialize_logger()
@@ -283,11 +231,6 @@ def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
                                        ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
@@ -304,9 +247,6 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
         - N+A: Report incompleteness.
         - N+I: User can set as gufo:Kind or skip.
     """
-
-    if configurations["print_time"]:
-        st = time.perf_counter()
 
     rule_code = "n_r_t"
 
@@ -328,11 +268,6 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
         treat_rule_n_r_t(rule_code, ontology_dataclass, configurations)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
@@ -378,9 +313,6 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
             - US when P>0
     """
 
-    if configurations["print_time"]:
-        st = time.perf_counter()
-
     rule_code = "ns_s_spe"
 
     logger = initialize_logger()
@@ -396,11 +328,6 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
         treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
@@ -445,9 +372,6 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
 
     """
 
-    if configurations["print_time"]:
-        st = time.perf_counter()
-
     rule_code = "nk_k_sup"
 
     logger = initialize_logger()
@@ -463,11 +387,6 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
         treat_rule_nk_k_sup(rule_code, ontology_dataclass, list_ontology_dataclasses, graph, nodes_list, configurations)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
 
 def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
@@ -486,9 +405,6 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
             - Incomplete + Interactive: User can set as gufo:Kind.
         """
 
-    if configurations["print_time"]:
-        st = time.perf_counter()
-
     rule_code = "s_nsup_k"
 
     logger = initialize_logger()
@@ -505,11 +421,6 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
-
 
 def rule_ns_sub_r(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
@@ -522,9 +433,6 @@ def rule_ns_sub_r(list_ontology_dataclasses, graph, nodes_list, configurations):
             - Complete (Automatic or Interactive): Set as gufo:Category.
             - Incomplete (Automatic or Interactive): Not executed.
         """
-
-    if configurations["print_time"]:
-        st = time.perf_counter()
 
     rule_code = "ns_sub_r"
 
@@ -546,11 +454,6 @@ def rule_ns_sub_r(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
-
 
 def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
@@ -565,9 +468,6 @@ def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
             - Incomplete + Automatic: Report incompleteness.
             - Incomplete + Interactive: Ask user if should be set to gufo:Role. If not, report incompleteness.
         """
-
-    if configurations["print_time"]:
-        st = time.perf_counter()
 
     rule_code = "nrs_ns_r"
 
@@ -590,11 +490,6 @@ def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
-
 
 # TODO (@pedropaulofb): This rule must be improved with identification of partition sets. The rule to be created to
 #  substitute this one is: Partition sets with at least one known phase must have all its components as phases.
@@ -608,9 +503,6 @@ def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         - BEHAVIOR: Report incompleteness in all cases.
         """
-
-    if configurations["print_time"]:
-        st = time.perf_counter()
 
     rule_code = "ks_sf_in"
 
@@ -627,8 +519,3 @@ def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list, configurations):
         treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass, graph, nodes_list)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
-
-    if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")

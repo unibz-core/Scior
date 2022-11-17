@@ -1,4 +1,5 @@
 """ Rules applied to the TYPES HIERARCHY. """
+import time
 
 from modules.logger_config import initialize_logger
 from modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, rule_t_k_sup, rule_ns_s_sup, rule_s_ns_sub, \
@@ -54,6 +55,9 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
 
     logger.debug(f"Acessing rule {rule_code} ...")
 
+    if configurations["print_time"]:
+        st = time.perf_counter()
+
     if rule_code == "k_s_sup":
         rule_k_s_sup(ontology_dataclass_list, graph, nodes_list, configurations)
     elif rule_code == "s_k_sub":
@@ -85,5 +89,10 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
     else:
         logger.error(f"Unexpected rule code ({rule_code}) received as parameter! Program aborted.")
         exit(1)
+
+    if configurations["print_time"]:
+        et = time.perf_counter()
+        elapsed_time = round((et - st), 3)
+        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
 
     logger.debug(f"Rule {rule_code} successfully performed.")
