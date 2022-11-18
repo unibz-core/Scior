@@ -44,7 +44,7 @@ def generate_times_table_to_be_printed(time_register, border_option):
     return return_string
 
 
-def generate_classes_table_to_be_printed(before_after_statistics, table_option, border_option):
+def generate_classes_table_to_be_printed(consolidated_statistics, table_option, border_option):
     """ Returns table with classes statistics to be printed.
         TABLE OPTIONS can be: types, individuals, total.
         BORDER OPTIONS can be all values accepted by prettytable lib.
@@ -52,14 +52,9 @@ def generate_classes_table_to_be_printed(before_after_statistics, table_option, 
 
     logger = initialize_logger()
 
-    # CALCULATIONS FOR CLASSES ----------------------------------------------------------------
-
-    # COLUMN BEFORE - CLASSES BEFORE
-
-    # Values
-
-    before = before_after_statistics.classes_statistics_before
-    after = before_after_statistics.classes_statistics_after
+    before = consolidated_statistics.classes_stats_b
+    after = consolidated_statistics.classes_stats_a
+    ba = consolidated_statistics
 
     # TABLES GENERATION ----------------------------------------------------------------
 
@@ -74,58 +69,61 @@ def generate_classes_table_to_be_printed(before_after_statistics, table_option, 
     row_2 = "Partially known classes"
     row_3 = "Totally known classes"
 
-    pos_r1_c1 = "undefined - error if printed"
-    pos_r1_c2 = "undefined - error if printed"
-    pos_r1_c3 = "undefined - error if printed"
-    pos_r2_c1 = "undefined - error if printed"
-    pos_r2_c2 = "undefined - error if printed"
-    pos_r2_c3 = "undefined - error if printed"
-    pos_r3_c1 = "undefined - error if printed"
-    pos_r3_c2 = "undefined - error if printed"
-    pos_r3_c3 = "undefined - error if printed"
+    pos_r1_c1 = "undefined - error if printed."
+    pos_r1_c2 = "undefined - error if printed."
+    pos_r1_c3 = "undefined - error if printed."
+    pos_r2_c1 = "undefined - error if printed."
+    pos_r2_c2 = "undefined - error if printed."
+    pos_r2_c3 = "undefined - error if printed."
+    pos_r3_c1 = "undefined - error if printed."
+    pos_r3_c2 = "undefined - error if printed."
+    pos_r3_c3 = "undefined - error if printed."
+    message = "undefined - error if printed."
 
     if table_option == "types":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {classes_before} CLASSES " \
+        message = f"\nResults of OntCatOWL execution when evaluating {after.total_classes_number} CLASSES " \
                   f"considering only TYPES:\n"
 
-        pos_r1_c1 = f"{before.totally_unknown_classes_types} ({round(tu_classes_types_b_p, 2)}%)"
-        pos_r1_c2 = f"{tu_classes_types_a_v} ({round(tu_classes_types_a_p, 2)}%)"
-        pos_r1_c3 = f"{tu_classes_types_ba_v} ({round(tu_classes_types_ba_p, 2)}%)"
-        pos_r2_c1 = f"{pk_classes_types_b_v} ({round(pk_classes_types_b_p, 2)}%)"
-        pos_r2_c2 = f"{pk_classes_types_a_v} ({round(pk_classes_types_a_p, 2)}%)"
-        pos_r2_c3 = f"{pk_classes_types_ba_v} ({round(pk_classes_types_ba_p, 2)}%)"
-        pos_r3_c1 = f"{tk_classes_types_b_v} ({round(tk_classes_types_b_p, 2)}%)"
-        pos_r3_c2 = f"{tk_classes_types_a_v} ({round(tk_classes_types_a_p, 2)}%)"
-        pos_r3_c3 = f"{tk_classes_types_ba_v} ({round(tk_classes_types_ba_p, 2)}%)"
+        pos_r1_c1 = f"{before.tu_classes_types_v} ({round(before.tu_classes_types_p, 2)}%)"
+        pos_r1_c2 = f"{after.tu_classes_types_v} ({round(after.tu_classes_types_p, 2)}%)"
+        pos_r1_c3 = f"{ba.tu_classes_types_v_d} ({round(ba.tu_classes_types_p_d, 2)}%)"
+        pos_r2_c1 = f"{before.pk_classes_types_v} ({round(before.pk_classes_types_p, 2)}%)"
+        pos_r2_c2 = f"{after.pk_classes_types_v} ({round(after.pk_classes_types_p, 2)}%)"
+        pos_r2_c3 = f"{ba.pk_classes_types_v_d} ({round(ba.pk_classes_types_p_d, 2)}%)"
+        pos_r3_c1 = f"{before.tk_classes_types_v} ({round(before.tk_classes_types_p, 2)}%)"
+        pos_r3_c2 = f"{after.tk_classes_types_v} ({round(after.tk_classes_types_p, 2)}%)"
+        pos_r3_c3 = f"{ba.tk_classes_types_v_d} ({round(ba.tk_classes_types_p_d, 2)}%)"
+
     elif table_option == "individuals":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {classes_before} CLASSES " \
+        message = f"\nResults of OntCatOWL execution when evaluating {after.total_classes_number} CLASSES " \
                   f"considering only INDIVIDUALS:\n"
 
-        pos_r1_c1 = f"{before.totally_unknown_classes_individuals} ({round(tu_classes_individuals_b_p, 2)}%)"
-        pos_r1_c2 = f"{tu_classes_individuals_a_v} ({round(tu_classes_individuals_a_p, 2)}%)"
-        pos_r1_c3 = f"{tu_classes_individuals_ba_v} ({round(tu_classes_individuals_ba_p, 2)}%)"
-        pos_r2_c1 = f"{pk_classes_individuals_b_v} ({round(pk_classes_individuals_b_p, 2)}%)"
-        pos_r2_c2 = f"{pk_classes_individuals_a_v} ({round(pk_classes_individuals_a_p, 2)}%)"
-        pos_r2_c3 = f"{pk_classes_individuals_ba_v} ({round(pk_classes_individuals_ba_p, 2)}%)"
-        pos_r3_c1 = f"{tk_classes_individuals_b_v} ({round(tk_classes_individuals_b_p, 2)}%)"
-        pos_r3_c2 = f"{tk_classes_individuals_a_v} ({round(tk_classes_individuals_a_p, 2)}%)"
-        pos_r3_c3 = f"{tk_classes_individuals_ba_v} ({round(tk_classes_individuals_ba_p, 2)}%)"
+        pos_r1_c1 = f"{before.tu_classes_indiv_v} ({round(before.tu_classes_indiv_p, 2)}%)"
+        pos_r1_c2 = f"{after.tu_classes_indiv_v} ({round(after.tu_classes_indiv_p, 2)}%)"
+        pos_r1_c3 = f"{ba.tu_classes_indiv_v_d} ({round(ba.tu_classes_indiv_p_d, 2)}%)"
+        pos_r2_c1 = f"{before.pk_classes_indiv_v} ({round(before.pk_classes_indiv_p, 2)}%)"
+        pos_r2_c2 = f"{after.pk_classes_indiv_v} ({round(after.pk_classes_indiv_p, 2)}%)"
+        pos_r2_c3 = f"{ba.pk_classes_indiv_v_d} ({round(ba.pk_classes_indiv_p_d, 2)}%)"
+        pos_r3_c1 = f"{before.tk_classes_indiv_v} ({round(before.tk_classes_indiv_p, 2)}%)"
+        pos_r3_c2 = f"{after.tk_classes_indiv_v} ({round(after.tk_classes_indiv_p, 2)}%)"
+        pos_r3_c3 = f"{ba.tk_classes_indiv_v_d} ({round(ba.tk_classes_indiv_p_d, 2)}%)"
+
     elif table_option == "total":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {classes_before} CLASSES " \
+        message = f"\nResults of OntCatOWL execution when evaluating {after.total_classes_number} CLASSES " \
                   f"considering TYPES and  INDIVIDUALS:\n"
 
-        pos_r1_c1 = f"{before.totally_unknown_classes_all} ({round(tu_classes_total_b_p, 2)}%)"
-        pos_r1_c2 = f"{tu_classes_total_a_v} ({round(tu_classes_total_a_p, 2)}%)"
-        pos_r1_c3 = f"{tu_classes_total_ba_v} ({round(tu_classes_total_ba_p, 2)}%)"
-        pos_r2_c1 = f"{pk_classes_total_b_v} ({round(pk_classes_total_b_p, 2)}%)"
-        pos_r2_c2 = f"{pk_classes_total_a_v} ({round(pk_classes_total_a_p, 2)}%)"
-        pos_r2_c3 = f"{pk_classes_total_ba_v} ({round(pk_classes_total_ba_p, 2)}%)"
-        pos_r3_c1 = f"{tk_classes_total_b_v} ({round(tk_classes_total_b_p, 2)}%)"
-        pos_r3_c2 = f"{tk_classes_total_a_v} ({round(tk_classes_total_a_p, 2)}%)"
-        pos_r3_c3 = f"{tk_classes_total_ba_v} ({round(tk_classes_total_ba_p, 2)}%)"
+        pos_r1_c1 = f"{before.tu_classes_all_v} ({round(before.tu_classes_all_p, 2)}%)"
+        pos_r1_c2 = f"{after.tu_classes_all_v} ({round(after.tu_classes_all_p, 2)}%)"
+        pos_r1_c3 = f"{ba.tu_classes_all_v_d} ({round(ba.tu_classes_all_p_d, 2)}%)"
+        pos_r2_c1 = f"{before.pk_classes_all_v} ({round(before.pk_classes_all_p, 2)}%)"
+        pos_r2_c2 = f"{after.pk_classes_all_v} ({round(after.pk_classes_all_p, 2)}%)"
+        pos_r2_c3 = f"{ba.pk_classes_all_v_d} ({round(ba.pk_classes_all_p_d, 2)}%)"
+        pos_r3_c1 = f"{before.tk_classes_all_v} ({round(before.tk_classes_all_p, 2)}%)"
+        pos_r3_c2 = f"{after.tk_classes_all_v} ({round(after.tk_classes_all_p, 2)}%)"
+        pos_r3_c3 = f"{ba.tk_classes_all_v_d} ({round(ba.tk_classes_all_p_d, 2)}%)"
     else:
         logger.error("Invalid table option. Program aborted.")
         exit(1)
@@ -143,13 +141,17 @@ def generate_classes_table_to_be_printed(before_after_statistics, table_option, 
     return return_string
 
 
-def generate_classifications_table_to_be_printed(list_values_classifications, table_option, border_option):
+def generate_classifications_table_to_be_printed(consolidated_statistics, table_option, border_option):
     """ Returns table with classifications statistics to be printed.
         TABLE OPTIONS can be: types, individuals, total.
         BORDER OPTIONS can be all values accepted by prettytable lib.
         """
 
     logger = initialize_logger()
+
+    before = consolidated_statistics.classif_stats_b
+    after = consolidated_statistics.classif_stats_a
+    ba = consolidated_statistics
 
     # Tables' columns' titles
     columns_titles = ["Evaluation", "        Before", "         After", "    Difference"]
@@ -161,47 +163,48 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
     row_1 = "Unknown classifications"
     row_2 = "Known classifications"
 
-    pos_r1_c1 = "undefined - error if printed"
-    pos_r1_c2 = "undefined - error if printed"
-    pos_r1_c3 = "undefined - error if printed"
-    pos_r2_c1 = "undefined - error if printed"
-    pos_r2_c2 = "undefined - error if printed"
-    pos_r2_c3 = "undefined - error if printed"
+    pos_r1_c1 = "undefined - error if printed."
+    pos_r1_c2 = "undefined - error if printed."
+    pos_r1_c3 = "undefined - error if printed."
+    pos_r2_c1 = "undefined - error if printed."
+    pos_r2_c2 = "undefined - error if printed."
+    pos_r2_c3 = "undefined - error if printed."
+    message = "undefined - error if printed."
 
-    message = ""
     if table_option == "types":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {total_classif_types_a_v} " \
+        message = f"\nResults of OntCatOWL execution when evaluating {before.total_classif_types_v} " \
                   f"CLASSIFICATIONS considering only TYPES:\n"
 
-        pos_r1_c1 = f"{number_unknown_classif_types_b_v} ({round(number_unknown_classif_types_b_p, 2)}%)"
-        pos_r1_c2 = f"{number_unknown_classif_types_a_v} ({round(number_unknown_classif_types_a_p, 2)}%)"
-        pos_r1_c3 = f"{number_unknown_classif_types_ba_v} ({round(number_unknown_classif_types_ba_p, 2)}%)"
-        pos_r2_c1 = f"{number_known_classif_types_b_v} ({round(number_known_classif_types_b_p, 2)}%)"
-        pos_r2_c2 = f"{number_known_classif_types_a_v} ({round(number_known_classif_types_a_p, 2)}%)"
-        pos_r2_c3 = f"{number_known_classif_types_ba_v} ({round(number_known_classif_types_ba_p, 2)}%)"
+        pos_r1_c1 = f"{before.unknown_classif_types_v} ({round(before.unknown_classif_types_p, 2)}%)"
+        pos_r1_c2 = f"{after.unknown_classif_types_v} ({round(after.unknown_classif_types_p, 2)}%)"
+        pos_r1_c3 = f"{ba.unknown_classif_types_v_d} ({round(ba.unknown_classif_types_p_d, 2)}%)"
+        pos_r2_c1 = f"{before.known_classif_types_v} ({round(before.known_classif_types_p, 2)}%)"
+        pos_r2_c2 = f"{after.known_classif_types_v} ({round(after.known_classif_types_p, 2)}%)"
+        pos_r2_c3 = f"{ba.known_classif_types_v_d} ({round(ba.known_classif_types_p_d, 2)}%)"
+
     elif table_option == "individuals":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {total_classif_individuals_a_v} " \
+        message = f"\nResults of OntCatOWL execution when evaluating {before.total_classif_indiv_v} " \
                   f"CLASSIFICATIONS considering only INDIVIDUALS:\n"
 
-        pos_r1_c1 = f"{number_unknown_classif_individuals_b_v} ({round(number_unknown_classif_individuals_b_p, 2)}%)"
-        pos_r1_c2 = f"{number_unknown_classif_individuals_a_v} ({round(number_unknown_classif_individuals_a_p, 2)}%)"
-        pos_r1_c3 = f"{number_unknown_classif_individuals_ba_v} ({round(number_unknown_classif_individuals_ba_p, 2)}%)"
-        pos_r2_c1 = f"{number_known_classif_individuals_b_v} ({round(number_known_classif_individuals_b_p, 2)}%)"
-        pos_r2_c2 = f"{number_known_classif_individuals_a_v} ({round(number_known_classif_individuals_a_p, 2)}%)"
-        pos_r2_c3 = f"{number_known_classif_individuals_ba_v} ({round(number_known_classif_individuals_ba_p, 2)}%)"
+        pos_r1_c1 = f"{before.unknown_classif_indiv_v} ({round(before.unknown_classif_indiv_p, 2)}%)"
+        pos_r1_c2 = f"{after.unknown_classif_indiv_v} ({round(after.unknown_classif_indiv_p, 2)}%)"
+        pos_r1_c3 = f"{ba.unknown_classif_indiv_v_d} ({round(ba.unknown_classif_indiv_p_d, 2)}%)"
+        pos_r2_c1 = f"{before.known_classif_indiv_v} ({round(before.known_classif_indiv_p, 2)}%)"
+        pos_r2_c2 = f"{after.known_classif_indiv_v} ({round(after.known_classif_indiv_p, 2)}%)"
+        pos_r2_c3 = f"{ba.known_classif_indiv_v_d} ({round(ba.known_classif_indiv_p_d, 2)}%)"
     elif table_option == "total":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {total_number_classif_a_v} " \
+        message = f"\nResults of OntCatOWL execution when evaluating {before.total_classif_number} " \
                   f"CLASSIFICATIONS considering TYPES and INDIVIDUALS:\n"
 
-        pos_r1_c1 = f"{number_unknown_classif_total_b_v} ({round(number_unknown_classif_total_b_p, 2)}%)"
-        pos_r1_c2 = f"{number_unknown_classif_total_a_v} ({round(number_unknown_classif_total_a_p, 2)}%)"
-        pos_r1_c3 = f"{number_unknown_classif_total_ba_v} ({round(number_unknown_classif_total_ba_p, 2)}%)"
-        pos_r2_c1 = f"{number_known_classif_total_b_v} ({round(number_known_classif_total_b_p, 2)}%)"
-        pos_r2_c2 = f"{number_known_classif_total_a_v} ({round(number_known_classif_total_a_p, 2)}%)"
-        pos_r2_c3 = f"{number_known_classif_total_ba_v} ({round(number_known_classif_total_ba_p, 2)}%)"
+        pos_r1_c1 = f"{before.unknown_classif_total_v} ({round(before.unknown_classif_total_p, 2)}%)"
+        pos_r1_c2 = f"{after.unknown_classif_total_v} ({round(after.unknown_classif_total_p, 2)}%)"
+        pos_r1_c3 = f"{ba.unknown_classif_total_v_d} ({round(ba.unknown_classif_total_p_d, 2)}%)"
+        pos_r2_c1 = f"{before.known_classif_total_v} ({round(before.known_classif_total_p, 2)}%)"
+        pos_r2_c2 = f"{after.known_classif_total_v} ({round(after.known_classif_total_p, 2)}%)"
+        pos_r2_c3 = f"{ba.known_classif_total_v_d} ({round(ba.known_classif_total_p_d, 2)}%)"
     else:
         logger.error("Invalid table option. Program aborted.")
         exit(1)
@@ -218,7 +221,7 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
     return return_string
 
 
-def print_statistics_screen(before_after_statistics, time_register, configurations,
+def print_statistics_screen(consolidated_statistics, time_register, configurations,
                             restriction="PRINT_ALL"):
     """ Receives list of execution times, and lists of before and after values and prints these three statistics.
 
@@ -227,64 +230,30 @@ def print_statistics_screen(before_after_statistics, time_register, configuratio
         - "TYPES_ONLY" - prints only total table.
         - "INDIVIDUALS_ONLY" - prints only individuals table.
         - "TOTAL_ONLY" - prints only total table.
-
-    list_values positions:
-
-        FOR NUMBERS OF CLASSES:
-            list_values_classes[(1)0] = total_classes_number
-
-            list_values_classes[(1)1] = totally_unknown_classes_total
-            list_values_classes[(1)2] = totally_unknown_classes_individuals
-            list_values_classes[(1)3] = totally_unknown_classes_all
-
-            list_values_classes[(1)4] = partially_known_classes_total
-            list_values_classes[(1)5] = partially_known_classes_individuals
-            list_values_classes[(1)6] = partially_known_classes_all
-
-            list_values_classes[(1)7] = totally_known_classes_total
-            list_values_classes[(1)8] = totally_known_classes_individuals
-            list_values_classes[(1)9] = totally_known_classes_all
-
-        FOR NUMBERS OF CLASSIFICATIONS:
-            list_values_classifications[(1)0] = total_classifications_number
-
-            list_values_classifications[(1)1] = total_classifications_types
-            list_values_classifications[(1)2] = total_classifications_individuals
-
-            list_values_classifications[(1)3] = number_unknown_classifications_types
-            list_values_classifications[(1)4] = number_known_classifications_types
-
-            list_values_classifications[(1)5] = number_unknown_classifications_individuals
-            list_values_classifications[(1)6] = number_known_classifications_individuals
-
-            list_values_classifications[(1)7] = number_unknown_classifications_total
-            list_values_classifications[(1)8] = number_known_classifications_total
-
-            list_values_classifications[(1)0] = 0 (empty)
     """
 
     print("\n##### FINAL ONTCATOWL CLASSIFICATION SUMMARY #####")
 
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
-        table_classes_types = generate_classes_table_to_be_printed(before_after_statistics, "types", SINGLE_BORDER)
-        table_classifications_types = generate_classifications_table_to_be_printed(before_after_statistics, "types",
+        table_classes_types = generate_classes_table_to_be_printed(consolidated_statistics, "types", SINGLE_BORDER)
+        table_classifications_types = generate_classifications_table_to_be_printed(consolidated_statistics, "types",
                                                                                    SINGLE_BORDER)
 
         print(table_classes_types)
         print(table_classifications_types)
 
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
-        table_classes_individuals = generate_classes_table_to_be_printed(before_after_statistics, "individuals",
+        table_classes_individuals = generate_classes_table_to_be_printed(consolidated_statistics, "individuals",
                                                                          SINGLE_BORDER)
-        table_classifications_individuals = generate_classifications_table_to_be_printed(before_after_statistics,
+        table_classifications_individuals = generate_classifications_table_to_be_printed(consolidated_statistics,
                                                                                          "individuals", SINGLE_BORDER)
 
         print(table_classes_individuals)
         print(table_classifications_individuals)
 
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
-        table_classes_total = generate_classes_table_to_be_printed(before_after_statistics, "total", SINGLE_BORDER)
-        table_classifications_total = generate_classifications_table_to_be_printed(before_after_statistics, "total",
+        table_classes_total = generate_classes_table_to_be_printed(consolidated_statistics, "total", SINGLE_BORDER)
+        table_classifications_total = generate_classifications_table_to_be_printed(consolidated_statistics, "total",
                                                                                    SINGLE_BORDER)
 
         print(table_classes_total)

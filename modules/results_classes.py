@@ -101,9 +101,8 @@ class classifications_statistics(object):
     """ Stores stats for all classes in a given time measurement (before, after, etc.). """
 
     def __init__(self):
-        self.total_classif_number = -1
-
         # Values
+        self.total_classif_number = -1
         self.total_classif_types_v = -1
         self.total_classif_indiv_v = -1
 
@@ -121,11 +120,11 @@ class classifications_statistics(object):
         self.total_classif_types_p = (self.total_classif_types_v / self.total_classif_number) * 100
         self.total_classif_indiv_p = (self.total_classif_indiv_v / self.total_classif_number) * 100
 
-        self.unknown_classif_types_p = (self.unknown_classif_types_v / self.total_classif_number) * 100
-        self.known_classif_types_p = (self.known_classif_types_v / self.total_classif_number) * 100
+        self.unknown_classif_types_p = (self.unknown_classif_types_v / self.total_classif_types_v) * 100
+        self.known_classif_types_p = (self.known_classif_types_v / self.total_classif_types_v) * 100
 
-        self.unknown_classif_indiv_p = (self.unknown_classif_indiv_v / self.total_classif_number) * 100
-        self.known_classif_indiv_p = (self.known_classif_indiv_v / self.total_classif_number) * 100
+        self.unknown_classif_indiv_p = (self.unknown_classif_indiv_v / self.total_classif_indiv_v) * 100
+        self.known_classif_indiv_p = (self.known_classif_indiv_v / self.total_classif_indiv_v) * 100
 
         self.unknown_classif_total_p = (self.unknown_classif_total_v / self.total_classif_number) * 100
         self.known_classif_total_p = (self.known_classif_total_v / self.total_classif_number) * 100

@@ -171,7 +171,7 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
     return return_string
 
 
-def get_content500(list_values_classes, list_values_classifications, restriction="PRINT_ALL"):
+def get_content500(consolidated_statistics, restriction="PRINT_ALL"):
     """ Prints statistics for classes and classifications.
 
     Allowed restriction values:
@@ -194,8 +194,8 @@ def get_content500(list_values_classes, list_values_classifications, restriction
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
         title_501 = "\n### Statistics of the OntCatOWL execution for TYPES"
 
-        table_classes_types = generate_classes_table_to_be_printed(list_values_classes, "types", MARKDOWN)
-        table_classifications_types = generate_classifications_table_to_be_printed(list_values_classifications, "types",
+        table_classes_types = generate_classes_table_to_be_printed(consolidated_statistics, "types", MARKDOWN)
+        table_classifications_types = generate_classifications_table_to_be_printed(consolidated_statistics, "types",
                                                                                    MARKDOWN)
 
         content_501 = "\n" + table_classes_types + "\n" + table_classifications_types + "\n"
@@ -203,9 +203,9 @@ def get_content500(list_values_classes, list_values_classifications, restriction
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
         title_502 = "\n### Statistics of the OntCatOWL execution for INDIVIDUALS"
 
-        table_classes_individuals = generate_classes_table_to_be_printed(list_values_classes, "individuals",
+        table_classes_individuals = generate_classes_table_to_be_printed(consolidated_statistics, "individuals",
                                                                          MARKDOWN)
-        table_classifications_individuals = generate_classifications_table_to_be_printed(list_values_classifications,
+        table_classifications_individuals = generate_classifications_table_to_be_printed(consolidated_statistics,
                                                                                          "individuals", MARKDOWN)
 
         content_502 = "\n" + table_classes_individuals + "\n" + table_classifications_individuals + "\n"
@@ -213,8 +213,8 @@ def get_content500(list_values_classes, list_values_classifications, restriction
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
         title_503 = "\n### Statistics of the OntCatOWL execution for TYPES and INDIVIDUALS"
 
-        table_classes_total = generate_classes_table_to_be_printed(list_values_classes, "total", MARKDOWN)
-        table_classifications_total = generate_classifications_table_to_be_printed(list_values_classifications, "total",
+        table_classes_total = generate_classes_table_to_be_printed(consolidated_statistics, "total", MARKDOWN)
+        table_classifications_total = generate_classifications_table_to_be_printed(consolidated_statistics, "total",
                                                                                    MARKDOWN)
 
         content_503 = "\n" + table_classes_total + "\n" + table_classifications_total + "\n"
