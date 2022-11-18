@@ -4,7 +4,8 @@ import os
 from prettytable import MARKDOWN
 
 from modules.logger_config import initialize_logger
-from modules.results_printer import generate_classes_table_to_be_printed, generate_classifications_table_to_be_printed
+from modules.results_printer import generate_classes_table_to_be_printed, generate_classifications_table_to_be_printed, \
+    generate_times_table_to_be_printed
 from modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
@@ -62,7 +63,7 @@ def get_content100(restriction="PRINT_ALL"):
 
 
 def get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time, end_date_time_out,
-                   elapsed_time, configurations):
+                   elapsed_time, time_register, configurations):
     """ Presents some information about the software execution."""
 
     line_01 = f"OntCatOWL successfully performed.\n" \
@@ -70,8 +71,10 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
               f"* End time {end_date_time}\n" \
               f"* Total elapsed time: {elapsed_time} seconds.\n"
 
+    table_times = generate_times_table_to_be_printed(time_register, MARKDOWN)
+
     line_02 = f"\nConfigurations:\n" \
-              f"* Automatic execution: {not (configurations['is_automatic'])}\n" \
+              f"* Automatic execution: {not configurations['is_automatic']}\n" \
               f"* Model is complete: {configurations['is_complete']}\n" \
               f"* Reasoning enabled: {configurations['reasoning']}\n" \
               f"* Execution times printed: {configurations['print_time']}\n" \
@@ -98,7 +101,7 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
               f"* Hash for individuals:\n\t* {hash_individuals}\n" \
               f"* Total hash:\n\t* {hash_total}\n"
 
-    return_string = line_01 + line_02 + line_03 + line_04
+    return_string = line_01 + table_times + "\n" + line_02 + line_03 + line_04
 
     return return_string
 

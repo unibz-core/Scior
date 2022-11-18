@@ -2,6 +2,8 @@
 import time
 from datetime import datetime
 
+from rdflib import RDFS, RDF
+
 from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from modules.graph_save_ontology import save_ontology_gufo_statements, \
     save_ontology_file_as_configuration
@@ -14,13 +16,15 @@ from modules.report_printer import print_report_file
 from modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
 from modules.results_printer import print_statistics_screen
 from modules.rules_types_run import execute_rules_types
-from modules.utils_rdf import load_graph_safely, perform_reasoning
+from modules.utils_rdf import load_all_graph_safely, perform_reasoning, load_graph_safely_considering_restrictions, \
+    reduce_graph_considering_restrictions
 
 SOFTWARE_ACRONYM = "OntCatOWL"
 SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
 SOFTWARE_VERSION = "0.22.11.16"
 SOFTWARE_URL = "https://github.com/unibz-core/OntCatOWL/"
 VERSION_RESTRICTION = "TYPES_ONLY"
+LIST_GRAPH_RESTRICTIONS = [RDF.type, RDFS.subClassOf]
 
 
 def run_ontcatowl():
@@ -39,36 +43,38 @@ def run_ontcatowl():
     logger.info(f"OntCatOWL started on {start_date_time}!")
 
     # Loading owl ontologies from files to the working memory
-    ontology_graph = load_graph_safely(global_configurations["ontology_path"])
-    gufo_graph = load_graph_safely("resources/gufoEndurantsOnly.ttl")
+    original_graph = load_all_graph_safely(global_configurations["ontology_path"])
+    working_graph = reduce_graph_considering_restrictions(original_graph, LIST_GRAPH_RESTRICTIONS)
+    gufo_graph = load_graph_safely_considering_restrictions("resources/gufoEndurantsOnly.ttl", LIST_GRAPH_RESTRICTIONS)
 
     # Loading GUFO dictionary from yaml file
     gufo_dictionary = initialize_gufo_dictionary()
 
     if global_configurations["reasoning"]:
-        perform_reasoning(ontology_graph)
+        perform_reasoning(working_graph)
 
-    ontology_dataclass_list = initialize_ontology_dataclasses(ontology_graph, gufo_dictionary)
+    ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, gufo_dictionary)
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
 
-    ontology_nodes = initialize_nodes_lists(ontology_graph)
+    ontology_nodes = initialize_nodes_lists(working_graph)
 
     # Loading the GUFO information already known from the ontology
-    load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list)
+    load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list)
     before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
 
-    execute_rules_types(ontology_dataclass_list, ontology_graph, ontology_nodes, global_configurations)
+    time_register = execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes, global_configurations)
 
     # SAVING RESULTS - OUTPUT
 
     after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
-    ontology_graph = save_ontology_gufo_statements(ontology_dataclass_list, ontology_graph, VERSION_RESTRICTION)
+    resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, VERSION_RESTRICTION)
 
     # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
     classes_statistics, classifications_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    print_statistics_screen(classes_statistics, classifications_statistics, VERSION_RESTRICTION)
+    print_statistics_screen(classes_statistics, classifications_statistics, time_register, global_configurations,
+                            VERSION_RESTRICTION)
 
     now = datetime.now()
     end_date_time_here = now.strftime("%d-%m-%Y %H:%M:%S")
@@ -77,11 +83,11 @@ def run_ontcatowl():
     elapsed_time = round((et - st), 3)
     logger.info(f"OntCatOWL concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
-    save_ontology_file_as_configuration(end_date_time, ontology_graph, gufo_graph, global_configurations)
+    save_ontology_file_as_configuration(resulting_graph, gufo_graph, end_date_time, global_configurations)
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
-                      classes_statistics, classifications_statistics, VERSION_RESTRICTION)
+                      classes_statistics, classifications_statistics, time_register, VERSION_RESTRICTION)
 
 
 if __name__ == "__main__":
@@ -94,7 +100,6 @@ if __name__ == "__main__":
 
 # TODO (@pedropaulofb): PERFORMANCE
 # Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verify for/break statement
-# for reducing memory usage, I can upload only the graph taxonomy, as this version only deals with it.
 
 # TODO (@pedropaulofb): BEFORE RELEASE OF VERSION
 # Evaluate on Linux before release first version

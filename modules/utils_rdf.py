@@ -1,4 +1,5 @@
 """ Auxiliary functions for extending and complementing RDFLib's RDF treatment functions """
+import copy
 import time
 
 from owlrl import DeductiveClosure, RDFS_Semantics
@@ -7,12 +8,26 @@ from rdflib import RDF, OWL, Graph
 from modules.logger_config import initialize_logger
 
 
-def load_graph_safely(ontology_file):
+def load_graph_safely_considering_restrictions(ontology_file, graph_restriction=None):
+    """ Safely load graph from file to working memory.
+        graph_restriction indicates items that must be kept when loading the ontology.
+    """
+
+    if graph_restriction == None:
+        ontology_graph = load_all_graph_safely(ontology_file)
+    else:
+        ontology_graph = load_restrictions_only_graph_safely(ontology_file, graph_restriction)
+
+    return ontology_graph
+
+
+def load_all_graph_safely(ontology_file):
     """ Safely load graph from file to working memory. """
 
     logger = initialize_logger()
 
     ontology_graph = Graph()
+
     try:
         ontology_graph.parse(ontology_file)
     except OSError:
@@ -22,6 +37,31 @@ def load_graph_safely(ontology_file):
     logger.debug(f"Ontology file {ontology_file} successfully loaded to working memory.")
 
     return ontology_graph
+
+
+def reduce_graph_considering_restrictions(original_graph, restrictions_list):
+    """ Reduce the already loaded ontology model to only allowed statements (contained in the restrictions_list). """
+
+    # Copying original graph to a new graph
+    working_graph = copy.deepcopy(original_graph)
+
+    for subj, pred, obj in working_graph:
+        if pred not in restrictions_list:
+            working_graph.remove((subj, pred, obj))
+
+    return working_graph
+
+
+def load_restrictions_only_graph_safely(owl_file_path, restrictions_list):
+    """ Extract the dataset model's taxonomy into a new graph. """
+
+    working_graph = load_all_graph_safely(owl_file_path)
+
+    for subj, pred, obj in working_graph:
+        if pred not in restrictions_list:
+            working_graph.remove((subj, pred, obj))
+
+    return working_graph
 
 
 def has_prefix(ontology_graph, prefix):

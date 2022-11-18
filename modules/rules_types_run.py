@@ -13,10 +13,16 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
     logger = initialize_logger()
     logger.info("Starting GUFO types hierarchy rules ...")
 
+    # Rules
     always_automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub",
                               "ns_sub_r", "ks_sf_in"]
 
     general_rules = ["n_r_t", "ns_s_spe", "nk_k_sup", "s_nsup_k", "nrs_ns_r"]
+
+    # Execution time calculation
+    time_register = {"k_s_sup": 0, "s_k_sub": 0, "t_k_sup": 0, "ns_s_sup": 0, "s_ns_sub": 0,
+                     "r_ar_sup": 0, "ar_r_sub": 0, "ns_sub_r": 0, "ks_sf_in": 0, "n_r_t": 0,
+                     "ns_s_spe": 0, "nk_k_sup": 0, "s_nsup_k": 0, "nrs_ns_r": 0}
 
     list_of_rules = always_automatic_rules + general_rules
 
@@ -30,13 +36,14 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
         while initial_hash != final_hash:
             initial_hash = final_hash
             for automatic_rule in always_automatic_rules:
-                switch_rule_execution(ontology_dataclass_list, graph, nodes_list, automatic_rule, configurations)
+                switch_rule_execution(ontology_dataclass_list, graph, nodes_list, automatic_rule, configurations,
+                                      time_register)
             final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
         # Loop always_automatic_rules + general_rules
         initial_hash = final_hash
         for rule in list_of_rules:
-            switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule, configurations)
+            switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule, configurations, time_register)
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
         if initial_hash == final_hash:
@@ -47,16 +54,17 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
 
     logger.info("GUFO types hierarchy rules concluded.")
 
+    return time_register
 
-def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code, configurations):
+
+def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code, configurations, time_register):
     """ A switch function that calls the rule received in its parameter. """
 
     logger = initialize_logger()
 
     logger.debug(f"Acessing rule {rule_code} ...")
 
-    if configurations["print_time"]:
-        st = time.perf_counter()
+    st = time.perf_counter()
 
     if rule_code == "k_s_sup":
         rule_k_s_sup(ontology_dataclass_list, graph, nodes_list, configurations)
@@ -90,9 +98,13 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
         logger.error(f"Unexpected rule code ({rule_code}) received as parameter! Program aborted.")
         exit(1)
 
+    et = time.perf_counter()
+    elapsed_time = et - st
+    time_register[rule_code] += elapsed_time
+
     if configurations["print_time"]:
-        et = time.perf_counter()
-        elapsed_time = round((et - st), 3)
-        logger.info(f"Execution time for rule {rule_code}: {elapsed_time} seconds.")
+        logger.info(f"Execution time for rule {rule_code}: {round(elapsed_time, 3)} seconds.")
 
     logger.debug(f"Rule {rule_code} successfully performed.")
+
+    return time_register

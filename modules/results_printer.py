@@ -4,11 +4,51 @@ from prettytable import PrettyTable, SINGLE_BORDER
 from modules.logger_config import initialize_logger
 
 
+def generate_times_table_to_be_printed(time_register, border_option):
+    """ Generates table with aggregated execution times for all rules to be printed. """
+
+    total_rules_time = round(
+        time_register["k_s_sup"] + time_register["s_k_sub"] + time_register["t_k_sup"] + time_register["ns_s_sup"] +
+        time_register["s_ns_sub"] + time_register["r_ar_sup"] + time_register["ar_r_sub"] + time_register["ns_sub_r"] +
+        time_register["ks_sf_in"] + time_register["n_r_t"] + time_register["ns_s_spe"] + time_register["nk_k_sup"] +
+        time_register["s_nsup_k"] + time_register["nrs_ns_r"], 3)
+
+    # Tables' columns' titles
+    columns_titles = ["Rule Code", " Time (s)"]
+
+    pretty_table = PrettyTable(columns_titles)
+
+    message = f"\nTotal aggregated execution times for all rules was {total_rules_time} seconds:\n"
+
+    pretty_table.add_row(["ar_r_sub", round(time_register["ar_r_sub"], 3)])
+    pretty_table.add_row(["k_s_sup", round(time_register["k_s_sup"], 3)])
+    pretty_table.add_row(["ks_sf_in", round(time_register["ks_sf_in"], 3)])
+    pretty_table.add_row(["n_r_t", round(time_register["n_r_t"], 3)])
+    pretty_table.add_row(["nk_k_sup", round(time_register["nk_k_sup"], 3)])
+    pretty_table.add_row(["nrs_ns_r", round(time_register["nrs_ns_r"], 3)])
+    pretty_table.add_row(["ns_s_spe", round(time_register["ns_s_spe"], 3)])
+    pretty_table.add_row(["ns_s_sup", round(time_register["ns_s_sup"], 3)])
+    pretty_table.add_row(["ns_sub_r", round(time_register["ns_sub_r"], 3)])
+    pretty_table.add_row(["r_ar_sup", round(time_register["r_ar_sup"], 3)])
+    pretty_table.add_row(["s_k_sub", round(time_register["s_k_sub"], 3)])
+    pretty_table.add_row(["s_ns_sub", round(time_register["s_ns_sub"], 3)])
+    pretty_table.add_row(["s_nsup_k", round(time_register["s_nsup_k"], 3)])
+    pretty_table.add_row(["t_k_sup", round(time_register["t_k_sup"], 3)])
+
+    pretty_table.align = "r"
+    pretty_table.set_style(border_option)
+
+    table_text = pretty_table.get_string()
+    return_string = message + table_text
+
+    return return_string
+
+
 def generate_classes_table_to_be_printed(list_values_classes, table_option, border_option):
     """ Returns table with classes statistics to be printed.
         TABLE OPTIONS can be: types, individuals, total.
         BORDER OPTIONS can be all values accepted by prettytable lib.
-        """
+    """
 
     logger = initialize_logger()
 
@@ -364,8 +404,9 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
     return return_string
 
 
-def print_statistics_screen(list_values_classes, list_values_classifications, restriction="PRINT_ALL"):
-    """ Receives lists of before and after values and prints them in a table.
+def print_statistics_screen(list_values_classes, list_values_classifications, time_register, configurations,
+                            restriction="PRINT_ALL"):
+    """ Receives list of execution times, and lists of before and after values and prints these three statistics.
 
     Restrictions:
         - "PRINT_ALL" - prints total, individuals, and total tables.
@@ -417,7 +458,6 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
 
         print(table_classes_types)
         print(table_classifications_types)
-        print()
 
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
         table_classes_individuals = generate_classes_table_to_be_printed(list_values_classes, "individuals",
@@ -427,7 +467,6 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
 
         print(table_classes_individuals)
         print(table_classifications_individuals)
-        print()
 
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
         table_classes_total = generate_classes_table_to_be_printed(list_values_classes, "total", SINGLE_BORDER)
@@ -436,4 +475,9 @@ def print_statistics_screen(list_values_classes, list_values_classifications, re
 
         print(table_classes_total)
         print(table_classifications_total)
-        print()
+
+    if configurations["print_time"]:
+        table_aggregated_time = generate_times_table_to_be_printed(time_register, SINGLE_BORDER)
+        print(table_aggregated_time)
+
+    print()

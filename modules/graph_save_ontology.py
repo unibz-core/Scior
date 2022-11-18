@@ -58,7 +58,7 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
     return ontology_graph
 
 
-def save_ontology_file_as_configuration(end_date_time, ontology_graph, gufo_graph, global_configurations):
+def save_ontology_file_as_configuration(ontology_graph, gufo_graph, end_date_time, global_configurations):
     """Prints in a file the output ontology according to the related configuration, which can be:
     global_configurations["save_gufo"] = True
     global_configurations["import_gufo"] = True

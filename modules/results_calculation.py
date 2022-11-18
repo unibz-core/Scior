@@ -40,6 +40,12 @@ class list_classes_by_situation(object):
             exit(1)
 
 
+class situation_statistics(object):
+    """ Stores the statistics for classes' types and their classifications in a given moment (before, after, etc.). """
+
+    pass
+
+
 def generates_partial_statistics_list(ontology_dataclass_list):
     """ Collects the statistics of an ontology_dataclass_list.
     Returns a list of instances of the dataclass_statistics class.
@@ -53,10 +59,9 @@ def generates_partial_statistics_list(ontology_dataclass_list):
     return partial_statistics_list
 
 
-def get_values_statistics(statistics_list):
-    """ Receives a statistics list and returns two lists:
+def get_values_statistics_classes(statistics_list):
+    """ Receives a statistics list and returns a list for classes.
         list for classes: aggregated statistics for classes
-        list for classifications: aggregated statistics for possible classifications (stereotypes) of classes
 
         FOR NUMBERS OF CLASSES:
             return_list_classes[0] = total_classes_number
@@ -72,29 +77,11 @@ def get_values_statistics(statistics_list):
             return_list_classes[7] = totally_known_classes_types
             return_list_classes[8] = totally_known_classes_individuals
             return_list_classes[9] = totally_known_classes_all
-
-        FOR NUMBERS OF CLASSIFICATIONS:
-            return_list_classifications[0] = total_classifications_number
-
-            return_list_classifications[1] = total_classifications_types
-            return_list_classifications[2] = total_classifications_individuals
-
-            return_list_classifications[3] = number_unknown_classifications_types
-            return_list_classifications[4] = number_known_classifications_types
-
-            return_list_classifications[5] = number_unknown_classifications_individuals
-            return_list_classifications[6] = number_known_classifications_individuals
-
-            return_list_classifications[7] = number_unknown_classifications_total
-            return_list_classifications[8] = number_known_classifications_total
-
-            return_list_classifications[9] = 0 (empty)
     """
     logger = initialize_logger()
 
     # INITIALIZATION OF VARIABLES
     return_list_classes = []
-    return_list_classifications = []
     total_classes_number = 0
     totally_unknown_classes_types = 0
     totally_unknown_classes_individuals = 0
@@ -106,25 +93,10 @@ def get_values_statistics(statistics_list):
     partially_known_classes_individuals = 0
     partially_known_classes_all = 0
 
-    number_unknown_classifications_types = 0
-    number_unknown_classifications_individuals = 0
-    number_known_classifications_types = 0
-    number_known_classifications_individuals = 0
-    number_unknown_classifications_total = 0
-    number_known_classifications_total = 0
-
     # CALCULATION OF VALUES
     for element in statistics_list:
 
         total_classes_number += 1
-
-        # Calculating number of classifications for TYPES
-        number_unknown_classifications_types += element.number_unknown_types
-        number_known_classifications_types += element.number_known_types
-
-        # Calculating number of classifications for INDIVIDUALS
-        number_unknown_classifications_individuals += element.number_unknown_individuals
-        number_known_classifications_individuals += element.number_known_individuals
 
         # Calculating number of classes for TYPES
 
@@ -163,10 +135,6 @@ def get_values_statistics(statistics_list):
         else:
             partially_known_classes_all += 1
 
-    # Calculating number of classifications for TOTAL
-    number_unknown_classifications_total += number_unknown_classifications_types + number_unknown_classifications_individuals
-    number_known_classifications_total += number_known_classifications_types + number_known_classifications_individuals
-
     # GENERATING RETURN LISTS
 
     # Generating lists of numbers for classes
@@ -183,6 +151,72 @@ def get_values_statistics(statistics_list):
     return_list_classes.append(totally_known_classes_types)
     return_list_classes.append(totally_known_classes_individuals)
     return_list_classes.append(totally_known_classes_all)
+
+    if (
+            totally_unknown_classes_types + partially_known_classes_types + totally_known_classes_types) != total_classes_number:
+        logger.error("Sum of number of classes is incorrect when calculating statistics - Totally Unknown. "
+                     "Program aborted.")
+        exit(1)
+    if (
+            totally_unknown_classes_individuals + partially_known_classes_individuals + totally_known_classes_individuals) != total_classes_number:
+        logger.error("Sum of number of classes is incorrect when calculating statistics - Partially Known. "
+                     "Program aborted.")
+        exit(1)
+    if (totally_unknown_classes_all + partially_known_classes_all + totally_known_classes_all) != total_classes_number:
+        logger.error("Sum of number of classes is incorrect when calculating statistics - Totally Known. "
+                     "Program aborted.")
+        exit(1)
+
+    return return_list_classes
+
+
+def get_values_statistics_classifications(statistics_list):
+    """ Receives a statistics list and returns a list for classifications.
+        list for classifications: aggregated statistics for possible classifications (stereotypes) of classes
+
+        FOR NUMBERS OF CLASSIFICATIONS:
+            return_list_classifications[0] = total_classifications_number
+
+            return_list_classifications[1] = total_classifications_types
+            return_list_classifications[2] = total_classifications_individuals
+
+            return_list_classifications[3] = number_unknown_classifications_types
+            return_list_classifications[4] = number_known_classifications_types
+
+            return_list_classifications[5] = number_unknown_classifications_individuals
+            return_list_classifications[6] = number_known_classifications_individuals
+
+            return_list_classifications[7] = number_unknown_classifications_total
+            return_list_classifications[8] = number_known_classifications_total
+
+            return_list_classifications[9] = 0 (empty)
+    """
+
+    # INITIALIZATION OF VARIABLES
+    return_list_classifications = []
+
+    number_unknown_classifications_types = 0
+    number_unknown_classifications_individuals = 0
+    number_known_classifications_types = 0
+    number_known_classifications_individuals = 0
+    number_unknown_classifications_total = 0
+    number_known_classifications_total = 0
+
+    # CALCULATION OF VALUES
+    for element in statistics_list:
+        # Calculating number of classifications for TYPES
+        number_unknown_classifications_types += element.number_unknown_types
+        number_known_classifications_types += element.number_known_types
+
+        # Calculating number of classifications for INDIVIDUALS
+        number_unknown_classifications_individuals += element.number_unknown_individuals
+        number_known_classifications_individuals += element.number_known_individuals
+
+    # Calculating number of classifications for TOTAL
+    number_unknown_classifications_total += number_unknown_classifications_types + number_unknown_classifications_individuals
+    number_known_classifications_total += number_known_classifications_types + number_known_classifications_individuals
+
+    # GENERATING RETURN LISTS
 
     # Generating lists of numbers for classifications
     total_classifications_number = number_unknown_classifications_total + number_known_classifications_total
@@ -205,22 +239,7 @@ def get_values_statistics(statistics_list):
 
     return_list_classifications.append(0)
 
-    if (
-            totally_unknown_classes_types + partially_known_classes_types + totally_known_classes_types) != total_classes_number:
-        logger.error("Sum of number of classes is incorrect when calculating statistics - Totally Unknown. "
-                     "Program aborted.")
-        exit(1)
-    if (
-            totally_unknown_classes_individuals + partially_known_classes_individuals + totally_known_classes_individuals) != total_classes_number:
-        logger.error("Sum of number of classes is incorrect when calculating statistics - Partially Known. "
-                     "Program aborted.")
-        exit(1)
-    if (totally_unknown_classes_all + partially_known_classes_all + totally_known_classes_all) != total_classes_number:
-        logger.error("Sum of number of classes is incorrect when calculating statistics - Totally Known. "
-                     "Program aborted.")
-        exit(1)
-
-    return return_list_classes, return_list_classifications
+    return return_list_classifications
 
 
 def calculate_final_statistics(before_statistics, after_statistics):
@@ -229,8 +248,10 @@ def calculate_final_statistics(before_statistics, after_statistics):
     the class dataclass_statistics.
     """
 
-    list_classes_values_before, list_classifications_values_before = get_values_statistics(before_statistics)
-    list_classes_values_after, list_classifications_values_after = get_values_statistics(after_statistics)
+    list_classes_values_before = get_values_statistics_classes(before_statistics)
+    list_classifications_values_before = get_values_statistics_classifications(before_statistics)
+    list_classes_values_after = get_values_statistics_classes(after_statistics)
+    list_classifications_values_after = get_values_statistics_classifications(after_statistics)
 
     # aggregated_classes_list_values [0:9] - before values
     # aggregated_classes_list_values [10:19] - after values
