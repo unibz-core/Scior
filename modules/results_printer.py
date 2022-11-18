@@ -44,7 +44,7 @@ def generate_times_table_to_be_printed(time_register, border_option):
     return return_string
 
 
-def generate_classes_table_to_be_printed(list_values_classes, table_option, border_option):
+def generate_classes_table_to_be_printed(before_after_statistics, table_option, border_option):
     """ Returns table with classes statistics to be printed.
         TABLE OPTIONS can be: types, individuals, total.
         BORDER OPTIONS can be all values accepted by prettytable lib.
@@ -52,83 +52,31 @@ def generate_classes_table_to_be_printed(list_values_classes, table_option, bord
 
     logger = initialize_logger()
 
-    if list_values_classes[0] != list_values_classes[10]:
-        logger.error("Number of classes must be the same before and after the software execution. Program aborted.")
-        exit(1)
-
     # CALCULATIONS FOR CLASSES ----------------------------------------------------------------
 
     # COLUMN BEFORE - CLASSES BEFORE
 
     # Values
 
-    classes_before = list_values_classes[0]
+    before = before_after_statistics.classes_statistics_before
+    after = before_after_statistics.classes_statistics_after
 
-    tu_classes_types_b_v = list_values_classes[1]
-    tu_classes_individuals_b_v = list_values_classes[2]
-    tu_classes_total_b_v = list_values_classes[3]
-
-    pk_classes_types_b_v = list_values_classes[4]
-    pk_classes_individuals_b_v = list_values_classes[5]
-    pk_classes_total_b_v = list_values_classes[6]
-
-    tk_classes_types_b_v = list_values_classes[7]
-    tk_classes_individuals_b_v = list_values_classes[8]
-    tk_classes_total_b_v = list_values_classes[9]
-
-    # Percentages
-
-    tu_classes_types_b_p = (tu_classes_types_b_v / classes_before) * 100
-    tu_classes_individuals_b_p = (tu_classes_individuals_b_v / classes_before) * 100
-    tu_classes_total_b_p = (tu_classes_total_b_v / classes_before) * 100
-
-    pk_classes_types_b_p = (pk_classes_types_b_v / classes_before) * 100
-    pk_classes_individuals_b_p = (pk_classes_individuals_b_v / classes_before) * 100
-    pk_classes_total_b_p = (pk_classes_total_b_v / classes_before) * 100
-
-    tk_classes_types_b_p = (tk_classes_types_b_v / classes_before) * 100
-    tk_classes_individuals_b_p = (tk_classes_individuals_b_v / classes_before) * 100
-    tk_classes_total_b_p = (tk_classes_total_b_v / classes_before) * 100
-
-    # COLUMN AFTER - CLASSES AFTER
-
-    # Values
-
-    classes_after = list_values_classes[10]
-
-    tu_classes_types_a_v = list_values_classes[11]
-    tu_classes_individuals_a_v = list_values_classes[12]
-    tu_classes_total_a_v = list_values_classes[13]
-
-    pk_classes_types_a_v = list_values_classes[14]
-    pk_classes_individuals_a_v = list_values_classes[15]
-    pk_classes_total_a_v = list_values_classes[16]
-
-    tk_classes_types_a_v = list_values_classes[17]
-    tk_classes_individuals_a_v = list_values_classes[18]
-    tk_classes_total_a_v = list_values_classes[19]
-
-    # Percentages
-
-    tu_classes_types_a_p = (tu_classes_types_a_v / classes_after) * 100
-    tu_classes_individuals_a_p = (tu_classes_individuals_a_v / classes_after) * 100
-    tu_classes_total_a_p = (tu_classes_total_a_v / classes_after) * 100
-
-    pk_classes_types_a_p = (pk_classes_types_a_v / classes_after) * 100
-    pk_classes_individuals_a_p = (pk_classes_individuals_a_v / classes_after) * 100
-    pk_classes_total_a_p = (pk_classes_total_a_v / classes_after) * 100
-
-    tk_classes_types_a_p = (tk_classes_types_a_v / classes_after) * 100
-    tk_classes_individuals_a_p = (tk_classes_individuals_a_v / classes_after) * 100
-    tk_classes_total_a_p = (tk_classes_total_a_v / classes_after) * 100
+    # Consistency verifications
+    if before.total_classes_number != after.total_classes_number:
+        logger.error("Number of classes must be the same before and after the software execution. Program aborted.")
+        exit(1)
+    if before.total_classifications_number != after.total_classifications_number:
+        logger.error("Number of classifications must be the same before and after the software execution. "
+                     "Program aborted.")
+        exit(1)
 
     # COLUMN DIFFERENCE - CLASSES BEFORE x AFTER
 
     # Values
 
-    tu_classes_types_ba_v = tu_classes_types_a_v - tu_classes_types_b_v
-    tu_classes_individuals_ba_v = tu_classes_individuals_a_v - tu_classes_individuals_b_v
-    tu_classes_total_ba_v = tu_classes_total_a_v - tu_classes_total_b_v
+    tu_classes_types_ba_v = tu_classes_types_a_v - before.totally_unknown_classes_types
+    tu_classes_individuals_ba_v = tu_classes_individuals_a_v - before.totally_unknown_classes_individuals
+    tu_classes_total_ba_v = tu_classes_total_a_v - before.totally_unknown_classes_all
 
     pk_classes_types_ba_v = pk_classes_types_a_v - pk_classes_types_b_v
     pk_classes_individuals_ba_v = pk_classes_individuals_a_v - pk_classes_individuals_b_v
@@ -180,7 +128,7 @@ def generate_classes_table_to_be_printed(list_values_classes, table_option, bord
         message = f"\nResults of OntCatOWL execution when evaluating {classes_before} CLASSES " \
                   f"considering only TYPES:\n"
 
-        pos_r1_c1 = f"{tu_classes_types_b_v} ({round(tu_classes_types_b_p, 2)}%)"
+        pos_r1_c1 = f"{before.totally_unknown_classes_types} ({round(tu_classes_types_b_p, 2)}%)"
         pos_r1_c2 = f"{tu_classes_types_a_v} ({round(tu_classes_types_a_p, 2)}%)"
         pos_r1_c3 = f"{tu_classes_types_ba_v} ({round(tu_classes_types_ba_p, 2)}%)"
         pos_r2_c1 = f"{pk_classes_types_b_v} ({round(pk_classes_types_b_p, 2)}%)"
@@ -194,7 +142,7 @@ def generate_classes_table_to_be_printed(list_values_classes, table_option, bord
         message = f"\nResults of OntCatOWL execution when evaluating {classes_before} CLASSES " \
                   f"considering only INDIVIDUALS:\n"
 
-        pos_r1_c1 = f"{tu_classes_individuals_b_v} ({round(tu_classes_individuals_b_p, 2)}%)"
+        pos_r1_c1 = f"{before.totally_unknown_classes_individuals} ({round(tu_classes_individuals_b_p, 2)}%)"
         pos_r1_c2 = f"{tu_classes_individuals_a_v} ({round(tu_classes_individuals_a_p, 2)}%)"
         pos_r1_c3 = f"{tu_classes_individuals_ba_v} ({round(tu_classes_individuals_ba_p, 2)}%)"
         pos_r2_c1 = f"{pk_classes_individuals_b_v} ({round(pk_classes_individuals_b_p, 2)}%)"
@@ -208,7 +156,7 @@ def generate_classes_table_to_be_printed(list_values_classes, table_option, bord
         message = f"\nResults of OntCatOWL execution when evaluating {classes_before} CLASSES " \
                   f"considering TYPES and  INDIVIDUALS:\n"
 
-        pos_r1_c1 = f"{tu_classes_total_b_v} ({round(tu_classes_total_b_p, 2)}%)"
+        pos_r1_c1 = f"{before.totally_unknown_classes_all} ({round(tu_classes_total_b_p, 2)}%)"
         pos_r1_c2 = f"{tu_classes_total_a_v} ({round(tu_classes_total_a_p, 2)}%)"
         pos_r1_c3 = f"{tu_classes_total_ba_v} ({round(tu_classes_total_ba_p, 2)}%)"
         pos_r2_c1 = f"{pk_classes_total_b_v} ({round(pk_classes_total_b_p, 2)}%)"
@@ -404,7 +352,7 @@ def generate_classifications_table_to_be_printed(list_values_classifications, ta
     return return_string
 
 
-def print_statistics_screen(list_values_classes, list_values_classifications, time_register, configurations,
+def print_statistics_screen(before_after_statistics, time_register, configurations,
                             restriction="PRINT_ALL"):
     """ Receives list of execution times, and lists of before and after values and prints these three statistics.
 
@@ -452,25 +400,25 @@ def print_statistics_screen(list_values_classes, list_values_classifications, ti
     print("\n##### FINAL ONTCATOWL CLASSIFICATION SUMMARY #####")
 
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
-        table_classes_types = generate_classes_table_to_be_printed(list_values_classes, "types", SINGLE_BORDER)
-        table_classifications_types = generate_classifications_table_to_be_printed(list_values_classifications, "types",
+        table_classes_types = generate_classes_table_to_be_printed(before_after_statistics, "types", SINGLE_BORDER)
+        table_classifications_types = generate_classifications_table_to_be_printed(before_after_statistics, "types",
                                                                                    SINGLE_BORDER)
 
         print(table_classes_types)
         print(table_classifications_types)
 
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
-        table_classes_individuals = generate_classes_table_to_be_printed(list_values_classes, "individuals",
+        table_classes_individuals = generate_classes_table_to_be_printed(before_after_statistics, "individuals",
                                                                          SINGLE_BORDER)
-        table_classifications_individuals = generate_classifications_table_to_be_printed(list_values_classifications,
+        table_classifications_individuals = generate_classifications_table_to_be_printed(before_after_statistics,
                                                                                          "individuals", SINGLE_BORDER)
 
         print(table_classes_individuals)
         print(table_classifications_individuals)
 
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
-        table_classes_total = generate_classes_table_to_be_printed(list_values_classes, "total", SINGLE_BORDER)
-        table_classifications_total = generate_classifications_table_to_be_printed(list_values_classifications, "total",
+        table_classes_total = generate_classes_table_to_be_printed(before_after_statistics, "total", SINGLE_BORDER)
+        table_classifications_total = generate_classifications_table_to_be_printed(before_after_statistics, "total",
                                                                                    SINGLE_BORDER)
 
         print(table_classes_total)

@@ -12,7 +12,6 @@ from modules.initialization_data_graph import initialize_nodes_lists
 from modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
 from modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, load_known_gufo_information
 from modules.logger_config import initialize_logger
-from modules.report_printer import print_report_file
 from modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
 from modules.results_printer import print_statistics_screen
 from modules.rules_types_run import execute_rules_types
@@ -25,6 +24,10 @@ SOFTWARE_VERSION = "0.22.11.16"
 SOFTWARE_URL = "https://github.com/unibz-core/OntCatOWL/"
 VERSION_RESTRICTION = "TYPES_ONLY"
 LIST_GRAPH_RESTRICTIONS = [RDF.type, RDFS.subClassOf]
+
+# These values must be updated for newer versions of OntCatOWL, after including elements other than Endurants.
+NUMBER_GUFO_TYPES = 14
+NUMBER_GUFO_INDIVIDUALS = 13
 
 
 def run_ontcatowl():
@@ -72,8 +75,8 @@ def run_ontcatowl():
     resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, VERSION_RESTRICTION)
 
     # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
-    classes_statistics, classifications_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    print_statistics_screen(classes_statistics, classifications_statistics, time_register, global_configurations,
+    comparison_statistics = calculate_final_statistics(before_statistics, after_statistics)
+    print_statistics_screen(comparison_statistics, time_register, global_configurations,
                             VERSION_RESTRICTION)
 
     now = datetime.now()
@@ -85,9 +88,9 @@ def run_ontcatowl():
 
     save_ontology_file_as_configuration(resulting_graph, gufo_graph, end_date_time, global_configurations)
 
-    print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
-                      global_configurations, before_statistics, after_statistics,
-                      classes_statistics, classifications_statistics, time_register, VERSION_RESTRICTION)
+    # print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
+    #                   global_configurations, before_statistics, after_statistics,
+    #                   comparison_statistics, time_register, VERSION_RESTRICTION)
 
 
 if __name__ == "__main__":
