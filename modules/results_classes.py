@@ -20,7 +20,7 @@ _a = after
 from modules.logger_config import initialize_logger
 
 
-class dataclass_stats(object):
+class dataclass_statistics(object):
     """ Class that contains the statistics for a single dataclass. """
 
     def __init__(self, ontology_dataclass):
@@ -52,7 +52,7 @@ class list_classes_by_situation(object):
             exit(1)
 
 
-class classes_stats(object):
+class classes_statistics(object):
     """ Stores stats for all classes in a given time measurement (before, after, etc.). """
 
     def __init__(self):
@@ -97,7 +97,7 @@ class classes_stats(object):
             exit(1)
 
 
-class classifications_stats(object):
+class classifications_statistics(object):
     """ Stores stats for all classes in a given time measurement (before, after, etc.). """
 
     def __init__(self):
@@ -137,7 +137,7 @@ class classifications_stats(object):
             exit(1)
 
 
-class comparission_stats(object):
+class consolidated_statistics(object):
     """ Stores 4 direct  data structures and attributes containing stats from the difference of these 4 lists.:
         - classes stats before. type: classes_stats
         - classifications stats before. type: classifications_stats
@@ -145,8 +145,7 @@ class comparission_stats(object):
         - classifications stats after. type: classifications_stats
     """
 
-    def __init__(self, classes_stats_b, classifications_stats_b, classes_stats_a,
-                 classifications_stats_a):
+    def __init__(self, classes_stats_b, classifications_stats_b, classes_stats_a, classifications_stats_a):
         # CLASSES - asserted
         self.classes_stats_b = classes_stats_b
         self.classes_stats_a = classes_stats_a
@@ -207,3 +206,17 @@ class comparission_stats(object):
 
         self.unknown_classif_total_p_d = self.classif_stats_a.unknown_classif_total_p - self.classif_stats_b.unknown_classif_total_p
         self.known_classif_total_p_d = self.classif_stats_a.known_classif_total_p - self.classif_stats_b.known_classif_total_p
+
+    def validate(self):
+
+        if self.classes_stats_b.total_classes_number != self.classes_stats_a.total_classes_number:
+            logger = initialize_logger()
+            logger.error("Number of classes must be the same before and after the software execution. "
+                         "Program aborted.")
+            exit(1)
+
+        if self.classif_stats_b.total_classif_number != self.classif_stats_a.total_classif_number:
+            logger = initialize_logger()
+            logger.error("Number of classifications must be the same before and after the software execution. "
+                         "Program aborted.")
+            exit(1)

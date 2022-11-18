@@ -13,7 +13,6 @@ from modules.initialization_data_gufo_dictionary import initialize_gufo_dictiona
 from modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, load_known_gufo_information
 from modules.logger_config import initialize_logger
 from modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
-from modules.results_printer import print_statistics_screen
 from modules.rules_types_run import execute_rules_types
 from modules.utils_rdf import load_all_graph_safely, perform_reasoning, load_graph_safely_considering_restrictions, \
     reduce_graph_considering_restrictions
@@ -24,10 +23,6 @@ SOFTWARE_VERSION = "0.22.11.16"
 SOFTWARE_URL = "https://github.com/unibz-core/OntCatOWL/"
 VERSION_RESTRICTION = "TYPES_ONLY"
 LIST_GRAPH_RESTRICTIONS = [RDF.type, RDFS.subClassOf]
-
-# These values must be updated for newer versions of OntCatOWL, after including elements other than Endurants.
-NUMBER_GUFO_TYPES = 14
-NUMBER_GUFO_INDIVIDUALS = 13
 
 
 def run_ontcatowl():
@@ -76,8 +71,8 @@ def run_ontcatowl():
 
     # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
     comparison_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    print_statistics_screen(comparison_statistics, time_register, global_configurations,
-                            VERSION_RESTRICTION)
+    # print_statistics_screen(comparison_statistics, time_register, global_configurations,
+    #                         VERSION_RESTRICTION)
 
     now = datetime.now()
     end_date_time_here = now.strftime("%d-%m-%Y %H:%M:%S")

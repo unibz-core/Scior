@@ -3,8 +3,11 @@ the inputted ontology. """
 
 from modules.logger_config import initialize_logger
 from modules.results_classes import dataclass_statistics, list_classes_by_situation, classes_statistics, \
-    classifications_statistics, comparission_stats
-from ontcatowl import NUMBER_GUFO_TYPES, NUMBER_GUFO_INDIVIDUALS
+    classifications_statistics, consolidated_statistics
+
+# These values must be updated for newer versions of OntCatOWL, after including elements other than Endurants.
+NUMBER_GUFO_TYPES = 14
+NUMBER_GUFO_INDIVIDUALS = 13
 
 
 def generates_partial_statistics_list(ontology_dataclass_list):
@@ -52,10 +55,10 @@ def get_values_statistics_classes(statistics_list):
         is_totally_unknown_classes_types = False
         is_totally_known_classes_types = False
 
-        if element.number_unknown_types == NUMBER_GUFO_TYPES:
+        if element.unknown_types == NUMBER_GUFO_TYPES:
             totally_unknown_classes_types += 1
             is_totally_unknown_classes_types = True
-        elif element.number_unknown_types == 0:
+        elif element.unknown_types == 0:
             totally_known_classes_types += 1
             is_totally_known_classes_types = True
         else:
@@ -66,10 +69,10 @@ def get_values_statistics_classes(statistics_list):
         is_totally_unknown_classes_individuals = False
         is_totally_known_classes_individuals = False
 
-        if element.number_unknown_individuals == NUMBER_GUFO_INDIVIDUALS:
+        if element.unknown_individuals == NUMBER_GUFO_INDIVIDUALS:
             totally_unknown_classes_individuals += 1
             is_totally_unknown_classes_individuals = True
-        elif element.number_unknown_individuals == 0:
+        elif element.unknown_individuals == 0:
             totally_known_classes_individuals += 1
             is_totally_known_classes_individuals = True
         else:
@@ -123,12 +126,12 @@ def get_values_statistics_classifications(statistics_list):
     # CALCULATION OF VALUES
     for element in statistics_list:
         # Calculating number of classifications for TYPES
-        number_unknown_classifications_types += element.number_unknown_types
-        number_known_classifications_types += element.number_known_types
+        number_unknown_classifications_types += element.unknown_types
+        number_known_classifications_types += element.known_types
 
         # Calculating number of classifications for INDIVIDUALS
-        number_unknown_classifications_individuals += element.number_unknown_individuals
-        number_known_classifications_individuals += element.number_known_individuals
+        number_unknown_classifications_individuals += element.unknown_individuals
+        number_known_classifications_individuals += element.known_individuals
 
     # Calculating number of classifications for TOTAL
     number_unknown_classifications_total += number_unknown_classifications_types + number_unknown_classifications_individuals
@@ -169,11 +172,11 @@ def get_list_totally_unknown_classes(class_statistics_list):
     list_classes_totally_unknown_all = []
 
     for element in class_statistics_list:
-        if element.number_known_types == 0:
+        if element.known_types == 0:
             list_classes_totally_unknown_types.append(element.uri)
-        if element.number_known_individuals == 0:
+        if element.known_individuals == 0:
             list_classes_totally_unknown_individuals.append(element.uri)
-        if element.number_known_types + element.number_known_individuals == 0:
+        if element.known_types + element.known_individuals == 0:
             list_classes_totally_unknown_all.append(element.uri)
 
     list_classes_totally_unknown_types.sort()
@@ -202,12 +205,12 @@ def get_list_partially_known_classes(class_statistics_list):
     list_classes_partially_known_all = []
 
     for element in class_statistics_list:
-        if element.number_unknown_types != 0 and element.number_known_types != 0:
+        if element.unknown_types != 0 and element.known_types != 0:
             list_classes_partially_known_types.append(element.uri)
-        if element.number_unknown_individuals != 0 and element.number_known_individuals != 0:
+        if element.unknown_individuals != 0 and element.known_individuals != 0:
             list_classes_partially_known_individuals.append(element.uri)
-        if (element.number_unknown_types != 0 and element.number_known_types != 0) or (
-                element.number_unknown_individuals != 0 and element.number_known_individuals != 0):
+        if (element.unknown_types != 0 and element.known_types != 0) or (
+                element.unknown_individuals != 0 and element.known_individuals != 0):
             list_classes_partially_known_all.append(element.uri)
 
     list_classes_partially_known_types.sort()
@@ -236,11 +239,11 @@ def get_list_totally_known_classes(class_statistics_list):
     list_classes_totally_known_all = []
 
     for element in class_statistics_list:
-        if element.number_unknown_types == 0:
+        if element.unknown_types == 0:
             list_classes_totally_known_types.append(element.uri)
-        if element.number_unknown_individuals == 0:
+        if element.unknown_individuals == 0:
             list_classes_totally_known_individuals.append(element.uri)
-        if element.number_unknown_types + element.number_unknown_individuals == 0:
+        if element.unknown_types + element.unknown_individuals == 0:
             list_classes_totally_known_all.append(element.uri)
 
     list_classes_totally_known_types.sort()
@@ -306,10 +309,9 @@ def calculate_final_statistics(before_statistics, after_statistics):
     statistics_classifications_after.calculate()
     statistics_classifications_after.validate()
 
-    comparisson_statistics = comparission_stats(statistics_classes_before,
-                                                statistics_classifications_before,
-                                                statistics_classes_after,
-                                                statistics_classifications_after)
-    comparission_stats.calculate()
+    comparisson_statistics = consolidated_statistics(statistics_classes_before, statistics_classifications_before,
+                                                     statistics_classes_after, statistics_classifications_after)
+    comparisson_statistics.calculate()
+    comparisson_statistics.validate()
 
     return comparisson_statistics
