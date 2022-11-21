@@ -422,7 +422,7 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
 
-def rule_ns_sub_r(rule_code, list_ontology_dataclasses, graph, nodes_list, configurations):
+def rule_ns_sub_r(list_ontology_dataclasses, graph, nodes_list, configurations):
     """
         - REASON: Rigid types cannot specialize AntiRigid types.
 
