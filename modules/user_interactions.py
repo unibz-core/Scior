@@ -13,6 +13,7 @@ GUFO_KIND = "gufo:Kind"
 def print_class_types(ontology_dataclass):
     """ Print current status of a dataclass (internal lists). """
 
+    time.sleep(0.1)
     print(f"The current status of the class {ontology_dataclass.uri} is:")
     print(f"\t- IS\t: {ontology_dataclass.is_type}")
     print(f"\t- CAN\t: {ontology_dataclass.can_type}")
@@ -34,6 +35,7 @@ def print_list_classes_and_types(list_ontology_dataclasses, list_option_classes)
                        class_can_types, class_not_types])
 
     table.align = "l"
+    time.sleep(0.1)
     print(table)
 
 
@@ -52,6 +54,7 @@ def select_class_from_list(list_ontology_dataclasses, list_option_classes):
 
     print_list_classes_and_types(list_ontology_dataclasses, list_option_classes)
 
+    time.sleep(0.1)
     selected_id = input("Enter the ID of the class to be selected or enter 0 to skip the selection: ")
     selected_id.strip()
     selected_id = int(selected_id)
@@ -59,7 +62,6 @@ def select_class_from_list(list_ontology_dataclasses, list_option_classes):
     if selected_id > 0:
         selected_class = list_option_classes[selected_id - 1]
         print(f"The chosen class was: {selected_class}")
-
     else:
         selected_class = "skipped"
         print("Selection skipped. No class selected.")
@@ -106,6 +108,7 @@ def set_type_for_class(ontology_dataclass):
 
     # INVALID situation treatment
     if number_of_options == 0:
+        time.sleep(0.1)
         print("Class types are already known. No options are available.")
         return "nok"
 
@@ -117,6 +120,7 @@ def set_type_for_class(ontology_dataclass):
         node_id += 1
         table.add_row([node_id, can_type])
 
+    time.sleep(0.1)
     table.align = "l"
     print(table)
     print("\n")
@@ -125,6 +129,7 @@ def set_type_for_class(ontology_dataclass):
     selected_id.strip()
     selected_id = int(selected_id)
 
+    time.sleep(0.1)
     if selected_id > 0:
         selected_type = ontology_dataclass.can_type[selected_id - 1]
         print(f"The chosen type was: {selected_type}")
