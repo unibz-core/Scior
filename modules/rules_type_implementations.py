@@ -73,7 +73,6 @@ def interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, num
 
     if selected_class != "skipped":
         external_move_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
-        ontology_dataclass.clear_incompleteness()
 
 
 def decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary):
@@ -151,7 +150,6 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
             logger.info(f"The following classes are going to be set as Kinds "
                         f"to solve the incompleteness: {related_can_kinds_list}.")
             external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
-            ontology_dataclass.clear_incompleteness()
         elif action == "user_can_set":
             interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
                                       related_can_kinds_list)
@@ -170,7 +168,6 @@ def interaction_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, lis
 
     if selected_class != "skipped":
         external_move_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
-        ontology_dataclass.clear_incompleteness()
         logger.info(f"Class {selected_class} was correctly set as gufo:Kind.")
 
 
@@ -213,7 +210,6 @@ def treat_rule_nk_k_sup(rule_code, ontology_dataclass, list_ontology_dataclasses
         elif len(list_possibilities) == 1:
             if configurations["is_complete"]:
                 external_move_to_is_list(list_ontology_dataclasses, list_possibilities[0], GUFO_KIND)
-                ontology_dataclass.clear_incompleteness()
                 logger.info(f"The class {list_possibilities[0]} is the unique possible identity provider "
                             f"for {ontology_dataclass.uri}. Hence, it was automatically asserted as gufo:Kind.")
             elif configurations["is_automatic"]:
@@ -248,13 +244,12 @@ def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, config
 
         if configurations["is_complete"]:
             ontology_dataclass.move_element_to_is_list(GUFO_KIND)
-            ontology_dataclass.clear_incompleteness()
             logger.info(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
         elif not configurations["is_automatic"]:
             set_interactively_class_as_gufo_type(ontology_dataclass, GUFO_KIND)
 
 
-def treat_rule_ns_sub_r(list_ontology_dataclasses, ontology_dataclass, graph, nodes_list):
+def treat_rule_ns_sub_r(rule_code, list_ontology_dataclasses, ontology_dataclass, graph, nodes_list):
     """ Implements the treatment of rule ns_sub_r for types. """
 
     logger = initialize_logger()
@@ -274,8 +269,9 @@ def treat_rule_ns_sub_r(list_ontology_dataclasses, ontology_dataclass, graph, no
             break
     else:
         # Only executed when the loop had no break. All subclasses were RigidTypes.
-        logger.debug(f"The NonSortal class {ontology_dataclass.uri} "
-                     f"is only specialized into RigidTypes and, hence, was set as a gufo:Category.")
+        logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
+                    f"The NonSortal class {ontology_dataclass.uri} "
+                    f"is only specialized into RigidTypes and, hence, was set as a gufo:Category.")
         ontology_dataclass.move_element_to_is_list("gufo:Category")
 
 
@@ -301,19 +297,23 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
                          f"Program aborted.")
             exit(1)
 
-    # All conditions are met. Perform possible actions.
-    if configurations["is_complete"]:
-        logger.info(f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings, "
-                    f"hence it was set as gufo:Role.")
-        ontology_dataclass.move_element_to_is_list("gufo:Role")
-    else:
-        # Report incompleteness.
-        logger.warning(f"Incompleteness detected during rule {rule_code}! "
-                       f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings. "
-                       f"This class must be set as a gufo:Role. If it is a gufo:Phase, "
-                       f"at least another gufo:Phase sibling class is missing, representing an incompleteness.")
-        if not configurations["is_automatic"]:
-            set_interactively_class_as_gufo_type(ontology_dataclass, "gufo:Role")
+    if not check_incompleteness_registered(rule_code, ontology_dataclass):
+        register_incompleteness(rule_code, ontology_dataclass)
+
+        # All conditions are met. Perform possible actions.
+        if configurations["is_complete"]:
+            logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
+                        f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings, "
+                        f"hence it was set as gufo:Role.")
+            ontology_dataclass.move_element_to_is_list("gufo:Role")
+        else:
+            # Report incompleteness.
+            logger.warning(f"Incompleteness detected during rule {rule_code}! "
+                           f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings. "
+                           f"This class must be set as a gufo:Role. If it is a gufo:Phase, "
+                           f"at least another gufo:Phase sibling class is missing, representing an incompleteness.")
+            if not configurations["is_automatic"]:
+                set_interactively_class_as_gufo_type(ontology_dataclass, "gufo:Role")
 
 
 def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass, graph, nodes_list):
@@ -338,22 +338,26 @@ def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass
             siblings_list.remove(ontology_dataclass.uri)
             number_siblings = len(siblings_list)
 
-        if number_siblings == 0:
-            # Report incompleteness
-            logger.warning(f"Incompleteness detected during rule {rule_code}! "
-                           f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass of {superclass}. "
-                           f"All phases always occur in phase partitions.")
-        elif number_siblings > 0:
-            for sibling in siblings_list:
-                sibling_dataclass = return_dataclass_from_class_name(list_ontology_dataclasses, sibling)
+        if not check_incompleteness_registered(rule_code, ontology_dataclass):
+            register_incompleteness(rule_code, ontology_dataclass)
 
-                if ("gufo:Sortal" in sibling_dataclass.is_type) or ("gufo:NonRigidType" in sibling_dataclass.is_type):
-                    break
-            else:
+            if number_siblings == 0:
                 # Report incompleteness
                 logger.warning(f"Incompleteness detected during rule {rule_code}! "
                                f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass of {superclass}. "
                                f"All phases always occur in phase partitions.")
-        else:
-            logger.error(f"Unexpected number of siblings in rule {rule_code}. Program aborted.")
-            exit(1)
+            elif number_siblings > 0:
+                for sibling in siblings_list:
+                    sibling_dataclass = return_dataclass_from_class_name(list_ontology_dataclasses, sibling)
+
+                    if ("gufo:Sortal" in sibling_dataclass.is_type) or (
+                            "gufo:NonRigidType" in sibling_dataclass.is_type):
+                        break
+                else:
+                    # Report incompleteness
+                    logger.warning(f"Incompleteness detected during rule {rule_code}! "
+                                   f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass of {superclass}. "
+                                   f"All phases always occur in phase partitions.")
+            else:
+                logger.error(f"Unexpected number of siblings in rule {rule_code}. Program aborted.")
+                exit(1)
