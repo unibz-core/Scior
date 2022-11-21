@@ -58,7 +58,7 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
             register_incompleteness(rule_code, ontology_dataclass)
 
 
-def interaction_rule_ns_s_spe(rule_code, list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
+def interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
                               related_can_kinds_list):
     """ Implements the user interaction for rule ns_s_spe for types. """
 
@@ -152,14 +152,14 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
                         f"to solve the incompleteness: {related_can_kinds_list}.")
             external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
         elif action == "user_can_set":
-            interaction_rule_ns_s_spe(rule_code, list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
+            interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
                                       related_can_kinds_list)
         else:
             logger.error("Unexpected evaluation result! Program aborted.")
             exit(1)
 
 
-def interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities):
+def interaction_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, list_possibilities):
     """ User interaction for rule nk_k_sup. """
 
     logger = initialize_logger()
@@ -169,6 +169,7 @@ def interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities):
 
     if selected_class != "skipped":
         external_move_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
+        ontology_dataclass.clear_incompleteness()
         logger.info(f"Class {selected_class} was correctly set as gufo:Kind.")
 
 
@@ -197,29 +198,33 @@ def treat_rule_nk_k_sup(rule_code, ontology_dataclass, list_ontology_dataclasses
         if GUFO_KIND in possible_kind_can:
             list_possibilities.append(possible_kind)
 
-    logger.warning(f"Incompleteness detected during rule {rule_code}! "
-                   f"The class {ontology_dataclass.uri} does not have an identity provider. "
-                   f"It must have exactly one gufo:Kind as direct or indirect supertype, but has none.")
+    if not check_incompleteness_registered(rule_code, ontology_dataclass):
+        register_incompleteness(rule_code, ontology_dataclass)
 
-    # If no identity provider available, report incompleteness for all configurations
-    if len(list_possibilities) == 0:
-        logger.info(f"No classes were identified as possible candidates for "
-                    f"identity provider for {ontology_dataclass.uri}.")
-    elif len(list_possibilities) == 1:
-        if configurations["is_complete"]:
-            external_move_to_is_list(list_ontology_dataclasses, list_possibilities[0], GUFO_KIND)
-            logger.info(f"Class {list_possibilities[0]} is the unique possible identity provider "
-                        f"for {ontology_dataclass.uri}. Hence, it was automatically asserted as gufo:Kind.")
-        elif configurations["is_automatic"]:
-            logger.info(f"The following classes were identified as possible identity providers "
-                        f"for {ontology_dataclass.uri}: {list_possibilities}.")
-        else:
-            interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities)
-    elif len(list_possibilities) > 1:
-        if configurations["is_automatic"]:
-            logger.info(f"The following classes were identified as possible identity providers: {list_possibilities}.")
-        else:
-            interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities)
+        logger.warning(f"Incompleteness detected during rule {rule_code}! "
+                       f"The class {ontology_dataclass.uri} does not have an identity provider. "
+                       f"It must have exactly one gufo:Kind as direct or indirect supertype, but has none.")
+
+        # If no identity provider available, report incompleteness for all configurations
+        if len(list_possibilities) == 0:
+            logger.info(f"No classes were identified as possible candidates for being the "
+                        f"identity provider for {ontology_dataclass.uri}.")
+        elif len(list_possibilities) == 1:
+            if configurations["is_complete"]:
+                external_move_to_is_list(list_ontology_dataclasses, list_possibilities[0], GUFO_KIND)
+                logger.info(f"The class {list_possibilities[0]} is the unique possible identity provider "
+                            f"for {ontology_dataclass.uri}. Hence, it was automatically asserted as gufo:Kind.")
+            elif configurations["is_automatic"]:
+                logger.info(f"The following classes were identified as possible identity providers "
+                            f"for {ontology_dataclass.uri}: {list_possibilities}.")
+            else:
+                interaction_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, list_possibilities)
+        elif len(list_possibilities) > 1:
+            if configurations["is_automatic"]:
+                logger.info(f"The following classes were identified as possible "
+                            f"identity providers for {ontology_dataclass.uri}: {list_possibilities}.")
+            else:
+                interaction_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, list_possibilities)
 
 
 def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, configurations):
