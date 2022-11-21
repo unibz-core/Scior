@@ -73,6 +73,7 @@ def interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, num
 
     if selected_class != "skipped":
         external_move_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
+        ontology_dataclass.clear_incompleteness()
 
 
 def decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary):
@@ -158,7 +159,7 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
             exit(1)
 
 
-def interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities):
+def interaction_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, list_possibilities):
     """ User interaction for rule nk_k_sup. """
 
     logger = initialize_logger()
@@ -167,6 +168,7 @@ def interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities):
     selected_class = select_class_from_list(list_ontology_dataclasses, list_possibilities)
 
     if selected_class != "skipped":
+        ontology_dataclass.clear_incompleteness()
         external_move_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
         logger.info(f"Class {selected_class} was correctly set as gufo:Kind.")
 
@@ -216,13 +218,13 @@ def treat_rule_nk_k_sup(rule_code, ontology_dataclass, list_ontology_dataclasses
                 logger.info(f"The following classes were identified as possible identity providers "
                             f"for {ontology_dataclass.uri}: {list_possibilities}.")
             else:
-                interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities)
+                interaction_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, list_possibilities)
         elif len(list_possibilities) > 1:
             if configurations["is_automatic"]:
                 logger.info(f"The following classes were identified as possible "
                             f"identity providers for {ontology_dataclass.uri}: {list_possibilities}.")
             else:
-                interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities)
+                interaction_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, list_possibilities)
 
 
 def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, configurations):
