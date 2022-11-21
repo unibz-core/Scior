@@ -151,6 +151,7 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
             logger.info(f"The following classes are going to be set as Kinds "
                         f"to solve the incompleteness: {related_can_kinds_list}.")
             external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
+            ontology_dataclass.clear_incompleteness()
         elif action == "user_can_set":
             interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
                                       related_can_kinds_list)
@@ -212,6 +213,7 @@ def treat_rule_nk_k_sup(rule_code, ontology_dataclass, list_ontology_dataclasses
         elif len(list_possibilities) == 1:
             if configurations["is_complete"]:
                 external_move_to_is_list(list_ontology_dataclasses, list_possibilities[0], GUFO_KIND)
+                ontology_dataclass.clear_incompleteness()
                 logger.info(f"The class {list_possibilities[0]} is the unique possible identity provider "
                             f"for {ontology_dataclass.uri}. Hence, it was automatically asserted as gufo:Kind.")
             elif configurations["is_automatic"]:
@@ -238,14 +240,18 @@ def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, config
     if len(all_superclasses) != 0:
         return
 
-    logger.warning(f"Incompleteness detected during rule {rule_code}! "
-                   f"The class {ontology_dataclass.uri} does not have an identity provider. ")
+    if not check_incompleteness_registered(rule_code, ontology_dataclass):
+        register_incompleteness(rule_code, ontology_dataclass)
 
-    if configurations["is_complete"]:
-        ontology_dataclass.move_element_to_is_list(GUFO_KIND)
-        logger.info(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
-    elif not configurations["is_automatic"]:
-        set_interactively_class_as_gufo_type(ontology_dataclass, GUFO_KIND)
+        logger.warning(f"Incompleteness detected during rule {rule_code}! "
+                       f"The class {ontology_dataclass.uri} does not have an identity provider. ")
+
+        if configurations["is_complete"]:
+            ontology_dataclass.move_element_to_is_list(GUFO_KIND)
+            ontology_dataclass.clear_incompleteness()
+            logger.info(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
+        elif not configurations["is_automatic"]:
+            set_interactively_class_as_gufo_type(ontology_dataclass, GUFO_KIND)
 
 
 def treat_rule_ns_sub_r(list_ontology_dataclasses, ontology_dataclass, graph, nodes_list):
