@@ -54,6 +54,7 @@ def run_ontcatowl():
         perform_reasoning(working_graph)
 
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, gufo_dictionary)
+
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
 
     ontology_nodes = initialize_nodes_lists(working_graph)

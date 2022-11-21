@@ -7,15 +7,13 @@ from modules.rule_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_
 from modules.utils_dataclass import get_list_gufo_classification
 from modules.utils_graph import get_subclasses, get_superclasses
 
-INTERVENTION_WARNING = "MANUAL INTERVENTION NEEDED!\n"
-
 # Frequent GUFO types
 GUFO_KIND = "gufo:Kind"
 GUFO_SORTAL = "gufo:Sortal"
 GUFO_NON_SORTAL = "gufo:NonSortal"
 
 
-def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
+def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list):
     """
     - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
 
@@ -44,7 +42,7 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
 
-def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
+def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list):
     """
     - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
 
@@ -72,7 +70,7 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
 
-def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
+def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list):
     """
     - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
 
@@ -121,7 +119,7 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
 
-def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
+def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list):
     """
     - REASON: NonSortals aggregates identities from at least two different identity principles providers.
 
@@ -148,7 +146,7 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
 
-def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
+def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list):
     """
     - REASON: Every Sortal (types that carry or supply an identity principle) must have exactly one identity principle.
 
@@ -175,7 +173,7 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
 
-def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
+def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list):
     """
     - REASON: Rigid types cannot specialize AntiRigid types.
 
@@ -205,7 +203,7 @@ def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
 
-def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list, configurations):
+def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list):
     """
     - REASON: Rigid types cannot specialize AntiRigid types.
 
@@ -244,8 +242,10 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
 
     - BEHAVIOR:
         - C: Set as gufo:Kind.
-        - N+A: Report incompleteness.
-        - N+I: User can set as gufo:Kind or skip.
+        - N+A: Report incompleteness.*
+        - N+I: User can set as gufo:Kind or skip.*
+
+        * Only if not reported before.
     """
 
     rule_code = "n_r_t"
@@ -493,7 +493,7 @@ def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
 
 # TODO (@pedropaulofb): This rule must be improved with identification of partition sets. The rule to be created to
 #  substitute this one is: Partition sets with at least one known phase must have all its components as phases.
-def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list, configurations):
+def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list):
     """
         - REASON: Phases always occur in phase partitions.
 

@@ -12,6 +12,13 @@ from modules.logger_config import initialize_logger
 class OntologyDataClass(object):
     """ Each loaded ontology dataclass has a URI (identifier) and six lists of GUFO elements.
     The lists indicate which gufo elem. the dataclass is, can, or cannot be, for the types and individuals hierarchies.
+
+    gufo_dictionary brings information for faster classification manipulation.
+
+    incompleteness_info is a dictionary with the following filds:
+        - is_incomplete: True or False
+        - detected_in: list of rule codes where the incompleteness was detected (no repetitions are allowed).
+
     """
 
     uri: str = field(default_factory=str)
@@ -22,12 +29,19 @@ class OntologyDataClass(object):
     not_type: list[str] = field(default_factory=list[str])
     not_individual: list[str] = field(default_factory=list[str])
     gufo_dictionary: dict = field(default_factory=dict)
+    incompleteness_info: dict = field(default_factory=dict)
 
     def is_consistent(self):
         """ Performs a consistency check on the dataclass. For now only one verification is performed, which is
          the identification of duplicates. Other verifications can be added later if necessary. """
 
         verify_duplicates_in_lists_ontology(self)
+
+    def clear_incompleteness(self):
+        "When a user define the type of the dataclass, its incompleteness status must be set to its initial state."
+
+        self.incompleteness_info["is_incomplete"] = False
+        self.incompleteness_info["detected_in"] = []
 
     def move_element_between_lists(self, element, source_list, target_list):
         """ Move an element between two lists in the same OntologyClass

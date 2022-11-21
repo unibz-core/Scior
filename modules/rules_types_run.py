@@ -67,19 +67,19 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
     st = time.perf_counter()
 
     if rule_code == "k_s_sup":
-        rule_k_s_sup(ontology_dataclass_list, graph, nodes_list, configurations)
+        rule_k_s_sup(ontology_dataclass_list, graph, nodes_list)
     elif rule_code == "s_k_sub":
-        rule_s_k_sub(ontology_dataclass_list, graph, nodes_list, configurations)
+        rule_s_k_sub(ontology_dataclass_list, graph, nodes_list)
     elif rule_code == "t_k_sup":
-        rule_t_k_sup(ontology_dataclass_list, graph, nodes_list, configurations)
+        rule_t_k_sup(ontology_dataclass_list, graph, nodes_list)
     elif rule_code == "ns_s_sup":
-        rule_ns_s_sup(ontology_dataclass_list, graph, nodes_list, configurations)
+        rule_ns_s_sup(ontology_dataclass_list, graph, nodes_list)
     elif rule_code == "s_ns_sub":
-        rule_s_ns_sub(ontology_dataclass_list, graph, nodes_list, configurations)
+        rule_s_ns_sub(ontology_dataclass_list, graph, nodes_list)
     elif rule_code == "r_ar_sup":
-        rule_r_ar_sup(ontology_dataclass_list, graph, nodes_list, configurations)
+        rule_r_ar_sup(ontology_dataclass_list, graph, nodes_list)
     elif rule_code == "ar_r_sub":
-        rule_ar_r_sub(ontology_dataclass_list, graph, nodes_list, configurations)
+        rule_ar_r_sub(ontology_dataclass_list, graph, nodes_list)
     elif rule_code == "n_r_t":
         rule_n_r_t(ontology_dataclass_list, nodes_list, configurations)
     elif rule_code == "ns_s_spe":
@@ -93,7 +93,7 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
     elif rule_code == "nrs_ns_r":
         rule_nrs_ns_r(ontology_dataclass_list, graph, nodes_list, configurations)
     elif rule_code == "ks_sf_in":
-        rule_ks_sf_in(ontology_dataclass_list, graph, nodes_list, configurations)
+        rule_ks_sf_in(ontology_dataclass_list, graph, nodes_list)
     else:
         logger.error(f"Unexpected rule code ({rule_code}) received as parameter! Program aborted.")
         exit(1)

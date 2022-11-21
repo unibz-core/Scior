@@ -10,14 +10,32 @@ from modules.utils_graph import get_all_related_nodes, get_all_superclasses, get
 GUFO_KIND = "gufo:Kind"
 
 
+def incompleteness_treatment(rule_code, ontology_dataclass):
+    """ Verifies if an incompleteness has already being registered/reported and::
+        - is already registered/reported: returns False.
+        - else: registers in the ontology_dataclass incompleteness_info field and returns True.
+    """
+
+    display_warning = False
+
+    if ontology_dataclass.incompleteness_info["is_incomplete"] == False:
+        display_warning = True
+        ontology_dataclass.incompleteness_info["is_incomplete"] = True
+        ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)
+    elif rule_code not in ontology_dataclass.incompleteness_info["detected_in"]:
+        ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)
+
+    return display_warning
+
+
 def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
     """ Implements rule n_r_t for types."""
     logger = initialize_logger()
 
     if configurations["is_complete"]:
         if GUFO_KIND in ontology_dataclass.can_type:
-            logger.warning(f"Incompleteness detected during rule {rule_code}! "
-                           f"There is not identity principle associated to class {ontology_dataclass.uri}. "
+            logger.warning(f"An incompleteness detected during rule {rule_code} was solved. "
+                           f"There was not identity principle associated to class {ontology_dataclass.uri}. "
                            f"The class was set as a gufo:Kind.")
             ontology_dataclass.move_element_to_is_list(GUFO_KIND)
         else:

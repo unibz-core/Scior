@@ -1,4 +1,5 @@
 """ Module for initializing data read from the ontology to be evaluated """
+import copy
 
 from modules.dataclass_definitions_ontology import OntologyDataClass
 from modules.logger_config import initialize_logger
@@ -15,16 +16,21 @@ def initialize_ontology_dataclasses(ontology_graph, gufo_input_yaml):
     classes_list = get_list_of_all_classes_no_gufo(ontology_graph)
     gufo_can_list_types, gufo_can_list_individuals = get_gufo_possibilities(gufo_input_yaml)
 
+    incompleteness_dict = {"is_incomplete": False, "detected_in": []}
+
     # - URI: Ontology class name
     # - CAN_TYPE and CAN_INDIVIDUAL: list of all possible ontological categories. Receive VALUES (not a pointer)
     # loaded from the gufo_data.yaml file because the data needs to be manipulated.
     # - OTHER LISTS (IS and NOT): Empty lists. No value received.
     # - GUFO DICTIONARY: Receives a POINTER (not values) to the dictionary loaded from the gufo_data.yaml file.
     # It is used inside the dataclass for updating the other lists. The information is read-only.
+
     for new_class in classes_list:
+        new_incompleteness_dict = copy.deepcopy(incompleteness_dict)
         ontology_list.append(OntologyDataClass(uri=new_class, can_type=gufo_can_list_types.copy(),
                                                can_individual=gufo_can_list_individuals.copy(),
-                                               gufo_dictionary=gufo_input_yaml))
+                                               gufo_dictionary=gufo_input_yaml,
+                                               incompleteness_info=new_incompleteness_dict))
 
     logger.debug("List of Ontology concepts successfully initialized.")
     return ontology_list
