@@ -5,7 +5,7 @@ from prettytable import MARKDOWN
 
 from modules.logger_config import initialize_logger
 from modules.results_printer import generate_classes_table, generate_classifications_table, \
-    generate_times_table
+    generate_times_table, generate_incompleteness_table
 from modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
@@ -171,7 +171,7 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
     return return_string
 
 
-def get_content500(consolidated_statistics, restriction="PRINT_ALL"):
+def get_content500(ontology_dataclass_list, consolidated_statistics, restriction="PRINT_ALL"):
     """ Prints statistics for classes and classifications.
 
     Allowed restriction values:
@@ -219,7 +219,13 @@ def get_content500(consolidated_statistics, restriction="PRINT_ALL"):
 
         content_503 = "\n" + table_classes_total + "\n" + table_classifications_total + "\n"
 
-    content_all = title_501 + content_501 + title_502 + content_502 + title_503 + content_503
+    title_504 = "\n### Incomplete Classes Identified"
+
+    table_incompleteness = generate_incompleteness_table(ontology_dataclass_list, MARKDOWN)
+
+    content_504 = "\n" + table_incompleteness + "\n"
+
+    content_all = title_501 + content_501 + title_502 + content_502 + title_503 + content_503 + title_504 + content_504
 
     return_string = intro + content_all
 

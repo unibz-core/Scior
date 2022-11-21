@@ -51,7 +51,7 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
                                  elapsed_time, time_register, global_configurations)
     content_300 = get_content300_400(lists_before, restriction)
     content_400 = get_content300_400(lists_after, restriction)
-    content_500 = get_content500(consolidated_statistics, restriction)
+    content_500 = get_content500(ontology_dataclass_list, consolidated_statistics, restriction)
     content_600 = get_content600(ontology_dataclass_list, restriction)
 
     report = title_000 + title_100 + content_100 + title_200 + content_200 + title_300 + content_300 + \

@@ -90,19 +90,11 @@ def run_ontcatowl():
                       global_configurations, before_statistics, after_statistics,
                       consolidated_statistics, time_register, VERSION_RESTRICTION)
 
-    # DELETE!!!!!
-    for ontclass in ontology_dataclass_list:
-        if ontclass.incompleteness_info["is_incomplete"] == True:
-            print(f"incomplete class = {ontclass.uri}")
-            print(f"rules list = {ontclass.incompleteness_info['detected_in']}")
-
 
 if __name__ == "__main__":
     run_ontcatowl()
 
 # TODO (@pedropaulofb): IMPROVEMENTS
-# Instead of using exit(1) for all problems, identify which ones can generate a warning instead.
-# Create a (much) better deficiency (incompleteness)(inconsistency?) report.
 # Reduce log size
 
 # TODO (@pedropaulofb): PERFORMANCE
