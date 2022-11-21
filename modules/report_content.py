@@ -54,10 +54,12 @@ def get_content100(restriction="PRINT_ALL"):
     else:
         line_13 = ""
 
-    line_14 = "* [Final Classes' Classifications](#final-classes-classifications)\n"
+    line_14 = "\t* [Incomplete Classes Identified](#incomplete-classes-identified)\n"
+
+    line_15 = "* [Final Classes' Classifications](#final-classes-classifications)\n"
 
     return_string = line_01 + line_02 + line_03 + line_04 + line_05 + line_06 + line_07 + line_08 + line_09 + \
-                    line_10 + line_11 + line_12 + line_13 + line_14
+                    line_10 + line_11 + line_12 + line_13 + line_14 + line_15
 
     return return_string
 
