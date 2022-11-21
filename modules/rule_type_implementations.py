@@ -10,22 +10,27 @@ from modules.utils_graph import get_all_related_nodes, get_all_superclasses, get
 GUFO_KIND = "gufo:Kind"
 
 
-def incompleteness_treatment(rule_code, ontology_dataclass):
-    """ Verifies if an incompleteness has already being registered/reported and::
-        - is already registered/reported: returns False.
-        - else: registers in the ontology_dataclass incompleteness_info field and returns True.
+def incompleteness_registered(rule_code, ontology_dataclass):
+    """ Verifies if an incompleteness has already being registered/reported.
+
+        Returns True if the incompleteness for a specific rule has already been registered/reported.
+        Returns False otherwise.
     """
 
-    display_warning = False
+    if ontology_dataclass.incompleteness_info["is_incomplete"] and (
+            rule_code in ontology_dataclass.incompleteness_info["detected_in"]):
+        is_already_registered = True
+    else:
+        is_already_registered = False
 
-    if ontology_dataclass.incompleteness_info["is_incomplete"] == False:
-        display_warning = True
-        ontology_dataclass.incompleteness_info["is_incomplete"] = True
-        ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)
-    elif rule_code not in ontology_dataclass.incompleteness_info["detected_in"]:
-        ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)
+    return is_already_registered
 
-    return display_warning
+
+def register_incompleteness(rule_code, ontology_dataclass):
+    """ Registers the ontology_dataclass incompleteness_info field and insert the rule in the detected_in list. """
+
+    ontology_dataclass.incompleteness_info["is_incomplete"] = True
+    ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)
 
 
 def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
@@ -34,9 +39,9 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
 
     if configurations["is_complete"]:
         if GUFO_KIND in ontology_dataclass.can_type:
-            logger.warning(f"An incompleteness detected during rule {rule_code} was solved. "
-                           f"There was not identity principle associated to class {ontology_dataclass.uri}. "
-                           f"The class was set as a gufo:Kind.")
+            logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
+                        f"There was not identity principle associated to class {ontology_dataclass.uri}. "
+                        f"The class was set as a gufo:Kind.")
             ontology_dataclass.move_element_to_is_list(GUFO_KIND)
         else:
             logger.error(f"Inconsistency detected! Class {ontology_dataclass.uri} must be a gufo:Kind, "
