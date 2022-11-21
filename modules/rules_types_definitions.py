@@ -2,7 +2,7 @@
 
 from modules.logger_config import initialize_logger
 from modules.propagation import execute_and_propagate_down, execute_and_propagate_up
-from modules.rule_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe, treat_rule_nk_k_sup, \
+from modules.rules_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe, treat_rule_nk_k_sup, \
     treat_rule_s_nsup_k, treat_rule_ns_sub_r, treat_rule_nrs_ns_r, treat_rule_ks_sf_in
 from modules.utils_dataclass import get_list_gufo_classification
 from modules.utils_graph import get_subclasses, get_superclasses
