@@ -242,8 +242,8 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
 
     - BEHAVIOR:
         - C: Set as gufo:Kind.
-        - N+A: Report incompleteness.*
-        - N+I: User can set as gufo:Kind or skip.*
+        - N+A: Report incompleteness.
+        - N+I: User can set as gufo:Kind or skip.
 
         * Only if not reported before.
     """

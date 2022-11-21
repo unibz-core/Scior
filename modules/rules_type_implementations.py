@@ -38,20 +38,22 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
     logger = initialize_logger()
 
     if configurations["is_complete"]:
-        if GUFO_KIND in ontology_dataclass.can_type:
+        # ACTION: Report incompleteness
+        if GUFO_KIND in ontology_dataclass.can_type and not incompleteness_registered(rule_code, ontology_dataclass):
             logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
-                        f"There was not identity principle associated to class {ontology_dataclass.uri}. "
-                        f"The class was set as a gufo:Kind.")
+                        f"The class {ontology_dataclass.uri} had no identity principle and now was set as a gufo:Kind.")
             ontology_dataclass.move_element_to_is_list(GUFO_KIND)
+            register_incompleteness(rule_code, ontology_dataclass)
         else:
             logger.error(f"Inconsistency detected! Class {ontology_dataclass.uri} must be a gufo:Kind, "
                          f"however it cannot be. Program aborted.")
             print_class_types(ontology_dataclass)
             exit(1)
-    else:
+    elif not incompleteness_registered(rule_code, ontology_dataclass):
         logger.warning(f"Incompleteness detected during rule {rule_code}! "
-                       f"There is not identity principle associated to class {ontology_dataclass.uri}.")
+                       f"There is no identity principle associated to the class {ontology_dataclass.uri}.")
         if (not configurations["is_automatic"]) and (GUFO_KIND in ontology_dataclass.can_type):
+            register_incompleteness(rule_code, ontology_dataclass)
             set_interactively_class_as_gufo_type(ontology_dataclass, GUFO_KIND)
 
 
