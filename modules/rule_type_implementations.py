@@ -12,8 +12,8 @@ GUFO_KIND = "gufo:Kind"
 
 def incompleteness_treatment(rule_code, ontology_dataclass):
     """ Verifies if an incompleteness has already being registered/reported and::
-        - is already registered/reported: returns False.
-        - else: registers in the ontology_dataclass incompleteness_info field and returns True.
+        - IS already registered/reported: returns False.
+        - NOT registered/reported: registers in the ontology_dataclass incompleteness_info field and returns True.
     """
 
     display_warning = False
@@ -23,6 +23,7 @@ def incompleteness_treatment(rule_code, ontology_dataclass):
         ontology_dataclass.incompleteness_info["is_incomplete"] = True
         ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)
     elif rule_code not in ontology_dataclass.incompleteness_info["detected_in"]:
+        display_warning = True
         ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)
 
     return display_warning
@@ -43,7 +44,7 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
                          f"however it cannot be. Program aborted.")
             print_class_types(ontology_dataclass)
             exit(1)
-    else:
+    elif incompleteness_treatment(rule_code, ontology_dataclass):
         logger.warning(f"Incompleteness detected during rule {rule_code}! "
                        f"There is not identity principle associated to class {ontology_dataclass.uri}.")
         if (not configurations["is_automatic"]) and (GUFO_KIND in ontology_dataclass.can_type):
