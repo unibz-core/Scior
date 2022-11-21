@@ -4,8 +4,8 @@ import os
 from prettytable import MARKDOWN
 
 from modules.logger_config import initialize_logger
-from modules.results_printer import generate_classes_table_to_be_printed, generate_classifications_table_to_be_printed, \
-    generate_times_table_to_be_printed
+from modules.results_printer import generate_classes_table, generate_classifications_table, \
+    generate_times_table
 from modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
@@ -71,7 +71,7 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
               f"* End time {end_date_time}\n" \
               f"* Total elapsed time: {elapsed_time} seconds.\n"
 
-    table_times = generate_times_table_to_be_printed(time_register, MARKDOWN)
+    table_times = generate_times_table(time_register, MARKDOWN)
 
     line_02 = f"\nConfigurations:\n" \
               f"* Automatic execution: {not configurations['is_automatic']}\n" \
@@ -194,28 +194,28 @@ def get_content500(consolidated_statistics, restriction="PRINT_ALL"):
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
         title_501 = "\n### Statistics of the OntCatOWL execution for TYPES"
 
-        table_classes_types = generate_classes_table_to_be_printed(consolidated_statistics, "types", MARKDOWN)
-        table_classifications_types = generate_classifications_table_to_be_printed(consolidated_statistics, "types",
-                                                                                   MARKDOWN)
+        table_classes_types = generate_classes_table(consolidated_statistics, "types", MARKDOWN)
+        table_classifications_types = generate_classifications_table(consolidated_statistics, "types",
+                                                                     MARKDOWN)
 
         content_501 = "\n" + table_classes_types + "\n" + table_classifications_types + "\n"
 
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
         title_502 = "\n### Statistics of the OntCatOWL execution for INDIVIDUALS"
 
-        table_classes_individuals = generate_classes_table_to_be_printed(consolidated_statistics, "individuals",
-                                                                         MARKDOWN)
-        table_classifications_individuals = generate_classifications_table_to_be_printed(consolidated_statistics,
-                                                                                         "individuals", MARKDOWN)
+        table_classes_individuals = generate_classes_table(consolidated_statistics, "individuals",
+                                                           MARKDOWN)
+        table_classifications_individuals = generate_classifications_table(consolidated_statistics,
+                                                                           "individuals", MARKDOWN)
 
         content_502 = "\n" + table_classes_individuals + "\n" + table_classifications_individuals + "\n"
 
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
         title_503 = "\n### Statistics of the OntCatOWL execution for TYPES and INDIVIDUALS"
 
-        table_classes_total = generate_classes_table_to_be_printed(consolidated_statistics, "total", MARKDOWN)
-        table_classifications_total = generate_classifications_table_to_be_printed(consolidated_statistics, "total",
-                                                                                   MARKDOWN)
+        table_classes_total = generate_classes_table(consolidated_statistics, "total", MARKDOWN)
+        table_classifications_total = generate_classifications_table(consolidated_statistics, "total",
+                                                                     MARKDOWN)
 
         content_503 = "\n" + table_classes_total + "\n" + table_classifications_total + "\n"
 

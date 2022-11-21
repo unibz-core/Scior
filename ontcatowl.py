@@ -74,7 +74,7 @@ def run_ontcatowl():
 
     # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
     consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    print_statistics_screen(consolidated_statistics, time_register, global_configurations,
+    print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, global_configurations,
                             VERSION_RESTRICTION)
 
     now = datetime.now()

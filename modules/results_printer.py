@@ -1,10 +1,12 @@
 """ Fucntions for printing statistics to the user. """
+import operator
+
 from prettytable import PrettyTable, SINGLE_BORDER
 
 from modules.logger_config import initialize_logger
 
 
-def generate_times_table_to_be_printed(time_register, border_option):
+def generate_times_table(time_register, border_option):
     """ Generates table with aggregated execution times for all rules to be printed. """
 
     total_rules_time = round(
@@ -44,7 +46,7 @@ def generate_times_table_to_be_printed(time_register, border_option):
     return return_string
 
 
-def generate_classes_table_to_be_printed(consolidated_statistics, table_option, border_option):
+def generate_classes_table(consolidated_statistics, table_option, border_option):
     """ Returns table with classes statistics to be printed.
         TABLE OPTIONS can be: types, individuals, total.
         BORDER OPTIONS can be all values accepted by prettytable lib.
@@ -141,7 +143,7 @@ def generate_classes_table_to_be_printed(consolidated_statistics, table_option, 
     return return_string
 
 
-def generate_classifications_table_to_be_printed(consolidated_statistics, table_option, border_option):
+def generate_classifications_table(consolidated_statistics, table_option, border_option):
     """ Returns table with classifications statistics to be printed.
         TABLE OPTIONS can be: types, individuals, total.
         BORDER OPTIONS can be all values accepted by prettytable lib.
@@ -221,7 +223,34 @@ def generate_classifications_table_to_be_printed(consolidated_statistics, table_
     return return_string
 
 
-def print_statistics_screen(consolidated_statistics, time_register, configurations,
+def generate_incompleteness_table(ontology_dataclass_list, border_option):
+    """ Generates a table with information about incomplete classes identified. """
+
+    # Tables' columns' titles
+    columns_titles = ["Incomplete Class", "Detection Rules"]
+
+    pretty_table = PrettyTable(columns_titles)
+
+    number_incomplete_classes = 0
+    ontology_dataclass_list.sort(key=operator.attrgetter('uri'))
+
+    for dataclass in ontology_dataclass_list:
+        if dataclass.incompleteness_info["is_incomplete"] == True:
+            pretty_table.add_row([dataclass.uri, dataclass.incompleteness_info["detected_in"]])
+            number_incomplete_classes += 1
+
+    message = f"\nA total of {number_incomplete_classes} classes were identified as incomplete.\n"
+
+    pretty_table.align = "r"
+    pretty_table.set_style(border_option)
+
+    table_text = pretty_table.get_string()
+    return_string = message + table_text
+
+    return return_string
+
+
+def print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, configurations,
                             restriction="PRINT_ALL"):
     """ Receives list of execution times, and lists of before and after values and prints these three statistics.
 
@@ -235,32 +264,35 @@ def print_statistics_screen(consolidated_statistics, time_register, configuratio
     print("\n##### FINAL ONTCATOWL CLASSIFICATION SUMMARY #####")
 
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
-        table_classes_types = generate_classes_table_to_be_printed(consolidated_statistics, "types", SINGLE_BORDER)
-        table_classifications_types = generate_classifications_table_to_be_printed(consolidated_statistics, "types",
-                                                                                   SINGLE_BORDER)
+        table_classes_types = generate_classes_table(consolidated_statistics, "types", SINGLE_BORDER)
+        table_classifications_types = generate_classifications_table(consolidated_statistics, "types",
+                                                                     SINGLE_BORDER)
 
         print(table_classes_types)
         print(table_classifications_types)
 
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
-        table_classes_individuals = generate_classes_table_to_be_printed(consolidated_statistics, "individuals",
-                                                                         SINGLE_BORDER)
-        table_classifications_individuals = generate_classifications_table_to_be_printed(consolidated_statistics,
-                                                                                         "individuals", SINGLE_BORDER)
+        table_classes_individuals = generate_classes_table(consolidated_statistics, "individuals",
+                                                           SINGLE_BORDER)
+        table_classifications_individuals = generate_classifications_table(consolidated_statistics,
+                                                                           "individuals", SINGLE_BORDER)
 
         print(table_classes_individuals)
         print(table_classifications_individuals)
 
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
-        table_classes_total = generate_classes_table_to_be_printed(consolidated_statistics, "total", SINGLE_BORDER)
-        table_classifications_total = generate_classifications_table_to_be_printed(consolidated_statistics, "total",
-                                                                                   SINGLE_BORDER)
+        table_classes_total = generate_classes_table(consolidated_statistics, "total", SINGLE_BORDER)
+        table_classifications_total = generate_classifications_table(consolidated_statistics, "total",
+                                                                     SINGLE_BORDER)
 
         print(table_classes_total)
         print(table_classifications_total)
 
+    table_incompleteness = generate_incompleteness_table(ontology_dataclass_list, SINGLE_BORDER)
+    print(table_incompleteness)
+
     if configurations["print_time"]:
-        table_aggregated_time = generate_times_table_to_be_printed(time_register, SINGLE_BORDER)
+        table_aggregated_time = generate_times_table(time_register, SINGLE_BORDER)
         print(table_aggregated_time)
 
     print()
