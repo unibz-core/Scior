@@ -10,7 +10,7 @@ from modules.utils_graph import get_all_related_nodes, get_all_superclasses, get
 GUFO_KIND = "gufo:Kind"
 
 
-def incompleteness_registered(rule_code, ontology_dataclass):
+def check_incompleteness_registered(rule_code, ontology_dataclass):
     """ Verifies if an incompleteness has already being registered/reported.
 
         Returns True if the incompleteness for a specific rule has already been registered/reported.
@@ -39,7 +39,8 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
 
     if configurations["is_complete"]:
         # ACTION: Report incompleteness
-        if GUFO_KIND in ontology_dataclass.can_type and not incompleteness_registered(rule_code, ontology_dataclass):
+        if GUFO_KIND in ontology_dataclass.can_type and not check_incompleteness_registered(rule_code,
+                                                                                            ontology_dataclass):
             logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                         f"The class {ontology_dataclass.uri} had no identity principle and now was set as a gufo:Kind.")
             ontology_dataclass.move_element_to_is_list(GUFO_KIND)
@@ -49,15 +50,15 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
                          f"however it cannot be. Program aborted.")
             print_class_types(ontology_dataclass)
             exit(1)
-    elif not incompleteness_registered(rule_code, ontology_dataclass):
+    elif not check_incompleteness_registered(rule_code, ontology_dataclass):
         logger.warning(f"Incompleteness detected during rule {rule_code}! "
                        f"There is no identity principle associated to the class {ontology_dataclass.uri}.")
         if (not configurations["is_automatic"]) and (GUFO_KIND in ontology_dataclass.can_type):
-            register_incompleteness(rule_code, ontology_dataclass)
             set_interactively_class_as_gufo_type(ontology_dataclass, GUFO_KIND)
+            register_incompleteness(rule_code, ontology_dataclass)
 
 
-def interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
+def interaction_rule_ns_s_spe(rule_code, list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
                               related_can_kinds_list):
     """ Implements the user interaction for rule ns_s_spe for types. """
 
@@ -72,6 +73,7 @@ def interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, num
 
     if selected_class != "skipped":
         external_move_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
+        ontology_dataclass.clear_incompleteness()
 
 
 def decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary):
@@ -129,29 +131,32 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
     if number_necessary <= 0:
         return
 
-    action = decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary)
+    if not check_incompleteness_registered(rule_code, ontology_dataclass):
+        register_incompleteness(rule_code, ontology_dataclass)
 
-    logger.warning(f"Incompleteness detected during rule {rule_code}! "
-                   f"The class {ontology_dataclass.uri} "
-                   f"is associated to {2 - number_necessary} Kind(s), "
-                   f"but it should be related to at least 2 Kinds. ")
+        action = decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary)
 
-    if action == "report_incompleteness":
-        if number_can_kinds_list > 0:
-            logger.info(f"Classes that are associated with {ontology_dataclass.uri} and that "
-                        f"can be Kinds are: {related_can_kinds_list}.")
+        logger.warning(f"Incompleteness detected during rule {rule_code}! "
+                       f"The class {ontology_dataclass.uri} is associated to {2 - number_necessary} Kind(s), "
+                       f"but it should be related to at least 2 Kinds. ")
+
+        if action == "report_incompleteness":
+            if number_can_kinds_list > 0:
+                logger.info(f"Classes that are associated with {ontology_dataclass.uri} and that "
+                            f"can be Kinds are: {related_can_kinds_list}.")
+            else:
+                logger.info(f"There are no classes associated with {ontology_dataclass.uri} "
+                            f"and that can be set as Kinds.")
+        elif action == "set_all_as_kinds":
+            logger.info(f"The following classes are going to be set as Kinds "
+                        f"to solve the incompleteness: {related_can_kinds_list}.")
+            external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
+        elif action == "user_can_set":
+            interaction_rule_ns_s_spe(rule_code, list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
+                                      related_can_kinds_list)
         else:
-            logger.debug(f"There are no classes associated with {ontology_dataclass.uri} and that can be set as Kinds.")
-    elif action == "set_all_as_kinds":
-        logger.info(f"The following classes are going to be set as Kinds "
-                    f"to solve the incompleteness: {related_can_kinds_list}.")
-        external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
-    elif action == "user_can_set":
-        interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
-                                  related_can_kinds_list)
-    else:
-        logger.error("Unexpected evaluation result! Program aborted.")
-        exit(1)
+            logger.error("Unexpected evaluation result! Program aborted.")
+            exit(1)
 
 
 def interaction_rule_nk_k_sup(list_ontology_dataclasses, list_possibilities):
