@@ -9,11 +9,7 @@ from modules.logger_config import initialize_logger
 def generate_times_table(time_register, border_option):
     """ Generates table with aggregated execution times for all rules to be printed. """
 
-    total_rules_time = round(
-        time_register["k_s_sup"] + time_register["s_k_sub"] + time_register["t_k_sup"] + time_register["ns_s_sup"] +
-        time_register["s_ns_sub"] + time_register["r_ar_sup"] + time_register["ar_r_sub"] + time_register["ns_sub_r"] +
-        time_register["ks_sf_in"] + time_register["n_r_t"] + time_register["ns_s_spe"] + time_register["nk_k_sup"] +
-        time_register["s_nsup_k"] + time_register["nrs_ns_r"], 3)
+    total_rules_time = round(time_register["total_time"], 3)
 
     # Tables' columns' titles
     columns_titles = ["Rule Code", " Time (s)"]

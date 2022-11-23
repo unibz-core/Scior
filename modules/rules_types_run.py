@@ -22,7 +22,7 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
     # Execution time calculation
     time_register = {"k_s_sup": 0, "s_k_sub": 0, "t_k_sup": 0, "ns_s_sup": 0, "s_ns_sub": 0,
                      "r_ar_sup": 0, "ar_r_sub": 0, "ns_sub_r": 0, "ks_sf_in": 0, "n_r_t": 0,
-                     "ns_s_spe": 0, "nk_k_sup": 0, "s_nsup_k": 0, "nrs_ns_r": 0}
+                     "ns_s_spe": 0, "nk_k_sup": 0, "s_nsup_k": 0, "nrs_ns_r": 0, "total_time": 0}
 
     list_of_rules = always_automatic_rules + general_rules
 
@@ -101,6 +101,7 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
     et = time.perf_counter()
     elapsed_time = et - st
     time_register[rule_code] += elapsed_time
+    time_register["total_time"] += elapsed_time
 
     if configurations["print_time"]:
         logger.info(f"Execution time for rule {rule_code}: {round(elapsed_time, 3)} seconds.")
