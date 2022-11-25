@@ -55,7 +55,7 @@ def initialize_gufo_dictionary():
     logger.debug(f"Loading {gufo_data_file} file...")
 
     try:
-        with open(gufo_data_file) as f:
+        with open(gufo_data_file, encoding='utf-8') as f:
             loaded_gufo_data = yaml.load(f, Loader=SafeLoader)
             logger.debug(f"Resource file {gufo_data_file} successfully loaded.")
     except OSError:
