@@ -4,19 +4,19 @@ from datetime import datetime
 
 from rdflib import RDFS, RDF
 
-from ontcatowl.modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
-from ontcatowl.modules.graph_save_ontology import save_ontology_gufo_statements, \
+from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
+from modules.graph_save_ontology import save_ontology_gufo_statements, \
     save_ontology_file_as_configuration
-from ontcatowl.modules.initialization_arguments import treat_arguments
-from ontcatowl.modules.initialization_data_graph import initialize_nodes_lists
-from ontcatowl.modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
-from ontcatowl.modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, load_known_gufo_information
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.report_printer import print_report_file
-from ontcatowl.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
-from ontcatowl.modules.results_printer import print_statistics_screen
-from ontcatowl.modules.rules_types_run import execute_rules_types
-from ontcatowl.modules.utils_rdf import load_all_graph_safely, perform_reasoning, load_graph_safely_considering_restrictions, \
+from modules.initialization_arguments import treat_arguments
+from modules.initialization_data_graph import initialize_nodes_lists
+from modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
+from modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, load_known_gufo_information
+from modules.logger_config import initialize_logger
+from modules.report_printer import print_report_file
+from modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
+from modules.results_printer import print_statistics_screen
+from modules.rules_types_run import execute_rules_types
+from modules.utils_rdf import load_all_graph_safely, perform_reasoning, load_graph_safely_considering_restrictions, \
     reduce_graph_considering_restrictions
 
 SOFTWARE_ACRONYM = "OntCatOWL"

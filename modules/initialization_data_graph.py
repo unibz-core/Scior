@@ -1,7 +1,7 @@
 """ Initialization of node lists """
-from ontcatowl.modules.initialization_data_ontology_dataclass import get_list_of_all_classes_no_gufo
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.utils_graph import get_list_root_classes, get_list_leaf_classes
+from modules.initialization_data_ontology_dataclass import get_list_of_all_classes_no_gufo
+from modules.logger_config import initialize_logger
+from modules.utils_graph import get_list_root_classes, get_list_leaf_classes
 
 
 def initialize_nodes_lists(ontology_graph):

@@ -131,7 +131,7 @@ dmypy.json
 
 # Personal tests and backups
 trash/
-/ontcatowl/modules/backups - not used/
+/modules/backups - not used/
 log/
 report/
 /ontologies/

@@ -17,7 +17,7 @@ _a = after
 
 """
 
-from ontcatowl.modules.logger_config import initialize_logger
+from modules.logger_config import initialize_logger
 
 
 class dataclass_statistics(object):

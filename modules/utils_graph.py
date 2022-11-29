@@ -1,8 +1,8 @@
 """ Auxiliary functions for extending and complementing RDFLib's graph functions """
 from rdflib import RDFS, URIRef
 
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.utils_general import remove_duplicates, lists_subtraction
+from modules.logger_config import initialize_logger
+from modules.utils_general import remove_duplicates, lists_subtraction
 
 
 def get_superclasses(graph, all_classes, element):

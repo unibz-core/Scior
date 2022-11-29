@@ -4,8 +4,8 @@
 import hashlib
 from dataclasses import dataclass, field
 
-from ontcatowl.modules.dataclass_verifications import verify_duplicates_in_lists_ontology
-from ontcatowl.modules.logger_config import initialize_logger
+from modules.dataclass_verifications import verify_duplicates_in_lists_ontology
+from modules.logger_config import initialize_logger
 
 
 @dataclass
