@@ -3,7 +3,7 @@ import operator
 
 from prettytable import PrettyTable, SINGLE_BORDER
 
-from ontcatowl.modules.logger_config import initialize_logger
+from modules.logger_config import initialize_logger
 
 
 def generate_times_table(time_register, border_option):
