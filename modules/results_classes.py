@@ -48,7 +48,7 @@ class list_classes_by_situation(object):
             self.list_uris_individuals = list_uris_individuals
             self.list_uris_all = list_uris_all
         else:
-            logger.error("Unknown situation informed to list_classes_by_situation. Program aborted.")
+            logger.error(f"Unknown situation {situation} informed to list_classes_by_situation. Program aborted.")
             exit(1)
 
 
@@ -210,12 +210,14 @@ class consolidated_statistics(object):
 
         if self.classes_stats_b.total_classes_number != self.classes_stats_a.total_classes_number:
             logger = initialize_logger()
-            logger.error("Number of classes must be the same before and after the software execution. "
+            logger.error(f"Number of classes must be the same before (is {self.classes_stats_b.total_classes_number}) "
+                         f"and after (is {self.classes_stats_a.total_classes_number}) the software execution. "
                          "Program aborted.")
             exit(1)
 
         if self.classif_stats_b.total_classif_number != self.classif_stats_a.total_classif_number:
             logger = initialize_logger()
-            logger.error("Number of classifications must be the same before and after the software execution. "
+            logger.error(f"Number of classes must be the same before (is {self.classes_stats_b.total_classes_number}) "
+                         f"and after (is {self.classes_stats_a.total_classes_number}) the software execution. "
                          "Program aborted.")
             exit(1)

@@ -70,7 +70,7 @@ def get_list_gufo_classification(ontology_dataclass_list, list_uris, search_list
             search_type = ontology_dataclass.not_type
             search_individual = ontology_dataclass.not_individual
         else:
-            logger.error("Unexpected search list value. Program aborted.")
+            logger.error(f"Unexpected search list value {search_list}. Program aborted.")
             exit(1)
 
         if (gufo_element in search_type) or (gufo_element in search_individual):
@@ -151,7 +151,7 @@ def return_dataclass_from_class_name(list_ontology_dataclasses, class_name):
             return_object = ontology_dataclass
             break
     else:
-        logger.error("Class not found in the list of ontology dataclasses. Program aborted.")
+        logger.error(f"Class {ontology_dataclass.uri} not found in the list of ontology dataclasses. Program aborted.")
         exit(1)
 
     return return_object

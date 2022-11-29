@@ -92,7 +92,7 @@ The input file syntax is automatically detected by the **OntCatOWL**.
   Sales [[GitHub]](https://github.com/tgoprince) [[LinkedIn]](https://www.linkedin.com/in/tiago-sales/)
 - MSc. Elena Romanenko [[GitHub]](https://github.com/mozzherina) [[LinkedIn]]()
 - Prof. PhD. Giancarlo Guizzardi [[LinkedIn]](https://www.linkedin.com/in/giancarlo-guizzardi-bb51aa75/)
-- MSc. Gal Engelberg [[GitHub]]() [[LinkedIn]](https://www.linkedin.com/in/gal-engelberg/)
+- MSc. Gal Engelberg [[LinkedIn]](https://www.linkedin.com/in/gal-engelberg/)
 - Prof. PhD. Dan Klein [[LinkedIn]](https://www.linkedin.com/in/~danklein/)
 
 ## Acknowledgements
