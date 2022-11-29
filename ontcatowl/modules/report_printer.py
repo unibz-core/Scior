@@ -30,8 +30,13 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
 
     # If directory "/report" does not exist, create it
     report_dir = "reports/"
-    if not os.path.exists(report_dir):
-        os.makedirs(report_dir)
+    try:
+        if not os.path.exists(report_dir):
+            os.makedirs(report_dir)
+    except OSError as error:
+        logger.error(f"Could not create {report_dir} directory. Exiting program."
+                     f"System error reported: {error}")
+        exit(1)
 
     report_name = f"{report_dir}report-{get_date_time()}.md"
 
@@ -59,16 +64,11 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
 
     # Creating report file
 
-    with open(report_name, 'w', encoding='utf-8') as f:
-        f.write(report)
-
-    logger.info(f"Report successfully printed. Access it in {os.path.abspath(report_name)}.")
-
-    # TODO (@pedropaulofb): Used only for testing! Remove for the final version!
-    # Creating TEST report file
-
-    report_name = f"{report_dir}report.md"
-
-    with open(report_name, 'w', encoding='utf-8') as f:
-        f.write(report)
-    logger.info(f"TEST Report successfully printed. Access it in {os.path.abspath(report_name)}.")
+    try:
+        with open(report_name, 'w', encoding='utf-8') as f:
+            f.write(report)
+        logger.info(f"Report successfully printed. Access it in {os.path.abspath(report_name)}.")
+    except OSError as error:
+        logger.error(f"Could not print report file. Exiting program."
+                     f"System error reported: {error}")
+        exit(1)

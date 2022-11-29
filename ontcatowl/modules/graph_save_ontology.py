@@ -90,9 +90,14 @@ def save_ontology_file(end_date_time, ontology_graph, configurations):
 
     # Creating report file
     output_file_name = configurations["ontology_path"][:-4] + "-" + end_date_time + ".out.ttl"
-    ontology_graph.serialize(destination=output_file_name)
 
-    logger.info(f"Output ontology file saved. Access it in {os.path.abspath(output_file_name)}.")
+    try:
+        ontology_graph.serialize(destination=output_file_name)
+        logger.info(f"Output ontology file saved. Access it in {os.path.abspath(output_file_name)}.")
+    except OSError as error:
+        logger.error(f"Could not save the output ontology file ({output_file_name}). Exiting program."
+                     f"System error reported: {error}")
+        exit(1)
 
 
 def treat_name(gufo_short_name):

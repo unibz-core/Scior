@@ -30,8 +30,9 @@ def load_all_graph_safely(ontology_file):
 
     try:
         ontology_graph.parse(ontology_file)
-    except OSError:
-        logger.error(f"Could not load {ontology_file} file. Exiting program.")
+    except OSError as error:
+        logger.error(f"Could not load {ontology_file} file. Exiting program.\n"
+                     f"System error reported: {error}")
         exit(1)
 
     logger.debug(f"Ontology file {ontology_file} successfully loaded to working memory.")

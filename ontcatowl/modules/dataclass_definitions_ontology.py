@@ -238,7 +238,7 @@ class OntologyDataClass(object):
             list_hash = self.not_individual
         else:
             logger = initialize_logger()
-            logger.error("Unknown list type. Unable to create hash. Program aborted.")
+            logger.error(f"Unknown list type {input_list}. Unable to create hash. Program aborted.")
             exit(1)
 
         for hash_part in list_hash:
