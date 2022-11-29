@@ -155,7 +155,7 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
             interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
                                       related_can_kinds_list)
         else:
-            logger.error("Unexpected evaluation result! Program aborted.")
+            logger.error(f"Unexpected evaluation result ({action})! Program aborted.")
             exit(1)
 
 

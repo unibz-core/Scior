@@ -12,7 +12,8 @@ def verify_duplicates_in_lists_ontology(ontology_dataclass):
                   ontology_dataclass.can_individual + ontology_dataclass.not_type + ontology_dataclass.not_individual
 
     if has_duplicates(merged_list):
-        logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for {ontology_dataclass.uri}")
+        logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for {ontology_dataclass.uri}. "
+                     f"Program aborted.")
         exit(1)
 
 

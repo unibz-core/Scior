@@ -131,7 +131,7 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
                 "(i.e., after its rules' executions) in three lists: Totally Unknown Classes, " \
                 "Partially Known Classes, and Totally Known Classes.\n"
     else:
-        logger.error("Unexpected list situation. Program aborted.")
+        logger.error(f"Unexpected list situation {result_lists[0]}. Program aborted.")
         exit(1)
 
     content_all = ""
@@ -275,7 +275,7 @@ def get_content600(ontology_dataclass_list, restriction="PRINT_ALL"):
                                        f"\t* `not_type`\t\t=\t{dataclass.not_type}\n" \
                                        f"\t* `not_individual`\t=\t{dataclass.not_individual}\n"
     else:
-        logger.error("Restriction unknown. Program aborted.")
+        logger.error(f"Restriction unknown ({restriction}). Program aborted.")
         exit(1)
 
     return class_print_information
