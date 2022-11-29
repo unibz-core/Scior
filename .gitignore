@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.idea/
 build/
 develop-eggs/
 dist/
@@ -130,7 +131,7 @@ dmypy.json
 
 # Personal tests and backups
 trash/
-/modules/backups - not used/
+/ontcatowl/modules/backups - not used/
 log/
 report/
 /ontologies/
