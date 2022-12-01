@@ -86,14 +86,12 @@ The input file syntax is automatically detected by the **OntCatOWL**.
 
 ## Contributors
 
-- PhD. Pedro Paulo Favato
-  Barcelos [[GitHub]](https://github.com/pedropaulofb) [[LinkedIn]](https://www.linkedin.com/in/pedro-paulo-favato-barcelos/)
-- PhD. Tiago Prince
-  Sales [[GitHub]](https://github.com/tgoprince) [[LinkedIn]](https://www.linkedin.com/in/tiago-sales/)
+- PhD. Pedro Paulo Favato Barcelos [[GitHub]](https://github.com/pedropaulofb) [[LinkedIn]](https://www.linkedin.com/in/pedro-paulo-favato-barcelos/)
+- PhD. Tiago Prince Sales [[GitHub]](https://github.com/tgoprince) [[LinkedIn]](https://www.linkedin.com/in/tiago-sales/)
 - MSc. Elena Romanenko [[GitHub]](https://github.com/mozzherina) [[LinkedIn]]()
 - Prof. PhD. Giancarlo Guizzardi [[LinkedIn]](https://www.linkedin.com/in/giancarlo-guizzardi-bb51aa75/)
-- MSc. Gal Engelberg [[LinkedIn]](https://www.linkedin.com/in/gal-engelberg/)
-- Prof. PhD. Dan Klein [[LinkedIn]](https://www.linkedin.com/in/~danklein/)
+- Eng. MSc. Gal Engelberg [[GitHub]](https://github.com/GalEngelberg) [[LinkedIn]](https://www.linkedin.com/in/gal-engelberg/)
+- Prof. PhD. Dan Klein [[GitHub]](https://github.com/danklein10) [[LinkedIn]](https://www.linkedin.com/in/~danklein/)
 
 ## Acknowledgements
 
