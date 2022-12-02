@@ -1,7 +1,7 @@
 """ Functions related to the propagation of modifications in the graph. """
-from modules.logger_config import initialize_logger
-from modules.rules_types_actions import perform_rule_actions_types
-from modules.utils_graph import get_subclasses, get_superclasses
+from ontcatowl.modules.logger_config import initialize_logger
+from ontcatowl.modules.rules_types_actions import perform_rule_actions_types
+from ontcatowl.modules.utils_graph import get_subclasses, get_superclasses
 
 
 def execute_and_propagate_up(ontology_dataclasses_list, graph, nodes_list, input_node, action_code,
