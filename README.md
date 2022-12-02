@@ -36,6 +36,12 @@ For installing them, run the following command on the terminal:
 pip install -r requirements.txt
 ```
 
+If you would like to use the project as package, run the following command on the terminal:
+
+```shell
+pip install git+https://github.com/unibz-core/OntCatOWL.git
+```
+
 ## Code Execution
 
 After the external libraries are installed, run the following command on the terminal for executing **OntCatOWL**:

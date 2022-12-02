@@ -2,7 +2,7 @@
 
 import argparse
 
-from modules.logger_config import initialize_logger
+from ontcatowl.modules.logger_config import initialize_logger
 
 
 def treat_arguments(software_acronym, software_name, software_version, software_url):

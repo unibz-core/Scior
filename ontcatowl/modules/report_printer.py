@@ -2,12 +2,12 @@
 MarkDown format. """
 import os
 
-from modules.logger_config import initialize_logger
-from modules.report_content import get_content100, get_content200, \
+from ontcatowl.modules.logger_config import initialize_logger
+from ontcatowl.modules.report_content import get_content100, get_content200, \
     get_content300_400, get_content500, get_content600
-from modules.results_calculation import generate_result_classes_lists
-from modules.utils_dataclass import sort_all_ontology_dataclass_list
-from modules.utils_general import get_date_time
+from ontcatowl.modules.results_calculation import generate_result_classes_lists
+from ontcatowl.modules.utils_dataclass import sort_all_ontology_dataclass_list
+from ontcatowl.modules.utils_general import get_date_time
 
 
 def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, end_date_time_out, elapsed_time,
