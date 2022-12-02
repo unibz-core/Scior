@@ -1,10 +1,11 @@
 """ Implementation of rules for types. """
 
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.user_interactions import select_class_from_list, print_class_types, set_interactively_class_as_gufo_type
-from ontcatowl.modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, \
+from src.modules.logger_config import initialize_logger
+from src.modules.user_interactions import select_class_from_list, print_class_types, \
+    set_interactively_class_as_gufo_type
+from src.modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, \
     external_move_list_to_is_list, get_element_list, return_dataclass_from_class_name
-from ontcatowl.modules.utils_graph import get_all_related_nodes, get_all_superclasses, get_subclasses, get_superclasses
+from src.modules.utils_graph import get_all_related_nodes, get_all_superclasses, get_subclasses, get_superclasses
 
 # Frequent GUFO types
 GUFO_KIND = "gufo:Kind"

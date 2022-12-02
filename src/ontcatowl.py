@@ -4,19 +4,20 @@ from datetime import datetime
 
 from rdflib import RDFS, RDF
 
-from modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
-from modules.graph_save_ontology import save_ontology_gufo_statements, \
+from src.modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
+from src.modules.graph_save_ontology import save_ontology_gufo_statements, \
     save_ontology_file_as_configuration
-from modules.initialization_arguments import treat_arguments
-from modules.initialization_data_graph import initialize_nodes_lists
-from modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
-from modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, load_known_gufo_information
-from modules.logger_config import initialize_logger
-from modules.report_printer import print_report_file
-from modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
-from modules.results_printer import print_statistics_screen
-from modules.rules_types_run import execute_rules_types
-from modules.utils_rdf import load_all_graph_safely, perform_reasoning, load_graph_safely_considering_restrictions, \
+from src.modules.initialization_arguments import treat_arguments
+from src.modules.initialization_data_graph import initialize_nodes_lists
+from src.modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
+from src.modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, \
+    load_known_gufo_information
+from src.modules.logger_config import initialize_logger
+from src.modules.report_printer import print_report_file
+from src.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
+from src.modules.results_printer import print_statistics_screen
+from src.modules.rules_types_run import execute_rules_types
+from src.modules.utils_rdf import load_all_graph_safely, perform_reasoning, load_graph_safely_considering_restrictions, \
     reduce_graph_considering_restrictions
 
 SOFTWARE_ACRONYM = "OntCatOWL"
@@ -45,7 +46,8 @@ def run_ontcatowl():
     # Loading owl ontologies from files to the working memory
     original_graph = load_all_graph_safely(global_configurations["ontology_path"])
     working_graph = reduce_graph_considering_restrictions(original_graph, LIST_GRAPH_RESTRICTIONS)
-    gufo_graph = load_graph_safely_considering_restrictions("resources/gufoEndurantsOnly.ttl", LIST_GRAPH_RESTRICTIONS)
+    gufo_graph = load_graph_safely_considering_restrictions("src/resources/gufoEndurantsOnly.ttl",
+                                                            LIST_GRAPH_RESTRICTIONS)
 
     # Loading GUFO dictionary from yaml file
     gufo_dictionary = initialize_gufo_dictionary()

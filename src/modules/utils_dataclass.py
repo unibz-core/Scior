@@ -1,7 +1,7 @@
 """ Functions for Ontology Dataclasses """
 import operator
 
-from ontcatowl.modules.logger_config import initialize_logger
+from src.modules.logger_config import initialize_logger
 
 
 def update_all_ontology_dataclass_list(ontology_dataclass_list):

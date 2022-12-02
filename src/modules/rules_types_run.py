@@ -1,11 +1,12 @@
 """ Rules applied to the TYPES HIERARCHY. """
 import time
 
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, rule_t_k_sup, rule_ns_s_sup, rule_s_ns_sub, \
+from src.modules.logger_config import initialize_logger
+from src.modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, rule_t_k_sup, rule_ns_s_sup, \
+    rule_s_ns_sub, \
     rule_r_ar_sup, rule_ar_r_sub, rule_n_r_t, rule_ns_s_spe, rule_nk_k_sup, rule_s_nsup_k, rule_ns_sub_r, \
     rule_nrs_ns_r, rule_ks_sf_in
-from ontcatowl.modules.utils_dataclass import generate_hash_ontology_dataclass_list
+from src.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
 def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configurations):

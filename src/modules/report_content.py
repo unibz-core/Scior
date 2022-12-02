@@ -3,10 +3,10 @@ import os
 
 from prettytable import MARKDOWN
 
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.results_printer import generate_classes_table, generate_classifications_table, \
+from src.modules.logger_config import initialize_logger
+from src.modules.results_printer import generate_classes_table, generate_classifications_table, \
     generate_times_table, generate_incompleteness_table
-from ontcatowl.modules.utils_dataclass import generate_hash_ontology_dataclass_list
+from src.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
 def get_content100(restriction="PRINT_ALL"):

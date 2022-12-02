@@ -3,7 +3,7 @@
 import logging
 import os
 
-from ontcatowl.modules.utils_general import get_date_time
+from src.modules.utils_general import get_date_time
 
 
 def initialize_logger():

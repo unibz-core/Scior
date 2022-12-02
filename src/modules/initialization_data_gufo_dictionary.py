@@ -5,8 +5,8 @@
 import yaml
 from yaml import SafeLoader
 
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.utils_general import has_duplicates
+from src.modules.logger_config import initialize_logger
+from src.modules.utils_general import has_duplicates
 
 # TODO (@pedropaulofb): These values must be updated when the YAML file is updated.
 NUMBER_CLASSES_TYPES = 14
@@ -51,7 +51,7 @@ def initialize_gufo_dictionary():
 
     logger = initialize_logger()
 
-    gufo_data_file = "resources/gufo_data.yaml"
+    gufo_data_file = "src/resources/gufo_data.yaml"
     logger.debug(f"Loading {gufo_data_file} file...")
 
     try:

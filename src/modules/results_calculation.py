@@ -1,8 +1,8 @@
 """ Provides class and functions to calculate statistics of the improvement OntCatOWL has caused on
 the inputted ontology. """
 
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.results_classes import dataclass_statistics, list_classes_by_situation, classes_statistics, \
+from src.modules.logger_config import initialize_logger
+from src.modules.results_classes import dataclass_statistics, list_classes_by_situation, classes_statistics, \
     classifications_statistics, consolidated_statistics
 
 # These values must be updated for newer versions of OntCatOWL, after including elements other than Endurants.
