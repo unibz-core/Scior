@@ -67,8 +67,6 @@ def initialize_gufo_dictionary():
 
     return loaded_gufo_data
 
-    # TODO (@pedropaulofb): In the future the yaml file should be created automatically from the gufo.owl file
-
 
 def validate_gufo_data(gufo_data):
     """ Validate the GUFO data loaded from the YAML resource file. """

@@ -65,7 +65,11 @@ def run_ontcatowl():
 
     # EXECUTION
 
-    time_register = execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes, global_configurations)
+    try:
+        time_register = execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes,
+                                            global_configurations)
+    except Exception:
+        exit(1)
 
     # SAVING RESULTS - OUTPUT
 

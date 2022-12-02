@@ -131,7 +131,7 @@ class OntologyDataClass(object):
             else:
                 logger.error(f"Inconsistency found. Error when trying to move the element {element} to the IS LIST "
                              f"in {self.uri}. The element was not found in the CAN list. Program aborted.")
-                exit(1)
+                raise Exception("INCONSISTENCY FOUND!")
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
             self.move_element_between_lists(element, source_list, target_list)
@@ -164,7 +164,7 @@ class OntologyDataClass(object):
             else:
                 logger.error(f"When trying to move the element {element} to the NOT LIST in {self.uri}. "
                              f"The element was not found in the CAN list. Program aborted.")
-                exit(1)
+                raise Exception("INCONSISTENCY FOUND!")
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
             self.move_element_between_lists(element, source_list, target_list)
