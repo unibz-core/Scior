@@ -4,7 +4,8 @@
 import hashlib
 from dataclasses import dataclass, field
 
-from src.modules.dataclass_verifications import verify_duplicates_in_lists_ontology
+from src.modules.dataclass_verifications import verify_duplicates_in_lists_ontology, \
+    verify_single_abstract_element_available_for_types, verify_multiple_final_classifications_for_types
 from src.modules.logger_config import initialize_logger
 from src.modules.utils_general import lists_intersection
 
@@ -37,6 +38,8 @@ class OntologyDataClass(object):
          the identification of duplicates. Other verifications can be added later if necessary. """
 
         verify_duplicates_in_lists_ontology(self)
+        verify_multiple_final_classifications_for_types(self)
+        verify_single_abstract_element_available_for_types(self)
 
     def clear_incompleteness(self):
         "When a user define the type of the dataclass, its incompleteness status must be set to its initial state."
@@ -118,7 +121,6 @@ class OntologyDataClass(object):
         """
 
         logger = initialize_logger()
-        target_list = "undefined"
 
         source_list = self.return_containing_list_name(element)
 
@@ -152,7 +154,6 @@ class OntologyDataClass(object):
         """
 
         logger = initialize_logger()
-        target_list = "undefined"
 
         source_list = self.return_containing_list_name(element)
 
@@ -454,8 +455,6 @@ class OntologyDataClass(object):
         move this leaf classification to the is list. This function applies only to the types' hierarchy.
         Justification can be found here: https://github.com/nemo-ufes/gufo/issues/7
         """
-
-        logger = initialize_logger()
 
         if len(self.can_type) > 0:
 
