@@ -17,8 +17,8 @@ from src.modules.report_printer import print_report_file
 from src.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
 from src.modules.results_printer import print_statistics_screen
 from src.modules.rules_types_run import execute_rules_types
-from src.modules.utils_rdf import load_all_graph_safely, perform_reasoning, load_graph_safely_considering_restrictions, \
-    reduce_graph_considering_restrictions
+from src.modules.utils_rdf import load_all_graph_safely, perform_reasoning, \
+    load_graph_safely_considering_restrictions, reduce_graph_considering_restrictions
 
 SOFTWARE_ACRONYM = "OntCatOWL"
 SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
@@ -99,15 +99,3 @@ def run_ontcatowl():
 
 if __name__ == "__main__":
     run_ontcatowl()
-
-# TODO (@pedropaulofb): IMPROVEMENTS
-# Reduce log size
-
-# TODO (@pedropaulofb): PERFORMANCE
-# Insert "break" after moving commands (name == class.uri) because there are no repetitions. Verify for/break statement
-
-# TODO (@pedropaulofb): BEFORE RELEASE OF VERSION
-# Evaluate on Linux before release first version
-# Move TO DO comments from this module to GitHub issues
-# Evaluate all Lints from all modules
-# remove generation of test report!
