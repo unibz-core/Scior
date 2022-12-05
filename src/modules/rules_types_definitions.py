@@ -4,8 +4,8 @@ from src.modules.logger_config import initialize_logger
 from src.modules.propagation import execute_and_propagate_down, execute_and_propagate_up
 from src.modules.rules_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe, treat_rule_nk_k_sup, \
     treat_rule_s_nsup_k, treat_rule_ns_sub_r, treat_rule_nrs_ns_r, treat_rule_ks_sf_in
-from src.modules.utils_dataclass import get_list_gufo_classification
-from src.modules.utils_graph import get_subclasses, get_superclasses
+from src.modules.utils_dataclass import get_list_gufo_classification, external_move_list_to_is_list
+from src.modules.utils_graph import get_subclasses, get_superclasses, get_all_subclasses
 
 # Frequent GUFO types
 GUFO_KIND = "gufo:Kind"
@@ -35,9 +35,8 @@ def rule_k_s_sup(list_ontology_dataclasses, graph, nodes_list):
             logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
 
             # The selected dataclass is included in the exclusion list because the action must not be performed on it.
-            execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list,
-                                     ontology_dataclass.uri,
-                                     rule_code, [ontology_dataclass.uri])
+            execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri, rule_code,
+                                     [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
@@ -64,8 +63,8 @@ def rule_s_k_sub(list_ontology_dataclasses, graph, nodes_list):
             logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
 
             # The selected dataclass is included in the exclusion list because the action must not be performed on it.
-            execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list,
-                                       ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
+            execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri, rule_code,
+                                       [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
@@ -113,8 +112,8 @@ def rule_t_k_sup(list_ontology_dataclasses, graph, nodes_list):
                 # If only one Kind superclass, proceed with rule.
                 else:
                     # set all supertypes as NOT KIND (except for the one that is already a Kind)
-                    execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list, subclass,
-                                             "t_k_sup", return_list)
+                    execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list, subclass, "t_k_sup",
+                                             return_list)
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
@@ -140,8 +139,8 @@ def rule_ns_s_sup(list_ontology_dataclasses, graph, nodes_list):
         if GUFO_NON_SORTAL in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
 
-            execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list,
-                                     ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
+            execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri, rule_code,
+                                     [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
@@ -167,8 +166,8 @@ def rule_s_ns_sub(list_ontology_dataclasses, graph, nodes_list):
         if GUFO_SORTAL in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
 
-            execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list,
-                                       ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
+            execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri, rule_code,
+                                       [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
@@ -196,9 +195,8 @@ def rule_r_ar_sup(list_ontology_dataclasses, graph, nodes_list):
         if ("gufo:RigidType" in ontology_dataclass.is_type) or ("gufo:SemiRigidType" in ontology_dataclass.is_type):
             logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
 
-            execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list,
-                                     ontology_dataclass.uri,
-                                     rule_code, [ontology_dataclass.uri])
+            execute_and_propagate_up(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri, rule_code,
+                                     [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
@@ -225,8 +223,8 @@ def rule_ar_r_sub(list_ontology_dataclasses, graph, nodes_list):
         if "gufo:AntiRigidType" in ontology_dataclass.is_type:
             logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
 
-            execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list,
-                                       ontology_dataclass.uri, rule_code, [ontology_dataclass.uri])
+            execute_and_propagate_down(list_ontology_dataclasses, graph, nodes_list, ontology_dataclass.uri, rule_code,
+                                       [ontology_dataclass.uri])
 
             logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
@@ -480,8 +478,7 @@ def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
             continue
 
         # CONDITION 2: ontology_dataclass must be a gufo:Sortals and must be a gufo:NonRigidType
-        if ("gufo:Sortal" not in ontology_dataclass.is_type) \
-                or ("gufo:NonRigidType" not in ontology_dataclass.is_type):
+        if ("gufo:Sortal" not in ontology_dataclass.is_type) or ("gufo:NonRigidType" not in ontology_dataclass.is_type):
             continue
 
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
@@ -517,5 +514,41 @@ def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list):
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
 
         treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass, graph, nodes_list)
+
+        logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
+
+
+def rule_sub_r_r(list_ontology_dataclasses, graph, nodes_list):
+    """
+    - REASON: Roles are AntiRigid relationally dependant Sortals.
+
+    - RULE: Every direct or indirect specialization of a Role is also a Role.
+
+    - DESCRIPTION: Phases are relationally independent types. Roles are relationally dependent types.
+    Every specialization of a Role is also dependant on the relation that their supertype has.
+
+    - BEHAVIOR:
+        - All cases: Set as gufo:Role.
+    """
+
+    rule_code = "sub_r_r"
+
+    logger = initialize_logger()
+
+    for ontology_dataclass in list_ontology_dataclasses:
+
+        # CONDITION 1: Never occurs when the class is a leaf.
+        if ontology_dataclass.uri in nodes_list["leaves"]:
+            continue
+
+        # CONDITION 2: The class must be a Role (i.e., Role must be in its is_type list).
+        if ("gufo:Role" in ontology_dataclass.can_type) or ("gufo:Role" in ontology_dataclass.not_type):
+            continue
+
+        # Rule treatment when conditions are met
+        logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
+
+        list_role_subclasses = get_all_subclasses(graph, nodes_list, ontology_dataclass.uri)
+        external_move_list_to_is_list(list_ontology_dataclasses, list_role_subclasses, "gufo:Role")
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
