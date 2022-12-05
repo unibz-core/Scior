@@ -1,9 +1,9 @@
 """ Module for initializing data read from the ontology to be evaluated """
 import copy
 
-from src.modules.dataclass_definitions_ontology import OntologyDataClass
-from src.modules.logger_config import initialize_logger
-from src.modules.utils_rdf import get_list_of_all_classes
+from ontcatowl.modules.dataclass_definitions_ontology import OntologyDataClass
+from ontcatowl.modules.logger_config import initialize_logger
+from ontcatowl.modules.utils_rdf import get_list_of_all_classes
 
 
 def initialize_ontology_dataclasses(ontology_graph, gufo_input_yaml):

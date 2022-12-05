@@ -3,8 +3,8 @@ import os
 
 from rdflib import URIRef, RDF, RDFS, OWL, BNode
 
-from src.modules.logger_config import initialize_logger
-from src.modules.utils_rdf import get_ontology_uri
+from ontcatowl.modules.logger_config import initialize_logger
+from ontcatowl.modules.utils_rdf import get_ontology_uri
 
 
 def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
