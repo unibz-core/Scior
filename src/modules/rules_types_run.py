@@ -5,7 +5,7 @@ from src.modules.logger_config import initialize_logger
 from src.modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, rule_t_k_sup, rule_ns_s_sup, \
     rule_s_ns_sub, \
     rule_r_ar_sup, rule_ar_r_sub, rule_n_r_t, rule_ns_s_spe, rule_nk_k_sup, rule_s_nsup_k, rule_ns_sub_r, \
-    rule_nrs_ns_r, rule_ks_sf_in
+    rule_nrs_ns_r, rule_ks_sf_in, rule_sub_r_r
 from src.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
@@ -16,19 +16,20 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
 
     # Rules
     always_automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub",
-                              "ns_sub_r", "ks_sf_in"]
+                              "ns_sub_r", "ks_sf_in", "sub_r_r"]
 
     general_rules = ["n_r_t", "ns_s_spe", "nk_k_sup", "s_nsup_k", "nrs_ns_r"]
 
     # Execution time calculation
     time_register = {"k_s_sup": 0, "s_k_sub": 0, "t_k_sup": 0, "ns_s_sup": 0, "s_ns_sub": 0,
-                     "r_ar_sup": 0, "ar_r_sub": 0, "ns_sub_r": 0, "ks_sf_in": 0, "n_r_t": 0,
-                     "ns_s_spe": 0, "nk_k_sup": 0, "s_nsup_k": 0, "nrs_ns_r": 0, "total_time": 0}
+                     "r_ar_sup": 0, "ar_r_sub": 0, "ns_sub_r": 0, "ks_sf_in": 0, "sub_r_r": 0,
+                     "n_r_t": 0, "ns_s_spe": 0, "nk_k_sup": 0, "s_nsup_k": 0, "nrs_ns_r": 0,
+                     "total_time": 0}
 
     list_of_rules = always_automatic_rules + general_rules
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
-    final_hash = 0
+    final_hash = initial_hash + 1
 
     # LOOP(LOOP(automatic) + interactive)
     while initial_hash != final_hash:
@@ -95,6 +96,8 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
         rule_nrs_ns_r(ontology_dataclass_list, graph, nodes_list, configurations)
     elif rule_code == "ks_sf_in":
         rule_ks_sf_in(ontology_dataclass_list, graph, nodes_list)
+    elif rule_code == "sub_r_r":
+        rule_sub_r_r(ontology_dataclass_list, graph, nodes_list)
     else:
         logger.error(f"Unexpected rule code ({rule_code}) received as parameter! Program aborted.")
         exit(1)

@@ -4,8 +4,10 @@
 import hashlib
 from dataclasses import dataclass, field
 
-from src.modules.dataclass_verifications import verify_duplicates_in_lists_ontology
+from src.modules.dataclass_verifications import verify_duplicates_in_lists_ontology, \
+    verify_single_abstract_element_available_for_types, verify_multiple_final_classifications_for_types
 from src.modules.logger_config import initialize_logger
+from src.modules.utils_general import lists_intersection
 
 
 @dataclass
@@ -36,6 +38,8 @@ class OntologyDataClass(object):
          the identification of duplicates. Other verifications can be added later if necessary. """
 
         verify_duplicates_in_lists_ontology(self)
+        verify_multiple_final_classifications_for_types(self)
+        verify_single_abstract_element_available_for_types(self)
 
     def clear_incompleteness(self):
         "When a user define the type of the dataclass, its incompleteness status must be set to its initial state."
@@ -117,7 +121,6 @@ class OntologyDataClass(object):
         """
 
         logger = initialize_logger()
-        target_list = "undefined"
 
         source_list = self.return_containing_list_name(element)
 
@@ -136,6 +139,7 @@ class OntologyDataClass(object):
             # Consistency checking is already performed inside the move_between_ontology_lists function.
             self.move_element_between_lists(element, source_list, target_list)
             self.clear_incompleteness()
+            self.verify_final_type_classification()
 
     def move_element_to_not_list(self, element):
         """ Check if the element to be moved is a type or instance
@@ -150,7 +154,6 @@ class OntologyDataClass(object):
         """
 
         logger = initialize_logger()
-        target_list = "undefined"
 
         source_list = self.return_containing_list_name(element)
 
@@ -446,3 +449,19 @@ class OntologyDataClass(object):
             if not_individual in list_subtypes_keys:
                 # Move all the key's list elements to the dataclass not list
                 self.move_list_of_elements_to_not_list(self.gufo_dictionary["subtypes"][not_individual])
+
+    def verify_final_type_classification(self):
+        """ Verifies if only a single leaf classification is present in the can_list. If this is true,
+        move this leaf classification to the is list. This function applies only to the types' hierarchy.
+        Justification can be found here: https://github.com/nemo-ufes/gufo/issues/7
+        """
+
+        if len(self.can_type) > 0:
+
+            type_leaf_classifications = ["gufo:Category", "gufo:Kind", "gufo:Mixin", "gufo:Phase", "gufo:PhaseMixin",
+                                         "gufo:Role", "gufo:RoleMixin", "gufo:SubKind"]
+
+            result_list = lists_intersection(type_leaf_classifications, self.can_type)
+
+            if len(result_list) == 1:
+                self.move_element_to_is_list(result_list[0])
