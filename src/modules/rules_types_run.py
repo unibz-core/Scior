@@ -97,7 +97,7 @@ def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code,
     elif rule_code == "ks_sf_in":
         rule_ks_sf_in(ontology_dataclass_list, graph, nodes_list)
     elif rule_code == "sub_r_r":
-        rule_sub_r_r(ontology_dataclass_list, graph, nodes_list, configurations)
+        rule_sub_r_r(ontology_dataclass_list, graph, nodes_list)
     else:
         logger.error(f"Unexpected rule code ({rule_code}) received as parameter! Program aborted.")
         exit(1)
