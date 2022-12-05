@@ -4,10 +4,10 @@
 import hashlib
 from dataclasses import dataclass, field
 
-from src.modules.dataclass_verifications import verify_duplicates_in_lists_ontology, \
+from ontcatowl.modules.dataclass_verifications import verify_duplicates_in_lists_ontology, \
     verify_single_abstract_element_available_for_types, verify_multiple_final_classifications_for_types
-from src.modules.logger_config import initialize_logger
-from src.modules.utils_general import lists_intersection
+from ontcatowl.modules.logger_config import initialize_logger
+from ontcatowl.modules.utils_general import lists_intersection
 
 
 @dataclass

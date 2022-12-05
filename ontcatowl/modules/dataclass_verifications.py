@@ -1,7 +1,7 @@
 """ This module implements functions for validate Ontology DataClasses. """
 
-from src.modules.logger_config import initialize_logger
-from src.modules.utils_general import has_duplicates, lists_intersection
+from ontcatowl.modules.logger_config import initialize_logger
+from ontcatowl.modules.utils_general import has_duplicates, lists_intersection
 
 
 def verify_duplicates_in_lists_ontology(ontology_dataclass):
