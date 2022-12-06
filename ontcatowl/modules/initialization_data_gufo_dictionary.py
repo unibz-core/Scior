@@ -53,7 +53,8 @@ def initialize_gufo_dictionary():
 
     logger = initialize_logger()
 
-    gufo_data_file = os.getcwd() + "\\resources\\gufo_data.yaml"
+    gufo_data_file = os.path.join(os.path.dirname(__file__), os.pardir, "resources", "gufo_data.yaml")
+
     logger.debug(f"Loading {gufo_data_file} file...")
 
     try:
