@@ -6,7 +6,7 @@ import os
 from ontcatowl.modules.utils_general import get_date_time
 
 
-def initialize_logger():
+def initialize_logger(source="default"):
     """ Initialize OntCatOWL Logger. """
 
     # Create a custom logger
@@ -18,7 +18,12 @@ def initialize_logger():
 
         # Creating CONSOLE handler
         console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.INFO)
+        if source == "default":
+            console_handler.setLevel(logging.INFO)
+        elif source == "tester":
+            console_handler.setLevel(logging.ERROR)
+        else:
+            print(f"Logger parameter unknown ({source}). Aborting execution.")
 
         # If directory "/log" does not exist, create it
         log_dir = "logs/"
@@ -32,7 +37,12 @@ def initialize_logger():
 
         # Creating FILE handler
         file_handler = logging.FileHandler(f"{log_dir}{get_date_time()}.log")
-        file_handler.setLevel(logging.DEBUG)
+        if source == "default":
+            file_handler.setLevel(logging.DEBUG)
+        elif source == "tester":
+            file_handler.setLevel(logging.ERROR)
+        else:
+            print(f"Logger parameter unknown ({source}). Aborting execution.")
 
         # Create formatters and add it to handlers
         console_format = logging.Formatter('%(levelname)s - %(message)s')

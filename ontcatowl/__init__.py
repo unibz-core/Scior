@@ -1,1 +1,1 @@
-from .main import run_ontcatowl
+from .main import run_ontcatowl_tester
