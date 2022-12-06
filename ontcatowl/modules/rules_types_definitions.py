@@ -520,12 +520,12 @@ def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list):
 
 def rule_sub_r_r(list_ontology_dataclasses, graph, nodes_list):
     """
-    - REASON: Roles are AntiRigid relationally dependant Sortals.
+    - REASON: Roles are AntiRigid relationally dependent Sortals.
 
     - RULE: Every direct or indirect specialization of a Role is also a Role.
 
     - DESCRIPTION: Phases are relationally independent types. Roles are relationally dependent types.
-    Every specialization of a Role is also dependant on the relation that their supertype has.
+    Every specialization of a Role is also dependent on the relation that their supertype has.
 
     - BEHAVIOR:
         - All cases: Set as gufo:Role.

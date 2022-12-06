@@ -22,7 +22,7 @@ from ontcatowl.modules.utils_rdf import load_all_graph_safely, perform_reasoning
 
 SOFTWARE_ACRONYM = "OntCatOWL"
 SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
-SOFTWARE_VERSION = "0.22.12.02"
+SOFTWARE_VERSION = "0.22.12.05"
 SOFTWARE_URL = "https://github.com/unibz-core/OntCatOWL/"
 VERSION_RESTRICTION = "TYPES_ONLY"
 LIST_GRAPH_RESTRICTIONS = [RDF.type, RDFS.subClassOf]
@@ -46,7 +46,7 @@ def run_ontcatowl():
     # Loading owl ontologies from files to the working memory
     original_graph = load_all_graph_safely(global_configurations["ontology_path"])
     working_graph = reduce_graph_considering_restrictions(original_graph, LIST_GRAPH_RESTRICTIONS)
-    gufo_graph = load_graph_safely_considering_restrictions("src/resources/gufoEndurantsOnly.ttl",
+    gufo_graph = load_graph_safely_considering_restrictions("ontcatowl/resources/gufoEndurantsOnly.ttl",
                                                             LIST_GRAPH_RESTRICTIONS)
 
     # Loading GUFO dictionary from yaml file
@@ -95,6 +95,36 @@ def run_ontcatowl():
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
                       consolidated_statistics, time_register, VERSION_RESTRICTION)
+
+
+def run_ontcatowl_tester(global_configurations, working_graph):
+    """ Main function for the OntCatOWL-Tester.
+        No printings and reports are generated. Logger is differently configured.
+        This function is exported at the __init__.py file for being used by the OntCatOWL-Tester.
+        For more detailed information, please check: https://github.com/unibz-core/OntCatOWL-Tester/
+    """
+
+    # DATA LOADINGS AND INITIALIZATIONS
+    logger = initialize_logger("tester")
+    now = datetime.now()
+    start_date_time = now.strftime("%d-%m-%Y %H:%M:%S")
+    logger.info(f"OntCatOWL started on {start_date_time}!")
+    gufo_graph = load_graph_safely_considering_restrictions("ontcatowl/resources/gufoEndurantsOnly.ttl",
+                                                            LIST_GRAPH_RESTRICTIONS)
+    gufo_dictionary = initialize_gufo_dictionary()
+    ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, gufo_dictionary)
+    verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
+    ontology_nodes = initialize_nodes_lists(working_graph)
+    load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list)
+
+    # EXECUTION
+    try:
+        time_register = execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes,
+                                            global_configurations)
+    except Exception:
+        exit(1)
+
+    return time_register, ontology_dataclass_list
 
 
 if __name__ == "__main__":
