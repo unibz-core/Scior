@@ -1,5 +1,5 @@
 """ Main module  for OntCatOWL """
-import os.path
+import os
 import time
 from datetime import datetime
 
@@ -113,6 +113,7 @@ def run_ontcatowl_tester(global_configurations, working_graph):
 
     gufo_ttl_path = os.path.join(os.path.dirname(__file__), "resources", "gufoEndurantsOnly.ttl")
     gufo_graph = load_graph_safely_considering_restrictions(gufo_ttl_path, LIST_GRAPH_RESTRICTIONS)
+
     gufo_dictionary = initialize_gufo_dictionary()
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, gufo_dictionary)
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
