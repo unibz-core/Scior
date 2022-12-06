@@ -1,4 +1,5 @@
 """ Main module  for OntCatOWL """
+import os.path
 import time
 from datetime import datetime
 
@@ -46,8 +47,8 @@ def run_ontcatowl():
     # Loading owl ontologies from files to the working memory
     original_graph = load_all_graph_safely(global_configurations["ontology_path"])
     working_graph = reduce_graph_considering_restrictions(original_graph, LIST_GRAPH_RESTRICTIONS)
-    gufo_graph = load_graph_safely_considering_restrictions("ontcatowl/resources/gufoEndurantsOnly.ttl",
-                                                            LIST_GRAPH_RESTRICTIONS)
+    gufo_ttl_path = os.path.join(os.path.dirname(__file__), "resources", "gufoEndurantsOnly.ttl")
+    gufo_graph = load_graph_safely_considering_restrictions(gufo_ttl_path, LIST_GRAPH_RESTRICTIONS)
 
     # Loading GUFO dictionary from yaml file
     gufo_dictionary = initialize_gufo_dictionary()
@@ -109,8 +110,9 @@ def run_ontcatowl_tester(global_configurations, working_graph):
     now = datetime.now()
     start_date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL started on {start_date_time}!")
-    gufo_graph = load_graph_safely_considering_restrictions("ontcatowl/resources/gufoEndurantsOnly.ttl",
-                                                            LIST_GRAPH_RESTRICTIONS)
+
+    gufo_ttl_path = os.path.join(os.path.dirname(__file__), "resources", "gufoEndurantsOnly.ttl")
+    gufo_graph = load_graph_safely_considering_restrictions(gufo_ttl_path, LIST_GRAPH_RESTRICTIONS)
     gufo_dictionary = initialize_gufo_dictionary()
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, gufo_dictionary)
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
