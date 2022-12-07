@@ -8,8 +8,7 @@ def verify_duplicates_in_lists_ontology(ontology_dataclass):
     """ No same string must be in two lists at the same time. """
 
     logger = initialize_logger()
-    merged_list = ontology_dataclass.is_type + ontology_dataclass.is_individual + ontology_dataclass.can_type + \
-                  ontology_dataclass.can_individual + ontology_dataclass.not_type + ontology_dataclass.not_individual
+    merged_list = ontology_dataclass.is_type + ontology_dataclass.is_individual + ontology_dataclass.can_type + ontology_dataclass.can_individual + ontology_dataclass.not_type + ontology_dataclass.not_individual
 
     if has_duplicates(merged_list):
         logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for {ontology_dataclass.uri}. "
@@ -45,12 +44,6 @@ def verify_single_abstract_element_available_for_types(ontology_dataclass):
                                  "gufo:Role", "gufo:RoleMixin", "gufo:SubKind"]
 
     result_list = lists_intersection(type_leaf_classifications, ontology_dataclass.can_type)
-
-    if (len(ontology_dataclass.can_type) > 0) and (len(result_list) == 0):
-        logger.error(f"There are only 'abstract' classification options available in {ontology_dataclass.uri}. "
-                     f"The options are: {ontology_dataclass.can_type}. This situation was not expected to occur. "
-                     f"Please report this problem at: https://github.com/unibz-core/OntCatOWL/issues. "
-                     f"The execution is not going to be interrupted, however its results may be incorrect.")
 
 
 def verify_all_ontology_dataclasses_consistency(ontology_dataclass_list):
