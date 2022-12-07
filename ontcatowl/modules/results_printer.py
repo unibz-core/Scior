@@ -33,6 +33,7 @@ def generate_times_table(time_register, border_option):
     pretty_table.add_row(["s_k_sub", round(time_register["s_k_sub"], 3)])
     pretty_table.add_row(["s_ns_sub", round(time_register["s_ns_sub"], 3)])
     pretty_table.add_row(["s_nsup_k", round(time_register["s_nsup_k"], 3)])
+    pretty_table.add_row(["sub_r_r", round(time_register["sub_r_r"], 3)])
     pretty_table.add_row(["t_k_sup", round(time_register["t_k_sup"], 3)])
 
     pretty_table.align = "r"
