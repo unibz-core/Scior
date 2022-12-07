@@ -5,6 +5,8 @@ from prettytable import PrettyTable, SINGLE_BORDER
 
 from ontcatowl.modules.logger_config import initialize_logger
 
+UNDEFINED_MESSAGE = "undefined - error if printed."
+
 
 def generate_times_table(time_register, border_option):
     """ Generates table with aggregated execution times for all rules to be printed. """
@@ -67,16 +69,16 @@ def generate_classes_table(consolidated_statistics, table_option, border_option)
     row_2 = "Partially known classes"
     row_3 = "Totally known classes"
 
-    pos_r1_c1 = "undefined - error if printed."
-    pos_r1_c2 = "undefined - error if printed."
-    pos_r1_c3 = "undefined - error if printed."
-    pos_r2_c1 = "undefined - error if printed."
-    pos_r2_c2 = "undefined - error if printed."
-    pos_r2_c3 = "undefined - error if printed."
-    pos_r3_c1 = "undefined - error if printed."
-    pos_r3_c2 = "undefined - error if printed."
-    pos_r3_c3 = "undefined - error if printed."
-    message = "undefined - error if printed."
+    pos_r1_c1 = UNDEFINED_MESSAGE
+    pos_r1_c2 = UNDEFINED_MESSAGE
+    pos_r1_c3 = UNDEFINED_MESSAGE
+    pos_r2_c1 = UNDEFINED_MESSAGE
+    pos_r2_c2 = UNDEFINED_MESSAGE
+    pos_r2_c3 = UNDEFINED_MESSAGE
+    pos_r3_c1 = UNDEFINED_MESSAGE
+    pos_r3_c2 = UNDEFINED_MESSAGE
+    pos_r3_c3 = UNDEFINED_MESSAGE
+    message = UNDEFINED_MESSAGE
 
     if table_option == "types":
 
@@ -161,13 +163,13 @@ def generate_classifications_table(consolidated_statistics, table_option, border
     row_1 = "Unknown classifications"
     row_2 = "Known classifications"
 
-    pos_r1_c1 = "undefined - error if printed."
-    pos_r1_c2 = "undefined - error if printed."
-    pos_r1_c3 = "undefined - error if printed."
-    pos_r2_c1 = "undefined - error if printed."
-    pos_r2_c2 = "undefined - error if printed."
-    pos_r2_c3 = "undefined - error if printed."
-    message = "undefined - error if printed."
+    pos_r1_c1 = UNDEFINED_MESSAGE
+    pos_r1_c2 = UNDEFINED_MESSAGE
+    pos_r1_c3 = UNDEFINED_MESSAGE
+    pos_r2_c1 = UNDEFINED_MESSAGE
+    pos_r2_c2 = UNDEFINED_MESSAGE
+    pos_r2_c3 = UNDEFINED_MESSAGE
+    message = UNDEFINED_MESSAGE
 
     if table_option == "types":
 
