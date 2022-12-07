@@ -113,9 +113,6 @@ def run_ontcatowl_tester(global_configurations, working_graph):
 
     # DATA LOADINGS AND INITIALIZATIONS
     logger = initialize_logger("tester")
-    now = datetime.now()
-    start_date_time = now.strftime("%d-%m-%Y %H:%M:%S")
-    logger.info(f"OntCatOWL started on {start_date_time}!")
     gufo_ttl_path = os.path.join(os.path.dirname(__file__), "resources", "gufoEndurantsOnly.ttl")
     gufo_graph = load_graph_safely_considering_restrictions(gufo_ttl_path, LIST_GRAPH_RESTRICTIONS)
     gufo_dictionary = initialize_gufo_dictionary()
@@ -124,14 +121,18 @@ def run_ontcatowl_tester(global_configurations, working_graph):
     ontology_nodes = initialize_nodes_lists(working_graph)
     load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list)
 
+
     # EXECUTION
     try:
+        before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
         time_register = execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes,
                                             internal_global_configurations)
+        after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+        consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
     except Exception:
         exit(1)
 
-    return time_register, ontology_dataclass_list
+    return ontology_dataclass_list, time_register, consolidated_statistics
 
 
 if __name__ == "__main__":
