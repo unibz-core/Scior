@@ -237,11 +237,15 @@ def generate_incompleteness_table(ontology_dataclass_list, border_option):
 
     message = f"\nA total of {number_incomplete_classes} classes were identified as incomplete.\n"
 
-    pretty_table.align = "r"
-    pretty_table.set_style(border_option)
+    if number_incomplete_classes != 0:
 
-    table_text = pretty_table.get_string()
-    return_string = message + table_text
+        pretty_table.align = "r"
+        pretty_table.set_style(border_option)
+
+        table_text = pretty_table.get_string()
+        return_string = message + table_text
+    else:
+        return_string = message
 
     return return_string
 
