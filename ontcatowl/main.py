@@ -106,6 +106,11 @@ def run_ontcatowl_tester(global_configurations, working_graph):
         For more detailed information, please check: https://github.com/unibz-core/OntCatOWL-Tester/
     """
 
+    internal_global_configurations = {'import_gufo': False, 'save_gufo': False,
+                                      'is_automatic': global_configurations['is_automatic'],
+                                      'is_complete': global_configurations['is_complete'], 'reasoning': False,
+                                      'print_time': False, 'ontology_path': ""}
+
     # DATA LOADINGS AND INITIALIZATIONS
     logger = initialize_logger("tester")
     now = datetime.now()
@@ -122,7 +127,7 @@ def run_ontcatowl_tester(global_configurations, working_graph):
     # EXECUTION
     try:
         time_register = execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes,
-                                            global_configurations)
+                                            internal_global_configurations)
     except Exception:
         exit(1)
 
