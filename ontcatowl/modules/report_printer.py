@@ -24,7 +24,7 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
     """
 
     logger = initialize_logger()
-    logger.info("Printing report of the current state of the ontology dataclass list using markdown syntax ...")
+    logger.debug("Printing report of the current state of the ontology dataclass list using markdown syntax ...")
 
     sort_all_ontology_dataclass_list(ontology_dataclass_list)
 
