@@ -1,5 +1,8 @@
 """ General auxiliary functions. """
+import platform
 from datetime import datetime
+
+import psutil
 
 
 def has_duplicates(input_list):
@@ -42,3 +45,20 @@ def get_date_time():
     date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
 
     return date_time
+
+
+def get_computer_specifications():
+    """ Returns a dictionary with basic information about the computer specifications """
+
+    try:
+        computer_specs = {}
+        computer_specs['Python version'] = platform.python_version()
+        computer_specs['Operating System'] = platform.system() + " " + platform.release() + " - v" + platform.version()
+        computer_specs['Processor'] = platform.processor() + " (" + platform.machine() + ")"
+        computer_specs['Installed RAM'] = str(round(psutil.virtual_memory().total / (1024.0 ** 3))) + " GB"
+        return computer_specs
+
+    except Exception as error:
+        print(f"Failed to collect the computer specifications. Program aborted.\n"
+              f"System error message is: {error}")
+        exit(1)

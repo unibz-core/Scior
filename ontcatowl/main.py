@@ -18,6 +18,7 @@ from ontcatowl.modules.report_printer import print_report_file
 from ontcatowl.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
 from ontcatowl.modules.results_printer import print_statistics_screen
 from ontcatowl.modules.rules_types_run import execute_rules_types
+from ontcatowl.modules.utils_general import get_computer_specifications
 from ontcatowl.modules.utils_rdf import load_all_graph_safely, perform_reasoning, \
     load_graph_safely_considering_restrictions, reduce_graph_considering_restrictions
 
@@ -43,6 +44,8 @@ def run_ontcatowl():
     now = datetime.now()
     start_date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"OntCatOWL started on {start_date_time}!")
+
+    specs = get_computer_specifications()
 
     # Loading owl ontologies from files to the working memory
     original_graph = load_all_graph_safely(global_configurations["ontology_path"])
@@ -94,9 +97,9 @@ def run_ontcatowl():
 
     save_ontology_file_as_configuration(resulting_graph, gufo_graph, end_date_time, global_configurations)
 
-    print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, end_date_time, elapsed_time,
+    print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
-                      consolidated_statistics, time_register, VERSION_RESTRICTION)
+                      consolidated_statistics, time_register, specs, VERSION_RESTRICTION)
 
 
 def run_ontcatowl_tester(global_configurations, working_graph):
