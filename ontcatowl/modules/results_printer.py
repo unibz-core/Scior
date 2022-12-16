@@ -1,5 +1,6 @@
 """ Fucntions for printing statistics to the user. """
 import operator
+import time
 
 from prettytable import PrettyTable, SINGLE_BORDER
 
@@ -264,6 +265,7 @@ def print_statistics_screen(ontology_dataclass_list, consolidated_statistics, ti
         - "TOTAL_ONLY" - prints only total table.
     """
 
+    time.sleep(0.1)
     print("\n##### FINAL ONTCATOWL CLASSIFICATION SUMMARY #####")
 
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":

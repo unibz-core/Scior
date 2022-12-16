@@ -7,6 +7,7 @@ from ontcatowl.modules.logger_config import initialize_logger
 from ontcatowl.modules.results_printer import generate_classes_table, generate_classifications_table, \
     generate_times_table, generate_incompleteness_table
 from ontcatowl.modules.utils_dataclass import generate_hash_ontology_dataclass_list
+from ontcatowl.modules.utils_general import get_computer_specifications
 
 
 def get_content100(restriction="PRINT_ALL"):
@@ -65,7 +66,7 @@ def get_content100(restriction="PRINT_ALL"):
 
 
 def get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time,
-                   elapsed_time, time_register, computer_specs, configurations):
+                   elapsed_time, time_register, configurations):
     """ Presents some information about the software execution."""
 
     line_01 = f"OntCatOWL successfully performed.\n" \
@@ -74,6 +75,8 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
               f"* Total elapsed time: {elapsed_time} seconds.\n"
 
     table_times = generate_times_table(time_register, MARKDOWN)
+
+    computer_specs = get_computer_specifications()
 
     line_01_specs = f"\nComputer specifications:\n"
     for key in computer_specs.keys():

@@ -12,7 +12,7 @@ from ontcatowl.modules.utils_general import get_date_time
 
 def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
-                      consolidated_statistics, time_register, computer_specs, restriction):
+                      consolidated_statistics, time_register, restriction):
     """ Printing a file report, in MarkDown syntax, containing the state of the ontology before and after
     the execution of OntCatOWL.
 
@@ -52,7 +52,7 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
 
     content_100 = get_content100(restriction)
     content_200 = get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time,
-                                 elapsed_time, time_register, computer_specs, global_configurations)
+                                 elapsed_time, time_register, global_configurations)
     content_300 = get_content300_400(lists_before, restriction)
     content_400 = get_content300_400(lists_after, restriction)
     content_500 = get_content500(ontology_dataclass_list, consolidated_statistics, restriction)
