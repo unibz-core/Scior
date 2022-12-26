@@ -1,103 +1,119 @@
-# OntCatOWL
+# OntCatOWL: Identification of Ontological Categories for OWL Ontologies
 
-Identification of Ontological Categories for OWL Ontologies.
+**[OntCatOWL](https://github.com/unibz-core/OntCatOWL)** is the abbreviated name for Identification of Ontological
+Categories for OWL Ontologies, a software that aims to support the semi-automatic semantic improvement of lightweight
+web ontologies. We aim to reach the referred semantic improvement via the association
+of [gUFO](https://nemo-ufes.github.io/gufo/)—a lightweight implementation of
+the [Unified Foundational Ontology (UFO)](https://nemo.inf.ufes.br/wp-content/uploads/ufo_unified_foundational_ontology_2021.pdf)
+—concepts to the OWL entities. The aim of gUFO is “*to provide a lightweight implementation of the Unified Foundational
+Ontology (UFO) suitable for Semantic Web OWL 2 DL applications*”.
 
-## Table of Contents
+## Content
 
-<!-- TOC -->
+- [Functioning and Features](#functioning-and-features)
+- [Related Repositories](#related-repositories)
+- [Installation Requirements](#installation-requirements)
+- [Execution Options](#execution-options)
+- [Contributors](#contributors)
+- [Acknowledgements](#acknowledgements)
 
-* [Software requirements](#software-requirements)
-* [Code Execution](#code-execution)
-* [Usage](#usage)
-* [Software Functioning](#software-functioning)
-    * [Rules Premises](#rules-premises)
-* [Software Limitations](#software-limitations)
-    * [Version X (to be completed)](#version-x--to-be-completed-)
-* [Release Notes](#release-notes)
-    * [Release 1](#release-1)
+## Functioning and Features
 
-<!-- TOC -->
+We provide specific documentation for better explaining the OntCatOWL functioning logics and features. Please access the
+following links for more information.
 
-## Software Requirements
+- [Functioning Overview](https://github.com/unibz-core/OntCatOWL/blob/main/documentation/OntCatOWL-Functioning.md)
+- [Execution Modes](https://github.com/unibz-core/OntCatOWL/blob/main/documentation/OntCatOWL-Execution-Modes.md)
+- [Implemented Rules](https://github.com/unibz-core/OntCatOWL/blob/main/documentation/OntCatOWL-ImplementedRules.md)
+
+## Related Repositories
+
+The [OntCatOWL-Tester](https://github.com/unibz-core/OntCatOWL-Tester) is a software developed with two main purposes: (
+i) to build the infrastructure for running multiple OntCatOWL tests on the OntoUML/UFO Catalog datasets; and (ii) to be
+the place where these tests are implemented and executed from.
+
+The FAIR Model Catalog for Ontology-Driven Conceptual Modeling Research,
+short-named [OntoUML/UFO Catalog](https://github.com/unibz-core/ontouml-models), is a structured and open-source catalog
+that contains OntoUML and UFO ontology models. The catalog was conceived to allow collaborative work and to be easily
+accessible to all its users. Its goal is to support empirical research in OntoUML and UFO, as well as for the general
+conceptual modeling area, by providing high-quality curated, structured, and machine-processable data on why, where, and
+how different modeling approaches are used. The catalog offers a diverse collection of conceptual models, created by
+modelers with varying modeling skills, for a range of domains, and for different purposes.
+
+Results of the tests performed using the OntCatOWL-Tester are available at
+the [OntCatOWL-Dataset](https://github.com/unibz-core/OntCatOWL-Dataset). The aim of the publication of the resulting
+datasets is to share with the community data that can be analyzed in different ways, even though all executed tests are
+totally reproducible.
+
+## Installation Requirements
 
 You need to [download and install Python](https://www.python.org/downloads/) for executing **OntCatOWL**. The code was
-developed and tested using [Python](https://www.python.org/) v3.11.0
-
-The following external libraries are necessary:
-
-- [RDFLib](https://pypi.org/project/rdflib/) - version ~= 6.2.0
-- [OWL-RL](https://pypi.org/project/owlrl/) - version ~= 6.0.2
-- [PyYAML](https://pypi.org/project/PyYAML/) - version ~= 6.0
-- [PrettyTable](https://pypi.org/project/prettytable/) - version ~= 3.4.1
-
-For installing them, run the following command on the terminal:
+developed and tested using [Python](https://www.python.org/) v3.11.0. For installing the required libraries, run the
+following command on the terminal:
 
 ```shell
 pip install -r requirements.txt
 ```
 
-If you would like to use the project as package, run the following command on the terminal:
+If you would like to use the project as a package, run the following command on the terminal:
 
 ```shell
 pip install git+https://github.com/unibz-core/OntCatOWL.git
 ```
 
-## Code Execution
+## Execution Options
 
-After the external libraries are installed, run the following command on the terminal for executing **OntCatOWL**:
+With all the requirements installed, you can run OntCatOWL in diverse modes. For accessing this information, please
+execute the following command inside the project’s folder:
 
 ```shell
-python ontcatowl.py <input file OR URL>
+python ontcatowl -h
 ```
 
-## Usage
+After executing the command above, OntCatOWL will provide all its usages and valid arguments, which are:
 
-```
-usage: OntCatOWL [-h] [-i | -a] [-n | -c] [-r] [-t] [-g] [-v] ontology_file
+```shell
+usage: OntCatOWL [-h] [-i | -a] [-n | -c] [-r] [-t] [-g1] [-g2] [-v] ontology_file
+OntCatOWL - Identification of Ontological Categories for OWL Ontologies
 
 positional arguments:
-  ontology_file      The path of the ontology file to be loaded.
+ontology_file       The path of the ontology file to be loaded.
 
 options:
-  -h, --help         show this help message and exit
-  -i, --interactive  Executes automatic rules whenever possible. Executes interactive rules only if necessary.
-  -a, --automatic    Executes only automatic rules. Interactive rules are not performed.
-  -n, --incomplete   The loaded ontology is an incomplete model.
-  -c, --complete     The loaded ontology is a complete model.
-  -r, --reasoning    Enable RDF reasoning for graph expansion.
-  -t, --times        Prints the execution times of all functions.
-  -g, --gufo         Imports GUFO ontology in the output ontology file.
-  -v, --version      Prints the software version and exit.
+-h, --help          Show this help message and exit.
+-i, --interactive   Executes automatic rules whenever possible. Executes interactive rules only if necessary.
+-a, --automatic     Executes only automatic rules. Interactive rules are not performed.
+-n, --incomplete    The loaded ontology is an incomplete model.
+-c, --complete      The loaded ontology is a complete model.
+-r, --reasoning     Enable RDF reasoning for graph expansion.
+-t, --times         Prints the execution times of all functions.
+-g1, --gufo1        Imports gUFO ontology in the output ontology file.
+-g2, --gufo2        Saves all gUFO statements in the output ontology file.
+-v, --version       Prints the software version and exit.
 ```
 
-The input file syntax is automatically detected by the **OntCatOWL**.
-
-## Software Functioning
-
-### Rules Premises
-
-- new classes cannot be created during the execution of OntCatOWL.
-- all stereotypes already set as is or not are immutable. i e., there can be no movement from lists is or not.
-- When interactivity is enabled, interactions are only available when there are more than one option.
-
-## Software Limitations
-
-### Version X (to be completed)
-
-- Disjoint and Complete are not supported.
-
-## Release Notes
-
-### Release 1
+More information about the execution options can be found in the related specific document file.
 
 ## Contributors
 
-- PhD. Pedro Paulo Favato Barcelos [[GitHub]](https://github.com/pedropaulofb) [[LinkedIn]](https://www.linkedin.com/in/pedro-paulo-favato-barcelos/)
-- PhD. Tiago Prince Sales [[GitHub]](https://github.com/tgoprince) [[LinkedIn]](https://www.linkedin.com/in/tiago-sales/)
-- MSc. Elena Romanenko [[GitHub]](https://github.com/mozzherina) [[LinkedIn]]()
+- PhD. Pedro Paulo Favato
+  Barcelos [[GitHub]](https://github.com/pedropaulofb) [[LinkedIn]](https://www.linkedin.com/in/pedro-paulo-favato-barcelos/)
+
+- PhD. Tiago Prince
+  Sales [[GitHub]](https://github.com/tgoprince) [[LinkedIn]](https://www.linkedin.com/in/tiago-sales/)
+
+- MSc. Elena Romanenko [[GitHub]](https://github.com/mozzherina)
+
 - Prof. PhD. Giancarlo Guizzardi [[LinkedIn]](https://www.linkedin.com/in/giancarlo-guizzardi-bb51aa75/)
-- Eng. MSc. Gal Engelberg [[GitHub]](https://github.com/GalEngelberg) [[LinkedIn]](https://www.linkedin.com/in/gal-engelberg/)
+
+- Eng. MSc. Gal
+  Engelberg [[GitHub]](https://github.com/GalEngelberg) [[LinkedIn]](https://www.linkedin.com/in/gal-engelberg/)
+
 - Prof. PhD. Dan Klein [[GitHub]](https://github.com/danklein10) [[LinkedIn]](https://www.linkedin.com/in/~danklein/)
+
+Please get in touch with this software’s contributors using the provided links or **
+preferably** [open an issue](https://github.com/unibz-core/ontouml-models-tools/issues/) in case of doubts or problems
+found.
 
 ## Acknowledgements
 
