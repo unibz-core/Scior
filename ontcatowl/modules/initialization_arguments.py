@@ -14,7 +14,7 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     about_message = software_acronym + " - version " + software_version
 
     # PARSING ARGUMENTS
-    arguments_parser = argparse.ArgumentParser(prog="OntCatOWL",
+    arguments_parser = argparse.ArgumentParser(prog="ontcatowl",
                                                description=software_acronym + " - " + software_name,
                                                allow_abbrev=False,
                                                epilog=software_url)
