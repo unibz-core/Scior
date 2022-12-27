@@ -92,7 +92,7 @@ options:
 -v, --version       Prints the software version and exit.
 ```
 
-More information about the execution options can be found in the related specific document file.
+More information about the execution options can be found in the [related specific document file](https://github.com/unibz-core/OntCatOWL/blob/main/documentation/OntCatOWL-Execution-Modes.md).
 
 ## Contributors
 
