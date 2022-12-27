@@ -236,14 +236,13 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
 
     - RULE: In complete models, every type without supertypes and without subtypes must be a gufo:Kind.
 
-    - DESCRIPTION:
+    - DESCRIPTION: If a class is not a gufo:Kind and if it is a root and a leaf node at the same time
+    (i.e., an isolated class), then perform action.
 
     - BEHAVIOR:
         - C: Set as gufo:Kind.
         - N+A: Report incompleteness.
         - N+I: User can set as gufo:Kind or skip.
-
-        * Only if not reported before.
     """
 
     rule_code = "n_r_t"
