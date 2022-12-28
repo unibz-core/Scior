@@ -232,8 +232,7 @@ generalization/specialization relations. Code: ns_s_spe.
   - Code: s_nsup_k
 - **Reason:** Every Sortal must have exactly one identity principle, which is provided by a Kind.
 - **Behavior:**
-  - Complete & Automatic: Set as `gufo:Kind`.
-  - Complete & Interactive: Set as `gufo:Kind`.
+  - Complete (Automatic or Interactive): Set as `gufo:Kind`.
   - Incomplete & Automatic: Report incompleteness.
   - Incomplete & Interactive: User can set as `gufo:Kind`.
 
@@ -252,8 +251,7 @@ generalization/specialization relations. Code: ns_s_spe.
   - Code: nrs_ns_r
 - **Reason:** Phases always occur in phase partitions.
 - **Behavior:**
-  - Complete & Automatic: If can be a `gufo:Role`, set as `gufo:Role`. If cannot, report incompleteness.
-  - Complete & Interactive: If can be a `gufo:Role`, set as `gufo:Role`. If cannot, report incompleteness.
+  - Complete (Automatic or Interactive): If can be a `gufo:Role`, set as `gufo:Role`. If cannot, report incompleteness.
   - Incomplete & Automatic: Report incompleteness.
   - Incomplete & Interactive: Ask the user if she/he should be set to `gufo:Role`. If not, report incompleteness.
 
