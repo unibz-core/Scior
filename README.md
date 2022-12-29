@@ -8,42 +8,23 @@ the [Unified Foundational Ontology (UFO)](https://nemo.inf.ufes.br/wp-content/up
 —concepts to the OWL entities. The aim of gUFO is “*to provide a lightweight implementation of the Unified Foundational
 Ontology (UFO) suitable for Semantic Web OWL 2 DL applications*”.
 
-## Content
+## Contents
 
 - [Functioning and Features](#functioning-and-features)
-- [Related Repositories](#related-repositories)
 - [Installation Requirements](#installation-requirements)
 - [Execution Options](#execution-options)
+- [Related Repositories](#related-repositories)
 - [Contributors](#contributors)
 - [Acknowledgements](#acknowledgements)
 
 ## Functioning and Features
 
-We provide specific documentation for better explaining the OntCatOWL functioning logics and features. Please access the
-following links for more information.
+We provide specific documentation for better explaining the OntCatOWL scope, objectives, functioning logics, and
+features. Please access the following links for more information.
 
 - [Functioning Overview](https://github.com/unibz-core/OntCatOWL/blob/main/documentation/OntCatOWL-Functioning.md)
 - [Execution Modes](https://github.com/unibz-core/OntCatOWL/blob/main/documentation/OntCatOWL-Execution-Modes.md)
 - [Implemented Rules](https://github.com/unibz-core/OntCatOWL/blob/main/documentation/OntCatOWL-ImplementedRules.md)
-
-## Related Repositories
-
-The [OntCatOWL-Tester](https://github.com/unibz-core/OntCatOWL-Tester) is a software developed with two main purposes: (
-i) to build the infrastructure for running multiple OntCatOWL tests on the OntoUML/UFO Catalog datasets; and (ii) to be
-the place where these tests are implemented and executed from.
-
-The FAIR Model Catalog for Ontology-Driven Conceptual Modeling Research,
-short-named [OntoUML/UFO Catalog](https://github.com/unibz-core/ontouml-models), is a structured and open-source catalog
-that contains OntoUML and UFO ontology models. The catalog was conceived to allow collaborative work and to be easily
-accessible to all its users. Its goal is to support empirical research in OntoUML and UFO, as well as for the general
-conceptual modeling area, by providing high-quality curated, structured, and machine-processable data on why, where, and
-how different modeling approaches are used. The catalog offers a diverse collection of conceptual models, created by
-modelers with varying modeling skills, for a range of domains, and for different purposes.
-
-Results of the tests performed using the OntCatOWL-Tester are available at
-the [OntCatOWL-Dataset](https://github.com/unibz-core/OntCatOWL-Dataset). The aim of the publication of the resulting
-datasets is to share with the community data that can be analyzed in different ways, even though all executed tests are
-totally reproducible.
 
 ## Installation Requirements
 
@@ -73,17 +54,18 @@ python ontcatowl -h
 After executing the command above, OntCatOWL will provide all its usages and valid arguments, which are:
 
 ```shell
-usage: OntCatOWL [-h] [-i | -a] [-n | -c] [-r] [-t] [-g1] [-g2] [-v] ontology_file
+usage: ontcatowl [-h] [-i | -a] [-n | -c] [-r] [-t] [-g1] [-g2] [-v] ontology_file
+
 OntCatOWL - Identification of Ontological Categories for OWL Ontologies
 
 positional arguments:
-ontology_file       The path of the ontology file to be loaded.
+ontology_file The path of the ontology file to be loaded.
 
 options:
 -h, --help          Show this help message and exit.
--i, --interactive   Executes automatic rules whenever possible. Executes interactive rules only if necessary.
+-i, --interactive   Executes automatic rules whenever possible. Executes interactive rules only if necessary (default).
 -a, --automatic     Executes only automatic rules. Interactive rules are not performed.
--n, --incomplete    The loaded ontology is an incomplete model.
+-n, --incomplete    The loaded ontology is an incomplete model (default).
 -c, --complete      The loaded ontology is a complete model.
 -r, --reasoning     Enable RDF reasoning for graph expansion.
 -t, --times         Prints the execution times of all functions.
@@ -92,23 +74,43 @@ options:
 -v, --version       Prints the software version and exit.
 ```
 
-More information about the execution options can be found in the [related specific document file](https://github.com/unibz-core/OntCatOWL/blob/main/documentation/OntCatOWL-Execution-Modes.md).
+You can find more information about the execution options in
+the [related documentation file](https://github.com/unibz-core/OntCatOWL/blob/main/documentation/OntCatOWL-Execution-Modes.md)
+.
+
+**IMPORTANT:** Please note that because of a
+problem [registered in this open issue](https://github.com/unibz-core/OntCatOWL/issues/11), the software may not be
+executed as we here present it.
+
+## Related Repositories
+
+The [OntCatOWL-Tester](https://github.com/unibz-core/OntCatOWL-Tester) is a software developed with two main purposes: (
+i) to build the infrastructure for running multiple OntCatOWL tests on the OntoUML/UFO Catalog datasets; and (ii) to be
+the place where these tests are implemented and executed from.
+
+The FAIR Model Catalog for Ontology-Driven Conceptual Modeling Research,
+short-named [OntoUML/UFO Catalog](https://github.com/unibz-core/ontouml-models), is a structured and open-source catalog
+that contains OntoUML and UFO ontology models. The catalog was conceived to allow collaborative work and to be easily
+accessible to all its users. Its goal is to support empirical research in OntoUML and UFO, as well as for the general
+conceptual modeling area, by providing high-quality curated, structured, and machine-processable data on why, where, and
+how different modeling approaches are used. The catalog offers a diverse collection of conceptual models, created by
+modelers with varying modeling skills, for a range of domains, and for different purposes.
+
+Results of the tests performed using the OntCatOWL-Tester are available at
+the [OntCatOWL-Dataset](https://github.com/unibz-core/OntCatOWL-Dataset). The aim of the publication of the resulting
+datasets is to share with the community data that can be analyzed in different ways, even though all executed tests are
+totally reproducible.
 
 ## Contributors
 
 - PhD. Pedro Paulo Favato
   Barcelos [[GitHub]](https://github.com/pedropaulofb) [[LinkedIn]](https://www.linkedin.com/in/pedro-paulo-favato-barcelos/)
-
 - PhD. Tiago Prince
   Sales [[GitHub]](https://github.com/tgoprince) [[LinkedIn]](https://www.linkedin.com/in/tiago-sales/)
-
 - MSc. Elena Romanenko [[GitHub]](https://github.com/mozzherina)
-
 - Prof. PhD. Giancarlo Guizzardi [[LinkedIn]](https://www.linkedin.com/in/giancarlo-guizzardi-bb51aa75/)
-
 - Eng. MSc. Gal
   Engelberg [[GitHub]](https://github.com/GalEngelberg) [[LinkedIn]](https://www.linkedin.com/in/gal-engelberg/)
-
 - Prof. PhD. Dan Klein [[GitHub]](https://github.com/danklein10) [[LinkedIn]](https://www.linkedin.com/in/~danklein/)
 
 Please get in touch with this software’s contributors using the provided links or **
