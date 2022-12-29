@@ -79,8 +79,8 @@ format *`x_y_z`* identifies every implemented rule.
 - **Description:** When this rule identifies a class categorized as `gufo:Kind`, it identifies all its supertypes and
   sets them as not `gufo:Sortal`.
 - **Behavior:**
-  - Automation: Same execution for both complete and incomplete models.
-  - Completeness: Automatic rule. Interaction is not needed in any case.
+    - Automation: Same execution for both complete and incomplete models.
+    - Completeness: Automatic rule. Interaction is not needed in any case.
 
 ### Rule s_k_sub
 
@@ -90,8 +90,8 @@ format *`x_y_z`* identifies every implemented rule.
 - **Description:** When this rule identifies a class categorized as `gufo:Sortal`, it identifies all its subtypes and
   sets them as not `gufo:Kind`.
 - **Behavior:**
-  - Automation: Same execution for both complete and incomplete models.
-  - Completeness: Automatic rule. Interaction is not needed in any case.
+    - Automation: Same execution for both complete and incomplete models.
+    - Completeness: Automatic rule. Interaction is not needed in any case.
 
 ### Rule t_k_sup
 
@@ -101,8 +101,8 @@ format *`x_y_z`* identifies every implemented rule.
 - **Description:** Identifies a `gufo:Kind`. With the exception for the `gufo:Kind` itself, all direct and indirect
   superclasses of all subclasses of this `gufo:Kind` are set as not `gufo:Kinds`.
 - **Behavior:**
-  - Automation: Same execution for both complete and incomplete models.
-  - Completeness: Automatic rule. Interaction is not needed in any case.
+    - Automation: Same execution for both complete and incomplete models.
+    - Completeness: Automatic rule. Interaction is not needed in any case.
 
 ### Rule ns_s_sup
 
@@ -112,8 +112,8 @@ format *`x_y_z`* identifies every implemented rule.
 - **Description:** For each `gufo:NonSortal` class identified, sets all its direct and indirect superclasses as
   not `gufo:Sortals`.
 - **Behavior:**
-  - Automation: Same execution for both complete and incomplete models.
-  - Completeness: Automatic rule. Interaction is not needed in any case.
+    - Automation: Same execution for both complete and incomplete models.
+    - Completeness: Automatic rule. Interaction is not needed in any case.
 
 ### Rule s_ns_sub
 
@@ -123,66 +123,72 @@ format *`x_y_z`* identifies every implemented rule.
 - **Description:** For each `gufo:Sortal` class identified, set all its direct and indirect subclasses as
   not `gufo:NonSortal`.
 - **Behavior:**
-  - Automation: Same execution for both complete and incomplete models.
-  - Completeness: Automatic rule. Interaction is not needed in any case.
+    - Automation: Same execution for both complete and incomplete models.
+    - Completeness: Automatic rule. Interaction is not needed in any case.
 
 ### Rule r_ar_sup
 
-- **Rule:** A `gufo:Rigid` or a `gufo:SemiRigid` type cannot have a `gufo:AntiRigid` type as its direct or indirect
-  supertypes.
-  - Code: r_ar_sup
+- **Rule:** A `gufo:RigidType` or a `gufo:SemiRigid` type cannot have a `gufo:AntiRigidType` type as its direct or
+  indirect supertypes.
+    - Code: r_ar_sup
 - **Reason:** Rigid types cannot specialize Anti-Rigid types.
-- **Description:** For each `gufo:Rigid` or `gufo:SemiRigid` class identified, sets all its direct and indirect
-  superclasses as not `gufo:AntiRigid`.
+- **Description:** For each `gufo:RigidType` or `gufo:SemiRigid` class identified, sets all its direct and indirect
+  superclasses as not `gufo:AntiRigidType`.
 - **Behavior:**
-  - Automation: Same execution for both complete and incomplete models.
-  - Completeness: Automatic rule. Interaction is not needed in any case.
+    - Automation: Same execution for both complete and incomplete models.
+    - Completeness: Automatic rule. Interaction is not needed in any case.
 
 ### Rule ar_r_sub
 
-- **Rule:** A `gufo:AntiRigid` type cannot have a `gufo:Rigid` or `gufo:SemiRigid` type as its direct or indirect
-  subtypes.
-  - Code: ar_r_sub
+- **Rule:** A `gufo:AntiRigidType` type cannot have a `gufo:RigidType` or `gufo:SemiRigid` type as its direct or
+  indirect subtypes.
+    - Code: ar_r_sub
 - **Reason:** Rigid types cannot specialize Anti-Rigid types.
-- **Description:** For each `gufo:AntiRigid` class identified, sets all its direct and indirect subclasses as
-  not `gufo:Rigid` and as not `gufo:SemiRigid`.
+- **Description:** For each `gufo:AntiRigidType` class identified, sets all its direct and indirect subclasses as
+  not `gufo:RigidType` and as not `gufo:SemiRigid`.
 - **Behavior:**
-  - Automation: Same execution for both complete and incomplete models.
-  - Completeness: Automatic rule. Interaction is not needed in any case.
+    - Automation: Same execution for both complete and incomplete models.
+    - Completeness: Automatic rule. Interaction is not needed in any case.
 
 ### Rule n_r_t
 
 - **Rule:** In complete models, every type without supertypes and without subtypes must be a `gufo:Kind`.
-  - Code: n_r_t
+    - Code: n_r_t
 - **Reason:** Every type must supply (Kinds) or carry (Non-Kind Sortals) a single identity principle or aggregate (
   Non-Sortals) multiple identity principles.
 - **Description:** If a class is not a `gufo:Kind` and if it is a root and a leaf node at the same time (i.e., an
   isolated class), then perform action.
+
+<!-- -->
+
 - **Behavior:**
-  - Complete models: Set as `gufo:Kind`.
-  - Incomplete & Automatic models: Report incompleteness.
-  - Incomplete & Interactive models: User can set as `gufo:Kind` or skip.
+    - Complete models: Set as `gufo:Kind`.
+    - Incomplete & Automatic models: Report incompleteness.
+    - Incomplete & Interactive models: User can set as `gufo:Kind` or skip.
 
 ### Rule ns_s_spe
 
 - **Rule:** Given a `gufo:NonSortal` N, there must be at least two `gufo:Sortals` S1 and S2 with different identity
   principles (i.e., that are specializations of different `gufo:Kinds`) that:
-  - directly or indirectly specializes N, **or** that
-  - directly or indirectly specializes:
-    1. a supertype of N **or**
-    2. a supertype of one of the subtypes of N.
+    - directly or indirectly specializes N, **or** that
+    - directly or indirectly specializes:
+        1. a supertype of N **or**
+        2. a supertype of one of the subtypes of N.
 
 In other words, from any `gufo:NonSortal`, at least two `gufo:Kinds` must be reachable by navigating its
-generalization/specialization relations. Code: ns_s_spe.
+generalization/specialization relations. Code: ns_s_spe
+<!-- -->
 
 - **Reason:** Non-Sortals aggregate identities from at least two different identity principles providers.
 - **Behavior:** Considering P the number of possibilities and N the necessary number (N>0):
-  - If N <= 0: do nothing.
-  - **Regarding possible actions:**
-    - RI when P<=0 or N+A or (C+A and P>N)
-    - SA when P>0 and (C and P<=N)
-    - US when P>0 and (N+I or (C+I and P>N))
-  - **Regarding possible configurations:**
+    - If N <= 0: do nothing.
+  <!-- -->
+    - **Regarding possible actions:**
+        - RI when P<=0 or N+A or (C+A and P>N)
+        - SA when P>0 and (C and P<=N)
+        - US when P>0 and (N+I or (C+I and P>N))
+  <!-- -->
+    - **Regarding possible configurations:**
     - Complete & Automatic:
       - RI when P<=0 or when (P>0 and P>N)
       - SA when (P>0 and P<=N)
@@ -200,20 +206,20 @@ generalization/specialization relations. Code: ns_s_spe.
 
 - **Rule:** Every `gufo:Sortal` that is not a `gufo:Kind` must have exactly one `gufo:Kind` as a direct or indirect
   supertype.
-  - Code: nk_k_sup
+    - Code: nk_k_sup
 - **Reason:** Every Sortal must have exactly one identity principle.
 - **Behavior:** Only executed if no direct or indirect supertype is classified as a `gufo:Kind`. Considering P the
   number of directly or indirectly related supertypes that can be `gufo:Kinds`.
-  - **Regarding possible actions:**
-    - RI: P=0 or N+A or (P>1 and C+A)
-    - SA: P=1 and C
-    - US: (P=1 and N+I) or (P>1 and I)
-  - **Regarding possible configurations:**
-    - Complete & Automatic:
-      - RI when P=0 or when P>1
-      - SA when P=1
-    - Complete & Interactive:
-      - RI when P=0
+    - **Regarding possible actions:**
+        - RI: P=0 or N+A or (P>1 and C+A)
+        - SA: P=1 and C
+        - US: (P=1 and N+I) or (P>1 and I)
+    - **Regarding possible configurations:**
+        - Complete & Automatic:
+            - RI when P=0 or when P>1
+            - SA when P=1
+        - Complete & Interactive:
+            - RI when P=0
       - SA when P=1
       - US when P>1
     - Incomplete & Automatic:
@@ -238,8 +244,9 @@ generalization/specialization relations. Code: ns_s_spe.
 
 ### Rule ns_sub_r
 
-- **Rule:** In complete models, `gufo:NonSortals` with only `gufo:Rigid` direct subtypes are always `gufo:Categories`.
-  - Code: ns_sub_r
+- **Rule:** In complete models, `gufo:NonSortals` with only `gufo:RigidType` direct subtypes are
+  always `gufo:Categories`.
+    - Code: ns_sub_r
 - **Reason:** Rigid types cannot specialize Anti-Rigid types.
 - **Behavior:**
   - Complete models (Automatic or Interactive): Set as `gufo:Category`.
@@ -259,7 +266,7 @@ generalization/specialization relations. Code: ns_s_spe.
 
 - **Rule:** For every class classified as a `gufo:Phase`, there is an incompleteness if the `gufo:Phase` has no sibling
   classes or if all its siblings are `gufo:NonSortals` or `gufo:RigidTypes`.
-  - Code: ks_sf_in
+    - Code: ks_sf_in
 - **Reason:** Phases always occur in phase partitions.
 - **Behavior:** Report incompleteness in all cases.
 
