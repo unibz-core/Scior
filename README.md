@@ -23,13 +23,13 @@ We provide specific documentation for better explaining the OntCatOWL scope, obj
 
 You need to [download and install Python](https://www.python.org/downloads/) for executing **OntCatOWL**. The code was developed and tested using [Python](https://www.python.org/) v3.11.0. For installing the required libraries, run the following command on the terminal:
 
-```shell
+```txt
 pip install -r requirements.txt
 ```
 
 If you would like to use the project as a package, run the following command on the terminal:
 
-```shell
+```txt
 pip install git+https://github.com/unibz-core/OntCatOWL.git
 ```
 
@@ -37,13 +37,13 @@ pip install git+https://github.com/unibz-core/OntCatOWL.git
 
 With all the requirements installed, you can run OntCatOWL in diverse modes. For accessing this information, please execute the following command inside the project’s folder:
 
-```shell
+```txt
 python ontcatowl -h
 ```
 
 After executing the command above, OntCatOWL will provide all its usages and valid arguments, which are:
 
-```shell
+```txt
 usage: ontcatowl [-h] [-i | -a] [-n | -c] [-r] [-t] [-g1] [-g2] [-v] ontology_file
 
 OntCatOWL - Identification of Ontological Categories for OWL Ontologies
