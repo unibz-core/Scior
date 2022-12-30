@@ -28,7 +28,7 @@ We are going to present each one of the arguments in the next sections.
 
 The only mandatory argument is `ontology_file`, which is the path to the input ontology file. This file can be stored locally (i.e., offline in the user’s file system) or remotely (i.e., online, web stored)* and is the ontology that is going to have its semantics improved by OntCatOWL.
 
-We implemented OntCatOWL using the [RDFLib Python library](https://rdflib.readthedocs.io/en/stable/), hence the software accepts rdf-based ontology files written in all its supported syntaxes. For consulting a table with all supported syntaxes, please refer to the [RDFLib parsing documentation page](https://rdflib.readthedocs.io/en/stable/intro_to_parsing.html).
+We implemented OntCatOWL using the [RDFLib Python library](https://rdflib.readthedocs.io/en/stable/), hence the software accepts rdf-based ontology files written in all its supported syntaxes. Once the syntax is valid, OntCatOWL automatically identifies and processes it. For consulting a table with all supported syntaxes, please refer to the [RDFLib parsing documentation page](https://rdflib.readthedocs.io/en/stable/intro_to_parsing.html).
 
 - Check [open issue #15](https://github.com/unibz-core/OntCatOWL/issues/15) status for validating this information.
 
