@@ -28,19 +28,19 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     automation_group = arguments_parser.add_mutually_exclusive_group()
 
     automation_group.add_argument("-i", "--interactive", action='store_true',
-                                  help="Executes automatic rules whenever possible. "
-                                       "Executes interactive rules only if necessary.")
+                                  help="Execute automatic rules whenever possible. "
+                                       "Execute interactive rules only if necessary (default).")
 
     automation_group.add_argument("-a", "--automatic",
                                   action='store_true',
-                                  help="Executes only automatic rules. Interactive rules are not performed.")
+                                  help="Execute only automatic rules. Interactive rules are not performed.")
 
     # Ontology completeness arguments
 
     completeness_group = arguments_parser.add_mutually_exclusive_group()
 
     completeness_group.add_argument("-n", "--incomplete", action='store_true',
-                                    help="The loaded ontology is an incomplete model.")
+                                    help="The loaded ontology is an incomplete model (default).")
 
     completeness_group.add_argument("-c", "--complete", action='store_true',
                                     help="The loaded ontology is a complete model.")
@@ -50,16 +50,16 @@ def treat_arguments(software_acronym, software_name, software_version, software_
                                   help="Enable RDF reasoning for graph expansion.")
 
     arguments_parser.add_argument("-t", "--times", action='store_true',
-                                  help="Prints the execution times of all functions.")
+                                  help="Print on the screen the execution times of all functions.")
 
     arguments_parser.add_argument("-g1", "--gufo1", action='store_true',
-                                  help="Imports gUFO ontology in the output ontology file.")
+                                  help="Import gUFO ontology in the output ontology file.")
 
     arguments_parser.add_argument("-g2", "--gufo2", action='store_true',
-                                  help="Saves all gUFO statements in the output ontology file.")
+                                  help="Save all gUFO statements in the output ontology file.")
 
     # Automatic arguments
-    arguments_parser.add_argument("-v", "--version", action="version", help="Prints the software version and exit.")
+    arguments_parser.add_argument("-v", "--version", action="version", help="Print the software version and exit.")
 
     # POSITIONAL ARGUMENT
     arguments_parser.add_argument("ontology_file", type=str, action="store", help="The path of the ontology file to "

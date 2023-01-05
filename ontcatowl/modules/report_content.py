@@ -83,7 +83,7 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
         line_01_specs += f"* {key}: {computer_specs[key]}\n"
 
     line_02 = f"\nConfigurations:\n" \
-              f"* Automatic execution: {not configurations['is_automatic']}\n" \
+              f"* Automatic execution: {configurations['is_automatic']}\n" \
               f"* Model is complete: {configurations['is_complete']}\n" \
               f"* Reasoning enabled: {configurations['reasoning']}\n" \
               f"* Execution times printed: {configurations['print_time']}\n" \
