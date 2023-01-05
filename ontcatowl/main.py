@@ -131,6 +131,4 @@ def run_ontcatowl_tester(global_configurations, working_graph):
 
 
 if __name__ == "__main__":
-
-    def main():
-        run_ontcatowl()
+    run_ontcatowl()
