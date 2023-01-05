@@ -34,18 +34,6 @@ def verify_multiple_final_classifications_for_types(ontology_dataclass):
         exit(1)
 
 
-# TODO (@pedropaulofb): Evaluate if this situation also applies to the individuals' hierarchy.
-def verify_single_abstract_element_available_for_types(ontology_dataclass):
-    """ There must NOT be only 'abstract' classes as available options for classification. """
-
-    logger = initialize_logger()
-
-    type_leaf_classifications = ["gufo:Category", "gufo:Kind", "gufo:Mixin", "gufo:Phase", "gufo:PhaseMixin",
-                                 "gufo:Role", "gufo:RoleMixin", "gufo:SubKind"]
-
-    result_list = lists_intersection(type_leaf_classifications, ontology_dataclass.can_type)
-
-
 def verify_all_ontology_dataclasses_consistency(ontology_dataclass_list):
     """ Calls the consistency verification of all elements in a list of Ontology DataClasses. """
 
