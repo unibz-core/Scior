@@ -96,7 +96,7 @@ def run_ontcatowl():
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
-                      consolidated_statistics, time_register, VERSION_RESTRICTION)
+                      consolidated_statistics, time_register, VERSION_RESTRICTION, SOFTWARE_VERSION)
 
 
 def run_ontcatowl_tester(global_configurations, working_graph):

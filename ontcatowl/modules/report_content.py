@@ -66,10 +66,10 @@ def get_content100(restriction="PRINT_ALL"):
 
 
 def get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time,
-                   elapsed_time, time_register, configurations):
+                   elapsed_time, time_register, configurations, software_version):
     """ Presents some information about the software execution."""
 
-    line_01 = f"OntCatOWL successfully performed.\n" \
+    line_01 = f"OntCatOWL version {software_version} successfully performed.\n" \
               f"* Start time {start_date_time}\n" \
               f"* End time {end_date_time}\n" \
               f"* Total elapsed time: {elapsed_time} seconds.\n"
