@@ -86,10 +86,13 @@ def save_ontology_file(end_date_time, ontology_graph, configurations):
 
     logger = initialize_logger()
 
-    logger.info("Saving the output ontology file...")
+    logger.debug("Saving the output ontology file...")
 
     # Creating report file
-    output_file_name = configurations["ontology_path"][:-4] + "-" + end_date_time + ".out.ttl"
+    output_file_path = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)
+    output_file_name = output_file_path + "\\" + \
+                       os.path.splitext(configurations["ontology_path"])[0] + \
+                       "-" + end_date_time + ".out.ttl"
 
     try:
         ontology_graph.serialize(destination=output_file_name)

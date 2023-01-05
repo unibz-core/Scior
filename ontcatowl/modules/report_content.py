@@ -7,6 +7,7 @@ from ontcatowl.modules.logger_config import initialize_logger
 from ontcatowl.modules.results_printer import generate_classes_table, generate_classifications_table, \
     generate_times_table, generate_incompleteness_table
 from ontcatowl.modules.utils_dataclass import generate_hash_ontology_dataclass_list
+from ontcatowl.modules.utils_general import get_computer_specifications
 
 
 def get_content100(restriction="PRINT_ALL"):
@@ -64,7 +65,7 @@ def get_content100(restriction="PRINT_ALL"):
     return return_string
 
 
-def get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time, end_date_time_out,
+def get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time,
                    elapsed_time, time_register, configurations):
     """ Presents some information about the software execution."""
 
@@ -75,6 +76,12 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
 
     table_times = generate_times_table(time_register, MARKDOWN)
 
+    computer_specs = get_computer_specifications()
+
+    line_01_specs = f"\nComputer specifications:\n"
+    for key in computer_specs.keys():
+        line_01_specs += f"* {key}: {computer_specs[key]}\n"
+
     line_02 = f"\nConfigurations:\n" \
               f"* Automatic execution: {not configurations['is_automatic']}\n" \
               f"* Model is complete: {configurations['is_complete']}\n" \
@@ -83,16 +90,22 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
               f"* GUFO imported in output file: {configurations['import_gufo']}\n" \
               f"* GUFO saved in output file: {configurations['save_gufo']}\n"
 
-    input_file_name_path = os.path.abspath(configurations['ontology_path'])
-    output_file_name = configurations["ontology_path"][:-4] + "-" + end_date_time_out + ".out.ttl"
-    output_file_name_path = os.path.abspath(output_file_name)
+    in_out_file_path = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)
+    input_file_name = in_out_file_path + "\\" + configurations["ontology_path"]
+    output_file_name = in_out_file_path + "\\" + \
+                       os.path.splitext(configurations["ontology_path"])[0] + \
+                       "-" + end_date_time + ".out.ttl"
+
+    path_input_file = os.path.abspath(input_file_name)
+    path_output_file = os.path.abspath(output_file_name)
+
     report_file_name_path = os.path.abspath(report_name)
 
     line_03 = f"\nProcessed files:\n" \
-              f"* Input ontology file:\n\t* {input_file_name_path}\n" \
-              f"* Output ontology file:\n\t* {output_file_name_path}\n" \
+              f"* Input ontology file:\n\t* {path_input_file}\n" \
+              f"* Output ontology file:\n\t* {path_output_file}\n" \
               f"* Report file:\n\t* {report_file_name_path}\n" \
-              f"* Log file in /log folder\n"
+              f"* Log file available at '\\log' folder\n"
 
     hash_types = generate_hash_ontology_dataclass_list(ontology_dataclass_list, "TYPES_ONLY")
     hash_individuals = generate_hash_ontology_dataclass_list(ontology_dataclass_list, "INDIVIDUALS_ONLY")
@@ -103,7 +116,7 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
               f"* Hash for individuals:\n\t* {hash_individuals}\n" \
               f"* Total hash:\n\t* {hash_total}\n"
 
-    return_string = line_01 + table_times + "\n" + line_02 + line_03 + line_04
+    return_string = line_01 + table_times + "\n" + line_01_specs + line_02 + line_03 + line_04
 
     return return_string
 
@@ -162,7 +175,8 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
 
         # TU/PK/TK Classes Before/After - Total
         if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
-            title_x13 = f"\n#### {result_lists[i].situation} Classes {result_lists[0]} - TOTAL (Types + Individuals)\n\n"
+            title_x13 = f"\n#### {result_lists[i].situation} Classes {result_lists[0]} - " \
+                        f"TOTAL (Types + Individuals)\n\n"
             for element in result_lists[i].list_uris_all:
                 content_x13 += "* " + element + "\n"
 

@@ -11,7 +11,13 @@ def initialize_logger(source="default"):
 
     # Create a custom logger
     new_logger = logging.getLogger("OntCatOWL")
-    new_logger.setLevel(logging.DEBUG)
+
+    if source == "default":
+        new_logger.setLevel(logging.DEBUG)
+    elif source == "tester":
+        new_logger.setLevel(logging.ERROR)
+    else:
+        print(f"Logger parameter unknown ({source}). Aborting execution.")
 
     # Creates a new logger only if OntCatOWL does not exist
     if not logging.getLogger("OntCatOWL").hasHandlers():

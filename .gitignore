@@ -137,3 +137,6 @@ report/
 /ontologies/
 /logs/
 /reports/
+/ontcatowl/logs/
+/ontcatowl/reports/
+/documentation/*.docx

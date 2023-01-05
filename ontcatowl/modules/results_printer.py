@@ -1,9 +1,12 @@
 """ Fucntions for printing statistics to the user. """
 import operator
+import time
 
 from prettytable import PrettyTable, SINGLE_BORDER
 
 from ontcatowl.modules.logger_config import initialize_logger
+
+UNDEFINED_MESSAGE = "undefined - error if printed."
 
 
 def generate_times_table(time_register, border_option):
@@ -31,6 +34,7 @@ def generate_times_table(time_register, border_option):
     pretty_table.add_row(["s_k_sub", round(time_register["s_k_sub"], 3)])
     pretty_table.add_row(["s_ns_sub", round(time_register["s_ns_sub"], 3)])
     pretty_table.add_row(["s_nsup_k", round(time_register["s_nsup_k"], 3)])
+    pretty_table.add_row(["sub_r_r", round(time_register["sub_r_r"], 3)])
     pretty_table.add_row(["t_k_sup", round(time_register["t_k_sup"], 3)])
 
     pretty_table.align = "r"
@@ -67,16 +71,16 @@ def generate_classes_table(consolidated_statistics, table_option, border_option)
     row_2 = "Partially known classes"
     row_3 = "Totally known classes"
 
-    pos_r1_c1 = "undefined - error if printed."
-    pos_r1_c2 = "undefined - error if printed."
-    pos_r1_c3 = "undefined - error if printed."
-    pos_r2_c1 = "undefined - error if printed."
-    pos_r2_c2 = "undefined - error if printed."
-    pos_r2_c3 = "undefined - error if printed."
-    pos_r3_c1 = "undefined - error if printed."
-    pos_r3_c2 = "undefined - error if printed."
-    pos_r3_c3 = "undefined - error if printed."
-    message = "undefined - error if printed."
+    pos_r1_c1 = UNDEFINED_MESSAGE
+    pos_r1_c2 = UNDEFINED_MESSAGE
+    pos_r1_c3 = UNDEFINED_MESSAGE
+    pos_r2_c1 = UNDEFINED_MESSAGE
+    pos_r2_c2 = UNDEFINED_MESSAGE
+    pos_r2_c3 = UNDEFINED_MESSAGE
+    pos_r3_c1 = UNDEFINED_MESSAGE
+    pos_r3_c2 = UNDEFINED_MESSAGE
+    pos_r3_c3 = UNDEFINED_MESSAGE
+    message = UNDEFINED_MESSAGE
 
     if table_option == "types":
 
@@ -161,13 +165,13 @@ def generate_classifications_table(consolidated_statistics, table_option, border
     row_1 = "Unknown classifications"
     row_2 = "Known classifications"
 
-    pos_r1_c1 = "undefined - error if printed."
-    pos_r1_c2 = "undefined - error if printed."
-    pos_r1_c3 = "undefined - error if printed."
-    pos_r2_c1 = "undefined - error if printed."
-    pos_r2_c2 = "undefined - error if printed."
-    pos_r2_c3 = "undefined - error if printed."
-    message = "undefined - error if printed."
+    pos_r1_c1 = UNDEFINED_MESSAGE
+    pos_r1_c2 = UNDEFINED_MESSAGE
+    pos_r1_c3 = UNDEFINED_MESSAGE
+    pos_r2_c1 = UNDEFINED_MESSAGE
+    pos_r2_c2 = UNDEFINED_MESSAGE
+    pos_r2_c3 = UNDEFINED_MESSAGE
+    message = UNDEFINED_MESSAGE
 
     if table_option == "types":
 
@@ -237,11 +241,15 @@ def generate_incompleteness_table(ontology_dataclass_list, border_option):
 
     message = f"\nA total of {number_incomplete_classes} classes were identified as incomplete.\n"
 
-    pretty_table.align = "r"
-    pretty_table.set_style(border_option)
+    if number_incomplete_classes != 0:
 
-    table_text = pretty_table.get_string()
-    return_string = message + table_text
+        pretty_table.align = "r"
+        pretty_table.set_style(border_option)
+
+        table_text = pretty_table.get_string()
+        return_string = message + table_text
+    else:
+        return_string = message
 
     return return_string
 
@@ -257,6 +265,7 @@ def print_statistics_screen(ontology_dataclass_list, consolidated_statistics, ti
         - "TOTAL_ONLY" - prints only total table.
     """
 
+    time.sleep(0.1)
     print("\n##### FINAL ONTCATOWL CLASSIFICATION SUMMARY #####")
 
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
