@@ -26,8 +26,6 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
                      "n_r_t": 0, "ns_s_spe": 0, "nk_k_sup": 0, "s_nsup_k": 0, "nrs_ns_r": 0,
                      "total_time": 0}
 
-    list_of_rules = always_automatic_rules + general_rules
-
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = initial_hash + 1
 
@@ -42,9 +40,8 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
                                       time_register)
             final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
-        # Loop always_automatic_rules + general_rules
         initial_hash = final_hash
-        for rule in list_of_rules:
+        for rule in general_rules:
             switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule, configurations, time_register)
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
