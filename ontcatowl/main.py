@@ -59,12 +59,19 @@ def run_ontcatowl():
 
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, gufo_dictionary)
 
+    # Input Validation
+    if not len(ontology_dataclass_list):
+        logger.error(f"Invalid input. The provided file does not have elements of type owl:Class. Program aborted.")
+        exit(1)
+
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
 
     ontology_nodes = initialize_nodes_lists(working_graph)
 
     # Loading the GUFO information already known from the ontology
-    load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list)
+    has_gufo_content = load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list,
+                                                   VERSION_RESTRICTION)
+
     before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
@@ -117,6 +124,9 @@ def run_ontcatowl_tester(global_configurations, working_graph):
     gufo_graph = load_graph_safely_considering_restrictions(gufo_ttl_path, LIST_GRAPH_RESTRICTIONS)
     gufo_dictionary = initialize_gufo_dictionary()
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, gufo_dictionary)
+    if not len(ontology_dataclass_list):
+        logger.error(f"Invalid input. The provided file does not have elements of type owl:Class. Program aborted.")
+        exit(1)
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
     ontology_nodes = initialize_nodes_lists(working_graph)
     load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list)
