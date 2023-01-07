@@ -24,7 +24,7 @@ from ontcatowl.modules.utils_rdf import load_all_graph_safely, perform_reasoning
 
 SOFTWARE_ACRONYM = "OntCatOWL"
 SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
-SOFTWARE_VERSION = "0.23.01.05"
+SOFTWARE_VERSION = "0.23.01.07"
 SOFTWARE_URL = "https://github.com/unibz-core/OntCatOWL/"
 VERSION_RESTRICTION = "TYPES_ONLY"
 LIST_GRAPH_RESTRICTIONS = [RDF.type, RDFS.subClassOf]
