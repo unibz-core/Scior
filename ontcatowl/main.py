@@ -15,7 +15,8 @@ from ontcatowl.modules.initialization_data_ontology_dataclass import initialize_
     load_known_gufo_information
 from ontcatowl.modules.logger_config import initialize_logger
 from ontcatowl.modules.report_printer import print_report_file
-from ontcatowl.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
+from ontcatowl.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
+    create_knowledge_matrix
 from ontcatowl.modules.results_printer import print_statistics_screen
 from ontcatowl.modules.rules_types_run import execute_rules_types
 from ontcatowl.modules.utils_rdf import load_all_graph_safely, perform_reasoning, \
@@ -85,10 +86,13 @@ def run_ontcatowl():
     # SAVING RESULTS - OUTPUT
 
     after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+
     resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, VERSION_RESTRICTION)
 
-    # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
+    # Calculating results
     consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
+    knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
+
     print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, global_configurations,
                             VERSION_RESTRICTION)
 
@@ -99,6 +103,7 @@ def run_ontcatowl():
     elapsed_time = round((et - st), 3)
     logger.info(f"OntCatOWL concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
+    # Printing results
     save_ontology_file_as_configuration(resulting_graph, gufo_graph, end_date_time, global_configurations)
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,

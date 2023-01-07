@@ -293,6 +293,7 @@ def calculate_final_statistics(before_statistics, after_statistics):
     the class dataclass_statistics.
     """
 
+    # BEFORE
     statistics_classes_before = get_values_statistics_classes(before_statistics)
     statistics_classes_before.calculate()
     statistics_classes_before.validate()
@@ -301,6 +302,7 @@ def calculate_final_statistics(before_statistics, after_statistics):
     statistics_classifications_before.calculate()
     statistics_classifications_before.validate()
 
+    # AFTER
     statistics_classes_after = get_values_statistics_classes(after_statistics)
     statistics_classes_after.calculate()
     statistics_classes_after.validate()
@@ -309,9 +311,51 @@ def calculate_final_statistics(before_statistics, after_statistics):
     statistics_classifications_after.calculate()
     statistics_classifications_after.validate()
 
+    # COMPARISON/DIFFERENCE
     comparisson_statistics = consolidated_statistics(statistics_classes_before, statistics_classifications_before,
                                                      statistics_classes_after, statistics_classifications_after)
     comparisson_statistics.calculate()
     comparisson_statistics.validate()
 
     return comparisson_statistics
+
+
+def create_knowledge_matrix(before_statistics, after_statistics):
+    """ Receives 'before' and 'after' statistic lists and creates knowledge matrix.
+
+    As there are 14 gUFO Endurant Types, The knowledge matrix is a 15x15 matrix.
+    Each matrix element indicates a QUANTITY of classes.
+
+    The ROWS` index (from 0 to 14) indicates how many known types BEFORE the execution.
+    The COLUMNS` index (from 0 to 14) indicates how many known types AFTER the execution.
+
+    Hence, if the value 17 is stored in the matrix position (0,5) it indicates that 17 classes started the evaluation
+        (i.e., were received as inputs by the user) without known classifications and ended
+        (i.e., were provided as outputs by OntCatOWL) with 5 known gUFO types.
+
+    Regarding the nomenclature used in the statistics, classes in the:
+
+        - row 0 indicate the amount of TOTALLY UNKNOWN CLASSES in the INPUT
+        - rows 1 to 13 indicate the amount of PARTIALLY KNOWN CLASSES in the INPUT
+        - row 14 indicate the amount of TOTALLY KNOWN CLASSES in the INPUT
+
+        - column 0 indicate the amount of TOTALLY UNKNOWN CLASSES in the OUTPUT
+        - columns 1 to 13 indicate the amount of PARTIALLY KNOWN CLASSES in the OUTPUT
+        - column 14 indicate the amount of TOTALLY KNOWN CLASSES in the OUTPUT
+
+    IMPORTANT: CURRENTLY THE KNOWLEDGE MATRIX CONTAINS INFORMATION ABOUT TYPES ONLY. INDIVIDUALS ARE OUT OF SCOPE.
+    """
+
+    # initializing the knowledge matrix with zeros
+    knowledge_matrix = []
+    for _ in range(0, 15):
+        new_line = [0] * 15
+        knowledge_matrix.append(new_line)
+
+    # calculating the knowledge matrix values
+    for before_element in before_statistics:
+        for after_element in after_statistics:
+            if before_element.uri == after_element.uri:
+                knowledge_matrix[before_element.known_types][after_element.known_types] += 1
+
+    return knowledge_matrix
