@@ -16,7 +16,7 @@ def verify_duplicates_in_lists_ontology(ontology_dataclass):
         exit(1)
 
 
-# TODO (@pedropaulofb): For versions dealing with individuals, implement this verification for that hierarchy.
+# For versions dealing with individuals, implement this verification for that hierarchy.
 def verify_multiple_final_classifications_for_types(ontology_dataclass):
     """ No two final classifications can be in the is_type list at the same moment """
 

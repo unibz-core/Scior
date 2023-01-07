@@ -487,8 +487,6 @@ def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
 
 
-# TODO (@pedropaulofb): This rule must be improved with identification of partition sets. The rule to be created to
-#  substitute this one is: Partition sets with at least one known phase must have all its components as phases.
 def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list):
     """
         - REASON: Phases always occur in phase partitions.

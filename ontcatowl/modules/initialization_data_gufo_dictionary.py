@@ -10,7 +10,6 @@ from yaml import SafeLoader
 from ontcatowl.modules.logger_config import initialize_logger
 from ontcatowl.modules.utils_general import has_duplicates
 
-# TODO (@pedropaulofb): These values must be updated when the YAML file is updated.
 NUMBER_CLASSES_TYPES = 14
 NUMBER_CLASSES_INDIVIDUALS = 13
 
