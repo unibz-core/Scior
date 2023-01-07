@@ -4,7 +4,7 @@ import os
 
 from ontcatowl.modules.logger_config import initialize_logger
 from ontcatowl.modules.report_content import get_content100, get_content200, \
-    get_content300_400, get_content500, get_content600
+    get_content300_400, get_content500, get_content700, get_content600
 from ontcatowl.modules.results_calculation import generate_result_classes_lists
 from ontcatowl.modules.utils_dataclass import sort_all_ontology_dataclass_list
 from ontcatowl.modules.utils_general import get_date_time
@@ -12,7 +12,7 @@ from ontcatowl.modules.utils_general import get_date_time
 
 def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
-                      consolidated_statistics, time_register, restriction, software_version):
+                      consolidated_statistics, time_register, restriction, software_version, knowledge_matrix):
     """ Printing a file report, in MarkDown syntax, containing the state of the ontology before and after
     the execution of OntCatOWL.
 
@@ -48,7 +48,8 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
     title_300 = "\n## Lists of Classes Before OntCatOWL\n\n"
     title_400 = "\n## Lists of Classes After OntCatOWL\n\n"
     title_500 = "\n## Results Statistics\n\n"
-    title_600 = "\n## Final Classes' Classifications\n\n"
+    title_600 = "\n## Knowledge Matrix\n\n"
+    title_700 = "\n## Final Classes' Classifications\n\n"
 
     content_100 = get_content100(restriction)
     content_200 = get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time,
@@ -56,10 +57,11 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
     content_300 = get_content300_400(lists_before, restriction)
     content_400 = get_content300_400(lists_after, restriction)
     content_500 = get_content500(ontology_dataclass_list, consolidated_statistics, restriction)
-    content_600 = get_content600(ontology_dataclass_list, restriction)
+    content_600 = get_content600(knowledge_matrix)
+    content_700 = get_content700(ontology_dataclass_list, restriction)
 
     report = title_000 + title_100 + content_100 + title_200 + content_200 + title_300 + content_300 + \
-             title_400 + content_400 + title_500 + content_500 + title_600 + content_600
+             title_400 + content_400 + title_500 + content_500 + title_600 + content_600 + title_700 + content_700
 
     # Creating report file
 

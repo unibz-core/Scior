@@ -134,7 +134,8 @@ def get_values_statistics_classifications(statistics_list):
         number_known_classifications_individuals += element.known_individuals
 
     # Calculating number of classifications for TOTAL
-    number_unknown_classifications_total += number_unknown_classifications_types + number_unknown_classifications_individuals
+    number_unknown_classifications_total += number_unknown_classifications_types + \
+                                            number_unknown_classifications_individuals
     number_known_classifications_total += number_known_classifications_types + number_known_classifications_individuals
 
     # GENERATING RETURN LISTS
@@ -142,7 +143,8 @@ def get_values_statistics_classifications(statistics_list):
     # Generating lists of numbers for classifications
     total_classifications_number = number_unknown_classifications_total + number_known_classifications_total
     total_classifications_types = number_unknown_classifications_types + number_known_classifications_types
-    total_classifications_individuals = number_unknown_classifications_individuals + number_known_classifications_individuals
+    total_classifications_individuals = number_unknown_classifications_individuals + \
+                                        number_known_classifications_individuals
 
     # Generating return list
     return_classifications_statistics.total_classif_number = total_classifications_number
@@ -328,10 +330,11 @@ def create_knowledge_matrix(before_statistics, after_statistics):
 
     The ROWS` index (from 0 to 14) indicates how many known types BEFORE the execution.
     The COLUMNS` index (from 0 to 14) indicates how many known types AFTER the execution.
+    The position (ROW, COL) indicates how many classes began with ROW known types and ended with COL known types.
 
-    Hence, if the value 17 is stored in the matrix position (0,5) it indicates that 17 classes started the evaluation
-        (i.e., were received as inputs by the user) without known classifications and ended
-        (i.e., were provided as outputs by OntCatOWL) with 5 known gUFO types.
+    E.g., if the value 17 is stored in the matrix position (0,5) it indicates that 17 classes started the evaluation
+        (i.e., were received as inputs by the user) without known classifications and ended (i.e., were provided
+        as outputs by OntCatOWL) with 5 known gUFO types.
 
     Regarding the nomenclature used in the statistics, classes in the:
 

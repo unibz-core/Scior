@@ -108,7 +108,7 @@ def run_ontcatowl():
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
-                      consolidated_statistics, time_register, VERSION_RESTRICTION, SOFTWARE_VERSION)
+                      consolidated_statistics, time_register, VERSION_RESTRICTION, SOFTWARE_VERSION, knowledge_matrix)
 
 
 def run_ontcatowl_tester(global_configurations, working_graph):
@@ -143,10 +143,11 @@ def run_ontcatowl_tester(global_configurations, working_graph):
                                             internal_global_configurations)
         after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
         consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
+        knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
     except Exception:
         exit(1)
 
-    return ontology_dataclass_list, time_register, consolidated_statistics
+    return ontology_dataclass_list, time_register, consolidated_statistics, knowledge_matrix
 
 
 if __name__ == "__main__":
