@@ -9,6 +9,7 @@ from ontcatowl.modules.utils_graph import get_subclasses, get_superclasses, get_
 
 # Frequent GUFO types
 GUFO_KIND = "gufo:Kind"
+GUFO_ROLE = "gufo:Role"
 GUFO_SORTAL = "gufo:Sortal"
 GUFO_NON_SORTAL = "gufo:NonSortal"
 
@@ -473,7 +474,7 @@ def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
     for ontology_dataclass in list_ontology_dataclasses:
 
         # CONDITION 1: ontology_dataclass must be able to be classified as a gufo:Role
-        if "gufo:Role" not in ontology_dataclass.can_type:
+        if GUFO_ROLE not in ontology_dataclass.can_type:
             continue
 
         # CONDITION 2: ontology_dataclass must be a gufo:Sortals and must be a gufo:NonRigidType
@@ -539,13 +540,13 @@ def rule_sub_r_r(list_ontology_dataclasses, graph, nodes_list):
             continue
 
         # CONDITION 2: The class must be a Role (i.e., Role must be in its is_type list).
-        if ("gufo:Role" in ontology_dataclass.can_type) or ("gufo:Role" in ontology_dataclass.not_type):
+        if (GUFO_ROLE in ontology_dataclass.can_type) or (GUFO_ROLE in ontology_dataclass.not_type):
             continue
 
         # Rule treatment when conditions are met
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
 
         list_role_subclasses = get_all_subclasses(graph, nodes_list, ontology_dataclass.uri)
-        external_move_list_to_is_list(list_ontology_dataclasses, list_role_subclasses, "gufo:Role")
+        external_move_list_to_is_list(list_ontology_dataclasses, list_role_subclasses, GUFO_ROLE)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")
