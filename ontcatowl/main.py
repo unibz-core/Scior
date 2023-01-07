@@ -69,8 +69,8 @@ def run_ontcatowl():
     ontology_nodes = initialize_nodes_lists(working_graph)
 
     # Loading the GUFO information already known from the ontology
-    has_gufo_content = load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list,
-                                                   VERSION_RESTRICTION)
+    load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list,
+                                VERSION_RESTRICTION)
 
     before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
