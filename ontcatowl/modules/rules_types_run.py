@@ -51,7 +51,7 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
         else:
             logger.debug("Final hash does not equals initial hash for the dataclass list. Re-executing rules.")
 
-    logger.info("GUFO types hierarchy rules concluded.")
+    logger.info("gUFO types' hierarchy rules concluded.")
 
     return time_register
 
