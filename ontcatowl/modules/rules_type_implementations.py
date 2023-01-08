@@ -347,8 +347,8 @@ def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass
             if number_siblings == 0:
                 # Report incompleteness
                 logger.warning(f"Incompleteness detected during rule {rule_code}! "
-                               f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass of {superclass}. "
-                               f"All phases always occur in phase partitions.")
+                               f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass "
+                               f"of {superclass}. All phases always occur in phase partitions.")
             elif number_siblings > 0:
                 for sibling in siblings_list:
                     sibling_dataclass = return_dataclass_from_class_name(list_ontology_dataclasses, sibling)
@@ -359,8 +359,8 @@ def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass
                 else:
                     # Report incompleteness
                     logger.warning(f"Incompleteness detected during rule {rule_code}! "
-                                   f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass of {superclass}. "
-                                   f"All phases always occur in phase partitions.")
+                                   f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass "
+                                   f"of {superclass}. All phases always occur in phase partitions.")
             else:
                 logger.error(f"Unexpected number of siblings in rule {rule_code}. Program aborted.")
                 exit(1)
