@@ -16,7 +16,7 @@ def verify_duplicates_in_lists_ontology(ontology_dataclass):
         exit(1)
 
 
-# TODO (@pedropaulofb): For versions dealing with individuals, implement this verification for that hierarchy.
+# For versions dealing with individuals, implement this verification for that hierarchy.
 def verify_multiple_final_classifications_for_types(ontology_dataclass):
     """ No two final classifications can be in the is_type list at the same moment """
 
@@ -32,18 +32,6 @@ def verify_multiple_final_classifications_for_types(ontology_dataclass):
                      f"The class {ontology_dataclass.uri} is of multiple final types, which is not allowed. "
                      f"The classifications are: {result_list}. Execution aborted! ")
         exit(1)
-
-
-# TODO (@pedropaulofb): Evaluate if this situation also applies to the individuals' hierarchy.
-def verify_single_abstract_element_available_for_types(ontology_dataclass):
-    """ There must NOT be only 'abstract' classes as available options for classification. """
-
-    logger = initialize_logger()
-
-    type_leaf_classifications = ["gufo:Category", "gufo:Kind", "gufo:Mixin", "gufo:Phase", "gufo:PhaseMixin",
-                                 "gufo:Role", "gufo:RoleMixin", "gufo:SubKind"]
-
-    result_list = lists_intersection(type_leaf_classifications, ontology_dataclass.can_type)
 
 
 def verify_all_ontology_dataclasses_consistency(ontology_dataclass_list):

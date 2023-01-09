@@ -88,6 +88,7 @@ def get_known_gufo_types(united_graph):
     return list_tuples
 
 
+# Not tested yet
 def get_known_gufo_individuals(united_graph):
     """ For each class in the ontology_graph, return all its known GUFO INDIVIDUALS in a tuple format.
     Returned tuple format is: (ontology_class,gufo_type), being both fields strings.
@@ -119,8 +120,9 @@ def get_known_gufo_individuals(united_graph):
     return list_tuples
 
 
-def load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list):
-    """ Leads GUFO information about types and instances that are available in the inputted ontology file.
+def load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list, restriction):
+    """ Reads GUFO information about types and instances that are available in the inputted ontology file.
+
     I.e., if a class is already known to have any GUFO type, this information is updated in the ontology_dataclass_list.
     E.g., if the class Person is set as a gufo:Kind in the loaded ontology, this stereotype is moved from the
     dataclass's can_type (default) list to its is_type list.
@@ -128,13 +130,21 @@ def load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_l
 
     united_graph = gufo_graph + ontology_graph
 
-    list_known_gufo_types = get_known_gufo_types(united_graph)
-    list_known_gufo_individuals = get_known_gufo_individuals(united_graph)
+    if restriction == "TOTAL" or restriction == "TYPES_ONLY":
+        list_known_gufo = get_known_gufo_types(united_graph)
+        insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)
+
+    # Not tested yet
+    if restriction == "TOTAL" or restriction == "INDIVIDUALS_ONLY":
+        list_known_gufo = get_known_gufo_individuals(united_graph)
+        insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)
+
+
+def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
+    """ Receives a list of known gUFO information and performs the necessary movements of elements
+    in the ontology_dataclass_list"""
 
     for ontology_dataclass in ontology_dataclass_list:
-        for known_gufo_type in list_known_gufo_types:
-            if known_gufo_type[0] == ontology_dataclass.uri:
-                ontology_dataclass.move_element_to_is_list(known_gufo_type[1])
-        for known_gufo_individual in list_known_gufo_individuals:
-            if known_gufo_individual[0] == ontology_dataclass.uri:
-                ontology_dataclass.move_element_to_is_list(known_gufo_individual[1])
+        for known_gufo in list_known_gufo:
+            if known_gufo[0] == ontology_dataclass.uri:
+                ontology_dataclass.move_element_to_is_list(known_gufo[1])

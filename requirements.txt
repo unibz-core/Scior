@@ -1,5 +1,7 @@
 owlrl~=6.0.2
 prettytable~=3.4.1
+psutil~=5.9.4
 PyYAML~=6.0
 rdflib~=6.2.0
 psutil~=5.9.4
+setuptools~=65.5.0

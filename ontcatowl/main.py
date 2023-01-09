@@ -15,7 +15,8 @@ from ontcatowl.modules.initialization_data_ontology_dataclass import initialize_
     load_known_gufo_information
 from ontcatowl.modules.logger_config import initialize_logger
 from ontcatowl.modules.report_printer import print_report_file
-from ontcatowl.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics
+from ontcatowl.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
+    create_knowledge_matrix
 from ontcatowl.modules.results_printer import print_statistics_screen
 from ontcatowl.modules.rules_types_run import execute_rules_types
 from ontcatowl.modules.utils_rdf import load_all_graph_safely, perform_reasoning, \
@@ -23,7 +24,7 @@ from ontcatowl.modules.utils_rdf import load_all_graph_safely, perform_reasoning
 
 SOFTWARE_ACRONYM = "OntCatOWL"
 SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
-SOFTWARE_VERSION = "0.22.12.16"
+SOFTWARE_VERSION = "0.23.01.07"
 SOFTWARE_URL = "https://github.com/unibz-core/OntCatOWL/"
 VERSION_RESTRICTION = "TYPES_ONLY"
 LIST_GRAPH_RESTRICTIONS = [RDF.type, RDFS.subClassOf]
@@ -59,12 +60,19 @@ def run_ontcatowl():
 
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, gufo_dictionary)
 
+    # Input Validation
+    if not len(ontology_dataclass_list):
+        logger.error(f"Invalid input. The provided file does not have elements of type owl:Class. Program aborted.")
+        exit(1)
+
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
 
     ontology_nodes = initialize_nodes_lists(working_graph)
 
     # Loading the GUFO information already known from the ontology
-    load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list)
+    load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list,
+                                VERSION_RESTRICTION)
+
     before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
@@ -78,10 +86,13 @@ def run_ontcatowl():
     # SAVING RESULTS - OUTPUT
 
     after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+
     resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, VERSION_RESTRICTION)
 
-    # In this version of OntCatOWL, only types are executed and, hence, only them should be printed/reported.
+    # Calculating results
     consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
+    knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
+
     print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, global_configurations,
                             VERSION_RESTRICTION)
 
@@ -92,11 +103,12 @@ def run_ontcatowl():
     elapsed_time = round((et - st), 3)
     logger.info(f"OntCatOWL concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
+    # Printing results
     save_ontology_file_as_configuration(resulting_graph, gufo_graph, end_date_time, global_configurations)
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
-                      consolidated_statistics, time_register, VERSION_RESTRICTION)
+                      consolidated_statistics, time_register, VERSION_RESTRICTION, SOFTWARE_VERSION, knowledge_matrix)
 
 
 def run_ontcatowl_tester(global_configurations, working_graph):
@@ -117,6 +129,9 @@ def run_ontcatowl_tester(global_configurations, working_graph):
     gufo_graph = load_graph_safely_considering_restrictions(gufo_ttl_path, LIST_GRAPH_RESTRICTIONS)
     gufo_dictionary = initialize_gufo_dictionary()
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, gufo_dictionary)
+    if not len(ontology_dataclass_list):
+        logger.error(f"Invalid input. The provided file does not have elements of type owl:Class. Program aborted.")
+        exit(1)
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
     ontology_nodes = initialize_nodes_lists(working_graph)
     load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list)
@@ -128,10 +143,11 @@ def run_ontcatowl_tester(global_configurations, working_graph):
                                             internal_global_configurations)
         after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
         consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
+        knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
     except Exception:
         exit(1)
 
-    return ontology_dataclass_list, time_register, consolidated_statistics
+    return ontology_dataclass_list, time_register, consolidated_statistics, knowledge_matrix
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ from ontcatowl.modules.utils_dataclass import generate_hash_ontology_dataclass_l
 def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configurations):
     """ Executes all rules related to types. """
     logger = initialize_logger()
-    logger.info("Starting GUFO types hierarchy rules ...")
+    logger.info("Starting gUFO types' hierarchy rules ...")
 
     # Rules
     always_automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub",
@@ -25,8 +25,6 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
                      "r_ar_sup": 0, "ar_r_sub": 0, "ns_sub_r": 0, "ks_sf_in": 0, "sub_r_r": 0,
                      "n_r_t": 0, "ns_s_spe": 0, "nk_k_sup": 0, "s_nsup_k": 0, "nrs_ns_r": 0,
                      "total_time": 0}
-
-    list_of_rules = always_automatic_rules + general_rules
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = initial_hash + 1
@@ -42,9 +40,8 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
                                       time_register)
             final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
-        # Loop always_automatic_rules + general_rules
         initial_hash = final_hash
-        for rule in list_of_rules:
+        for rule in general_rules:
             switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule, configurations, time_register)
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
@@ -54,7 +51,7 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
         else:
             logger.debug("Final hash does not equals initial hash for the dataclass list. Re-executing rules.")
 
-    logger.info("GUFO types hierarchy rules concluded.")
+    logger.info("gUFO types' hierarchy rules concluded.")
 
     return time_register
 

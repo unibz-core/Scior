@@ -5,7 +5,7 @@ import hashlib
 from dataclasses import dataclass, field
 
 from ontcatowl.modules.dataclass_verifications import verify_duplicates_in_lists_ontology, \
-    verify_single_abstract_element_available_for_types, verify_multiple_final_classifications_for_types
+    verify_multiple_final_classifications_for_types
 from ontcatowl.modules.logger_config import initialize_logger
 from ontcatowl.modules.utils_general import lists_intersection
 
@@ -34,12 +34,10 @@ class OntologyDataClass(object):
     incompleteness_info: dict = field(default_factory=dict)
 
     def is_consistent(self):
-        """ Performs a consistency check on the dataclass. For now only one verification is performed, which is
-         the identification of duplicates. Other verifications can be added later if necessary. """
+        """ Performs a consistency check on the dataclass. """
 
         verify_duplicates_in_lists_ontology(self)
         verify_multiple_final_classifications_for_types(self)
-        verify_single_abstract_element_available_for_types(self)
 
     def clear_incompleteness(self):
         "When a user define the type of the dataclass, its incompleteness status must be set to its initial state."

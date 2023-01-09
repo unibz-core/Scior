@@ -10,7 +10,6 @@ from yaml import SafeLoader
 from ontcatowl.modules.logger_config import initialize_logger
 from ontcatowl.modules.utils_general import has_duplicates
 
-# TODO (@pedropaulofb): These values must be updated when the YAML file is updated.
 NUMBER_CLASSES_TYPES = 14
 NUMBER_CLASSES_INDIVIDUALS = 13
 
@@ -105,10 +104,6 @@ def validate_gufo_data(gufo_data):
     # For each class in the hierarchies or complements, there must be no duplicates (inside a list or between lists).
     verify_repeated_classes_hierarchies(gufo_data, "types")
     verify_repeated_classes_hierarchies(gufo_data, "individuals")
-
-    # TODO (@pedropaulofb): Create new verification: every element loaded from the 2nd to the lowest level
-    #  must be part of one of the hierarchies' lists (e.g., gufo:Kind read from is_list of gufo:Kind must be present
-    #  in the list of the classes read from the Type hierarchy.
 
     logger.debug("Validation of the GUFO data loaded from the YAML resource file successfully performed.")
 

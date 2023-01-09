@@ -1,7 +1,7 @@
 """ Functions that returns the strings to be printed in the Final Results Report. """
 import os
 
-from prettytable import MARKDOWN
+from prettytable import MARKDOWN, PrettyTable
 
 from ontcatowl.modules.logger_config import initialize_logger
 from ontcatowl.modules.results_printer import generate_classes_table, generate_classifications_table, \
@@ -55,21 +55,23 @@ def get_content100(restriction="PRINT_ALL"):
     else:
         line_13 = ""
 
-    line_14 = "\t* [Incomplete Classes Identified](#incomplete-classes-identified)\n"
+    line_14 = "* [Incomplete Classes Identified](#incomplete-classes-identified)\n"
 
-    line_15 = "* [Final Classes' Classifications](#final-classes-classifications)\n"
+    line_15 = "* [Knowledge Matrix](#knowledge-matrix)\n"
+
+    line_16 = "* [Final Classes' Classifications](#final-classes-classifications)\n"
 
     return_string = line_01 + line_02 + line_03 + line_04 + line_05 + line_06 + line_07 + line_08 + line_09 + \
-                    line_10 + line_11 + line_12 + line_13 + line_14 + line_15
+                    line_10 + line_11 + line_12 + line_13 + line_14 + line_15 + line_16
 
     return return_string
 
 
 def get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time,
-                   elapsed_time, time_register, configurations):
+                   elapsed_time, time_register, configurations, software_version):
     """ Presents some information about the software execution."""
 
-    line_01 = f"OntCatOWL successfully performed.\n" \
+    line_01 = f"OntCatOWL version {software_version} successfully performed.\n" \
               f"* Start time {start_date_time}\n" \
               f"* End time {end_date_time}\n" \
               f"* Total elapsed time: {elapsed_time} seconds.\n"
@@ -83,7 +85,7 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
         line_01_specs += f"* {key}: {computer_specs[key]}\n"
 
     line_02 = f"\nConfigurations:\n" \
-              f"* Automatic execution: {not configurations['is_automatic']}\n" \
+              f"* Automatic execution: {configurations['is_automatic']}\n" \
               f"* Model is complete: {configurations['is_complete']}\n" \
               f"* Reasoning enabled: {configurations['reasoning']}\n" \
               f"* Execution times printed: {configurations['print_time']}\n" \
@@ -235,7 +237,7 @@ def get_content500(ontology_dataclass_list, consolidated_statistics, restriction
 
         content_503 = "\n" + table_classes_total + "\n" + table_classifications_total + "\n"
 
-    title_504 = "\n### Incomplete Classes Identified"
+    title_504 = "\n## Incomplete Classes Identified"
 
     table_incompleteness = generate_incompleteness_table(ontology_dataclass_list, MARKDOWN)
 
@@ -248,7 +250,41 @@ def get_content500(ontology_dataclass_list, consolidated_statistics, restriction
     return return_string
 
 
-def get_content600(ontology_dataclass_list, restriction="PRINT_ALL"):
+def get_content600(knowledge_matrix):
+    """ Prints the knowledge matrix using pretty tables. """
+
+    intro = "The Knowledge Matrix presents how much knowledge were discovered. The position (ROW, COL) indicates " \
+            "how many classes began with ROW known types (i.e., positive or negative classifications) and ended with " \
+            "COL known types.\n\n"
+
+    columns_titles = []
+
+    # Adding titles of columns' 1 to 15
+    for i in range(0, 15):
+        columns_titles.append("A" + str(i))
+
+    pretty_table = PrettyTable(columns_titles)
+
+    pretty_table.add_rows(knowledge_matrix)
+
+    # Adding column 0 titles
+    first_row_name = "B\\A"
+    pretty_table._field_names.insert(0, first_row_name)
+    pretty_table._align[first_row_name] = 'c'
+    pretty_table._valign[first_row_name] = 't'
+    for i, _ in enumerate(pretty_table._rows):
+        pretty_table._rows[i].insert(0, "B" + str(i))
+
+    pretty_table.align = "c"
+    pretty_table.set_style(MARKDOWN)
+
+    table_text = pretty_table.get_string()
+    return_string = intro + table_text
+
+    return return_string
+
+
+def get_content700(ontology_dataclass_list, restriction="PRINT_ALL"):
     """ Prints final lists of classes according to the received restriction.
 
     Allowed restriction values:
