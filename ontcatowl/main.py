@@ -134,7 +134,8 @@ def run_ontcatowl_tester(global_configurations, working_graph):
         exit(1)
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
     ontology_nodes = initialize_nodes_lists(working_graph)
-    load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list)
+    load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list,
+                                VERSION_RESTRICTION)
 
     # EXECUTION
     try:
