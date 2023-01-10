@@ -114,7 +114,7 @@ The first one, **reasoning**, allows the expansion of the input knowledge graph 
 
 The argument **times** prints on the screen the execution times for all executions of every implemented rule. Also, at the conclusion of the software, it prints a table aggregating all recorded times.
 
-The last two arguments of this group regard the output file generated after the OntCatOWL execution. At the end of the software execution, OntCatOWL saves an output file containing all the discovered gUFO information (more information here **<u>CREATE LINK</u>**). This file only references the gUFO concepts in its assertions (so the only known gUFO information is the one that is contained in the file).
+The last two arguments of this group regard the output file generated after the OntCatOWL execution. At the end of the software execution, OntCatOWL saves an output file containing all the discovered gUFO information (more information [here](https://github.com/unibz-core/OntCatOWL/blob/main/documentation/OntCatOWL-Functioning.md#output-ontology)). This file only references the gUFO concepts in its assertions (so the only known gUFO information is the one that is contained in the file).
 
 If the user wants to store or manipulate **gUFO** information in the output file, this can be done through the options `g1` and `g2`. The former uses the [`owl:imports` property](https://www.w3.org/TR/owl-ref/#imports-def) to reference and exhibit all gUFO in the output file. The latter argument merges the output file with gUFO, creating a unique ontology with all statements.
 
