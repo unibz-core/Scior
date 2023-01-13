@@ -76,6 +76,13 @@ The FAIR Model Catalog for Ontology-Driven Conceptual Modeling Research, short-n
 
 Results of the tests performed using the OntCatOWL-Tester are available at the [OntCatOWL-Dataset](https://github.com/unibz-core/OntCatOWL-Dataset). The aim of the publication of the resulting datasets is to share with the community data that can be analyzed in different ways, even though all executed tests are totally reproducible.
 
+In short:
+
+- [OntCatOWL](https://github.com/unibz-core/OntCatOWL): software for identification of ontological categories for OWL ontologies.
+- [OntCatOWL-Tester](https://github.com/unibz-core/OntCatOWL-Tester): used for automating tests on OntCatOWL.
+- [OntCatOWL-Dataset](https://github.com/unibz-core/OntCatOWL-Dataset): contains data resulting from the OntCatOWL-Tester.
+- [OntoUML/UFO Catalog](https://github.com/unibz-core/ontouml-models): source of models used for the performed tests.
+
 ## Contributors
 
 - PhD. Pedro Paulo Favato Barcelos [[GitHub]](https://github.com/pedropaulofb) [[LinkedIn]](https://www.linkedin.com/in/pedro-paulo-favato-barcelos/)
