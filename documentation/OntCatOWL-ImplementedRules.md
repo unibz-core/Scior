@@ -32,7 +32,7 @@ The current version of the OntCatOWL is limited to Endurant types. I.e., there a
 
 In the next section, we describe the fifteen rules implemented in the OntCatOWL.
 
-Regarding the rigidity and sortality meta-properties, the rules implemented in OntCatOWL were originally defined for OntoUML (first in [1], later in [2]) and, hence, we had to convert them from the diagrammatical modeling language (OntoUML) reality to the RDF-based semantic web paradigm, in which gUFO lies.
+Regarding the rigidity and sortality meta-properties, the rules implemented in OntCatOWL were originally defined for OntoUML (first in [[1]](#references), later in [[2]]((#references))) and, hence, we had to convert them from the diagrammatical modeling language (OntoUML) reality to the RDF-based semantic web paradigm, in which gUFO lies.
 
 During the development of this work, we could identify UFO constraints that were absent from the mentioned reference works. We implemented in OntCatOWL new rules for phase partitions and for subtypes of roles to cover all necessary constraints.
 
