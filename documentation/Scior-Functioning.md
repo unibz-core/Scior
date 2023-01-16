@@ -139,7 +139,7 @@ Scior executes the consistency evaluations for all elements of the `ontology_dat
 
 The diagram below shows, in a very simplified manner, how Scior performs its implemented rules.
 
-![flowchart](https://user-images.githubusercontent.com/8641647/211357509-b9bb38ec-59d8-4862-88b0-fbe7de9d1c86.png)
+![flowchart](https://user-images.githubusercontent.com/8641647/212705583-17046393-b077-402e-9cca-f29da9abe6af.png)
 
 In this section, we are going to decompose this flowchart, explaining each step of the execution process. Regarding individual rules, we provide a complete description of each one in a [specific documentation](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-ImplementedRules.md).
 
