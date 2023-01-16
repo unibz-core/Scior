@@ -1,6 +1,6 @@
-# OntCatOWL: Implemented Reasoning Rules
+# Scior: Implemented Reasoning Rules
 
-This document describes all the rules implemented in OntCatOWL.
+This document describes all the rules implemented in Scior.
 
 ## Content
 
@@ -26,19 +26,19 @@ This document describes all the rules implemented in OntCatOWL.
 
 ## Scope
 
-The current version of the OntCatOWL is limited to Endurant types. I.e., there are no rules implemented for other ontological categories provided by [the Unified Foundational Ontology (UFO)](https://philpapers.org/archive/PORUUF.pdf). Even though gUFO has two taxonomies (one with classes whose instances are individuals and another with classes whose instances are types), because of this restriction, only the latter is handled by the rules here presented—more specifically, OntCatOWL uses the [Endurant types](https://nemo-ufes.github.io/gufo/#enduranttypes) part of the types hierarchy. This hierarchy addresses two ontological meta-properties of entities: [sortality](https://ontouml.readthedocs.io/en/latest/theory/identity.html) (related to the *identity principle* the entity may provide or carry) and [rigidity](https://ontouml.readthedocs.io/en/latest/theory/rigidity.html).
+The current version of the Scior is limited to Endurant types. I.e., there are no rules implemented for other ontological categories provided by [the Unified Foundational Ontology (UFO)](https://philpapers.org/archive/PORUUF.pdf). Even though gUFO has two taxonomies (one with classes whose instances are individuals and another with classes whose instances are types), because of this restriction, only the latter is handled by the rules here presented—more specifically, Scior uses the [Endurant types](https://nemo-ufes.github.io/gufo/#enduranttypes) part of the types hierarchy. This hierarchy addresses two ontological meta-properties of entities: [sortality](https://ontouml.readthedocs.io/en/latest/theory/identity.html) (related to the *identity principle* the entity may provide or carry) and [rigidity](https://ontouml.readthedocs.io/en/latest/theory/rigidity.html).
 
 ## Descriptions
 
-In the next section, we describe the fifteen rules implemented in the OntCatOWL.
+In the next section, we describe the fifteen rules implemented in the Scior.
 
-Regarding the rigidity and sortality meta-properties, the rules implemented in OntCatOWL were originally defined for OntoUML (first in [1], later in [2]) and, hence, we had to convert them from the diagrammatical modeling language (OntoUML) reality to the RDF-based semantic web paradigm, in which gUFO lies.
+Regarding the rigidity and sortality meta-properties, the rules implemented in Scior were originally defined for OntoUML (first in [[1]](#references), later in [[2]]((#references))) and, hence, we had to convert them from the diagrammatical modeling language (OntoUML) reality to the RDF-based semantic web paradigm, in which gUFO lies.
 
-During the development of this work, we could identify UFO constraints that were absent from the mentioned reference works. We implemented in OntCatOWL new rules for phase partitions and for subtypes of roles to cover all necessary constraints.
+During the development of this work, we could identify UFO constraints that were absent from the mentioned reference works. We implemented in Scior new rules for phase partitions and for subtypes of roles to cover all necessary constraints.
 
-The implementation of the set of rules present in OntCatOWL is the first one done for gUFO and, hence, is an important contribution to its related community.
+The implementation of the set of rules present in Scior is the first one done for gUFO and, hence, is an important contribution to its related community.
 
-In the next section, we describe the OntCatOWL rules using four items:
+In the next section, we describe the Scior rules using four items:
 
 - **Definition:** A description of the rule that is implemented.
 - **Reason:** A description of the rule’s existence reason according to UFO.
