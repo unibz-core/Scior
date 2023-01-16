@@ -50,7 +50,7 @@ The Scior provides two possible execution ways regarding user’s interactivity:
 -a, --automatic Execute only automatic rules. Interactive rules are not performed.
 ```
 
-As a premise, Scior always considers the number of possibilities to (positively or negatively) attribute a classification to a class: if the number of possibilities is one, no interaction is needed and hence it automatically attributes the classification to the class. If the number of possibilities is higher than one, Scior
+As a premise, Scior always considers the number of possibilities to (positively or negatively) attribute a classification to a class: if the number of possibilities is one, no interaction is needed and hence it automatically attributes the classification to the class. If the number of possibilities is higher than one, Scior will require the user's interaction or report the situation for the user, when in the interactive and automatic modes, respecivelly.
 
 While some rules are performed the same way in both modes, others have different behaviors when the user sets different configurations. We present the different behavior of all rules regarding the automation level and regarding models’ completeness modes in the [implemented rules documentation](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-ImplementedRules.md).
 
