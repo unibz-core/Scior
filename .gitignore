@@ -131,12 +131,12 @@ dmypy.json
 
 # Personal tests and backups
 trash/
-/ontcatowl/modules/backups - not used/
+/scior/modules/backups - not used/
 log/
 report/
 /ontologies/
 /logs/
 /reports/
-/ontcatowl/logs/
-/ontcatowl/reports/
+/scior/logs/
+/scior/reports/
 /documentation/*.docx

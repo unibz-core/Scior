@@ -1,11 +1,11 @@
-""" Provides class and functions to calculate statistics of the improvement OntCatOWL has caused on
+""" Provides class and functions to calculate statistics of the improvement Scior has caused on
 the inputted ontology. """
 
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.results_classes import dataclass_statistics, list_classes_by_situation, classes_statistics, \
+from scior.modules.logger_config import initialize_logger
+from scior.modules.results_classes import dataclass_statistics, list_classes_by_situation, classes_statistics, \
     classifications_statistics, consolidated_statistics
 
-# These values must be updated for newer versions of OntCatOWL, after including elements other than Endurants.
+# These values must be updated for newer versions of Scior, after including elements other than Endurants.
 NUMBER_GUFO_TYPES = 14
 NUMBER_GUFO_INDIVIDUALS = 13
 
@@ -334,7 +334,7 @@ def create_knowledge_matrix(before_statistics, after_statistics):
 
     E.g., if the value 17 is stored in the matrix position (0,5) it indicates that 17 classes started the evaluation
         (i.e., were received as inputs by the user) without known classifications and ended (i.e., were provided
-        as outputs by OntCatOWL) with 5 known gUFO types.
+        as outputs by Scior) with 5 known gUFO types.
 
     Regarding the nomenclature used in the statistics, classes in the:
 

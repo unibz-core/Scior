@@ -1,4 +1,4 @@
-""" Classes used as data structures for stats data. 
+""" Classes used as data structures for stats data.
 
 tu = totally unknown
 pk = partially known
@@ -17,7 +17,7 @@ _a = after
 
 """
 
-from ontcatowl.modules.logger_config import initialize_logger
+from scior.modules.logger_config import initialize_logger
 
 
 class dataclass_statistics(object):
@@ -181,30 +181,46 @@ class consolidated_statistics(object):
         self.tk_classes_all_p_d = self.classes_stats_a.tk_classes_all_p - self.classes_stats_b.tk_classes_all_p
 
         # CLASSIFICATIONS - calculated values
-        self.total_classif_types_v_d = self.classif_stats_a.total_classif_types_v - self.classif_stats_b.total_classif_types_v
-        self.total_classif_indiv_v_d = self.classif_stats_a.total_classif_indiv_v - self.classif_stats_b.total_classif_indiv_v
+        self.total_classif_types_v_d = self.classif_stats_a.total_classif_types_v - \
+                                       self.classif_stats_b.total_classif_types_v
+        self.total_classif_indiv_v_d = self.classif_stats_a.total_classif_indiv_v - \
+                                       self.classif_stats_b.total_classif_indiv_v
 
-        self.unknown_classif_types_v_d = self.classif_stats_a.unknown_classif_types_v - self.classif_stats_b.unknown_classif_types_v
-        self.known_classif_types_v_d = self.classif_stats_a.known_classif_types_v - self.classif_stats_b.known_classif_types_v
+        self.unknown_classif_types_v_d = self.classif_stats_a.unknown_classif_types_v - \
+                                         self.classif_stats_b.unknown_classif_types_v
+        self.known_classif_types_v_d = self.classif_stats_a.known_classif_types_v - \
+                                       self.classif_stats_b.known_classif_types_v
 
-        self.unknown_classif_indiv_v_d = self.classif_stats_a.unknown_classif_indiv_v - self.classif_stats_b.unknown_classif_indiv_v
-        self.known_classif_indiv_v_d = self.classif_stats_a.known_classif_indiv_v - self.classif_stats_b.known_classif_indiv_v
+        self.unknown_classif_indiv_v_d = self.classif_stats_a.unknown_classif_indiv_v - \
+                                         self.classif_stats_b.unknown_classif_indiv_v
+        self.known_classif_indiv_v_d = self.classif_stats_a.known_classif_indiv_v - \
+                                       self.classif_stats_b.known_classif_indiv_v
 
-        self.unknown_classif_total_v_d = self.classif_stats_a.unknown_classif_total_v - self.classif_stats_b.unknown_classif_total_v
-        self.known_classif_total_v_d = self.classif_stats_a.known_classif_total_v - self.classif_stats_b.known_classif_total_v
+        self.unknown_classif_total_v_d = self.classif_stats_a.unknown_classif_total_v - \
+                                         self.classif_stats_b.unknown_classif_total_v
+        self.known_classif_total_v_d = self.classif_stats_a.known_classif_total_v - \
+                                       self.classif_stats_b.known_classif_total_v
 
         # CLASSIFICATIONS - calculated percentages
-        self.total_classif_types_p_d = self.classif_stats_a.total_classif_types_p - self.classif_stats_b.total_classif_types_p
-        self.total_classif_indiv_p_d = self.classif_stats_a.total_classif_indiv_p - self.classif_stats_b.total_classif_indiv_p
+        self.total_classif_types_p_d = self.classif_stats_a.total_classif_types_p - \
+                                       self.classif_stats_b.total_classif_types_p
+        self.total_classif_indiv_p_d = self.classif_stats_a.total_classif_indiv_p - \
+                                       self.classif_stats_b.total_classif_indiv_p
 
-        self.unknown_classif_types_p_d = self.classif_stats_a.unknown_classif_types_p - self.classif_stats_b.unknown_classif_types_p
-        self.known_classif_types_p_d = self.classif_stats_a.known_classif_types_p - self.classif_stats_b.known_classif_types_p
+        self.unknown_classif_types_p_d = self.classif_stats_a.unknown_classif_types_p - \
+                                         self.classif_stats_b.unknown_classif_types_p
+        self.known_classif_types_p_d = self.classif_stats_a.known_classif_types_p - \
+                                       self.classif_stats_b.known_classif_types_p
 
-        self.unknown_classif_indiv_p_d = self.classif_stats_a.unknown_classif_indiv_p - self.classif_stats_b.unknown_classif_indiv_p
-        self.known_classif_indiv_p_d = self.classif_stats_a.known_classif_indiv_p - self.classif_stats_b.known_classif_indiv_p
+        self.unknown_classif_indiv_p_d = self.classif_stats_a.unknown_classif_indiv_p - \
+                                         self.classif_stats_b.unknown_classif_indiv_p
+        self.known_classif_indiv_p_d = self.classif_stats_a.known_classif_indiv_p - \
+                                       self.classif_stats_b.known_classif_indiv_p
 
-        self.unknown_classif_total_p_d = self.classif_stats_a.unknown_classif_total_p - self.classif_stats_b.unknown_classif_total_p
-        self.known_classif_total_p_d = self.classif_stats_a.known_classif_total_p - self.classif_stats_b.known_classif_total_p
+        self.unknown_classif_total_p_d = self.classif_stats_a.unknown_classif_total_p - \
+                                         self.classif_stats_b.unknown_classif_total_p
+        self.known_classif_total_p_d = self.classif_stats_a.known_classif_total_p - \
+                                       self.classif_stats_b.known_classif_total_p
 
     def validate(self):
 

@@ -3,14 +3,14 @@
 import logging
 import os
 
-from ontcatowl.modules.utils_general import get_date_time
+from scior.modules.utils_general import get_date_time
 
 
 def initialize_logger(source="default"):
-    """ Initialize OntCatOWL Logger. """
+    """ Initialize Scior Logger. """
 
     # Create a custom logger
-    new_logger = logging.getLogger("OntCatOWL")
+    new_logger = logging.getLogger("Scior")
 
     if source == "default":
         new_logger.setLevel(logging.DEBUG)
@@ -19,8 +19,8 @@ def initialize_logger(source="default"):
     else:
         print(f"Logger parameter unknown ({source}). Aborting execution.")
 
-    # Creates a new logger only if OntCatOWL does not exist
-    if not logging.getLogger("OntCatOWL").hasHandlers():
+    # Creates a new logger only if Scior does not exist
+    if not logging.getLogger("Scior").hasHandlers():
 
         # Creating CONSOLE handler
         console_handler = logging.StreamHandler()

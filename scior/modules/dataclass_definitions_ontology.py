@@ -1,13 +1,13 @@
-""" Definition of dataclass as the data structure used for loading the ontologies ontology in OntCatOWL.
+""" Definition of dataclass as the data structure used for loading the ontologies ontology in Scior.
     This module contains the data structure fields, initial value assignments and methods.
 """
 import hashlib
 from dataclasses import dataclass, field
 
-from ontcatowl.modules.dataclass_verifications import verify_duplicates_in_lists_ontology, \
+from scior.modules.dataclass_verifications import verify_duplicates_in_lists_ontology, \
     verify_multiple_final_classifications_for_types
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.utils_general import lists_intersection
+from scior.modules.logger_config import initialize_logger
+from scior.modules.utils_general import lists_intersection
 
 
 @dataclass

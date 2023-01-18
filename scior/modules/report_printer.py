@@ -2,19 +2,19 @@
 MarkDown format. """
 import os
 
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.report_content import get_content100, get_content200, \
+from scior.modules.logger_config import initialize_logger
+from scior.modules.report_content import get_content100, get_content200, \
     get_content300_400, get_content500, get_content700, get_content600
-from ontcatowl.modules.results_calculation import generate_result_classes_lists
-from ontcatowl.modules.utils_dataclass import sort_all_ontology_dataclass_list
-from ontcatowl.modules.utils_general import get_date_time
+from scior.modules.results_calculation import generate_result_classes_lists
+from scior.modules.utils_dataclass import sort_all_ontology_dataclass_list
+from scior.modules.utils_general import get_date_time
 
 
 def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, elapsed_time,
                       global_configurations, before_statistics, after_statistics,
                       consolidated_statistics, time_register, restriction, software_version, knowledge_matrix):
     """ Printing a file report, in MarkDown syntax, containing the state of the ontology before and after
-    the execution of OntCatOWL.
+    the execution of Scior.
 
     Restrictions:
         - "PRINT_ALL" - prints types, individuals, and total tables.
@@ -42,11 +42,11 @@ def print_report_file(ontology_dataclass_list, start_date_time, end_date_time, e
 
     lists_before, lists_after = generate_result_classes_lists(before_statistics, after_statistics)
 
-    title_000 = "# OntCatOWL Final Results Report\n\n"
+    title_000 = "# Scior Final Results Report\n\n"
     title_100 = "\n## Table of Contents\n\n"
     title_200 = "\n## Execution Information\n\n"
-    title_300 = "\n## Lists of Classes Before OntCatOWL\n\n"
-    title_400 = "\n## Lists of Classes After OntCatOWL\n\n"
+    title_300 = "\n## Lists of Classes Before Scior\n\n"
+    title_400 = "\n## Lists of Classes After Scior\n\n"
     title_500 = "\n## Results Statistics\n\n"
     title_600 = "\n## Knowledge Matrix\n\n"
     title_700 = "\n## Final Classes' Classifications\n\n"

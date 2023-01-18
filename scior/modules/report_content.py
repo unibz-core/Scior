@@ -3,11 +3,11 @@ import os
 
 from prettytable import MARKDOWN, PrettyTable
 
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.results_printer import generate_classes_table, generate_classifications_table, \
+from scior.modules.logger_config import initialize_logger
+from scior.modules.results_printer import generate_classes_table, generate_classifications_table, \
     generate_times_table, generate_incompleteness_table
-from ontcatowl.modules.utils_dataclass import generate_hash_ontology_dataclass_list
-from ontcatowl.modules.utils_general import get_computer_specifications
+from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
+from scior.modules.utils_general import get_computer_specifications
 
 
 def get_content100(restriction="PRINT_ALL"):
@@ -21,37 +21,37 @@ def get_content100(restriction="PRINT_ALL"):
     """
 
     line_01 = "* [Execution Information](#execution-information)\n"
-    line_02 = "* [Lists of Classes Before OntCatOWL](#lists-of-classes-before-ontcatowl)\n"
-    line_03 = "\t* [List of Totally Unknown Classes Before OntCatOWL]" \
-              "(#list-of-totally-unknown-classes-before-ontcatowl)\n"
-    line_04 = "\t* [List of Partially Known Classes Before OntCatOWL]" \
-              "(#list-of-partially-known-classes-before-ontcatowl)\n"
-    line_05 = "\t* [List of Totally Known Classes Before OntCatOWL]" \
-              "(#list-of-totally-known-classes-before-ontcatowl)\n"
-    line_06 = "* [Lists of Classes After OntCatOWL](#lists-of-classes-after-ontcatowl)\n"
-    line_07 = "\t* [List of Totally Unknown Classes After OntCatOWL]" \
-              "(#list-of-totally-unknown-classes-after-ontcatowl)\n"
-    line_08 = "\t* [List of Partially Known Classes After OntCatOWL]" \
-              "(#list-of-partially-known-classes-after-ontcatowl)\n"
-    line_09 = "\t* [List of Totally Known Classes After OntCatOWL]" \
-              "(#list-of-totally-known-classes-after-ontcatowl)\n"
+    line_02 = "* [Lists of Classes Before Scior](#lists-of-classes-before-scior)\n"
+    line_03 = "\t* [List of Totally Unknown Classes Before Scior]" \
+              "(#list-of-totally-unknown-classes-before-scior)\n"
+    line_04 = "\t* [List of Partially Known Classes Before Scior]" \
+              "(#list-of-partially-known-classes-before-scior)\n"
+    line_05 = "\t* [List of Totally Known Classes Before Scior]" \
+              "(#list-of-totally-known-classes-before-scior)\n"
+    line_06 = "* [Lists of Classes After Scior](#lists-of-classes-after-scior)\n"
+    line_07 = "\t* [List of Totally Unknown Classes After Scior]" \
+              "(#list-of-totally-unknown-classes-after-scior)\n"
+    line_08 = "\t* [List of Partially Known Classes After Scior]" \
+              "(#list-of-partially-known-classes-after-scior)\n"
+    line_09 = "\t* [List of Totally Known Classes After Scior]" \
+              "(#list-of-totally-known-classes-after-scior)\n"
     line_10 = "* [Results Statistics](#results-statistics)\n"
 
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
-        line_11 = "\t* [Statistics of the OntCatOWL execution for TYPES]" \
-                  "(#statistics-of-the-ontcatowl-execution-for-types)\n"
+        line_11 = "\t* [Statistics of the Scior execution for TYPES]" \
+                  "(#statistics-of-the-scior-execution-for-types)\n"
     else:
         line_11 = ""
 
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
-        line_12 = "\t* [Statistics of the OntCatOWL execution for INDIVIDUALS]" \
-                  "(#statistics-of-the-ontcatowl-execution-for-individuals)\n"
+        line_12 = "\t* [Statistics of the Scior execution for INDIVIDUALS]" \
+                  "(#statistics-of-the-scior-execution-for-individuals)\n"
     else:
         line_12 = ""
 
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
-        line_13 = "\t* [Statistics of the OntCatOWL execution for TYPES and INDIVIDUALS]" \
-                  "(#statistics-of-the-ontcatowl-execution-for-types-and-individuals)\n"
+        line_13 = "\t* [Statistics of the Scior execution for TYPES and INDIVIDUALS]" \
+                  "(#statistics-of-the-scior-execution-for-types-and-individuals)\n"
     else:
         line_13 = ""
 
@@ -71,7 +71,7 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
                    elapsed_time, time_register, configurations, software_version):
     """ Presents some information about the software execution."""
 
-    line_01 = f"OntCatOWL version {software_version} successfully performed.\n" \
+    line_01 = f"Scior version {software_version} successfully performed.\n" \
               f"* Start time {start_date_time}\n" \
               f"* End time {end_date_time}\n" \
               f"* Total elapsed time: {elapsed_time} seconds.\n"
@@ -138,11 +138,11 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
     intro = ""
 
     if result_lists[0] == "Before":
-        intro = "This section presents the categorization of the classes inputted to OntCatOWL " \
+        intro = "This section presents the categorization of the classes inputted to Scior " \
                 "(i.e., before its rules' executions) in three lists: Totally Unknown Classes, " \
                 "Partially Known Classes, and Totally Known Classes.\n"
     elif result_lists[0] == "After":
-        intro = "This section presents the categorization of the classes after processed by OntCatOWL " \
+        intro = "This section presents the categorization of the classes after processed by Scior " \
                 "(i.e., after its rules' executions) in three lists: Totally Unknown Classes, " \
                 "Partially Known Classes, and Totally Known Classes.\n"
     else:
@@ -160,8 +160,8 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
         content_x12 = ""
         content_x13 = ""
 
-        # List of TU/PK/TK Classes Before/After OntCatOWL
-        title_x10 = f"\n### List of {result_lists[i].situation} Classes {result_lists[0]} OntCatOWL\n\n"
+        # List of TU/PK/TK Classes Before/After Scior
+        title_x10 = f"\n### List of {result_lists[i].situation} Classes {result_lists[0]} Scior\n\n"
 
         # TU/PK/TK Classes Before/After - Types Only
         if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
@@ -199,7 +199,7 @@ def get_content500(ontology_dataclass_list, consolidated_statistics, restriction
         - "TOTAL_ONLY" - prints only total table.
     """
 
-    intro = "This section presents statistics of the execution of OntCatOWL considering classes and " \
+    intro = "This section presents statistics of the execution of Scior considering classes and " \
             "possible classifications (gUFO elements).\n"
 
     title_501 = ""
@@ -210,7 +210,7 @@ def get_content500(ontology_dataclass_list, consolidated_statistics, restriction
     content_503 = ""
 
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
-        title_501 = "\n### Statistics of the OntCatOWL execution for TYPES"
+        title_501 = "\n### Statistics of the Scior execution for TYPES"
 
         table_classes_types = generate_classes_table(consolidated_statistics, "types", MARKDOWN)
         table_classifications_types = generate_classifications_table(consolidated_statistics, "types",
@@ -219,7 +219,7 @@ def get_content500(ontology_dataclass_list, consolidated_statistics, restriction
         content_501 = "\n" + table_classes_types + "\n" + table_classifications_types + "\n"
 
     if restriction == "PRINT_ALL" or restriction == "INDIVIDUALS_ONLY":
-        title_502 = "\n### Statistics of the OntCatOWL execution for INDIVIDUALS"
+        title_502 = "\n### Statistics of the Scior execution for INDIVIDUALS"
 
         table_classes_individuals = generate_classes_table(consolidated_statistics, "individuals",
                                                            MARKDOWN)
@@ -229,7 +229,7 @@ def get_content500(ontology_dataclass_list, consolidated_statistics, restriction
         content_502 = "\n" + table_classes_individuals + "\n" + table_classifications_individuals + "\n"
 
     if restriction == "PRINT_ALL" or restriction == "TOTAL_ONLY":
-        title_503 = "\n### Statistics of the OntCatOWL execution for TYPES and INDIVIDUALS"
+        title_503 = "\n### Statistics of the Scior execution for TYPES and INDIVIDUALS"
 
         table_classes_total = generate_classes_table(consolidated_statistics, "total", MARKDOWN)
         table_classifications_total = generate_classifications_table(consolidated_statistics, "total",

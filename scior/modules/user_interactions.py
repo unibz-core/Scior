@@ -3,8 +3,8 @@ import time
 
 from prettytable import PrettyTable
 
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.utils_dataclass import get_element_list, select_list
+from scior.modules.logger_config import initialize_logger
+from scior.modules.utils_dataclass import get_element_list, select_list
 
 # Frequent GUFO types
 GUFO_KIND = "gufo:Kind"

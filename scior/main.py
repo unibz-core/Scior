@@ -1,36 +1,36 @@
-""" Main module  for OntCatOWL """
+""" Main module  for Scior """
 import os
 import time
 from datetime import datetime
 
 from rdflib import RDFS, RDF
 
-from ontcatowl.modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
-from ontcatowl.modules.graph_save_ontology import save_ontology_gufo_statements, \
+from scior.modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
+from scior.modules.graph_save_ontology import save_ontology_gufo_statements, \
     save_ontology_file_as_configuration
-from ontcatowl.modules.initialization_arguments import treat_arguments
-from ontcatowl.modules.initialization_data_graph import initialize_nodes_lists
-from ontcatowl.modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
-from ontcatowl.modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, \
+from scior.modules.initialization_arguments import treat_arguments
+from scior.modules.initialization_data_graph import initialize_nodes_lists
+from scior.modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
+from scior.modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, \
     load_known_gufo_information
-from ontcatowl.modules.logger_config import initialize_logger
-from ontcatowl.modules.report_printer import print_report_file
-from ontcatowl.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
+from scior.modules.logger_config import initialize_logger
+from scior.modules.report_printer import print_report_file
+from scior.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
     create_knowledge_matrix
-from ontcatowl.modules.results_printer import print_statistics_screen
-from ontcatowl.modules.rules_types_run import execute_rules_types
-from ontcatowl.modules.utils_rdf import load_all_graph_safely, perform_reasoning, \
+from scior.modules.results_printer import print_statistics_screen
+from scior.modules.rules_types_run import execute_rules_types
+from scior.modules.utils_rdf import load_all_graph_safely, perform_reasoning, \
     load_graph_safely_considering_restrictions, reduce_graph_considering_restrictions
 
-SOFTWARE_ACRONYM = "OntCatOWL"
+SOFTWARE_ACRONYM = "Scior"
 SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
-SOFTWARE_VERSION = "0.23.01.09"
-SOFTWARE_URL = "https://github.com/unibz-core/OntCatOWL/"
+SOFTWARE_VERSION = "0.23.01.18"
+SOFTWARE_URL = "https://github.com/unibz-core/Scior/"
 VERSION_RESTRICTION = "TYPES_ONLY"
 LIST_GRAPH_RESTRICTIONS = [RDF.type, RDFS.subClassOf]
 
 
-def run_ontcatowl():
+def run_scior():
     """ Main function. """
 
     # DATA LOADINGS AND INITIALIZATIONS
@@ -43,7 +43,7 @@ def run_ontcatowl():
 
     now = datetime.now()
     start_date_time = now.strftime("%d-%m-%Y %H:%M:%S")
-    logger.info(f"OntCatOWL started on {start_date_time}!")
+    logger.info(f"Scior started on {start_date_time}!")
 
     # Loading owl ontologies from files to the working memory
     original_graph = load_all_graph_safely(global_configurations["ontology_path"])
@@ -101,7 +101,7 @@ def run_ontcatowl():
     end_date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
     et = time.perf_counter()
     elapsed_time = round((et - st), 3)
-    logger.info(f"OntCatOWL concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
+    logger.info(f"Scior concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
     # Printing results
     save_ontology_file_as_configuration(resulting_graph, gufo_graph, end_date_time, global_configurations)
@@ -111,11 +111,11 @@ def run_ontcatowl():
                       consolidated_statistics, time_register, VERSION_RESTRICTION, SOFTWARE_VERSION, knowledge_matrix)
 
 
-def run_ontcatowl_tester(global_configurations, working_graph):
-    """ Main function for the OntCatOWL-Tester.
+def run_scior_tester(global_configurations, working_graph):
+    """ Main function for the Scior-Tester.
         No printings and reports are generated. Logger is differently configured.
-        This function is exported at the __init__.py file for being used by the OntCatOWL-Tester.
-        For more detailed information, please check: https://github.com/unibz-core/OntCatOWL-Tester/
+        This function is exported at the __init__.py file for being used by the Scior-Tester.
+        For more detailed information, please check: https://github.com/unibz-core/Scior-Tester/
     """
 
     internal_global_configurations = {'import_gufo': False, 'save_gufo': False,
@@ -152,4 +152,4 @@ def run_ontcatowl_tester(global_configurations, working_graph):
 
 
 if __name__ == "__main__":
-    run_ontcatowl()
+    run_scior()

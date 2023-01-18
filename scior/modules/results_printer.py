@@ -4,7 +4,7 @@ import time
 
 from prettytable import PrettyTable, SINGLE_BORDER
 
-from ontcatowl.modules.logger_config import initialize_logger
+from scior.modules.logger_config import initialize_logger
 
 UNDEFINED_MESSAGE = "undefined - error if printed."
 
@@ -84,7 +84,7 @@ def generate_classes_table(consolidated_statistics, table_option, border_option)
 
     if table_option == "types":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {after.total_classes_number} CLASSES " \
+        message = f"\nResults of Scior execution when evaluating {after.total_classes_number} CLASSES " \
                   f"considering only TYPES:\n"
 
         pos_r1_c1 = f"{before.tu_classes_types_v} ({round(before.tu_classes_types_p, 2)}%)"
@@ -99,7 +99,7 @@ def generate_classes_table(consolidated_statistics, table_option, border_option)
 
     elif table_option == "individuals":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {after.total_classes_number} CLASSES " \
+        message = f"\nResults of Scior execution when evaluating {after.total_classes_number} CLASSES " \
                   f"considering only INDIVIDUALS:\n"
 
         pos_r1_c1 = f"{before.tu_classes_indiv_v} ({round(before.tu_classes_indiv_p, 2)}%)"
@@ -114,7 +114,7 @@ def generate_classes_table(consolidated_statistics, table_option, border_option)
 
     elif table_option == "total":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {after.total_classes_number} CLASSES " \
+        message = f"\nResults of Scior execution when evaluating {after.total_classes_number} CLASSES " \
                   f"considering TYPES and  INDIVIDUALS:\n"
 
         pos_r1_c1 = f"{before.tu_classes_all_v} ({round(before.tu_classes_all_p, 2)}%)"
@@ -175,7 +175,7 @@ def generate_classifications_table(consolidated_statistics, table_option, border
 
     if table_option == "types":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {before.total_classif_types_v} " \
+        message = f"\nResults of Scior execution when evaluating {before.total_classif_types_v} " \
                   f"CLASSIFICATIONS considering only TYPES:\n"
 
         pos_r1_c1 = f"{before.unknown_classif_types_v} ({round(before.unknown_classif_types_p, 2)}%)"
@@ -187,7 +187,7 @@ def generate_classifications_table(consolidated_statistics, table_option, border
 
     elif table_option == "individuals":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {before.total_classif_indiv_v} " \
+        message = f"\nResults of Scior execution when evaluating {before.total_classif_indiv_v} " \
                   f"CLASSIFICATIONS considering only INDIVIDUALS:\n"
 
         pos_r1_c1 = f"{before.unknown_classif_indiv_v} ({round(before.unknown_classif_indiv_p, 2)}%)"
@@ -198,7 +198,7 @@ def generate_classifications_table(consolidated_statistics, table_option, border
         pos_r2_c3 = f"{ba.known_classif_indiv_v_d} ({round(ba.known_classif_indiv_p_d, 2)}%)"
     elif table_option == "total":
 
-        message = f"\nResults of OntCatOWL execution when evaluating {before.total_classif_number} " \
+        message = f"\nResults of Scior execution when evaluating {before.total_classif_number} " \
                   f"CLASSIFICATIONS considering TYPES and INDIVIDUALS:\n"
 
         pos_r1_c1 = f"{before.unknown_classif_total_v} ({round(before.unknown_classif_total_p, 2)}%)"
@@ -266,7 +266,7 @@ def print_statistics_screen(ontology_dataclass_list, consolidated_statistics, ti
     """
 
     time.sleep(0.1)
-    print("\n##### FINAL ONTCATOWL CLASSIFICATION SUMMARY #####")
+    print("\n##### FINAL SCIOR CLASSIFICATION SUMMARY #####")
 
     if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
         table_classes_types = generate_classes_table(consolidated_statistics, "types", SINGLE_BORDER)

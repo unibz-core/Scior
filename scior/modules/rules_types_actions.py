@@ -1,5 +1,5 @@
 """ Execution of rules actions. """
-from ontcatowl.modules.logger_config import initialize_logger
+from scior.modules.logger_config import initialize_logger
 
 
 def perform_rule_actions_types(list_ontology_dataclasses, list_nodes, action, list_restrictions=None):

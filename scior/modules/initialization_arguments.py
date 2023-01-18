@@ -2,7 +2,7 @@
 
 import argparse
 
-from ontcatowl.modules.logger_config import initialize_logger
+from scior.modules.logger_config import initialize_logger
 
 
 def treat_arguments(software_acronym, software_name, software_version, software_url):
@@ -14,7 +14,7 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     about_message = software_acronym + " - version " + software_version
 
     # PARSING ARGUMENTS
-    arguments_parser = argparse.ArgumentParser(prog="ontcatowl",
+    arguments_parser = argparse.ArgumentParser(prog="scior",
                                                description=software_acronym + " - " + software_name,
                                                allow_abbrev=False,
                                                epilog=software_url)
