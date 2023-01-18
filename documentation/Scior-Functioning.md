@@ -447,17 +447,17 @@ You can find below an example of the statistics that are presented after the Sci
 
 ```markdown
 Results of Scior execution when evaluating 34 CLASSES considering only TYPES:
-| Evaluation | Before | After | Difference |
+|              Evaluation |         Before |          After |     Difference |
 |------------------------:|---------------:|---------------:|---------------:|
-| Totally unknown classes | 30 (88.24%) | 9 (26.47%) | -21 (-61.76%) |
-| Partially known classes | 0 (0.0%) | 10 (29.41%) | 10 (29.41%) |
-| Totally known classes | 4 (11.76%) | 15 (44.12%) | 11 (32.35%) |
+| Totally unknown classes |    30 (88.24%) |    12 (35.29%) |  -18 (-52.94%) |
+| Partially known classes |       0 (0.0%) |     6 (17.65%) |     6 (17.65%) |
+|   Totally known classes |     4 (11.76%) |    16 (47.06%) |    12 (35.29%) |
 
 Results of Scior execution when evaluating 476 CLASSIFICATIONS considering only TYPES:
-| Evaluation | Before | After | Difference |
+|              Evaluation |         Before |          After |     Difference |
 |------------------------:|---------------:|---------------:|---------------:|
-| Unknown classifications | 420 (88.24%) | 196 (41.18%) | -224 (-47.06%) |
-| Known classifications | 56 (11.76%) | 280 (58.82%) | 224 (47.06%) |
+| Unknown classifications |   420 (88.24%) |   206 (43.28%) | -214 (-44.96%) |
+|   Known classifications |    56 (11.76%) |   270 (56.72%) |   214 (44.96%) |
 ```
 
 As you can see above, the presentation displays data about two items: the number of **classes** and **classifications**.
