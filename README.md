@@ -1,9 +1,9 @@
-# Scior: Identification of Ontological Categories for OWL Ontologies
+# Scior: Enhancing the Semantics of OWL Ontologies Using Rule-based Alignment with Foundational Ontologies
 
-**[Scior](https://github.com/unibz-core/Scior)** is the Latin word that means "I am Known". It is the reference
-implementation of the o2O Alignment Method, a Python command-line software that aims to support the semi-automatic
-semantic improvement of lightweight web ontologies. We aim to reach the referred semantic improvement via the
-association of [gUFO](https://nemo-ufes.github.io/gufo/)—a lightweight implementation of
+**[Scior](https://github.com/unibz-core/Scior)** is a Latin word meaning "_I am known_". This software implements
+Identification of Ontological Categories for OWL Ontologies, a Python command-line software that aims to support the
+semi-automatic semantic improvement of lightweight web ontologies. We aim to reach the referred semantic improvement via
+the association of [gUFO](https://nemo-ufes.github.io/gufo/)—a lightweight implementation of
 the [Unified Foundational Ontology (UFO)](https://nemo.inf.ufes.br/wp-content/uploads/ufo_unified_foundational_ontology_2021.pdf)
 —concepts to the OWL entities. The aim of gUFO is “*to provide a lightweight implementation of the Unified Foundational
 Ontology (UFO) suitable for Semantic Web OWL 2 DL applications*”.

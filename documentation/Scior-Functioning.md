@@ -10,29 +10,29 @@ about the installation or execution of Scior.
 ## Content
 
 - [Introduction](#introduction)
-    - [Scope](#scope)
-    - [Development Premises](#development-premises)
+  - [Scope](#scope)
+  - [Development Premises](#development-premises)
 - [Input and Configurations](#input-and-configurations)
-    - [Input File](#input-file)
-    - [Arguments and Configurations](#arguments-and-configurations)
+  - [Input File](#input-file)
+  - [Arguments and Configurations](#arguments-and-configurations)
 - [Data Initialization](#data-initialization)
-    - [RDF Graphs](#rdf-graphs)
-    - [Working Data Structure](#working-data-structure)
-    - [Classifications’ Manipulation](#classifications-manipulation)
-    - [Inferencing Method](#inferencing-method)
-    - [Consistency Evaluations](#consistency-evaluations)
+  - [RDF Graphs](#rdf-graphs)
+  - [Working Data Structure](#working-data-structure)
+  - [Classifications’ Manipulation](#classifications-manipulation)
+  - [Inferencing Method](#inferencing-method)
+  - [Consistency Evaluations](#consistency-evaluations)
 - [Rules Executions](#rules-executions)
-    - [Rule Types](#rule-types)
-    - [Hashing](#hashing)
-    - [Execution Logic](#execution-logic)
-    - [Information and Data Reporting](#information-and-data-reporting)
-        - [User Interaction](#user-interaction)
-        - [Reporting Information](#reporting-information)
-        - [Reporting Incompleteness](#reporting-incompleteness)
-        - [Reporting Inconsistencies](#reporting-inconsistencies)
+  - [Rule Types](#rule-types)
+  - [Hashing](#hashing)
+  - [Execution Logic](#execution-logic)
+  - [Information and Data Reporting](#information-and-data-reporting)
+    - [User Interaction](#user-interaction)
+    - [Reporting Information](#reporting-information)
+    - [Reporting Incompleteness](#reporting-incompleteness)
+    - [Reporting Inconsistencies](#reporting-inconsistencies)
 - [Output Files](#output-files)
-    - [Output Ontology](#output-ontology)
-    - [Report File](#report-file)
+  - [Output Ontology](#output-ontology)
+  - [Report File](#report-file)
 - [Execution Statistics](#execution-statistics)
 
 ## Introduction
@@ -242,7 +242,7 @@ dataclass.
 
 The diagram below shows, in a very simplified manner, how Scior performs its implemented rules.
 
-![flowchart](https://user-images.githubusercontent.com/8641647/211357509-b9bb38ec-59d8-4862-88b0-fbe7de9d1c86.png)
+![flowchart](https://user-images.githubusercontent.com/8641647/212705583-17046393-b077-402e-9cca-f29da9abe6af.png)
 
 In this section, we are going to decompose this flowchart, explaining each step of the execution process. Regarding
 individual rules, we provide a complete description of each one in
@@ -277,7 +277,7 @@ strings of their `uri`, `is_type`, `can_type`, and `not_type` lists). Finally, S
 following piece of code:
 
 ```python
-enc_hash = class_hash.encode(’utf-8’)
+enc_hash = class_hash.encode(’utf - 8’)
 final_hash = int(hashlib.sha256(enc_hash).hexdigest(), 16)
 ```
 
@@ -405,31 +405,30 @@ execution itself and about the situation before and after its conclusion. The in
 
 - **Execution Information:** displays general and specific (per rule) execution times, together with computer and
   software specifications, used configurations, generated files and solution’s hashes.
-    - The software creates solutions’ hashes so the user can quickly verify if the results have changed from one
-      execution to another.
+  - The software creates solutions’ hashes so the user can quickly verify if the results have changed from one execution
+    to another.
 - **Lists of Classes Before Scior:** displays the classes grouped according to the amount of gUFO knowledge known **
   before** the Scior execution. I.e., it presents the **initial** state of the ontology that is going to be evaluated.
-    - The categories used for grouping the classes are: Totally Unknown Classes, Partially Known Classes, and Totally
-      Known Classes.
+  - The categories used for grouping the classes are: Totally Unknown Classes, Partially Known Classes, and Totally
+    Known Classes.
 - **Lists of Classes After Scior:** displays the classes grouped according to the amount of gUFO knowledge known **
   after** the Scior execution. I.e., it presents the **final** state of the ontology that was evaluated.
-    - The categories used for grouping the classes are: Totally Unknown Classes, Partially Known Classes, and Totally
-      Known Classes.
+  - The categories used for grouping the classes are: Totally Unknown Classes, Partially Known Classes, and Totally
+    Known Classes.
 - **Results` Statistics:** presents tables with total numbers and percentages of classes and classifications before the
   execution, after the execution, and the difference between these two situations.
-    - The [next subsection](#execution-statistics) details the information about the presented statistics.
+  - The [next subsection](#execution-statistics) details the information about the presented statistics.
 - **Incomplete Classes Identified:** presents a table containing all classes identified as incomplete together with the
   implemented rules that were responsible for that identification.
 - **Knowledge Matrix:** As there are 14 gUFO Endurant Types, the knowledge matrix is a 15x15 matrix. Each matrix element
   indicates a QUANTITY of classes: the
   rows`index (from 0 to 14) indicates how many known types **before** the execution, and the columns` index (from 0 to
-    14) Shows how many known types **after** the execution. The position (ROW, COL) indicates how many classes began
-        with
-        ROW known types and ended with COL known types.
+  14) Shows how many known types **after** the execution. The position (ROW, COL) indicates how many classes began with
+      ROW known types and ended with COL known types.
 
-    - As instance, if matrix position (0,5) stores the value 17, it means that 17 classes started the evaluation (i.e.,
-      the user provided them as input) without known classifications and these classes finished (i.e., Scior provided
-      them as output) with 5 known gUFO types.
+  - As instance, if matrix position (0,5) stores the value 17, it means that 17 classes started the evaluation (i.e.,
+    the user provided them as input) without known classifications and these classes finished (i.e., Scior provided them
+    as output) with 5 known gUFO types.
 - **Final Classes’ Classifications:** presents the complete internal gUFO classifications’ lists (`is_type`, `can_type`,
   and `not_type`) for each class, sorted by their URI. With this information, the user can know the final classification
   of each one of the ontology classes.
@@ -448,17 +447,17 @@ You can find below an example of the statistics that are presented after the Sci
 
 ```markdown
 Results of Scior execution when evaluating 34 CLASSES considering only TYPES:
-|              Evaluation |         Before |          After |     Difference |
+| Evaluation | Before | After | Difference |
 |------------------------:|---------------:|---------------:|---------------:|
-| Totally unknown classes |    30 (88.24%) |     9 (26.47%) |  -21 (-61.76%) |
-| Partially known classes |       0 (0.0%) |    10 (29.41%) |    10 (29.41%) |
-|   Totally known classes |     4 (11.76%) |    15 (44.12%) |    11 (32.35%) |
+| Totally unknown classes | 30 (88.24%) | 9 (26.47%) | -21 (-61.76%) |
+| Partially known classes | 0 (0.0%) | 10 (29.41%) | 10 (29.41%) |
+| Totally known classes | 4 (11.76%) | 15 (44.12%) | 11 (32.35%) |
 
 Results of Scior execution when evaluating 476 CLASSIFICATIONS considering only TYPES:
-|              Evaluation |         Before |          After |     Difference |
+| Evaluation | Before | After | Difference |
 |------------------------:|---------------:|---------------:|---------------:|
-| Unknown classifications |   420 (88.24%) |   196 (41.18%) | -224 (-47.06%) |
-|   Known classifications |    56 (11.76%) |   280 (58.82%) |   224 (47.06%) |
+| Unknown classifications | 420 (88.24%) | 196 (41.18%) | -224 (-47.06%) |
+| Known classifications | 56 (11.76%) | 280 (58.82%) | 224 (47.06%) |
 ```
 
 As you can see above, the presentation displays data about two items: the number of **classes** and **classifications**.

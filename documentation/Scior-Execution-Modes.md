@@ -8,9 +8,9 @@ This document presents all Scior arguments and their usage.
 - [Input Ontology File](#input-ontology-file)
 - [Default Arguments’ Values](#default-arguments-values)
 - [Automation Level Modes](#automation-level-modes)
-    - [Automation Level Example](#automation-level-example)
+  - [Automation Level Example](#automation-level-example)
 - [Models’ Completeness Modes](#models-completeness-modes)
-    - [Models’ Completeness Modes Example](#models-completeness-modes-example)
+  - [Models’ Completeness Modes Example](#models-completeness-modes-example)
 - [Complementary Arguments](#complementary-arguments)
 - [Help and Version](#help-and-version)
 
@@ -61,7 +61,8 @@ arguments for setting these execution modes are:
 
 As a premise, Scior always considers the number of possibilities to (positively or negatively) attribute a
 classification to a class: if the number of possibilities is one, no interaction is needed and hence it automatically
-attributes the classification to the class. If the number of possibilities is higher than one, Scior
+attributes the classification to the class. If the number of possibilities is higher than one, Scior will require the
+user's interaction or report the situation to the user, when in the interactive and automatic modes, respecivelly.
 
 While some rules are performed the same way in both modes, others have different behaviors when the user sets different
 configurations. We present the different behavior of all rules regarding the automation level and regarding models’
