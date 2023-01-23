@@ -386,7 +386,7 @@ called `logs` inside the project’s folder, but the description of this file is
 
 ### Output Ontology
 
-After the Scior execution, all knowledge discovered through the execution of gUFO rules are added to the working graph (
+After the Scior execution, all knowledge discovered through the execution of gUFO rules are added to the original graph (
 i.e., to the input ontology graph) and this complete graph is saved as a *ttl* file. The file is saved into the same
 folder as the input file using the following file nomenclature: `example-{YYYY.MM.DD-hh.mm.ss}.out.ttl`, where “example”
 is the name of the ontology and the curly brackets are substituted by year (Y), month (M), day (D), hour (h), minutes (
