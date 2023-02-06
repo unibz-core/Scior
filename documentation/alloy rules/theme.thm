@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<alloy>
+
+<view nodetheme="Martha" edgetheme="Martha">
+
+<defaultnode/>
+
+<defaultedge/>
+
+<node>
+   <type name="Category"/>
+   <type name="Class"/>
+   <type name="Int"/>
+   <type name="Kind"/>
+   <type name="Mixin"/>
+   <type name="Phase"/>
+   <type name="PhaseMixin"/>
+   <type name="Role"/>
+   <type name="RoleMixin"/>
+   <type name="String"/>
+   <type name="Subkind"/>
+   <type name="univ"/>
+   <type name="seq/Int"/>
+   <set name="this/AntiRigidType" type="EndurantType"/>
+   <set name="this/NonRigidType" type="EndurantType"/>
+   <set name="this/NonSortal" type="EndurantType"/>
+   <set name="this/RigidType" type="EndurantType"/>
+   <set name="this/SemiRigidType" type="EndurantType"/>
+   <set name="this/Sortal" type="EndurantType"/>
+</node>
+
+<node showlabel="no">
+   <set name="$AntiRigids" type="Class"/>
+   <set name="$AntiRigidSortals" type="Class"/>
+   <set name="$Phases" type="Class"/>
+   <set name="$Rigids" type="Class"/>
+   <set name="$RigidSortals" type="Class"/>
+   <set name="$Sortals" type="Class"/>
+</node>
+
+<node showlabel="no" color="Blue">
+   <set name="$Subkinds" type="Class"/>
+</node>
+
+<node showlabel="no" color="Gray">
+   <set name="$Mixins" type="Class"/>
+</node>
+
+<node showlabel="no" color="Green">
+   <set name="$RoleMixins" type="Class"/>
+   <set name="$Roles" type="Class"/>
+</node>
+
+<node showlabel="no" color="White">
+   <set name="$Categories" type="Class"/>
+</node>
+
+<node showlabel="no" color="Yellow">
+   <set name="$PhaseMixins" type="Class"/>
+</node>
+
+<node showlabel="no" style="Bold" color="Red">
+   <set name="$Kinds" type="Class"/>
+</node>
+
+<node showlabel="no" style="Dashed">
+   <set name="$NonSortals" type="Class"/>
+</node>
+
+<node visible="no" color="Blue">
+   <type name="EndurantType"/>
+</node>
+
+<edge attribute="yes">
+   <relation name="type"> <type name="Class"/> <type name="EndurantType"/> </relation>
+</edge>
+
+<edge color="Black" layout="yes">
+   <relation name="subClassOf"> <type name="Class"/> <type name="Class"/> </relation>
+</edge>
+
+<edge visible="no">
+   <relation name="$shareKind_child1"> <type name="Class"/> <type name="Class"/> </relation>
+   <relation name="$shareKind_child2"> <type name="Class"/> <type name="Class"/> </relation>
+</edge>
+
+<edge visible="no" constraint="no">
+   <relation name="$S1"> <type name="Class"/> <type name="Class"/> </relation>
+   <relation name="$S2"> <type name="Class"/> <type name="Class"/> </relation>
+   <relation name="$x"> <type name="Class"/> <type name="Class"/> </relation>
+   <relation name="$y"> <type name="Class"/> <type name="Class"/> </relation>
+   <relation name="$y&apos;"> <type name="Class"/> <type name="Class"/> </relation>
+   <relation name="$y&apos;&apos;"> <type name="Class"/> <type name="Class"/> </relation>
+</edge>
+
+</view>
+
+</alloy>
