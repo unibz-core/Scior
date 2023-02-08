@@ -29,6 +29,10 @@
    <set name="this/Sortal" type="EndurantType"/>
 </node>
 
+<node shape="Ellipse" color="Black">
+   <type name="UnionSet"/>
+</node>
+
 <node showlabel="no">
    <set name="$AntiRigids" type="Class"/>
    <set name="$AntiRigidSortals" type="Class"/>

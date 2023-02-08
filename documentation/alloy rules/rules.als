@@ -166,7 +166,7 @@ fact  {
 
 // R3
 fact sortalsMustSpecializeUniqueKind {
-	all x: Class | isBaseSortal[x] implies (one y: Class | x!=y and isSubClassOf[x,y] and isKind[y])
+	all x: Class | isBaseSortal[x] implies (one y: Class | isSubClassOf[x,y] and isKind[y])
 }
 
 // R4
@@ -199,20 +199,25 @@ fact mixinsMustGeneralizeRigidAndAntiRigidTypes {
 
 // R9
 fact phasesCannotSpecializeRoles {
-	all x,y: Class | x!=y and (isPhase[x] or isPhaseMixin[x]) and isSubClassOf[x,y] implies not (isRole[y] or isRoleMixin[y])
+	all x,y: Class | x!=y and isPhase[x] and isSubClassOf[x,y] implies not isRole[y] and not isRoleMixin[y]
 }
 
 // R10
-fact phasesComeInSets {
-	all x: Phases | some y: Phases | (x!=y and areSiblings[x+y] and shareKind[x+y])
+fact phasesCannotSpecializeRoles {
+	all x,y: Class | x!=y and isPhaseMixin[x] and isSubClassOf[x,y] implies not isRoleMixin[y]
 }
 
 // R11
-fact phaseMixinsComeInSets {
-	all x: PhaseMixins | some y: PhaseMixins | (x!=y and areSiblings[x+y] and areSiblings[x+y])
+fact phasesComeInSets {
+	all x: Phases | some y: Phases | (x!=y and areSiblings[x+y] and shareKind[x+y] and not isSubClassOf[x,y] and not isSubClassOf[y,x])
 }
 
 // R12
+fact phaseMixinsComeInSets {
+	all x: PhaseMixins | some y: PhaseMixins | (x!=y and areSiblings[x+y] and areSiblings[x+y] and not isSubClassOf[x,y] and not isSubClassOf[y,x])
+}
+
+// R13
 fact noRoleDirectlySpecializingAPhaseMixin {
 	all r, pm: Class | (isRole[r] and isPhaseMixin[pm] and isSubClassOf[r,pm]) implies (some p: Class | isPhase[p] and isSubClassOf[r,p] and isSubClassOf[p,pm])
 }
@@ -222,12 +227,10 @@ check kindCanOnlySpecializeCategoryAndMixin {
  		implies (isCategory[parent] or isMixin[parent])
 } for 5
 
-
 check subkindCanOnlySpecializeKindSubkindCategoryAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = Subkind 
  		implies parent.type in (Kind + Subkind + Category + Mixin)
 } for 5
-
 
 check phaseCanOnlySpecializeKindSubkindPhaseCategoryPhaseMixinAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = Phase 
@@ -295,6 +298,11 @@ run RolesCanSpecializeMixins {
 							and isRole[child] and isMixin[parent]
 } for 5
 
+run PhaseCanSpecializePhase {
+	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
+							and isPhase[child] and isPhase[parent]
+} for 5
+
 run antiRigidSortalCannotSpecializeCategoryDirectly {
 	#Kinds=2
 	#AntiRigidSortals=1
@@ -316,10 +324,6 @@ run {
 	some PhaseMixins
 	some Mixins
 } for 12
-
-run {
-#Class > 4
-} for 5
 
 
 
