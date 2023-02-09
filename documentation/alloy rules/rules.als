@@ -149,27 +149,40 @@ pred shareKind[classes: Class] {
 	all child1, child2: classes | one kind: Kinds | isSubClassOf[child1, kind] and isSubClassOf[child2, kind]
 }
 
+pred shareCategory[classes: Class] {
+	all child1, child2: classes | one cat: Categories | isSubClassOf[child1, cat] and isSubClassOf[child2, cat]
+}
+
 fact {
 	transitive[subClassOf]
 	reflexive[subClassOf, Class]
 }
 
-// R1
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////	RULES
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// R01
 fact kindsCannotSpecializeSortals {
 	all x,y: Class | x!=y and isKind[x] and isSubClassOf[x,y] implies isNonSortal[y]
 }
 
-// R2
+// R02
 fact  {
 	all x,y: Class | x!=y and isNonSortal[x] and isSubClassOf[x,y] implies isNonSortal[y]
 }
 
-// R3
+// R03
 fact sortalsMustSpecializeUniqueKind {
 	all x: Class | isBaseSortal[x] implies (one y: Class | isSubClassOf[x,y] and isKind[y])
 }
 
-// R4
+// R04
 fact nonSortalMustHaveSortalSpecialization {
 	all N: NonSortals | 
 		some disj S1, S2: Sortals | 
@@ -177,86 +190,114 @@ fact nonSortalMustHaveSortalSpecialization {
 				
 }
 
-// R5
+// R05
 fact rigidTypesCannotSpecializeAntiRigidTypes {
-	all x,y: Class | x!=y and isRigid[x] and isSubClassOf[x,y] implies not isAntiRigid[y]
+	all x,y: Class | isRigid[x] and isSubClassOf[x,y] implies not isAntiRigid[y]
 }
 
-// R6
+// R06
 fact semiRigidTypesCannotSpecializeAntiRigidTypes {
 	all x,y: Class | x!=y and isSemiRigid[x] and isSubClassOf[x,y] implies not isAntiRigid[y]
 }
 
-// R7
+// R07
 fact noAntiRigidSortalSpecializingCategoryDirectly {
-	all a, c: Class | (isAntiRigid[a] and isSortal[a] and isCategory[c] and isSubClassOf[a,c]) implies (some r: Class | r!=a and isRigid[r] and isSortal[r] and isSubClassOf[a,r] and isSubClassOf[r,c])
+	all a, c: Class | (isAntiRigid[a] and isSortal[a] and isCategory[c] and isSubClassOf[a,c]) implies (some r: Class | isRigid[r] and isSortal[r] and isSubClassOf[a,r] and isSubClassOf[r,c])
 }
 
-// R8
+// R08
 fact mixinsMustGeneralizeRigidAndAntiRigidTypes {
 	all m: Mixins | some x, y: Class | isSubClassOf[x,m] and isRigid[x] and isSubClassOf[y,m] and isAntiRigid[y] 
 }
 
-// R9
-fact phasesCannotSpecializeRoles {
-	all x,y: Class | x!=y and isPhase[x] and isSubClassOf[x,y] implies not isRole[y] and not isRoleMixin[y]
+// R09
+fact phasesCannotSpecializeRolesAndRoleMixins {
+	all x,y: Class | isPhase[x] and isSubClassOf[x,y] implies not isRole[y] and not isRoleMixin[y]
 }
 
 // R10
-fact phasesCannotSpecializeRoles {
-	all x,y: Class | x!=y and isPhaseMixin[x] and isSubClassOf[x,y] implies not isRoleMixin[y]
+fact phaseMixinsCannotSpecializeRoleMixins {
+	all x,y: Class | isPhaseMixin[x] and isSubClassOf[x,y] implies not isRoleMixin[y]
 }
 
 // R11
-fact phasesComeInSets {
-	all x: Phases | some y: Phases | (x!=y and areSiblings[x+y] and shareKind[x+y] and not isSubClassOf[x,y] and not isSubClassOf[y,x])
-}
-
-// R12
-fact phaseMixinsComeInSets {
-	all x: PhaseMixins | some y: PhaseMixins | (x!=y and areSiblings[x+y] and areSiblings[x+y] and not isSubClassOf[x,y] and not isSubClassOf[y,x])
-}
-
-// R13
 fact noRoleDirectlySpecializingAPhaseMixin {
 	all r, pm: Class | (isRole[r] and isPhaseMixin[pm] and isSubClassOf[r,pm]) implies (some p: Class | isPhase[p] and isSubClassOf[r,p] and isSubClassOf[p,pm])
 }
 
+// R12
+fact phasesComeInSets {
+	all x: Phases | some y: Phases | (x!=y and areSiblings[x+y] and shareKind[x+y] and not isSubClassOf[x,y] and not isSubClassOf[y,x])
+}
+
+// R13
+fact phasesSpecializationsMustBePartitions {
+	all disj x,y: Class | isPhase[x] and isSubClassOf[x,y] implies (some z: Class | (x!=z and y!=z and isPhase[z] and isSubClassOf[z,y]))
+}
+
+// R14
+fact phaseMixinsComeInSets {
+	all x: PhaseMixins | some y: PhaseMixins | (x!=y and areSiblings[x+y] and shareCategory[x+y] and not isSubClassOf[x,y] and not isSubClassOf[y,x])
+}
+
+// R15
+fact phaseMixinsSpecializationsMustBePartitions {
+	all disj x,y: Class | isPhaseMixin[x] and isSubClassOf[x,y] implies (some z: Class | (x!=z and y!=z and isPhaseMixin[z] and isSubClassOf[z,y]))
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////	CHECKS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 check kindCanOnlySpecializeCategoryAndMixin {
 	all child, parent: Class | (child!=parent and isSubClassOf[child,parent] and isKind[child])
  		implies (isCategory[parent] or isMixin[parent])
-} for 5
+} for 10
 
 check subkindCanOnlySpecializeKindSubkindCategoryAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = Subkind 
  		implies parent.type in (Kind + Subkind + Category + Mixin)
-} for 5
+} for 10
 
 check phaseCanOnlySpecializeKindSubkindPhaseCategoryPhaseMixinAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = Phase 
  							implies parent.type in (Kind + Subkind + Phase + Category + PhaseMixin + Mixin)
-} for 5
+} for 10
 
 check categoryCanOnlySpecializeCategoryAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = Category 
  							implies parent.type in (Category + Mixin)
-} for 5
+} for 10
 
 check roleMixinCanOnlySpecializeCategoryRoleMixinPhaseMixinAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and isRoleMixin[child] 
  							implies parent.type in (Category + RoleMixin + PhaseMixin + Mixin)
-} for 5
+} for 10
 
 check phaseMixinCanOnlySpecializeCategoryRoleMixinPhaseMixinAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = PhaseMixin 
  							implies parent.type in (Category + PhaseMixin + Mixin)
-} for 5
+} for 10
 
 
 check mixinCanOnlySpecializeMixinAndCategory {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = Mixin 
  							implies parent.type in (Mixin + Category)
-} for 5
+} for 10
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////	RUNS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 run RolesCanSpecializeRoles {
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
@@ -278,7 +319,7 @@ run RolesCanSpecializeKinds {
 							and isRole[child] and isKind[parent]
 } for 5
 
-run RolesCanSpecializeRoleMixins {
+run NEGATIVERolesCanSpecializeRoleMixins {
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isRole[child] and isRoleMixin[parent]
 } for 5
@@ -303,14 +344,19 @@ run PhaseCanSpecializePhase {
 							and isPhase[child] and isPhase[parent]
 } for 5
 
-run antiRigidSortalCannotSpecializeCategoryDirectly {
+run PhaseMixinCanSpecializePhaseMixin {
+	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
+							and isPhaseMixin[child] and isPhaseMixin[parent]
+} for 9
+
+run NEGATIVEantiRigidSortalCannotSpecializeCategoryDirectly {
 	#Kinds=2
 	#AntiRigidSortals=1
 	#Categories=1
 	some r, c, k: Class | (isRole[r] or isPhase[r]) and isCategory[c] and (isKind[k] or isSubkind[k]) and isSubClassOf[r,c] and isSubClassOf[r,k] and not isSubClassOf[k,c]
 } for 4
 
-run nonSortalOccursWithASingleSortal{
+run NEGATIVEnonSortalOccursWithASingleSortal{
 	one Sortals and some NonSortals
 } for 3
 
@@ -325,8 +371,18 @@ run {
 	some Mixins
 } for 12
 
+run NEGATIVEsinglePhase {
+	some Kinds
+	#Phases=1
+} for 12
 
+run {
+	#Kinds=1
+	#Phases=2
+} for 12
 
-
-
-
+run {
+	#Subkinds=1
+	#Phases=2
+	some disj x, y : Class | isPhase[x] and isSubkind[y] and isSubClassOf[x,y]
+} for 12
