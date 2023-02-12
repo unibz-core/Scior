@@ -102,7 +102,7 @@ pred isSortal[x: Class] {
 	x.type in Sortal
 }
 
-pred isBaseSortal[x: Class] {
+pred isNonKindSortal[x: Class] {
 	isSortal[x] and not isKind[x]
 }
 
@@ -179,7 +179,7 @@ fact  {
 
 // R03
 fact sortalsMustSpecializeUniqueKind {
-	all x: Class | isBaseSortal[x] implies (one y: Class | isSubClassOf[x,y] and isKind[y])
+	all x: Class | isNonKindSortal[x] implies (one y: Class | isSubClassOf[x,y] and isKind[y])
 }
 
 // R04
@@ -257,38 +257,38 @@ fact phaseMixinsSpecializationsMustBePartitions {
 check kindCanOnlySpecializeCategoryAndMixin {
 	all child, parent: Class | (child!=parent and isSubClassOf[child,parent] and isKind[child])
  		implies (isCategory[parent] or isMixin[parent])
-} for 10
+} for 12
 
 check subkindCanOnlySpecializeKindSubkindCategoryAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = Subkind 
  		implies parent.type in (Kind + Subkind + Category + Mixin)
-} for 10
+} for 12
 
 check phaseCanOnlySpecializeKindSubkindPhaseCategoryPhaseMixinAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = Phase 
  							implies parent.type in (Kind + Subkind + Phase + Category + PhaseMixin + Mixin)
-} for 10
+} for 12
 
 check categoryCanOnlySpecializeCategoryAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = Category 
  							implies parent.type in (Category + Mixin)
-} for 10
+} for 12
 
 check roleMixinCanOnlySpecializeCategoryRoleMixinPhaseMixinAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and isRoleMixin[child] 
  							implies parent.type in (Category + RoleMixin + PhaseMixin + Mixin)
-} for 10
+} for 12
 
 check phaseMixinCanOnlySpecializeCategoryRoleMixinPhaseMixinAndMixin {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = PhaseMixin 
  							implies parent.type in (Category + PhaseMixin + Mixin)
-} for 10
+} for 12
 
 
 check mixinCanOnlySpecializeMixinAndCategory {
 	all child, parent: Class | child!=parent and isSubClassOf[child,parent] and child.type = Mixin 
  							implies parent.type in (Mixin + Category)
-} for 10
+} for 12
 
 
 
@@ -299,68 +299,87 @@ check mixinCanOnlySpecializeMixinAndCategory {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+// NAMES STARTING WITH "NEGATIVE" MUST RESULT A "NO INSTANCE FOUND"
+
+
 run RolesCanSpecializeRoles {
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isRole[child] and isRole[parent]
-} for 5
+} for 12
 
 run RolesCanSpecializePhases {	
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isRole[child] and isPhase[parent]
-} for 5
+} for 12
 
 run RolesCanSpecializeSubKinds {	
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isRole[child] and isSubkind[parent]
-} for 5
+} for 12
 
 run RolesCanSpecializeKinds {	
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isRole[child] and isKind[parent]
-} for 5
+} for 12
 
-run NEGATIVERolesCanSpecializeRoleMixins {
+run RolesCanSpecializeRoleMixins {
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isRole[child] and isRoleMixin[parent]
-} for 5
+} for 12
 
-run RolesCanSpecializePhaseMixins {	
+run RolesCanSpecializePhaseMixinsViaIntermediatePhase {	
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isRole[child] and isPhaseMixin[parent]
-} for 5
+} for 12
 
 run RolesCanSpecializeCategories {	
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isRole[child] and isCategory[parent]
-} for 5
+} for 12
 
 run RolesCanSpecializeMixins {	
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isRole[child] and isMixin[parent]
-} for 5
+} for 12
 
 run PhaseCanSpecializePhase {
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isPhase[child] and isPhase[parent]
-} for 5
+} for 12
 
 run PhaseMixinCanSpecializePhaseMixin {
 	some child, parent: Class | child!=parent and isSubClassOf[child,parent] 
 							and isPhaseMixin[child] and isPhaseMixin[parent]
-} for 9
+} for 12
 
-run NEGATIVEantiRigidSortalCannotSpecializeCategoryDirectly {
+run AntiRigidSortalCanOnlySpecializeCategoryViaIntermediateRigidSortal {
 	#Kinds=2
 	#AntiRigidSortals=1
 	#Categories=1
 	some r, c, k: Class | (isRole[r] or isPhase[r]) and isCategory[c] and (isKind[k] or isSubkind[k]) and isSubClassOf[r,c] and isSubClassOf[r,k] and not isSubClassOf[k,c]
-} for 4
+} for 12
 
 run NEGATIVEnonSortalOccursWithASingleSortal{
 	one Sortals and some NonSortals
-} for 3
+} for 12
 
-run {
+run NEGATIVEsinglePhase {
+	some Kinds
+	#Phases=1
+} for 12
+
+run modelWithSingleKindAndTwoPhases{
+	#Kinds=1
+	#Phases=2
+} for 12
+
+run modelWithSingleSubkindAndTwoPhases{
+	#Subkinds=1
+	#Phases=2
+	some disj x, y : Class | isPhase[x] and isSubkind[y] and isSubClassOf[x,y]
+} for 12
+
+run modelWithAllStereotypes{
 	some Kinds
 	some Subkinds
 	some Roles
@@ -369,20 +388,4 @@ run {
 	some RoleMixins
 	some PhaseMixins
 	some Mixins
-} for 12
-
-run NEGATIVEsinglePhase {
-	some Kinds
-	#Phases=1
-} for 12
-
-run {
-	#Kinds=1
-	#Phases=2
-} for 12
-
-run {
-	#Subkinds=1
-	#Phases=2
-	some disj x, y : Class | isPhase[x] and isSubkind[y] and isSubClassOf[x,y]
 } for 12
