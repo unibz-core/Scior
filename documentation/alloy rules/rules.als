@@ -102,10 +102,6 @@ pred isSortal[x: Class] {
 	x.type in Sortal
 }
 
-pred isNonKindSortal[x: Class] {
-	isSortal[x] and not isKind[x]
-}
-
 pred isKind[x: Class] {
 	x.type = Kind
 }
@@ -150,12 +146,11 @@ pred shareKind[classes: Class] {
 }
 
 pred shareCategory[classes: Class] {
-	all child1, child2: classes | one cat: Categories | isSubClassOf[child1, cat] and isSubClassOf[child2, cat]
+	all child1, child2: classes | some cat: Categories | isSubClassOf[child1, cat] and isSubClassOf[child2, cat]
 }
 
 fact {
 	transitive[subClassOf]
-	reflexive[subClassOf, Class]
 }
 
 
@@ -174,12 +169,12 @@ fact kindsCannotSpecializeSortals {
 
 // R02
 fact  {
-	all x,y: Class | x!=y and isNonSortal[x] and isSubClassOf[x,y] implies isNonSortal[y]
+	all x,y: Class | isNonSortal[x] and isSubClassOf[x,y] implies isNonSortal[y]
 }
 
 // R03
 fact sortalsMustSpecializeUniqueKind {
-	all x: Class | isNonKindSortal[x] implies (one y: Class | isSubClassOf[x,y] and isKind[y])
+	all x: Class | isSortal[x] implies (one y: Class | isSubClassOf[x,y] and isKind[y])
 }
 
 // R04
