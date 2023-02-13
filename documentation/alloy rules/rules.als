@@ -366,7 +366,7 @@ run NEGATIVEsinglePhase {
 } for 12
 
 run NEGATIVEsinglePhaseMixin {
-	some Kinds
+	some Categories
 	#PhaseMixins=1
 } for 12
 
