@@ -151,6 +151,7 @@ pred shareCategory[classes: Class] {
 
 fact {
 	transitive[subClassOf]
+	reflexive[subClassOf, Class]
 }
 
 
@@ -162,22 +163,22 @@ fact {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// R01
+
 fact kindsCannotSpecializeSortals {
 	all x,y: Class | x!=y and isKind[x] and isSubClassOf[x,y] implies isNonSortal[y]
 }
 
-// R02
+
 fact  {
 	all x,y: Class | isNonSortal[x] and isSubClassOf[x,y] implies isNonSortal[y]
 }
 
-// R03
+
 fact sortalsMustSpecializeUniqueKind {
 	all x: Class | isSortal[x] implies (one y: Class | isSubClassOf[x,y] and isKind[y])
 }
 
-// R04
+
 fact nonSortalMustHaveSortalSpecialization {
 	all N: NonSortals | 
 		some disj S1, S2: Sortals | 
@@ -185,62 +186,63 @@ fact nonSortalMustHaveSortalSpecialization {
 				
 }
 
-// R05
+
 fact rigidTypesCannotSpecializeAntiRigidTypes {
 	all x,y: Class | isRigid[x] and isSubClassOf[x,y] implies not isAntiRigid[y]
 }
 
-// R06
+
 fact semiRigidTypesCannotSpecializeAntiRigidTypes {
 	all x,y: Class | x!=y and isSemiRigid[x] and isSubClassOf[x,y] implies not isAntiRigid[y]
 }
 
-// R07
+
 fact noAntiRigidSortalSpecializingCategoryDirectly {
 	all a, c: Class | (isAntiRigid[a] and isSortal[a] and isCategory[c] and isSubClassOf[a,c]) implies (some r: Class | isRigid[r] and isSortal[r] and isSubClassOf[a,r] and isSubClassOf[r,c])
 }
 
-// R08
+
 fact mixinsMustGeneralizeRigidAndAntiRigidTypes {
 	all m: Mixins | some x, y: Class | isSubClassOf[x,m] and isRigid[x] and isSubClassOf[y,m] and isAntiRigid[y] 
 }
 
-// R09
+
 fact phasesCannotSpecializeRolesAndRoleMixins {
 	all x,y: Class | isPhase[x] and isSubClassOf[x,y] implies not isRole[y] and not isRoleMixin[y]
 }
 
-// R10
+
 fact phaseMixinsCannotSpecializeRoleMixins {
 	all x,y: Class | isPhaseMixin[x] and isSubClassOf[x,y] implies not isRoleMixin[y]
 }
 
-// R11
+
 fact noRoleDirectlySpecializingAPhaseMixin {
 	all r, pm: Class | (isRole[r] and isPhaseMixin[pm] and isSubClassOf[r,pm]) implies (some p: Class | isPhase[p] and isSubClassOf[r,p] and isSubClassOf[p,pm])
 }
 
-// R12
+
 fact phasesComeInSets {
-	all x: Phases | some y: Phases | (x!=y and areSiblings[x+y] and shareKind[x+y] and not isSubClassOf[x,y] and not isSubClassOf[y,x])
+	all x: Phases | some y: Phases | (not isSubClassOf[x,y] and not isSubClassOf[y,x] and shareKind[x+y])
 }
 
-// R13
+
 fact phasesSpecializationsMustBePartitions {
 	all disj x,y: Class | isPhase[x] and isSubClassOf[x,y] implies (some z: Class | (x!=z and y!=z and isPhase[z] and isSubClassOf[z,y]))
 }
 
-// R14
+
 fact phaseMixinsComeInSets {
-	all x: PhaseMixins | some y: PhaseMixins | (x!=y and areSiblings[x+y] and shareCategory[x+y] and not isSubClassOf[x,y] and not isSubClassOf[y,x])
+	all x: PhaseMixins | some y: PhaseMixins | (not isSubClassOf[x,y] and not isSubClassOf[y,x] and shareCategory[x+y])
 }
 
-// R15
 fact phaseMixinsSpecializationsMustBePartitions {
-	all disj x,y: Class | isPhaseMixin[x] and isSubClassOf[x,y] implies (some z: Class | (x!=z and y!=z and isPhaseMixin[z] and isSubClassOf[z,y]))
+	all x: PhaseMixins | all y: Categories | isSubClassOf[x,y] implies (some z: Class | (not isSubClassOf[x,z] and not not isSubClassOf[z,x] and isSubClassOf[z,y]))
 }
 
-
+fact PhaseMixinsSpecializeCategories{
+	all x: PhaseMixins | some z: Categories | isSubClassOf[x,z]
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -361,6 +363,11 @@ run NEGATIVEnonSortalOccursWithASingleSortal{
 run NEGATIVEsinglePhase {
 	some Kinds
 	#Phases=1
+} for 12
+
+run NEGATIVEsinglePhaseMixin {
+	some Kinds
+	#PhaseMixins=1
 } for 12
 
 run modelWithSingleKindAndTwoPhases{
