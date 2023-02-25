@@ -82,14 +82,12 @@
 </edge>
 
 <edge visible="no">
-   <relation name="$PhaseMixinCanSpecializePhaseMixin_S1"> <type name="Class"/> <type name="Class"/> </relation>
-   <relation name="$PhaseMixinCanSpecializePhaseMixin_S2"> <type name="Class"/> <type name="Class"/> </relation>
-   <relation name="$PhaseMixinCanSpecializePhaseMixin_x"> <type name="Class"/> <type name="Class"/> </relation>
    <relation name="$PhaseMixinCanSpecializePhaseMixin_y"> <type name="Class"/> <type name="Class"/> </relation>
    <relation name="$PhaseMixinCanSpecializePhaseMixin_y&apos;"> <type name="Class"/> <type name="Class"/> </relation>
    <relation name="$PhaseMixinCanSpecializePhaseMixin_y&apos;&apos;"> <type name="Class"/> <type name="Class"/> </relation>
-   <relation name="$shareKind_child1"> <type name="Class"/> <type name="Class"/> </relation>
-   <relation name="$shareKind_child2"> <type name="Class"/> <type name="Class"/> </relation>
+   <relation name="$PhaseMixinCanSpecializePhaseMixin_y&apos;&apos;&apos;"> <type name="Class"/> <type name="Class"/> </relation>
+   <relation name="$PhaseMixinCanSpecializePhaseMixin_z"> <type name="Class"/> <type name="Class"/> </relation>
+   <relation name="$PhaseMixinCanSpecializePhaseMixin_z&apos;"> <type name="Class"/> <type name="Class"/> </relation>
 </edge>
 
 </view>
