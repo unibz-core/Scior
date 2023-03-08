@@ -1,5 +1,7 @@
 # Scior: Enhancing the Semantics of OWL Ontologies Using Rule-based Alignment with Foundational Ontologies
 
+<p align="center"><img src="https://user-images.githubusercontent.com/8641647/223773249-9a5b4f97-caf2-42ea-ac36-a7b7290be58e.png" width="500">
+
 **[Scior](https://github.com/unibz-core/Scior)** is a Latin word meaning "_I am known_". This software implements
 Identification of Ontological Categories for OWL Ontologies, a Python command-line software that aims to support the
 semi-automatic semantic improvement of lightweight web ontologies. We aim to reach the referred semantic improvement via
