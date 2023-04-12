@@ -146,6 +146,16 @@ def get_known_gufo_individuals(united_graph):
     return list_tuples
 
 
+def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
+    """ Receives a list of known gUFO information and performs the necessary movements of elements
+    in the ontology_dataclass_list"""
+
+    for ontology_dataclass in ontology_dataclass_list:
+        for known_gufo in list_known_gufo:
+            if known_gufo[0] == ontology_dataclass.uri:
+                ontology_dataclass.move_element_to_is_list(known_gufo[1])
+
+
 def load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list, restriction):
     """ Reads GUFO information about types and instances that are available in the inputted ontology file.
 
@@ -164,13 +174,3 @@ def load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_l
     if restriction == "TOTAL" or restriction == "INDIVIDUALS_ONLY":
         list_known_gufo = get_known_gufo_individuals(united_graph)
         insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)
-
-
-def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
-    """ Receives a list of known gUFO information and performs the necessary movements of elements
-    in the ontology_dataclass_list"""
-
-    for ontology_dataclass in ontology_dataclass_list:
-        for known_gufo in list_known_gufo:
-            if known_gufo[0] == ontology_dataclass.uri:
-                ontology_dataclass.move_element_to_is_list(known_gufo[1])

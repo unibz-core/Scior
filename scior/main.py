@@ -50,21 +50,21 @@ def run_scior():
     original_graph = load_all_graph_safely(global_configurations["ontology_path"])
     working_graph = reduce_graph_considering_restrictions(original_graph, LIST_GRAPH_RESTRICTIONS)
 
+    # Creating empty list of classes and their respective classifications
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, SCOPE_RESTRICTION)
 
-    # Input Validation
+    # Validate input. OWL Classes must exist in the input file.
     if not len(ontology_dataclass_list):
         logger.error(f"Invalid input. The provided file does not have elements of type owl:Class. Program aborted.")
         exit(1)
 
-    ontology_nodes = initialize_nodes_lists(working_graph)
-
-    ################## STOPPED HERE
+    ################## I STOPPED HERE
 
     # Loading the GUFO information already known from the ontology
     load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list,
                                 SCOPE_RESTRICTION)
 
+    ontology_nodes = initialize_nodes_lists(working_graph)
     before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
