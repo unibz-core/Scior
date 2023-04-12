@@ -6,15 +6,18 @@ from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_rdf import get_list_of_all_classes
 
 
-def initialize_ontology_dataclasses(ontology_graph, gufo_input_yaml):
-    """ Return an OntologyClass list of all classes in the ontology to be evaluated with its related sub-lists """
+def initialize_ontology_dataclasses(ontology_graph, SCOPE_RESTRICTION: str) -> list:
+    """
+    Receives the ontology graph (taxonomy only) and the gUFO scope to be considered.
+    Returns an OntologyClass list of all classes in the ontology to be evaluated with its related sub-lists. """
 
     logger = initialize_logger()
     logger.debug("Initializing list of Ontology concepts...")
 
     ontology_list = []
     classes_list = get_list_of_all_classes_no_gufo(ontology_graph)
-    gufo_can_list_types, gufo_can_list_individuals = get_gufo_possibilities(gufo_input_yaml)
+
+    gufo_can_list_types, gufo_can_list_individuals = get_gufo_possibilities(SCOPE_RESTRICTION)
 
     incompleteness_dict = {"is_incomplete": False, "detected_in": []}
 
@@ -22,14 +25,12 @@ def initialize_ontology_dataclasses(ontology_graph, gufo_input_yaml):
     # - CAN_TYPE and CAN_INDIVIDUAL: list of all possible ontological categories. Receive VALUES (not a pointer)
     # loaded from the gufo_data.yaml file because the data needs to be manipulated.
     # - OTHER LISTS (IS and NOT): Empty lists. No value received.
-    # - GUFO DICTIONARY: Receives a POINTER (not values) to the dictionary loaded from the gufo_data.yaml file.
-    # It is used inside the dataclass for updating the other lists. The information is read-only.
 
     for new_class in classes_list:
         new_incompleteness_dict = copy.deepcopy(incompleteness_dict)
-        ontology_list.append(OntologyDataClass(uri=new_class, can_type=gufo_can_list_types.copy(),
+        ontology_list.append(OntologyDataClass(uri=new_class,
+                                               can_type=gufo_can_list_types.copy(),
                                                can_individual=gufo_can_list_individuals.copy(),
-                                               gufo_dictionary=gufo_input_yaml,
                                                incompleteness_info=new_incompleteness_dict))
 
     logger.debug("List of Ontology concepts successfully initialized.")
@@ -47,12 +48,37 @@ def get_list_of_all_classes_no_gufo(ontology_graph):
     return classes_list_no_gufo
 
 
-def get_gufo_possibilities(gufo_input_yaml):
-    """ Returns list of all GUFO classes available for classification in two lists (for types and individuals).
-        The data is loaded from the gufo dictionary obtained from the GUFO YAML file. """
+def get_gufo_possibilities(scope_restriction):
+    """ Returns list of all GUFO classes available for classification in two lists (for types and individuals). """
 
-    can_list_types = list(gufo_input_yaml["types"].keys())
-    can_list_individuals = list(gufo_input_yaml["individuals"].keys())
+    logger = initialize_logger()
+
+    can_list_types = []
+    can_list_individuals = []
+
+    gufo_endurant_types = [
+        "AntiRigidType",
+        "Category",
+        "EndurantType",
+        "Kind",
+        "Mixin",
+        "NonRigidType",
+        "NonSortal",
+        "Phase",
+        "PhaseMixin",
+        "RigidType",
+        "Role",
+        "RoleMixin",
+        "SemiRigidType",
+        "Sortal",
+        "SubKind"
+    ]
+
+    if scope_restriction == "ENDURANT_TYPES":
+        can_list_types = gufo_endurant_types
+    else:
+        logger.error("Scope not implemented. Program aborted.")
+        exit(1)
 
     return can_list_types, can_list_individuals
 
