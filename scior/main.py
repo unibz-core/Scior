@@ -1,10 +1,10 @@
 """ Main module  for Scior """
+
 import os
 import time
 from datetime import datetime
 
 from rdflib import RDFS, RDF
-
 from scior.modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from scior.modules.graph_save_ontology import save_ontology_gufo_statements, \
     save_ontology_file_as_configuration
@@ -24,7 +24,7 @@ from scior.modules.utils_rdf import load_all_graph_safely, perform_reasoning, \
 
 SOFTWARE_ACRONYM = "Scior"
 SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
-SOFTWARE_VERSION = "0.23.01.18"
+SOFTWARE_VERSION = "2023.04.12"
 SOFTWARE_URL = "https://github.com/unibz-core/Scior/"
 VERSION_RESTRICTION = "TYPES_ONLY"
 LIST_GRAPH_RESTRICTIONS = [RDF.type, RDFS.subClassOf]
