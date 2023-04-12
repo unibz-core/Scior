@@ -8,8 +8,7 @@ def verify_duplicates_in_lists_ontology(ontology_dataclass):
     """ No same string must be in two lists at the same time. """
 
     logger = initialize_logger()
-    merged_list = ontology_dataclass.is_type + ontology_dataclass.is_individual + ontology_dataclass.can_type + \
-                  ontology_dataclass.can_individual + ontology_dataclass.not_type + ontology_dataclass.not_individual
+    merged_list = ontology_dataclass.is_type + ontology_dataclass.is_individual + ontology_dataclass.can_type + ontology_dataclass.can_individual + ontology_dataclass.not_type + ontology_dataclass.not_individual
 
     if has_duplicates(merged_list):
         logger.error(f"INCONSISTENCY DETECTED: Same element in two lists for {ontology_dataclass.uri}. "
@@ -23,8 +22,7 @@ def verify_multiple_final_classifications_for_types(ontology_dataclass):
 
     logger = initialize_logger()
 
-    type_leaf_classifications = ["gufo:Category", "gufo:Kind", "gufo:Mixin", "gufo:Phase", "gufo:PhaseMixin",
-                                 "gufo:Role", "gufo:RoleMixin", "gufo:SubKind"]
+    type_leaf_classifications = ["Category", "Kind", "Mixin", "Phase", "PhaseMixin", "Role", "RoleMixin", "SubKind"]
 
     result_list = lists_intersection(type_leaf_classifications, ontology_dataclass.is_type)
 
