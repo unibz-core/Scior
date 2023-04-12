@@ -38,7 +38,7 @@ def run_scior():
 
     st = time.perf_counter()
 
-    global_configurations = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
+    argument = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
     logger = initialize_logger()
 
@@ -47,7 +47,7 @@ def run_scior():
     logger.info(f"Scior started on {start_date_time}!")
 
     # Loading OWL ontologies from files to the working memory
-    original_graph = load_all_graph_safely(global_configurations["ontology_path"])
+    original_graph = load_all_graph_safely(argument["ontology_path"])
     working_graph = reduce_graph_considering_restrictions(original_graph, LIST_GRAPH_RESTRICTIONS)
 
     # Creating empty list of classes and their respective classifications
@@ -58,25 +58,18 @@ def run_scior():
         logger.error(f"Invalid input. The provided file does not have elements of type owl:Class. Program aborted.")
         exit(1)
 
-    ################## I STOPPED HERE
-
     # Loading the GUFO information already known from the ontology
-    load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list,
-                                SCOPE_RESTRICTION)
+    load_known_gufo_information(working_graph, ontology_dataclass_list, SCOPE_RESTRICTION)
 
     ontology_nodes = initialize_nodes_lists(working_graph)
     before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
-
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
-
     try:
-        time_register = execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes,
-                                            global_configurations)
+        time_register = execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes, argument)
     except Exception:
         exit(1)
-
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
 
     # SAVING RESULTS - OUTPUT
@@ -89,7 +82,7 @@ def run_scior():
     consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
     knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
 
-    print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, global_configurations,
+    print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, argument,
                             SCOPE_RESTRICTION)
 
     now = datetime.now()
@@ -100,10 +93,10 @@ def run_scior():
     logger.info(f"Scior concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
     # Printing results
-    save_ontology_file_as_configuration(resulting_graph, gufo_graph, end_date_time, global_configurations)
+    save_ontology_file_as_configuration(resulting_graph, gufo_graph, end_date_time, argument)
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,
-                      global_configurations, before_statistics, after_statistics,
+                      argument, before_statistics, after_statistics,
                       consolidated_statistics, time_register, SCOPE_RESTRICTION, SOFTWARE_VERSION, knowledge_matrix)
 
 
@@ -116,7 +109,7 @@ def run_scior_tester(global_configurations, working_graph):
 
     internal_global_configurations = {'import_gufo': False, 'save_gufo': False,
                                       'is_automatic': global_configurations['is_automatic'],
-                                      'is_complete': global_configurations['is_complete'], 'reasoning': False,
+                                      'is_complete': global_configurations['is_complete'],
                                       'print_time': False, 'ontology_path': ""}
 
     # DATA LOADINGS AND INITIALIZATIONS

@@ -77,13 +77,13 @@ def get_gufo_possibilities(scope_restriction):
     if scope_restriction == "ENDURANT_TYPES":
         can_list_types = gufo_endurant_types
     else:
-        logger.error("Scope not implemented. Program aborted.")
+        logger.error(f"Invalid SCOPE_RESTRICTION {scope_restriction}. Program aborted.")
         exit(1)
 
     return can_list_types, can_list_individuals
 
 
-def get_known_gufo_types(united_graph):
+def get_known_gufo_types(ontology_graph):
     """ For each class in the ontology_graph, return all its known GUFO TYPES in a tuple format.
     Returned tuple format is: (ontology_class,gufo_type), being both fields strings.
     Analogous to get_known_gufo_individuals.
@@ -97,24 +97,22 @@ def get_known_gufo_types(united_graph):
     SELECT DISTINCT ?ontology_element ?element_type
     WHERE {
         ?ontology_element rdf:type owl:Class .
-        ?element_type rdf:type owl:Class .
         ?ontology_element rdf:type ?element_type .
-        ?element_type rdfs:subClassOf+ gufo:EndurantType .
         FILTER(STRSTARTS(STR(?element_type), STR(gufo:)))
     } """
 
-    query_result = united_graph.query(query_string)
+    query_result = ontology_graph.query(query_string)
 
     for row in query_result:
         list_elements.append(row.ontology_element.n3()[1:-1])
-        list_types.append(row.element_type.n3()[1:-1].replace("http://purl.org/nemo/gufo#", "gufo:"))
+        list_types.append(row.element_type.n3()[1:-1].replace("http://purl.org/nemo/gufo#", ""))
 
     list_tuples = list(zip(list_elements, list_types))
 
     return list_tuples
 
 
-# Not tested yet
+# Not used. Not tested yet. Requires implementation of new value of SCOPE_RESTRICTION.
 def get_known_gufo_individuals(united_graph):
     """ For each class in the ontology_graph, return all its known GUFO INDIVIDUALS in a tuple format.
     Returned tuple format is: (ontology_class,gufo_type), being both fields strings.
@@ -139,7 +137,7 @@ def get_known_gufo_individuals(united_graph):
 
     for row in query_result:
         list_elements.append(row.ontology_element.n3()[1:-1])
-        list_individuals.append(row.element_type.n3()[1:-1].replace("http://purl.org/nemo/gufo#", "gufo:"))
+        list_individuals.append(row.element_type.n3()[1:-1].replace("http://purl.org/nemo/gufo#", ""))
 
     list_tuples = list(zip(list_elements, list_individuals))
 
@@ -147,8 +145,10 @@ def get_known_gufo_individuals(united_graph):
 
 
 def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
-    """ Receives a list of known gUFO information and performs the necessary movements of elements
-    in the ontology_dataclass_list"""
+    """ Receives a list of known gUFO information and performs the necessary movements of elements in the
+    ontology_dataclass_list.
+    list_known_gufo is a list of tuples containing (i) ontology class full URI, (ii) short gufo stereotype (e.g. Kind).
+    """
 
     for ontology_dataclass in ontology_dataclass_list:
         for known_gufo in list_known_gufo:
@@ -156,21 +156,20 @@ def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
                 ontology_dataclass.move_element_to_is_list(known_gufo[1])
 
 
-def load_known_gufo_information(ontology_graph, gufo_graph, ontology_dataclass_list, restriction):
-    """ Reads GUFO information about types and instances that are available in the inputted ontology file.
+def load_known_gufo_information(ontology_graph, ontology_dataclass_list, restriction):
+    """ Reads gUFO information about types and instances that are available in the inputted ontology file.
 
     I.e., if a class is already known to have any GUFO type, this information is updated in the ontology_dataclass_list.
     E.g., if the class Person is set as a gufo:Kind in the loaded ontology, this stereotype is moved from the
     dataclass's can_type (default) list to its is_type list.
     """
 
-    united_graph = gufo_graph + ontology_graph
+    logger = initialize_logger()
 
-    if restriction == "TOTAL" or restriction == "TYPES_ONLY":
-        list_known_gufo = get_known_gufo_types(united_graph)
+    if restriction == "ENDURANT_TYPES":
+        list_known_gufo = get_known_gufo_types(ontology_graph)
         insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)
-
-    # Not tested yet
-    if restriction == "TOTAL" or restriction == "INDIVIDUALS_ONLY":
-        list_known_gufo = get_known_gufo_individuals(united_graph)
-        insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)
+    else:
+        # function get_known_gufo_individuals implemented but not used or tested
+        logger.error(f"Invalid SCOPE_RESTRICTION {restriction}. Program aborted.")
+        exit(1)

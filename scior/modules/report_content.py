@@ -87,7 +87,6 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
     line_02 = f"\nConfigurations:\n" \
               f"* Automatic execution: {configurations['is_automatic']}\n" \
               f"* Model is complete: {configurations['is_complete']}\n" \
-              f"* Reasoning enabled: {configurations['reasoning']}\n" \
               f"* Execution times printed: {configurations['print_time']}\n" \
               f"* GUFO imported in output file: {configurations['import_gufo']}\n" \
               f"* GUFO saved in output file: {configurations['save_gufo']}\n"

@@ -152,6 +152,7 @@ def get_list_of_all_classes(ontology_graph, exceptions_list=None):
     return classes_list
 
 
+# Not used
 def perform_reasoning(ontology_graph):
     """Perform reasoner and consequently expands the ontology graph. """
 

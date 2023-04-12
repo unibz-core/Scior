@@ -46,9 +46,6 @@ def treat_arguments(software_acronym, software_name, software_version, software_
                                     help="The loaded ontology is a complete model.")
 
     # General arguments
-    arguments_parser.add_argument("-r", "--reasoning", action='store_true',
-                                  help="Enable RDF reasoning for graph expansion.")
-
     arguments_parser.add_argument("-t", "--times", action='store_true',
                                   help="Print on the screen the execution times of all functions.")
 
@@ -72,7 +69,6 @@ def treat_arguments(software_acronym, software_name, software_version, software_
                              "save_gufo": arguments.gufo2,
                              "is_automatic": arguments.automatic,
                              "is_complete": arguments.complete,
-                             "reasoning": arguments.reasoning,
                              "print_time": arguments.times,
                              "ontology_path": arguments.ontology_file}
 
