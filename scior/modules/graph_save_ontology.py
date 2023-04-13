@@ -93,14 +93,14 @@ def save_ontology_file_caller(end_date_time, ontology_graph, configurations):
     safe_save_ontology_file(ontology_graph, output_file_name)
 
 
-def safe_save_ontology_file(ontology_graph, output_file_name: str):
+def safe_save_ontology_file(ontology_graph, output_file_name: str, syntax: str = 'turtle'):
     """ Safely saves the ontology graph into a TTL file in the informed destination. """
 
     logger = initialize_logger()
     logger.debug("Saving the output ontology file...")
 
     try:
-        ontology_graph.serialize(destination=output_file_name, encoding='utf-8')
+        ontology_graph.serialize(destination=output_file_name, encoding='utf-8', format=syntax)
         logger.info(f"Output ontology file saved. Access it in {os.path.abspath(output_file_name)}.")
     except OSError as error:
         logger.error(f"Could not save the output ontology file ({output_file_name}). Exiting program."
