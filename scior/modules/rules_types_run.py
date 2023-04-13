@@ -2,6 +2,7 @@
 import time
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.rules.rule_group_base import execute_base_rules
 from scior.modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, rule_t_k_sup, rule_ns_s_sup, \
     rule_s_ns_sub, \
     rule_r_ar_sup, rule_ar_r_sub, rule_n_r_t, rule_ns_s_spe, rule_nk_k_sup, rule_s_nsup_k, rule_ns_sub_r, \
@@ -9,24 +10,32 @@ from scior.modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, ru
 from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 
-def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configurations):
+def execute_rules_types(ontology_dataclass_list, ontology_graph, nodes_list, configurations):
     """ Executes all rules related to types. """
+
     logger = initialize_logger()
     logger.info("Starting gUFO types' hierarchy rules ...")
 
-    # Groups of rules and their containing rules' codes
-    list_rules_groups = ["rule_group_base",         # executed once in the beginning
-                         "rule_group_gufo",         # executed in loop
-                         "rule_group_aux",          # executed in loop
-                         "rule_group_ufo",          # executed in loop
+    # Groups of rules and their containing rules' codes. Base rules are not here included.
+    list_rules_groups = ["rule_group_gufo",
+                         "rule_group_aux",
+                         "rule_group_ufo",
                          "rule_group_restriction"]  # checks incompleteness (OWA) or inconsistencies (CWA)
 
     # Execution time calculation
+    # TODO (@pedropaulofb): Time registers are untreated now, but must be treated.
+    # TODO (@pedropaulofb): Create a class containing two types of time_registers, one for groups and other for rules.
     time_register = {"rule_group_base": 0,
                      "rule_group_gufo": 0,
                      "rule_group_aux": 0,
                      "rule_group_ufo": 0,
                      "rule_group_restriction": 0}
+
+    # Execute rule_group_base just once
+
+    execute_base_rules(ontology_graph)
+
+    # Execute other groups of rules in loop
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = initial_hash + 1
@@ -38,13 +47,14 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
         while initial_hash != final_hash:
             initial_hash = final_hash
             for automatic_rule in always_automatic_rules:
-                switch_rule_execution(ontology_dataclass_list, graph, nodes_list, automatic_rule, configurations,
-                                      time_register)
+                switch_rule_execution(ontology_dataclass_list, ontology_graph, nodes_list, automatic_rule,
+                                      configurations,time_register)
             final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
         initial_hash = final_hash
         for rule in general_rules:
-            switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule, configurations, time_register)
+            switch_rule_execution(ontology_dataclass_list, ontology_graph, nodes_list, rule, configurations,
+                                  time_register)
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
         if initial_hash == final_hash:

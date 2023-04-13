@@ -75,18 +75,14 @@ def save_ontology_file_as_configuration(ontology_graph, gufo_graph, end_date_tim
         gufo_import = URIRef("https://purl.org/nemo/gufo#")
         graph.add((ontology_uri, OWL.imports, gufo_import))
 
-    save_ontology_file(end_date_time, graph, global_configurations)
+    save_ontology_file_caller(end_date_time, graph, global_configurations)
 
 
-def save_ontology_file(end_date_time, ontology_graph, configurations):
+def save_ontology_file_caller(end_date_time, ontology_graph, configurations):
     """
     Saves the ontology graph into a TTL file.
     If import_gufo parameter is set as True, the saved output is going to import the GUFO ontology.
     """
-
-    logger = initialize_logger()
-
-    logger.debug("Saving the output ontology file...")
 
     # Creating report file
     output_file_path = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)
@@ -94,8 +90,17 @@ def save_ontology_file(end_date_time, ontology_graph, configurations):
                        os.path.splitext(configurations["ontology_path"])[0] + \
                        "-" + end_date_time + ".out.ttl"
 
+    safe_save_ontology_file(ontology_graph, output_file_name)
+
+
+def safe_save_ontology_file(ontology_graph, output_file_name: str):
+    """ Safely saves the ontology graph into a TTL file in the informed destination. """
+
+    logger = initialize_logger()
+    logger.debug("Saving the output ontology file...")
+
     try:
-        ontology_graph.serialize(destination=output_file_name)
+        ontology_graph.serialize(destination=output_file_name, encoding='utf-8')
         logger.info(f"Output ontology file saved. Access it in {os.path.abspath(output_file_name)}.")
     except OSError as error:
         logger.error(f"Could not save the output ontology file ({output_file_name}). Exiting program."
@@ -103,11 +108,11 @@ def save_ontology_file(end_date_time, ontology_graph, configurations):
         exit(1)
 
 
-def treat_name(gufo_short_name):
+def treat_name(gufo_short_name: str) -> str:
     """
-    Receives a short GUFO URI string (e.g., gufo:Kind) and
+    Receives a short gUFO classification string (e.g., 'Kind') and
     returns a full GUFO URI string (e.g., http://purl.org/nemo/gufo#Kind).
     """
 
     gufo_url = "http://purl.org/nemo/gufo#"
-    return gufo_url + gufo_short_name[5:]
+    return gufo_url + gufo_short_name

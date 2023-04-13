@@ -8,9 +8,9 @@ This document presents all Scior arguments and their usage.
 - [Input Ontology File](#input-ontology-file)
 - [Default Arguments’ Values](#default-arguments-values)
 - [Automation Level Modes](#automation-level-modes)
-  - [Automation Level Example](#automation-level-example)
+    - [Automation Level Example](#automation-level-example)
 - [Models’ Completeness Modes](#models-completeness-modes)
-  - [Models’ Completeness Modes Example](#models-completeness-modes-example)
+    - [Models’ Completeness Modes Example](#models-completeness-modes-example)
 - [Complementary Arguments](#complementary-arguments)
 - [Help and Version](#help-and-version)
 

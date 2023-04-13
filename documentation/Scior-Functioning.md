@@ -10,29 +10,29 @@ about the installation or execution of Scior.
 ## Content
 
 - [Introduction](#introduction)
-  - [Scope](#scope)
-  - [Development Premises](#development-premises)
+    - [Scope](#scope)
+    - [Development Premises](#development-premises)
 - [Input and Configurations](#input-and-configurations)
-  - [Input File](#input-file)
-  - [Arguments and Configurations](#arguments-and-configurations)
+    - [Input File](#input-file)
+    - [Arguments and Configurations](#arguments-and-configurations)
 - [Data Initialization](#data-initialization)
-  - [RDF Graphs](#rdf-graphs)
-  - [Working Data Structure](#working-data-structure)
-  - [Classifications’ Manipulation](#classifications-manipulation)
-  - [Inferencing Method](#inferencing-method)
-  - [Consistency Evaluations](#consistency-evaluations)
+    - [RDF Graphs](#rdf-graphs)
+    - [Working Data Structure](#working-data-structure)
+    - [Classifications’ Manipulation](#classifications-manipulation)
+    - [Inferencing Method](#inferencing-method)
+    - [Consistency Evaluations](#consistency-evaluations)
 - [Rules Executions](#rules-executions)
-  - [Rule Types](#rule-types)
-  - [Hashing](#hashing)
-  - [Execution Logic](#execution-logic)
-  - [Information and Data Reporting](#information-and-data-reporting)
-    - [User Interaction](#user-interaction)
-    - [Reporting Information](#reporting-information)
-    - [Reporting Incompleteness](#reporting-incompleteness)
-    - [Reporting Inconsistencies](#reporting-inconsistencies)
+    - [Rule Types](#rule-types)
+    - [Hashing](#hashing)
+    - [Execution Logic](#execution-logic)
+    - [Information and Data Reporting](#information-and-data-reporting)
+        - [User Interaction](#user-interaction)
+        - [Reporting Information](#reporting-information)
+        - [Reporting Incompleteness](#reporting-incompleteness)
+        - [Reporting Inconsistencies](#reporting-inconsistencies)
 - [Output Files](#output-files)
-  - [Output Ontology](#output-ontology)
-  - [Report File](#report-file)
+    - [Output Ontology](#output-ontology)
+    - [Report File](#report-file)
 - [Execution Statistics](#execution-statistics)
 
 ## Introduction
@@ -386,7 +386,8 @@ called `logs` inside the project’s folder, but the description of this file is
 
 ### Output Ontology
 
-After the Scior execution, all knowledge discovered through the execution of gUFO rules are added to the original graph (
+After the Scior execution, all knowledge discovered through the execution of gUFO rules are added to the original
+graph (
 i.e., to the input ontology graph) and this complete graph is saved as a *ttl* file. The file is saved into the same
 folder as the input file using the following file nomenclature: `example-{YYYY.MM.DD-hh.mm.ss}.out.ttl`, where “example”
 is the name of the ontology and the curly brackets are substituted by year (Y), month (M), day (D), hour (h), minutes (
@@ -405,30 +406,33 @@ execution itself and about the situation before and after its conclusion. The in
 
 - **Execution Information:** displays general and specific (per rule) execution times, together with computer and
   software specifications, used configurations, generated files and solution’s hashes.
-  - The software creates solutions’ hashes so the user can quickly verify if the results have changed from one execution
-    to another.
+    - The software creates solutions’ hashes so the user can quickly verify if the results have changed from one
+      execution
+      to another.
 - **Lists of Classes Before Scior:** displays the classes grouped according to the amount of gUFO knowledge known **
   before** the Scior execution. I.e., it presents the **initial** state of the ontology that is going to be evaluated.
-  - The categories used for grouping the classes are: Totally Unknown Classes, Partially Known Classes, and Totally
-    Known Classes.
+    - The categories used for grouping the classes are: Totally Unknown Classes, Partially Known Classes, and Totally
+      Known Classes.
 - **Lists of Classes After Scior:** displays the classes grouped according to the amount of gUFO knowledge known **
   after** the Scior execution. I.e., it presents the **final** state of the ontology that was evaluated.
-  - The categories used for grouping the classes are: Totally Unknown Classes, Partially Known Classes, and Totally
-    Known Classes.
+    - The categories used for grouping the classes are: Totally Unknown Classes, Partially Known Classes, and Totally
+      Known Classes.
 - **Results` Statistics:** presents tables with total numbers and percentages of classes and classifications before the
   execution, after the execution, and the difference between these two situations.
-  - The [next subsection](#execution-statistics) details the information about the presented statistics.
+    - The [next subsection](#execution-statistics) details the information about the presented statistics.
 - **Incomplete Classes Identified:** presents a table containing all classes identified as incomplete together with the
   implemented rules that were responsible for that identification.
 - **Knowledge Matrix:** As there are 14 gUFO Endurant Types, the knowledge matrix is a 15x15 matrix. Each matrix element
   indicates a QUANTITY of classes: the
   rows`index (from 0 to 14) indicates how many known types **before** the execution, and the columns` index (from 0 to
-  14) Shows how many known types **after** the execution. The position (ROW, COL) indicates how many classes began with
-      ROW known types and ended with COL known types.
+    14) Shows how many known types **after** the execution. The position (ROW, COL) indicates how many classes began
+        with
+        ROW known types and ended with COL known types.
 
-  - As instance, if matrix position (0,5) stores the value 17, it means that 17 classes started the evaluation (i.e.,
-    the user provided them as input) without known classifications and these classes finished (i.e., Scior provided them
-    as output) with 5 known gUFO types.
+    - As instance, if matrix position (0,5) stores the value 17, it means that 17 classes started the evaluation (i.e.,
+      the user provided them as input) without known classifications and these classes finished (i.e., Scior provided
+      them
+      as output) with 5 known gUFO types.
 - **Final Classes’ Classifications:** presents the complete internal gUFO classifications’ lists (`is_type`, `can_type`,
   and `not_type`) for each class, sorted by their URI. With this information, the user can know the final classification
   of each one of the ontology classes.

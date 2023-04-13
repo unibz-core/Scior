@@ -167,6 +167,10 @@ def load_known_gufo_information(ontology_graph, ontology_dataclass_list, restric
     logger = initialize_logger()
 
     if restriction == "ENDURANT_TYPES":
+        # Setting all classes as EndurantType
+        for ontology_dataclass in ontology_dataclass_list:
+            ontology_dataclass.move_element_to_is_list("EndurantType")
+        # Collecting and adding other known classifications
         list_known_gufo = get_known_gufo_types(ontology_graph)
         insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)
     else:
