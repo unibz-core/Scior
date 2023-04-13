@@ -58,7 +58,7 @@ def run_scior():
         logger.error(f"Invalid input. The provided file does not have elements of type owl:Class. Program aborted.")
         exit(1)
 
-    # Loading the GUFO information already known from the ontology
+    # Loading the gUFO information already stated into the ontology
     load_known_gufo_information(working_graph, ontology_dataclass_list, SCOPE_RESTRICTION)
 
     ontology_nodes = initialize_nodes_lists(working_graph)
@@ -93,6 +93,7 @@ def run_scior():
     logger.info(f"Scior concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
     # Printing results
+    # TODO (@pedropaulofb): Remove gufo_graph
     save_ontology_file_as_configuration(resulting_graph, gufo_graph, end_date_time, argument)
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,

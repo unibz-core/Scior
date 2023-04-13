@@ -14,17 +14,19 @@ def execute_rules_types(ontology_dataclass_list, graph, nodes_list, configuratio
     logger = initialize_logger()
     logger.info("Starting gUFO types' hierarchy rules ...")
 
-    # Rules
-    always_automatic_rules = ["k_s_sup", "s_k_sub", "t_k_sup", "ns_s_sup", "s_ns_sub", "r_ar_sup", "ar_r_sub",
-                              "ns_sub_r", "ks_sf_in", "sub_r_r"]
-
-    general_rules = ["n_r_t", "ns_s_spe", "nk_k_sup", "s_nsup_k", "nrs_ns_r"]
+    # Groups of rules and their containing rules' codes
+    list_rules_groups = ["rule_group_base",         # executed once in the beginning
+                         "rule_group_gufo",         # executed in loop
+                         "rule_group_aux",          # executed in loop
+                         "rule_group_ufo",          # executed in loop
+                         "rule_group_restriction"]  # checks incompleteness (OWA) or inconsistencies (CWA)
 
     # Execution time calculation
-    time_register = {"k_s_sup": 0, "s_k_sub": 0, "t_k_sup": 0, "ns_s_sup": 0, "s_ns_sub": 0,
-                     "r_ar_sup": 0, "ar_r_sub": 0, "ns_sub_r": 0, "ks_sf_in": 0, "sub_r_r": 0,
-                     "n_r_t": 0, "ns_s_spe": 0, "nk_k_sup": 0, "s_nsup_k": 0, "nrs_ns_r": 0,
-                     "total_time": 0}
+    time_register = {"rule_group_base": 0,
+                     "rule_group_gufo": 0,
+                     "rule_group_aux": 0,
+                     "rule_group_ufo": 0,
+                     "rule_group_restriction": 0}
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = initial_hash + 1
