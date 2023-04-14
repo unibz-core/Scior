@@ -20,6 +20,7 @@ from scior.modules.results_calculation import generates_partial_statistics_list,
     create_knowledge_matrix
 from scior.modules.results_printer import print_statistics_screen
 from scior.modules.rules_types_run import execute_rules_types
+from scior.modules.utils_dataclass import sort_all_ontology_dataclass_list
 from scior.modules.utils_rdf import load_all_graph_safely, load_graph_safely_considering_restrictions, \
     reduce_graph_considering_restrictions
 
@@ -74,10 +75,14 @@ def run_scior():
         exit(1)
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
 
-    print("is here")
+    sort_all_ontology_dataclass_list(ontology_dataclass_list)
     for ontology_dataclass in ontology_dataclass_list:
-        print(ontology_dataclass.uri)
-        print(ontology_dataclass.is_type)
+        print(f"URI = {ontology_dataclass.uri}")
+        print(f"IS = {ontology_dataclass.is_type}")
+        print(f"CAN = {ontology_dataclass.can_type}")
+        print(f"NOT = {ontology_dataclass.not_type}")
+
+    exit(5)
 
     # SAVING RESULTS - OUTPUT
 

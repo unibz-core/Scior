@@ -9,6 +9,7 @@ from scior.modules.dataclass_verifications import verify_duplicates_in_lists_ont
 from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_general import lists_intersection
 
+logger = initialize_logger()
 
 @dataclass
 class OntologyDataClass(object):
@@ -45,7 +46,7 @@ class OntologyDataClass(object):
         """ Move an element between two lists in the same OntologyClass
             Elements can only be moved from CAN lists to IS or NOT lists
         """
-        logger = initialize_logger()
+
         logger.debug(
             f"Starting to move element {element} from {source_list} list to {target_list} list in {self.uri}...")
 
@@ -111,8 +112,6 @@ class OntologyDataClass(object):
             is analogous to the move_element_to_not_list method.
         """
 
-        logger = initialize_logger()
-
         source_list = self.return_containing_list_name(element)
 
         if source_list == "is_type" or source_list == "is_individual":
@@ -144,8 +143,6 @@ class OntologyDataClass(object):
             is analogous to the move_element_to_is_list method.
         """
 
-        logger = initialize_logger()
-
         source_list = self.return_containing_list_name(element)
 
         if source_list == "not_type" or source_list == "not_individual":
@@ -170,7 +167,7 @@ class OntologyDataClass(object):
         for elem in elem_list:
             self.move_element_to_is_list(elem)
 
-    def move_list_of_elements_to_not_list(self, elem_list):
+    def move_list_of_elements_to_not_list(self, elem_list:list):
         """ Moves a list of elements to the NOT list. Analogous to move_list_of_elements_to_is_list function.
         This is a specific case of the move_element_to_not_list function. """
 
@@ -180,7 +177,6 @@ class OntologyDataClass(object):
     def return_containing_list_name(self, element):
         """ Verify to which of the dataclass lists the element belongs and returns the list name. """
 
-        logger = initialize_logger()
         containing_list_name = "not set"
 
         if element in self.is_type:
@@ -231,7 +227,6 @@ class OntologyDataClass(object):
         elif input_list == "not_individual":
             list_hash = self.not_individual
         else:
-            logger = initialize_logger()
             logger.error(f"Unknown list type {input_list}. Unable to create hash. Program aborted.")
             exit(1)
 
@@ -281,23 +276,36 @@ class OntologyDataClass(object):
         return final_hash
 
     def verify_final_type_classification(self):
-        """ Verifies if only a single leaf classification is present in the can_list. If this is true,
-        move this leaf classification to the is list. This function applies only to the types' hierarchy.
+        """
+        This function applies only to the types' hierarchy.
+
+        1) If only a single leaf classification is present in the can_list, then moves it to the is list.
+        2) If a leaf classification is already in the is_list, all other leaf classifications are moved to the not_list.
+
         Justification can be found here: https://github.com/nemo-ufes/gufo/issues/7
         """
 
+        type_leaf_classifications = ["Category",
+                                     "Kind",
+                                     "Mixin",
+                                     "Phase",
+                                     "PhaseMixin",
+                                     "Role",
+                                     "RoleMixin",
+                                     "SubKind"]
+
+        # Verification 1 (single leaf classification in can_list)
         if len(self.can_type) > 0:
+            can_intersection_list = lists_intersection(type_leaf_classifications, self.can_type)
+            if len(can_intersection_list) == 1:
+                self.move_element_to_is_list(can_intersection_list[0])
 
-            type_leaf_classifications = ["Category",
-                                         "Kind",
-                                         "Mixin",
-                                         "Phase",
-                                         "PhaseMixin",
-                                         "Role",
-                                         "RoleMixin",
-                                         "SubKind"]
-
-            result_list = lists_intersection(type_leaf_classifications, self.can_type)
-
-            if len(result_list) == 1:
-                self.move_element_to_is_list(result_list[0])
+        # Verification 2 (leaf classification in is_list)
+        is_intersection_list = lists_intersection(type_leaf_classifications, self.is_type)
+        if len(is_intersection_list) == 1:
+            for leaf_classification in type_leaf_classifications:
+                if leaf_classification not in is_intersection_list:
+                    self.move_element_to_not_list(leaf_classification)
+        elif len(is_intersection_list) > 1:
+            logger.error(f"Consistency violation for class {self.uri}. "
+                         f"More than one leaf classifications ({is_intersection_list}) in its is_type list.")
