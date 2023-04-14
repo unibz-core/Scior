@@ -6,6 +6,7 @@ from rdflib import URIRef, RDF, RDFS, OWL, BNode
 from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_rdf import get_ontology_uri
 
+GUFO_NAMESPACE = "http://purl.org/nemo/gufo#"
 
 def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
     """ Receives the list of dataclasses and use its information for creating new statements in the ontology graph.
@@ -15,7 +16,7 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
     Restriction can be: TYPES_ONLY, INDIVIDUALS_ONLY, TOTAL
 
     """
-    ontology_graph.bind("gufo", "http://purl.org/nemo/gufo#")
+    ontology_graph.bind("gufo", GUFO_NAMESPACE)
 
     if restriction == "TOTAL" or restriction == "TYPES_ONLY":
         for dataclass in dataclass_list:
@@ -114,5 +115,17 @@ def treat_name(gufo_short_name: str) -> str:
     returns a full GUFO URI string (e.g., http://purl.org/nemo/gufo#Kind).
     """
 
-    gufo_url = "http://purl.org/nemo/gufo#"
+    gufo_url = GUFO_NAMESPACE
     return gufo_url + gufo_short_name
+
+def update_ontology_graph_with_gufo (ontology_dataclass_list, ontology_graph):
+    """ Include all known gUFO classifications (got from ontology_dataclass_list) into the ontology_graph.
+        Currently implemented only for Types.
+    """
+
+    ontology_graph.bind("gufo", GUFO_NAMESPACE)
+
+    for ontology_class in ontology_dataclass_list:
+        for gufo_type in ontology_class.is_type:
+            gufo_classification = URIRef(GUFO_NAMESPACE + gufo_type)
+            ontology_graph.add((URIRef(ontology_class.uri), RDF.type, gufo_classification))

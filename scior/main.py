@@ -7,8 +7,8 @@ from datetime import datetime
 from rdflib import RDFS, RDF
 
 from scior.modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
-from scior.modules.graph_save_ontology import save_ontology_gufo_statements, \
-    save_ontology_file_as_configuration
+from scior.modules.graph_ontology import save_ontology_gufo_statements, \
+    save_ontology_file_as_configuration, safe_save_ontology_file
 from scior.modules.initialization_arguments import treat_arguments
 from scior.modules.initialization_data_graph import initialize_nodes_lists
 from scior.modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
@@ -75,13 +75,7 @@ def run_scior():
         exit(1)
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
 
-    sort_all_ontology_dataclass_list(ontology_dataclass_list)
-    for ontology_dataclass in ontology_dataclass_list:
-        print(f"URI = {ontology_dataclass.uri}")
-        print(f"IS = {ontology_dataclass.is_type}")
-        print(f"CAN = {ontology_dataclass.can_type}")
-        print(f"NOT = {ontology_dataclass.not_type}")
-
+    safe_save_ontology_file(working_graph, "C:\\Users\\PFavatoBarcelos\\Dev\\Work\\Scior\\ontologies\\deletepp.ttl")
     exit(5)
 
     # SAVING RESULTS - OUTPUT

@@ -11,7 +11,7 @@ def execute_gufo_rules(ontology_dataclass_list):
 
     for ontology_dataclass in ontology_dataclass_list:
 
-        # RART: RigidType(x) -> ~NonRigidType(x) ^ ~AntiRigidType(x) ^ ~SemiRigidType(x) 
+        # RART: RigidType(x) -> ~NonRigidType(x) ^ ~AntiRigidType(x) ^ ~SemiRigidType(x)
         if "RigidType" in ontology_dataclass.is_type:
             ontology_dataclass.move_element_to_not_list("NonRigidType")
             ontology_dataclass.move_element_to_not_list("AntiRigidType")

@@ -58,6 +58,3 @@ def execute_base_rules(ontology_graph):
     # Executing R02Ag first than R01Ag because it is faster and the results are the same.
     run_r02ag(ontology_graph)
     run_r01ag(ontology_graph)
-
-    # TODO (@pedropaulofb): remove code line
-    # safe_save_ontology_file(ontology_graph, "C:\\Users\\PFavatoBarcelos\\Dev\\Work\\Scior\\ontologies\\deletepp.ttl")
