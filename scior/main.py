@@ -67,10 +67,17 @@ def run_scior():
     # EXECUTION
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
     try:
-        time_register = execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes, argument)
-    except Exception:
+        execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes, argument)
+    except Exception as error:
+        logger.error(f"The following exception occurred when Scior tried to execute its rules: "
+                     f"{error} ({type(error).__name__}). Program aborted.")
         exit(1)
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
+
+    print("is here")
+    for ontology_dataclass in ontology_dataclass_list:
+        print(ontology_dataclass.uri)
+        print(ontology_dataclass.is_type)
 
     # SAVING RESULTS - OUTPUT
 
@@ -94,7 +101,7 @@ def run_scior():
 
     # Printing results
     # TODO (@pedropaulofb): Remove gufo_graph
-    save_ontology_file_as_configuration(resulting_graph, gufo_graph, end_date_time, argument)
+    save_ontology_file_as_configuration(resulting_graph, end_date_time, argument)
 
     print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,
                       argument, before_statistics, after_statistics,
