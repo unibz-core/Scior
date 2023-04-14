@@ -4,19 +4,6 @@ import operator
 from scior.modules.logger_config import initialize_logger
 
 
-def update_all_ontology_dataclass_list(ontology_dataclass_list):
-    """ Updates all lists of all dataclasses inside the ontology dataclass list. """
-
-    initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
-    final_hash = 0
-
-    while initial_hash != final_hash:
-        initial_hash = final_hash
-        for ontology_dataclass in ontology_dataclass_list:
-            ontology_dataclass.update_all_internal_lists_from_gufo()
-        final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
-
-
 def generate_hash_ontology_dataclass_list(ontology_dataclass_list, hash_type="TOTAL"):
     """ Generates a hash for the complete list of ontology dataclasses.
 

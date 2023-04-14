@@ -1,9 +1,7 @@
 """ Implementation of rules of group BASE. """
-import time
 
 from rdflib import RDF, OWL, RDFS
 
-from scior.modules.graph_save_ontology import safe_save_ontology_file
 from scior.modules.logger_config import initialize_logger
 
 logger = initialize_logger()

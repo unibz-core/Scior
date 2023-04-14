@@ -9,11 +9,11 @@ from scior.modules.rules_types_definitions import rule_k_s_sup, rule_s_k_sub, ru
     rule_nrs_ns_r, rule_ks_sf_in, rule_sub_r_r
 from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
+logger = initialize_logger()
 
 def execute_rules_types(ontology_dataclass_list, ontology_graph, nodes_list, configurations):
     """ Executes all rules related to types. """
 
-    logger = initialize_logger()
     logger.info("Starting gUFO types' hierarchy rules ...")
 
     # Groups of rules and their containing rules' codes. Base rules are not here included.
@@ -70,8 +70,6 @@ def execute_rules_types(ontology_dataclass_list, ontology_graph, nodes_list, con
 
 def switch_rule_execution(ontology_dataclass_list, graph, nodes_list, rule_code, configurations, time_register):
     """ A switch function that calls the rule received in its parameter. """
-
-    logger = initialize_logger()
 
     logger.debug(f"Acessing rule {rule_code} ...")
 
