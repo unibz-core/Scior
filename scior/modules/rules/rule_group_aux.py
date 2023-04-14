@@ -6,6 +6,7 @@ from scior.modules.logger_config import initialize_logger
 SCIOR_NAMESPACE = "https://purl.org/scior/"
 logger = initialize_logger()
 
+
 def run_r29ag1(ontology_graph):
     """ Executes rule R29Ag1 from group AUX.
 
@@ -26,7 +27,7 @@ def run_r29ag1(ontology_graph):
 
     query_result = ontology_graph.query(query_string)
 
-    scior_shareKind = URIRef(SCIOR_NAMESPACE+"shareKind")
+    scior_shareKind = URIRef(SCIOR_NAMESPACE + "shareKind")
 
     for row in query_result:
         ontology_graph.add((row.class_x, scior_shareKind, row.class_y))
@@ -80,17 +81,12 @@ def run_r30ag(ontology_graph):
 
     query_result = ontology_graph.query(query_string)
 
-    scior_shareSuperClass = URIRef(SCIOR_NAMESPACE+"shareSuperClass")
+    scior_shareSuperClass = URIRef(SCIOR_NAMESPACE + "shareSuperClass")
 
     for row in query_result:
         ontology_graph.add((row.class_x, scior_shareSuperClass, row.class_y))
 
     logger.debug(f"Rule {rule_code} concluded.")
-
-
-
-def run_r30as(ontology_graph):
-    pass
 
 
 def execute_aux_rules(ontology_graph):
@@ -103,6 +99,3 @@ def execute_aux_rules(ontology_graph):
     run_r29ag1(ontology_graph)
     run_r29ag2(ontology_graph)
     run_r30ag(ontology_graph)
-
-    # TODO (@pedropaulofb): Implement CWA rules
-    # R30As (CWA): \exists! z (shareSuperClass(x,y) ^ subClassOf(x,z) -> subClassOf(y,z))
