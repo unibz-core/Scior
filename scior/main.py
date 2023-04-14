@@ -150,4 +150,6 @@ def run_scior_tester(global_configurations, working_graph):
 if __name__ == "__main__":
     run_scior()
 
+# TODO (@pedropaulofb): Raise an exception for every new error.
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
+# TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.

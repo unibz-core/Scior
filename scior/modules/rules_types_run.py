@@ -17,7 +17,10 @@ def execute_rules_types(ontology_dataclass_list, ontology_graph, arguments):
     logger.info("Starting gUFO types' hierarchy rules ...")
 
     # Groups of rules and their containing rules' codes. Base rules are not here included.
-    list_rules_groups = ["rule_group_gufo", "rule_group_aux", "rule_group_ufo_general"]
+    list_rules_groups = ["rule_group_gufo",
+                         "rule_group_aux",
+                         "rule_group_ufo_general",
+                         "rule_group_ufo_specific"]
 
     # Execute rule_group_base just once
     execute_rules_base(ontology_graph)
