@@ -62,13 +62,13 @@ def run_scior():
     # Loading the gUFO information already stated into the ontology
     load_known_gufo_information(working_graph, ontology_dataclass_list, SCOPE_RESTRICTION)
 
-    ontology_nodes = initialize_nodes_lists(working_graph)
-    before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+    # TODO (@pedropaulofb): To be done.
+    # before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
     try:
-        execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes, argument)
+        execute_rules_types(ontology_dataclass_list, working_graph, argument)
     except Exception as error:
         logger.error(f"The following exception occurred when Scior tried to execute its rules: "
                      f"{error} ({type(error).__name__}). Program aborted.")

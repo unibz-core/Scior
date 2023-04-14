@@ -52,7 +52,7 @@ def run_r02ag(ontology_graph):
     logger.debug(f"Rule {rule_code} concluded")
 
 
-def execute_base_rules(ontology_graph):
+def execute_rules_base(ontology_graph):
     """Executes once all rules of the BASE group."""
 
     # Executing R02Ag first than R01Ag because it is faster and the results are the same.

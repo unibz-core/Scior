@@ -89,7 +89,7 @@ def run_r30ag(ontology_graph):
     logger.debug(f"Rule {rule_code} concluded.")
 
 
-def execute_aux_rules(ontology_graph):
+def execute_rules_aux(ontology_graph):
     """Executes all rules of the AUX group."""
 
     logger.debug("Executing all rules from group AUX.")

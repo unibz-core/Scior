@@ -1,28 +1,26 @@
 """ Rules applied to the TYPES HIERARCHY. """
 from scior.modules.graph_ontology import update_ontology_graph_with_gufo
 from scior.modules.logger_config import initialize_logger
-from scior.modules.rules.rule_group_aux import execute_aux_rules
-from scior.modules.rules.rule_group_base import execute_base_rules
+from scior.modules.rules.rule_group_aux import execute_rules_aux
+from scior.modules.rules.rule_group_base import execute_rules_base
 from scior.modules.rules.rule_group_gufo import execute_gufo_rules
-from scior.modules.rules.rule_group_ufo import execute_ufo_rules
+from scior.modules.rules.rule_group_ufo_general import execute_rules_ufo_general
+from scior.modules.rules.rule_group_ufo_specific import execute_rules_ufo_specific
 from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 logger = initialize_logger()
 
 
-def execute_rules_types(ontology_dataclass_list, ontology_graph, nodes_list, configurations):
+def execute_rules_types(ontology_dataclass_list, ontology_graph, arguments):
     """ Executes all rules related to types. """
 
     logger.info("Starting gUFO types' hierarchy rules ...")
 
     # Groups of rules and their containing rules' codes. Base rules are not here included.
-    list_rules_groups = ["rule_group_gufo", "rule_group_aux", "rule_group_ufo"]
-
-    # "rule_group_restriction"]  # checks incompleteness (OWA) or inconsistencies (CWA)
-    # TODO (@pedropaulofb): Check if incomp/incons validation can be done only once by the end.
+    list_rules_groups = ["rule_group_gufo", "rule_group_aux", "rule_group_ufo_general"]
 
     # Execute rule_group_base just once
-    execute_base_rules(ontology_graph)
+    execute_rules_base(ontology_graph)
 
     # Execute other groups of rules in loop
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
@@ -32,7 +30,7 @@ def execute_rules_types(ontology_dataclass_list, ontology_graph, nodes_list, con
 
         initial_hash = final_hash
         for rule_group in list_rules_groups:
-            switch_rule_group_execution(ontology_dataclass_list, ontology_graph, rule_group)
+            switch_rule_group_execution(ontology_dataclass_list, ontology_graph, rule_group, arguments)
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
         if initial_hash == final_hash:
@@ -44,7 +42,7 @@ def execute_rules_types(ontology_dataclass_list, ontology_graph, nodes_list, con
     logger.info("gUFO types' hierarchy rules concluded.")
 
 
-def switch_rule_group_execution(ontology_dataclass_list, ontology_graph, rule_group_code):
+def switch_rule_group_execution(ontology_dataclass_list, ontology_graph, rule_group_code, arguments):
     """ A switch function that calls the rule received in its parameter. """
 
     logger.debug(f"Accessing rule {rule_group_code} ...")
@@ -53,10 +51,13 @@ def switch_rule_group_execution(ontology_dataclass_list, ontology_graph, rule_gr
         execute_gufo_rules(ontology_dataclass_list)
 
     elif rule_group_code == "rule_group_aux":
-        execute_aux_rules(ontology_graph)
+        execute_rules_aux(ontology_graph)
 
-    elif rule_group_code == "rule_group_ufo":
-        execute_ufo_rules(ontology_dataclass_list, ontology_graph)
+    elif rule_group_code == "rule_group_ufo_general":
+        execute_rules_ufo_general(ontology_dataclass_list, ontology_graph)
+
+    elif rule_group_code == "rule_group_ufo_specific":
+        execute_rules_ufo_specific(ontology_dataclass_list, ontology_graph, arguments)
 
     else:
         logger.error(f"Unexpected rule code ({rule_group_code}) received as parameter! Program aborted.")

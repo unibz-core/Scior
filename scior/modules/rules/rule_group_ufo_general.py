@@ -191,7 +191,7 @@ def run_r33cg(ontology_dataclass_list, ontology_graph):
     logger.debug(f"Rule {rule_code} concluded")
 
 
-def execute_ufo_rules(ontology_dataclass_list, ontology_graph):
+def execute_rules_ufo_general(ontology_dataclass_list, ontology_graph):
     """Executes all rules of the UFO group."""
 
     logger.debug("Executing all rules from group AUX.")
