@@ -39,11 +39,11 @@ def treat_arguments(software_acronym, software_name, software_version, software_
 
     completeness_group = arguments_parser.add_mutually_exclusive_group()
 
-    completeness_group.add_argument("-n", "--incomplete", action='store_true',
-                                    help="The loaded ontology is an incomplete model (default).")
+    completeness_group.add_argument("-owa", "--adopt_owa", action='store_true',
+                                    help="Operate in Open-World Assumption (OWA) (default).")
 
-    completeness_group.add_argument("-c", "--complete", action='store_true',
-                                    help="The loaded ontology is a complete model.")
+    completeness_group.add_argument("-cwa", "--adopt_cwa", action='store_true',
+                                    help="Operate in Closed-World Assumption (CWA).")
 
     # General arguments
     arguments_parser.add_argument("-t", "--times", action='store_true',
@@ -68,7 +68,8 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     global_configurations = {"import_gufo": arguments.gufo1,
                              "save_gufo": arguments.gufo2,
                              "is_automatic": arguments.automatic,
-                             "is_complete": arguments.complete,
+                             "is_owa": arguments.adopt_owa,
+                             "is_cwa": arguments.adopt_cwa,
                              "print_time": arguments.times,
                              "ontology_path": arguments.ontology_file}
 

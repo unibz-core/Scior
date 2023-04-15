@@ -2,26 +2,74 @@
 from rdflib import RDFS, URIRef
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.rules_type_implementations import register_incompleteness
 
 logger = initialize_logger()
 
 
-def result_treatment_r28cs(ontology_dataclass_list, ontology_dataclass,
+def result_treatment_r28cs(ontology_dataclass_list, sortal_dataclass,
                            can_kind_supertypes, is_kind_supertypes,
                            arguments):
-    """ Treats the results from function run_r28cs. """
+    """ Treats the results from function run_r28cs.
 
-    if len(is_kind_supertypes) > 1:
-        logger.error(f"Error detected. The Sortal {ontology_dataclass.uri} "
+    Two lists are received as parameters:
+        1) a list of superclasses of the ontology_dataclass that ARE Kinds (is_kind_supertypes), and
+        2) a list of superclasses of the ontology_dataclass that CAN be Kinds (can_kind_supertypes).
+
+    GENERAL CASES:
+        If len(is_kind_supertypes) > 1, then an error occurred and the program is aborted.
+        Elif len(is_kind_supertypes) = 1. Move "Kind" to not list to all elements (if any) in can_kind_supertypes.
+        Else, the action depends on if CWA is assumed or not.
+    IF OWA:
+        If len(can_kind_supertypes) > 0 then no action taken when automatic (if interactive, user can choose)
+        If len(can_kind_supertypes) = 0 then INCOMPLETENESS
+    IF CWA:
+        If len(can_kind_supertypes) > 1 then no action taken when automatic (if interactive, user can choose)
+        If len(can_kind_supertypes) = 1 then set element as Kind.
+        If len(can_kind_supertypes) = 0 then INCONSISTENCY
+    """
+
+    len_is_kind = len(is_kind_supertypes)
+    len_can_kind = len(can_kind_supertypes)
+
+    # GENERAL CASES
+
+    if len_is_kind > 1:
+        logger.error(f"Error detected. The Sortal {sortal_dataclass.uri} "
                      f"has more than one Kind as supertypes ({is_kind_supertypes}). Program aborted.")
-        exit(1)
-    # elif  len(all_supertypes) == 0:
-    # If is_list = 1 and can_list > 0, move 'Kind' in all elements from can_list to not_type
+        raise Exception("INCONSISTENCY FOUND!")
 
-    # If list higher than one, error.
-    # If list is empty, treat.
+    elif len_is_kind == 1:
+        # Only need to move if there are elements to be moved.
+        if len_can_kind != 0:
+            for ontology_dataclass_sub in ontology_dataclass_list:
+                if ontology_dataclass_sub.uri in can_kind_supertypes:
+                    ontology_dataclass_sub.move_element_to_not_list("Kind")
 
-    pass
+    # OWA CASES (len_is_kind == 0)
+    elif arguments["is_owa"]:
+
+        # if len_can_kind > 0 and if interactive:
+        # TODO (@pedropaulofb): Implement interactive actions.
+
+        if len_can_kind == 0:
+            register_incompleteness("R28Cs", sortal_dataclass)
+
+    # CWA CASES (len_is_kind == 0)
+    elif arguments["is_cwa"]:
+
+        # if len_can_kind > 1 and if interactive:
+        # TODO (@pedropaulofb): Implement interactive actions.
+
+        if len_can_kind == 1:
+            for ontology_dataclass_sub in ontology_dataclass_list:
+                if ontology_dataclass_sub.uri == can_kind_supertypes[0]:
+                    ontology_dataclass_sub.move_element_to_is_list("Kind")
+
+        elif len_can_kind == 0:
+            logger.error(f"The Sortal {sortal_dataclass.uri} does not have an identity provider (Kind). "
+                         f"Program aborted.")
+            raise Exception("INCONSISTENCY FOUND!")
 
 
 def run_r28cs(ontology_dataclass_list, ontology_graph, arguments):
@@ -29,7 +77,7 @@ def run_r28cs(ontology_dataclass_list, ontology_graph, arguments):
 
     Code: R28Cs
     Definition: E! y (Sortal(x) ^ subClassOf (x,y) -> Kind(y))
-    Description: One of the Sortal superclasses must be a Kind.
+    Description: Every Sortal must have a unique identity provider, i.e., a single Kind.
     """
 
     rule_code = "R28Cs"
@@ -60,9 +108,9 @@ def run_r28cs(ontology_dataclass_list, ontology_graph, arguments):
                 if (ontology_dataclass_sub.uri in all_supertypes) and ("Kind" not in ontology_dataclass_sub.is_type):
                     is_kind_supertypes.remove(ontology_dataclass_sub.uri)
 
-            print(f"all = {all_supertypes}")
-            print(f"can = {can_kind_supertypes}")
-            print(f"is = {is_kind_supertypes}")
+            print(f"{all_supertypes =}")
+            print(f"{can_kind_supertypes =}")
+            print(f"{is_kind_supertypes =}")
 
             result_treatment_r28cs(ontology_dataclass_list, ontology_dataclass,
                                    can_kind_supertypes, is_kind_supertypes,

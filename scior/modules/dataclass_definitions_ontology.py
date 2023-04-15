@@ -11,6 +11,7 @@ from scior.modules.utils_general import lists_intersection
 
 logger = initialize_logger()
 
+
 @dataclass
 class OntologyDataClass(object):
     """ Each loaded ontology dataclass has a URI (identifier) and six lists of GUFO elements.
@@ -167,7 +168,7 @@ class OntologyDataClass(object):
         for elem in elem_list:
             self.move_element_to_is_list(elem)
 
-    def move_list_of_elements_to_not_list(self, elem_list:list):
+    def move_list_of_elements_to_not_list(self, elem_list: list):
         """ Moves a list of elements to the NOT list. Analogous to move_list_of_elements_to_is_list function.
         This is a specific case of the move_element_to_not_list function. """
 

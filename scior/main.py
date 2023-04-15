@@ -20,7 +20,6 @@ from scior.modules.results_calculation import generates_partial_statistics_list,
     create_knowledge_matrix
 from scior.modules.results_printer import print_statistics_screen
 from scior.modules.rules_types_run import execute_rules_types
-from scior.modules.utils_dataclass import sort_all_ontology_dataclass_list
 from scior.modules.utils_rdf import load_all_graph_safely, load_graph_safely_considering_restrictions, \
     reduce_graph_considering_restrictions
 
