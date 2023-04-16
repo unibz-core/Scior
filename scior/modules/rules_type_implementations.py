@@ -1,5 +1,5 @@
 """ Implementation of rules for types. """
-
+from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 from scior.modules.user_interactions import select_class_from_list, print_class_types, \
     set_interactively_class_as_gufo_type
@@ -9,6 +9,8 @@ from scior.modules.utils_graph import get_all_related_nodes, get_all_superclasse
 
 # Frequent GUFO types
 GUFO_KIND = "gufo:Kind"
+
+logger = initialize_logger()
 
 
 def check_incompleteness_registered(rule_code, ontology_dataclass):
@@ -27,8 +29,11 @@ def check_incompleteness_registered(rule_code, ontology_dataclass):
     return is_already_registered
 
 
-def register_incompleteness(rule_code, ontology_dataclass):
+def register_incompleteness(rule_code: str, ontology_dataclass: OntologyDataClass):
     """ Registers the ontology_dataclass incompleteness_info field and insert the rule in the detected_in list. """
+
+    if not ontology_dataclass.incompleteness_info["is_incomplete"]:
+        logger.warning(f"Incompleteness detected for class {ontology_dataclass} in rule {rule_code}.")
 
     ontology_dataclass.incompleteness_info["is_incomplete"] = True
     ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)

@@ -161,14 +161,14 @@ class OntologyDataClass(object):
             # Consistency checking is already performed inside the move_between_ontology_lists function.
             self.move_element_between_lists(element, source_list, target_list)
 
-    def move_list_of_elements_to_is_list(self, elem_list):
+    def move_list_of_elements_to_is_list(self, elem_list: list[str]):
         """ Moves a list of elements to the IS list. Analogous to move_list_of_elements_to_not_list function.
         This is a specific case of the move_element_to_is_list function. """
 
         for elem in elem_list:
             self.move_element_to_is_list(elem)
 
-    def move_list_of_elements_to_not_list(self, elem_list: list):
+    def move_list_of_elements_to_not_list(self, elem_list: list[str]):
         """ Moves a list of elements to the NOT list. Analogous to move_list_of_elements_to_is_list function.
         This is a specific case of the move_element_to_not_list function. """
 
