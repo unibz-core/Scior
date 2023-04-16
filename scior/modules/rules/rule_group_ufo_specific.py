@@ -9,8 +9,7 @@ logger = initialize_logger()
 
 
 def treat_specific_ufo_result(ontology_dataclass_list: list[OntologyDataClass], sortal_dataclass: OntologyDataClass,
-                              can_classes_list: list[str], is_classes_list: list[str],
-                              types_to_set_list: list[str],
+                              can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
                               rule_code: str, arguments) -> None:
     """ Treats the results from all rules from the group UFO Specific.
 
@@ -95,12 +94,12 @@ def run_r28cs(ontology_dataclass_list, ontology_graph, arguments):
         # For every Sortal
         if "Sortal" in ontology_dataclass.is_type:
 
-            # TODO (@pedropaulofb): Remove test.
-            if "R28Cs" not in ontology_dataclass.uri:
-                continue
-
-            print()
-            print(ontology_dataclass.uri)
+            # # TODO (@pedropaulofb): Remove test.
+            # if "R28Cs" not in ontology_dataclass.uri:
+            #     continue
+            #
+            # print()
+            # print(ontology_dataclass.uri)
 
             # Creating a list of all superclasses
             for superclass in ontology_graph.objects(URIRef(ontology_dataclass.uri), RDFS.subClassOf):
@@ -117,14 +116,12 @@ def run_r28cs(ontology_dataclass_list, ontology_graph, arguments):
                 if (ontology_dataclass_sub.uri in all_supertypes) and ("Kind" not in ontology_dataclass_sub.is_type):
                     is_kind_supertypes.remove(ontology_dataclass_sub.uri)
 
-            print(f"{all_supertypes =}")
-            print(f"{can_kind_supertypes =}")
-            print(f"{is_kind_supertypes =}")
+            # print(f"{all_supertypes =}")
+            # print(f"{can_kind_supertypes =}")
+            # print(f"{is_kind_supertypes =}")
 
-            treat_specific_ufo_result(ontology_dataclass_list, ontology_dataclass,
-                                      can_kind_supertypes, is_kind_supertypes,
-                                      ["Kind"],
-                                      rule_code, arguments)
+            treat_specific_ufo_result(ontology_dataclass_list, ontology_dataclass, can_kind_supertypes,
+                                      is_kind_supertypes, ["Kind"], rule_code, arguments)
 
     logger.debug(f"Rule {rule_code} concluded")
 

@@ -8,6 +8,7 @@ from scior.modules.utils_rdf import get_ontology_uri
 
 GUFO_NAMESPACE = "http://purl.org/nemo/gufo#"
 
+
 def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
     """ Receives the list of dataclasses and use its information for creating new statements in the ontology graph.
     Returns an updated ontology graph.
@@ -118,7 +119,8 @@ def treat_name(gufo_short_name: str) -> str:
     gufo_url = GUFO_NAMESPACE
     return gufo_url + gufo_short_name
 
-def update_ontology_graph_with_gufo (ontology_dataclass_list, ontology_graph):
+
+def update_ontology_graph_with_gufo(ontology_dataclass_list, ontology_graph):
     """ Include all known gUFO classifications (got from ontology_dataclass_list) into the ontology_graph.
         Currently implemented only for Types.
     """
