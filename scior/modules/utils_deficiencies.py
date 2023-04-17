@@ -5,6 +5,15 @@ from scior.modules.logger_config import initialize_logger
 LOGGER = initialize_logger()
 
 
+def report_error_dataclass_not_found(searched_uri: str):
+    """ Reports the error caused when an item is searched in the ontology_dataclass_list and is not found. """
+
+    LOGGER.error(f"Unexpected situation. Searched URI {searched_uri} "
+                 f"not found in ontology_dataclass_list. Program aborted.")
+
+    raise ValueError(f"INVALID VALUE!")
+
+
 def incompleteness_already_registered(rule_code: str, ontology_dataclass: OntologyDataClass) -> bool:
     """ Verifies if an incompleteness case has already being registered/reported for the received ontology_dataclass.
 
@@ -25,6 +34,5 @@ def register_incompleteness(rule_code: str, ontology_dataclass: OntologyDataClas
     if not incompleteness_already_registered(rule_code, ontology_dataclass):
         LOGGER.warning(f"Incompleteness detected for class {ontology_dataclass.uri} in rule {rule_code}. "
                        f"{additional_message}")
-
-    ontology_dataclass.incompleteness_info["is_incomplete"] = True
-    ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)
+        ontology_dataclass.incompleteness_info["is_incomplete"] = True
+        ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)

@@ -5,7 +5,7 @@ from rdflib import RDFS, URIRef
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_dataclass import get_dataclass_by_uri
-from scior.modules.utils_deficiencies import register_incompleteness
+from scior.modules.utils_deficiencies import register_incompleteness, report_error_dataclass_not_found
 
 LOGGER = initialize_logger()
 
@@ -17,6 +17,8 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
 
     length_is_list = len(is_classes_list)
     length_can_list = len(can_classes_list)
+    can_classes_list.sort()
+    is_classes_list.sort()
 
     if length_is_list > 1:
         # report inconsistency
@@ -25,6 +27,8 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
                      f"Program aborted.")
         raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
 
+    elif length_is_list == 1 and length_can_list == 0:
+        LOGGER.debug(f"Rule {rule_code} satisfied. No action is required.")
 
     elif length_is_list == 1 and length_can_list > 0:
 
@@ -33,9 +37,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
             candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_class)
 
             if candidate_dataclass is None:
-                LOGGER.error(f"Unexpected situation. Searched URI {can_class} "
-                             f"not found in ontology_dataclass_list. Program aborted.")
-                raise ValueError(f"INVALID VALUE!")
+                report_error_dataclass_not_found(can_class)
 
             candidate_dataclass.move_list_of_elements_to_not_list(types_to_set_list)
 
@@ -49,9 +51,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
         candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
 
         if candidate_dataclass is None:
-            LOGGER.error(f"Unexpected situation. Searched URI {can_classes_list[0]} "
-                         f"not found in ontology_dataclass_list. Program aborted.")
-            raise ValueError(f"INVALID VALUE!")
+            report_error_dataclass_not_found(can_classes_list[0])
 
         candidate_dataclass.move_list_of_elements_to_is_list(types_to_set_list)
 
@@ -64,12 +64,12 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
 
         # Report inconsistency.
         if arguments["is_cwa"]:
-            LOGGER.error(f"Error detected in rule {rule_code} for class {selected_dataclass.uri}. "
-                         f"There are no asserted classes that satisfy the rule. Program aborted.")
+            LOGGER.error(f"Inconsistency detected in rule {rule_code} for class {selected_dataclass.uri}. "
+                         f"There are no asserted classes that satisfy the rule.")
             raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
 
     else:
-        LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached. Program aborted.")
+        LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached.")
         raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
 
 
@@ -110,10 +110,10 @@ def run_r28rg(ontology_dataclass_list, ontology_graph, arguments):
             treat_result_ufo_unique(ontology_dataclass_list, ontology_dataclass, can_kind_supertypes,
                                     is_kind_supertypes, ["Kind"], rule_code, arguments)
 
-    LOGGER.debug(f"Rule {rule_code} concluded")
+    LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def execute_rules_ufo_specific(ontology_dataclass_list, ontology_graph, arguments):
+def execute_rules_ufo_unique(ontology_dataclass_list, ontology_graph, arguments):
     """Call execution of all rules from the group UFO Unique. """
 
     LOGGER.debug("Starting execution of all rules from group UFO Unique.")
