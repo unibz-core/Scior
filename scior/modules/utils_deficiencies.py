@@ -1,0 +1,30 @@
+""" Functions related to the verification and treatment of incompleteness and inconsistency cases. """
+from scior.modules.dataclass_definitions_ontology import OntologyDataClass
+from scior.modules.logger_config import initialize_logger
+
+LOGGER = initialize_logger()
+
+
+def incompleteness_already_registered(rule_code: str, ontology_dataclass: OntologyDataClass) -> bool:
+    """ Verifies if an incompleteness case has already being registered/reported for the received ontology_dataclass.
+
+        Returns True if the incompleteness for a specific rule has already been registered/reported.
+        Returns False otherwise.
+    """
+
+    if ontology_dataclass.incompleteness_info["is_incomplete"] and (
+            rule_code in ontology_dataclass.incompleteness_info["detected_in"]):
+        return True
+    else:
+        return False
+
+
+def register_incompleteness(rule_code: str, ontology_dataclass: OntologyDataClass, additional_message: str = ""):
+    """ Registers the ontology_dataclass incompleteness_info field and insert the rule in the detected_in list. """
+
+    if not incompleteness_already_registered(rule_code, ontology_dataclass):
+        LOGGER.warning(f"Incompleteness detected for class {ontology_dataclass.uri} in rule {rule_code}. "
+                       f"{additional_message}")
+
+    ontology_dataclass.incompleteness_info["is_incomplete"] = True
+    ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)

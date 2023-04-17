@@ -4,6 +4,10 @@ from datetime import datetime
 
 import psutil
 
+from scior.modules.logger_config import initialize_logger
+
+LOGGER = initialize_logger()
+
 
 def has_duplicates(input_list):
     """ Check if given list contains any duplicated element """

@@ -2,8 +2,8 @@
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
-from scior.modules.rules_type_implementations import register_incompleteness
 from scior.modules.utils_dataclass import get_dataclass_by_uri
+from scior.modules.utils_deficiencies import register_incompleteness
 
 LOGGER = initialize_logger()
 
@@ -16,15 +16,13 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], sele
     length_is_list = len(is_classes_list)
     length_can_list = len(can_classes_list)
 
-    # GENERAL CASES
-
     if length_is_list > 0:
         LOGGER.debug(f"Rule {rule_code} satisfied. No action is required.")
 
     elif length_can_list > 1:
-        # Incompleteness found. Reporting incompleteness and possibilities.
-        register_incompleteness(rule_code, selected_dataclass)
-        LOGGER.info(f"Solution: set one or more classes from {can_classes_list} as {types_to_set_list}.")
+        # Incompleteness found. Reporting incompleteness and possibilities (OR).
+        additional_message = f"Solution: set one or more classes from {can_classes_list} as {types_to_set_list}."
+        register_incompleteness(rule_code, selected_dataclass, additional_message)
 
     elif length_can_list == 1:
         # Set single candidate as desired types.
@@ -38,10 +36,11 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], sele
         candidate_dataclass.move_list_of_elements_to_is_list(types_to_set_list)
 
     elif length_can_list == 0:
-        # Report incompleteness
+        # Incompleteness found. Reporting incompleteness no known possibilities.
         if arguments["is_owa"]:
-            register_incompleteness(rule_code, selected_dataclass)
-            LOGGER.info(f"There are no known classes that can be set as {types_to_set_list} to satisfy the rule.")
+            additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
+                                 f"to satisfy the rule."
+            register_incompleteness(rule_code, selected_dataclass, additional_message)
 
         # Report inconsistency
         if arguments["is_cwa"]:

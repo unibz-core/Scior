@@ -1,5 +1,4 @@
 """ Implementation of rules for types. """
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 from scior.modules.user_interactions import select_class_from_list, print_class_types, \
     set_interactively_class_as_gufo_type
@@ -13,41 +12,14 @@ GUFO_KIND = "gufo:Kind"
 logger = initialize_logger()
 
 
-def check_incompleteness_registered(rule_code, ontology_dataclass):
-    """ Verifies if an incompleteness has already being registered/reported.
-
-        Returns True if the incompleteness for a specific rule has already been registered/reported.
-        Returns False otherwise.
-    """
-
-    if ontology_dataclass.incompleteness_info["is_incomplete"] and (
-            rule_code in ontology_dataclass.incompleteness_info["detected_in"]):
-        is_already_registered = True
-    else:
-        is_already_registered = False
-
-    return is_already_registered
-
-
-def register_incompleteness(rule_code: str, ontology_dataclass: OntologyDataClass):
-    """ Registers the ontology_dataclass incompleteness_info field and insert the rule in the detected_in list. """
-
-    # TODO (@pedropaulofb): Identify how to print incompleteness cases found without repetition.
-    if not ontology_dataclass.incompleteness_info["is_incomplete"]:
-        logger.warning(f"Incompleteness detected for class {ontology_dataclass.uri} in rule {rule_code}.")
-
-    ontology_dataclass.incompleteness_info["is_incomplete"] = True
-    ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)
-
-
 def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
     """ Implements rule n_r_t for types."""
     logger = initialize_logger()
 
     if configurations["is_complete"]:
         # ACTION: Report incompleteness
-        if GUFO_KIND in ontology_dataclass.can_type and not check_incompleteness_registered(rule_code,
-                                                                                            ontology_dataclass):
+        if GUFO_KIND in ontology_dataclass.can_type and not incompleteness_already_registered(rule_code,
+                                                                                              ontology_dataclass):
             logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                         f"The class {ontology_dataclass.uri} had no identity principle and now was set as a gufo:Kind.")
             ontology_dataclass.move_element_to_is_list(GUFO_KIND)
@@ -57,7 +29,7 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
                          f"however it cannot be. Program aborted.")
             print_class_types(ontology_dataclass)
             exit(1)
-    elif not check_incompleteness_registered(rule_code, ontology_dataclass):
+    elif not incompleteness_already_registered(rule_code, ontology_dataclass):
         logger.warning(f"Incompleteness detected during rule {rule_code}! "
                        f"There is no identity principle associated to the class {ontology_dataclass.uri}.")
         if (not configurations["is_automatic"]) and (GUFO_KIND in ontology_dataclass.can_type):
@@ -138,7 +110,7 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
     if number_necessary <= 0:
         return
 
-    if not check_incompleteness_registered(rule_code, ontology_dataclass):
+    if not incompleteness_already_registered(rule_code, ontology_dataclass):
         register_incompleteness(rule_code, ontology_dataclass)
 
         action = decide_action_rule_ns_s_spe(configurations, number_possibilities, number_necessary)
@@ -205,7 +177,7 @@ def treat_rule_nk_k_sup(rule_code, ontology_dataclass, list_ontology_dataclasses
         if GUFO_KIND in possible_kind_can:
             list_possibilities.append(possible_kind)
 
-    if not check_incompleteness_registered(rule_code, ontology_dataclass):
+    if not incompleteness_already_registered(rule_code, ontology_dataclass):
         register_incompleteness(rule_code, ontology_dataclass)
 
         logger.warning(f"Incompleteness detected during rule {rule_code}! "
@@ -245,7 +217,7 @@ def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, config
     if len(all_superclasses) != 0:
         return
 
-    if not check_incompleteness_registered(rule_code, ontology_dataclass):
+    if not incompleteness_already_registered(rule_code, ontology_dataclass):
         register_incompleteness(rule_code, ontology_dataclass)
 
         logger.warning(f"Incompleteness detected during rule {rule_code}! "
@@ -306,7 +278,7 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
                          f"Program aborted.")
             exit(1)
 
-    if not check_incompleteness_registered(rule_code, ontology_dataclass):
+    if not incompleteness_already_registered(rule_code, ontology_dataclass):
         register_incompleteness(rule_code, ontology_dataclass)
 
         # All conditions are met. Perform possible actions.
@@ -347,7 +319,7 @@ def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass
             siblings_list.remove(ontology_dataclass.uri)
             number_siblings = len(siblings_list)
 
-        if not check_incompleteness_registered(rule_code, ontology_dataclass):
+        if not incompleteness_already_registered(rule_code, ontology_dataclass):
             register_incompleteness(rule_code, ontology_dataclass)
 
             if number_siblings == 0:

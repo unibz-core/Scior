@@ -1,9 +1,11 @@
 """ Implementation of rules from the group UFO Unique. """
+
 from rdflib import RDFS, URIRef
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
-from scior.modules.rules_type_implementations import register_incompleteness
+from scior.modules.utils_dataclass import get_dataclass_by_uri
+from scior.modules.utils_deficiencies import register_incompleteness
 
 LOGGER = initialize_logger()
 
@@ -16,48 +18,59 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
     length_is_list = len(is_classes_list)
     length_can_list = len(can_classes_list)
 
-    # GENERAL CASES
-
-    # If is_exists_one, then no more can be allowed. Reports error if more than one.
     if length_is_list > 1:
-        LOGGER.error(f"Error detected in rule {rule_code}. "
-                     f"Class {selected_dataclass.uri} was expected only one from: ({is_classes_list}). "
+        # report inconsistency
+        LOGGER.error(f"Inconsistency found for rule {rule_code} when analyzing {selected_dataclass.uri}. "
+                     f"A unique class was expected, but {length_is_list} were found ({is_classes_list}). "
                      f"Program aborted.")
-        raise Exception(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
+        raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
 
-    # If is_exists_one, then if this one is found, no more can be allowed. Move all other elements to not list.
-    elif length_is_list == 1:
-        # Only need to move if there are elements to be moved.
-        if length_can_list != 0:
-            for ontology_dataclass_sub in ontology_dataclass_list:
-                if ontology_dataclass_sub.uri in can_classes_list:
-                    ontology_dataclass_sub.move_list_of_elements_to_not_list(types_to_set_list)
 
-    # OWA CASES (length_is_list == 0)
-    elif arguments["is_owa"]:
+    elif length_is_list == 1 and length_can_list > 0:
 
-        # if length_can_list > 0 and if interactive:
-        # TODO (@pedropaulofb): Implement interactive actions.
+        # Set all classes in can list as not type.
+        for can_class in can_classes_list:
+            candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_class)
 
-        if length_can_list == 0:
-            register_incompleteness(rule_code, selected_dataclass)
+            if candidate_dataclass is None:
+                LOGGER.error(f"Unexpected situation. Searched URI {can_class} "
+                             f"not found in ontology_dataclass_list. Program aborted.")
+                raise ValueError(f"INVALID VALUE!")
 
-    # CWA CASES (length_is_list == 0)
-    elif arguments["is_cwa"]:
+            candidate_dataclass.move_list_of_elements_to_not_list(types_to_set_list)
 
-        # if length_can_list > 1 and if interactive:
-        # TODO (@pedropaulofb): Implement interactive actions.
+    elif length_is_list == 0 and length_can_list > 1:
+        # Incompleteness found. Reporting incompleteness and possibilities (XOR).
+        additional_message = f"Solution: set exactly one class from {can_classes_list} as {types_to_set_list}."
+        register_incompleteness(rule_code, selected_dataclass, additional_message)
 
-        if length_can_list == 1:
-            for ontology_dataclass_sub in ontology_dataclass_list:
-                if ontology_dataclass_sub.uri == can_classes_list[0]:
-                    ontology_dataclass_sub.move_list_of_elements_to_is_list(types_to_set_list)
+    elif length_is_list == 0 and length_can_list == 1:
+        # Set class in can list as type.
+        candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
 
-        elif length_can_list == 0:
-            LOGGER.error(f"Error detected in rule {rule_code}. "
-                         f"Class {selected_dataclass.uri} was expected exactly one type but no possibility was found. "
-                         f"Program aborted.")
-            raise Exception(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
+        if candidate_dataclass is None:
+            LOGGER.error(f"Unexpected situation. Searched URI {can_classes_list[0]} "
+                         f"not found in ontology_dataclass_list. Program aborted.")
+            raise ValueError(f"INVALID VALUE!")
+
+        candidate_dataclass.move_list_of_elements_to_is_list(types_to_set_list)
+
+    elif length_is_list == 0 and length_can_list == 0:
+        # Incompleteness found. Reporting incompleteness no known possibilities.
+        if arguments["is_owa"]:
+            additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
+                                 f"to satisfy the rule."
+            register_incompleteness(rule_code, selected_dataclass, additional_message)
+
+        # Report inconsistency.
+        if arguments["is_cwa"]:
+            LOGGER.error(f"Error detected in rule {rule_code} for class {selected_dataclass.uri}. "
+                         f"There are no asserted classes that satisfy the rule. Program aborted.")
+            raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
+
+    else:
+        LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached. Program aborted.")
+        raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
 
 
 def run_r28rg(ontology_dataclass_list, ontology_graph, arguments):
@@ -108,4 +121,3 @@ def execute_rules_ufo_specific(ontology_dataclass_list, ontology_graph, argument
     run_r28rg(ontology_dataclass_list, ontology_graph, arguments)
 
     LOGGER.debug("Execution of all rules from group UFO Unique completed.")
-
