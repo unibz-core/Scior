@@ -10,7 +10,7 @@ logger = initialize_logger()
 
 def treat_specific_ufo_result(ontology_dataclass_list: list[OntologyDataClass], sortal_dataclass: OntologyDataClass,
                               can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
-                              rule_code: str, arguments) -> None:
+                              rule_code: str, arguments: dict, is_exists_one: bool = False) -> None:
     """ Treats the results from all rules from the group UFO Specific.
 
     Two lists are received as parameters:
@@ -36,7 +36,7 @@ def treat_specific_ufo_result(ontology_dataclass_list: list[OntologyDataClass], 
 
     # GENERAL CASES
 
-    if len_is_list > 1:
+    if is_exists_one and len_is_list > 1:
         logger.error(f"Error detected in rule {rule_code}. "
                      f"Class {sortal_dataclass.uri} was expected only one from: ({is_classes_list}). Program aborted.")
         raise Exception(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
@@ -75,15 +75,15 @@ def treat_specific_ufo_result(ontology_dataclass_list: list[OntologyDataClass], 
             raise Exception(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
 
 
-def run_r28cs(ontology_dataclass_list, ontology_graph, arguments):
-    """ Executes rule R28Cs from group UFO.
+def run_r28rg(ontology_dataclass_list, ontology_graph, arguments):
+    """ Executes rule R28Rg from group UFO.
 
-    Code: R28Cs
-    Definition: E! y (Sortal(x) ^ subClassOf (x,y) -> Kind(y))
-    Description: Every Sortal must have a unique identity provider, i.e., a single Kind.
+    Code: R28Rg
+    Definition: Sortal(x) -> E! y (subClassOf (x,y) ^ Kind(y))
+    Description: Every Sortal must have a unique identity provider, i.e., a single Kind as supertype.
     """
 
-    rule_code = "R28Cs"
+    rule_code = "R28Rg"
 
     logger.debug(f"Starting rule {rule_code}")
 
@@ -109,10 +109,10 @@ def run_r28cs(ontology_dataclass_list, ontology_graph, arguments):
 
             # Removing all superclasses that are not Kinds
             for ontology_dataclass_sub in ontology_dataclass_list:
-                # Creating list of supertypes that can be Kind
+                # Creating list of supertypes that CAN BE Kind
                 if (ontology_dataclass_sub.uri in all_supertypes) and ("Kind" in ontology_dataclass_sub.can_type):
                     can_kind_supertypes.append(ontology_dataclass_sub.uri)
-                # Creating list of supertypes that are Kind
+                # Creating list of supertypes that ARE Kind
                 if (ontology_dataclass_sub.uri in all_supertypes) and ("Kind" not in ontology_dataclass_sub.is_type):
                     is_kind_supertypes.remove(ontology_dataclass_sub.uri)
 
@@ -121,7 +121,59 @@ def run_r28cs(ontology_dataclass_list, ontology_graph, arguments):
             # print(f"{is_kind_supertypes =}")
 
             treat_specific_ufo_result(ontology_dataclass_list, ontology_dataclass, can_kind_supertypes,
-                                      is_kind_supertypes, ["Kind"], rule_code, arguments)
+                                      is_kind_supertypes, ["Kind"], rule_code, arguments, is_exists_one=True)
+
+    logger.debug(f"Rule {rule_code} concluded")
+
+
+def run_r24rg(ontology_dataclass_list, ontology_graph, arguments):
+    """ Executes rule R24Rg from group UFO.
+
+    Code: R24Rg
+    Definition: AntiRigidType(x) ^ Sortal(x) ^ Category(y) ^ subClassOf(x,y) ->
+                    E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
+    Description: AntiRigid Sortals cannot "only directly specialize" Categories.
+    """
+
+    rule_code = "R24Rg"
+
+    logger.debug(f"Starting rule {rule_code}")
+
+    # for ontology_dataclass in ontology_dataclass_list:
+    #     all_supertypes = []
+    #     can_kind_supertypes = []
+    #
+    #     # For every Sortal
+    #     if "Sortal" in ontology_dataclass.is_type:
+    #
+    #         # # TODO (@pedropaulofb): Remove test.
+    #         # if "R28Cs" not in ontology_dataclass.uri:
+    #         #     continue
+    #         #
+    #         # print()
+    #         # print(ontology_dataclass.uri)
+    #
+    #         # Creating a list of all superclasses
+    #         for superclass in ontology_graph.objects(URIRef(ontology_dataclass.uri), RDFS.subClassOf):
+    #             all_supertypes.append(superclass.toPython())
+    #
+    #         is_kind_supertypes = all_supertypes.copy()
+    #
+    #         # Removing all superclasses that are not Kinds
+    #         for ontology_dataclass_sub in ontology_dataclass_list:
+    #             # Creating list of supertypes that CAN BE Kind
+    #             if (ontology_dataclass_sub.uri in all_supertypes) and ("Kind" in ontology_dataclass_sub.can_type):
+    #                 can_kind_supertypes.append(ontology_dataclass_sub.uri)
+    #             # Creating list of supertypes that ARE Kind
+    #             if (ontology_dataclass_sub.uri in all_supertypes) and ("Kind" not in ontology_dataclass_sub.is_type):
+    #                 is_kind_supertypes.remove(ontology_dataclass_sub.uri)
+    #
+    #         # print(f"{all_supertypes =}")
+    #         # print(f"{can_kind_supertypes =}")
+    #         # print(f"{is_kind_supertypes =}")
+    #
+    #         treat_specific_ufo_result(ontology_dataclass_list, ontology_dataclass, can_kind_supertypes,
+    #                                   is_kind_supertypes, ["Kind"], rule_code, arguments)
 
     logger.debug(f"Rule {rule_code} concluded")
 
@@ -129,14 +181,4 @@ def run_r28cs(ontology_dataclass_list, ontology_graph, arguments):
 def execute_rules_ufo_specific(ontology_dataclass_list, ontology_graph, arguments):
     """Executes all rules of the UFO Specific group."""
 
-    run_r28cs(ontology_dataclass_list, ontology_graph, arguments)
-
-# R24Cs: E! z (AntiRigidType(x) ^ Sortal(x) ^ Category(y) ^ subClassOf(x,y) ^ subClassOf(x,z) ^ subClassOf(z,y) -> RigidType(z) ^ Sortal(z))
-# R25Cs1: E! z (Mixin(x) ^ subClassOf(y,x) ^ RigidType(y) ^ subClassOf(z,x) -> AntiRigidType(z))
-# R25Cs2: E! y (Mixin(x) ^ subClassOf(y,x) ^ AntiRigidType(z) ^ subClassOf(z,x) -> RigidType(y))
-# R29Cs: E! z (shareKind(x,y) ^ subClassOf(x,z) ^ subClassOf(y,z) -> Kind(z))
-# R31Cs: E! y, z (y != z ^ NonSortal(x) ^ ~shareKind(y,z) ^ (subClassOf(y,x) v shareSuperClass(x,y)) ^ (subClassOf(z,x) v shareSuperClass(x,z)) -> Sortal(y) ^ Sortal(z))
-# R34Cs: E! z (Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) ^ subClassOf(x,z) ^ subClassOf(z,y) -> Phase(z))
-# R35Cs: E! y (Phase(x) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x) -> Phase(y))
-# R36Cs: E! y (PhaseMixin(x) ^ isSubClassOf(x,y) -> Category (y))
-# R37Cs: E! z (PhaseMixin(x) ^ Category(y) ^ subClassOf(x,y) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^ isSubClassOf(z,y) -> PhaseMixin(z))
+    run_r28rg(ontology_dataclass_list, ontology_graph, arguments)
