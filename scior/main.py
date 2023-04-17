@@ -153,3 +153,4 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
 # TODO (@pedropaulofb): Add syntax validation feature.
+# TODO (@pedropaulofb): Implement interactive mode and light automatic.

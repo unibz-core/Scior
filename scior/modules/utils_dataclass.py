@@ -1,7 +1,10 @@
 """ Functions for Ontology Dataclasses """
 import operator
 
+from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
+
+LOGGER = initialize_logger()
 
 
 def generate_hash_ontology_dataclass_list(ontology_dataclass_list, hash_type="TOTAL"):
@@ -14,8 +17,7 @@ def generate_hash_ontology_dataclass_list(ontology_dataclass_list, hash_type="TO
 
     """
 
-    logger = initialize_logger()
-    logger.debug("Generating hash for the complete list of ontology dataclasses...")
+    LOGGER.debug("Generating hash for the complete list of ontology dataclasses...")
 
     total_hash = 0
 
@@ -23,7 +25,7 @@ def generate_hash_ontology_dataclass_list(ontology_dataclass_list, hash_type="TO
         class_hash = ontology_dataclass.create_hash(hash_type)
         total_hash += class_hash
 
-    logger.debug(
+    LOGGER.debug(
         f"Hash for the complete list of ontology dataclasses successfully created. Hash value is: {total_hash}")
 
     return total_hash
@@ -38,7 +40,6 @@ def get_list_gufo_classification(ontology_dataclass_list, list_uris, search_list
 
     global search_individual, search_type
 
-    logger = initialize_logger()
     return_list = []
 
     for ontology_dataclass in ontology_dataclass_list:
@@ -57,7 +58,7 @@ def get_list_gufo_classification(ontology_dataclass_list, list_uris, search_list
             search_type = ontology_dataclass.not_type
             search_individual = ontology_dataclass.not_individual
         else:
-            logger.error(f"Unexpected search list value {search_list}. Program aborted.")
+            LOGGER.error(f"Unexpected search list value {search_list}. Program aborted.")
             exit(1)
 
         if (gufo_element in search_type) or (gufo_element in search_individual):
@@ -68,8 +69,6 @@ def get_list_gufo_classification(ontology_dataclass_list, list_uris, search_list
 
 def get_element_list(ontology_dataclass_list, element, desired_list):
     """ Returns the list of known types for the inputted element (string). """
-
-    logger = initialize_logger()
 
     returned_object = None
 
@@ -97,12 +96,12 @@ def get_element_list(ontology_dataclass_list, element, desired_list):
                 break
             else:
                 # Error. List unknown.
-                logger.error(f"Could not return the unknown list {desired_list} for "
+                LOGGER.error(f"Could not return the unknown list {desired_list} for "
                              f"element {element}. Program aborted.")
                 exit(1)
     else:
         # Error. Element not found, report problem and exit program.
-        logger.error(f"Could not return list {desired_list} for the unknown element {element}. Program aborted.")
+        LOGGER.error(f"Could not return list {desired_list} for the unknown element {element}. Program aborted.")
         exit(1)
 
     return returned_object
@@ -129,8 +128,6 @@ def external_move_list_to_is_list(list_ontology_dataclasses, list_classes_to_mov
 def return_dataclass_from_class_name(list_ontology_dataclasses, class_name):
     """ Receives a class name and returns the corresponding dataclass element from the list of dataclasses. """
 
-    logger = initialize_logger()
-
     return_object = None
 
     for ontology_dataclass in list_ontology_dataclasses:
@@ -138,7 +135,7 @@ def return_dataclass_from_class_name(list_ontology_dataclasses, class_name):
             return_object = ontology_dataclass
             break
     else:
-        logger.error(f"Class {ontology_dataclass.uri} not found in the list of ontology dataclasses. Program aborted.")
+        LOGGER.error(f"Class {ontology_dataclass.uri} not found in the list of ontology dataclasses. Program aborted.")
         exit(1)
 
     return return_object
@@ -178,3 +175,16 @@ def sort_all_ontology_dataclass_list(ontology_dataclass_list):
         ontology_dataclass.is_individual.sort()
         ontology_dataclass.can_individual.sort()
         ontology_dataclass.not_individual.sort()
+
+
+def get_dataclass_by_uri(ontology_dataclass_list: list[OntologyDataClass],
+                         desired_uri: str) -> (OntologyDataClass | None):
+    """ Receives the complete ontology_dataclass_list and return the specific Ontology DataClass that has the
+    desired URI received as parameter or None, if this URI is not found. """
+
+    for ontology_dataclass in ontology_dataclass_list:
+        if ontology_dataclass.uri == desired_uri:
+            return ontology_dataclass
+
+    LOGGER.debug(f"No ontology_dataclass matches the desired URI.")
+    return None

@@ -3,8 +3,9 @@
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 from scior.modules.rules_type_implementations import register_incompleteness
+from scior.modules.utils_dataclass import get_dataclass_by_uri
 
-logger = initialize_logger()
+LOGGER = initialize_logger()
 
 
 def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], selected_dataclass: OntologyDataClass,
@@ -18,36 +19,39 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], sele
     # GENERAL CASES
 
     if length_is_list > 0:
-        logger.debug(f"Rule {rule_code} satisfied. No action is required.")
+        LOGGER.debug(f"Rule {rule_code} satisfied. No action is required.")
 
     elif length_can_list > 1:
         # Incompleteness found. Reporting incompleteness and possibilities.
         register_incompleteness(rule_code, selected_dataclass)
-        logger.info(f"Solution: set one or more classes from {can_classes_list} as {types_to_set_list}.")
+        LOGGER.info(f"Solution: set one or more classes from {can_classes_list} as {types_to_set_list}.")
 
     elif length_can_list == 1:
         # Set single candidate as desired types.
-        for ontology_dataclass_sub in ontology_dataclass_list:
-            if ontology_dataclass_sub.uri == can_classes_list[0]:
-                ontology_dataclass_sub.move_list_of_elements_to_is_list(types_to_set_list)
-                # There is only a single match. Added for performance issues.
-                break
+        candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
+
+        if candidate_dataclass is None:
+            LOGGER.error(f"Unexpected situation. Searched URI {can_classes_list[0]} "
+                         f"not found in ontology_dataclass_list. Program aborted.")
+            raise ValueError(f"INVALID VALUE!")
+
+        candidate_dataclass.move_list_of_elements_to_is_list(types_to_set_list)
 
     elif length_can_list == 0:
         # Report incompleteness
         if arguments["is_owa"]:
             register_incompleteness(rule_code, selected_dataclass)
-            logger.info(f"There are no known classes that can be set as {types_to_set_list} to satisfy the rule.")
+            LOGGER.info(f"There are no known classes that can be set as {types_to_set_list} to satisfy the rule.")
 
         # Report inconsistency
         if arguments["is_cwa"]:
-            logger.error(f"Error detected in rule {rule_code} for class {selected_dataclass.uri}. "
+            LOGGER.error(f"Error detected in rule {rule_code} for class {selected_dataclass.uri}. "
                          f"There are no asserted classes that satisfy the rule. Program aborted.")
-            raise Exception(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
+            raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
 
     else:
-        logger.error(f"Error detected in rule {rule_code}. Unexpected else clause reached. Program aborted.")
-        raise Exception(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
+        LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached. Program aborted.")
+        raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
 
 
 def run_r24rg(ontology_dataclass_list, ontology_graph, arguments):
@@ -61,7 +65,7 @@ def run_r24rg(ontology_dataclass_list, ontology_graph, arguments):
 
     rule_code = "R24Rg"
 
-    logger.debug(f"Starting rule {rule_code}")
+    LOGGER.debug(f"Starting rule {rule_code}")
 
     query_string = """
         PREFIX gufo: <http://purl.org/nemo/gufo#>
@@ -94,14 +98,14 @@ def run_r24rg(ontology_dataclass_list, ontology_graph, arguments):
                 treat_result_ufo_some(ontology_dataclass_list, ontology_dataclass, can_list, is_list,
                                       ["RigidType", "Sortal"], rule_code, arguments)
 
-    logger.debug(f"Rule {rule_code} concluded")
+    LOGGER.debug(f"Rule {rule_code} concluded")
 
 
 def execute_rules_ufo_specific(ontology_dataclass_list, ontology_graph, arguments):
     """Call execution all rules from the group UFO Some."""
 
-    logger.debug("Starting execution of all rules from group UFO Some.")
+    LOGGER.debug("Starting execution of all rules from group UFO Some.")
 
     run_r24rg(ontology_dataclass_list, ontology_graph, arguments)
 
-    logger.debug("Execution of all rules from group UFO Some completed.")
+    LOGGER.debug("Execution of all rules from group UFO Some completed.")

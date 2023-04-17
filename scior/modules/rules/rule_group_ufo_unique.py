@@ -5,7 +5,7 @@ from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 from scior.modules.rules_type_implementations import register_incompleteness
 
-logger = initialize_logger()
+LOGGER = initialize_logger()
 
 
 def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], selected_dataclass: OntologyDataClass,
@@ -20,7 +20,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
 
     # If is_exists_one, then no more can be allowed. Reports error if more than one.
     if length_is_list > 1:
-        logger.error(f"Error detected in rule {rule_code}. "
+        LOGGER.error(f"Error detected in rule {rule_code}. "
                      f"Class {selected_dataclass.uri} was expected only one from: ({is_classes_list}). "
                      f"Program aborted.")
         raise Exception(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
@@ -54,7 +54,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
                     ontology_dataclass_sub.move_list_of_elements_to_is_list(types_to_set_list)
 
         elif length_can_list == 0:
-            logger.error(f"Error detected in rule {rule_code}. "
+            LOGGER.error(f"Error detected in rule {rule_code}. "
                          f"Class {selected_dataclass.uri} was expected exactly one type but no possibility was found. "
                          f"Program aborted.")
             raise Exception(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
@@ -70,7 +70,7 @@ def run_r28rg(ontology_dataclass_list, ontology_graph, arguments):
 
     rule_code = "R28Rg"
 
-    logger.debug(f"Starting rule {rule_code}")
+    LOGGER.debug(f"Starting rule {rule_code}")
 
     for ontology_dataclass in ontology_dataclass_list:
         all_supertypes = []
@@ -97,15 +97,15 @@ def run_r28rg(ontology_dataclass_list, ontology_graph, arguments):
             treat_result_ufo_unique(ontology_dataclass_list, ontology_dataclass, can_kind_supertypes,
                                     is_kind_supertypes, ["Kind"], rule_code, arguments)
 
-    logger.debug(f"Rule {rule_code} concluded")
+    LOGGER.debug(f"Rule {rule_code} concluded")
 
 
 def execute_rules_ufo_specific(ontology_dataclass_list, ontology_graph, arguments):
     """Call execution of all rules from the group UFO Unique. """
 
-    logger.debug("Starting execution of all rules from group UFO Unique.")
+    LOGGER.debug("Starting execution of all rules from group UFO Unique.")
 
     run_r28rg(ontology_dataclass_list, ontology_graph, arguments)
 
-    logger.debug("Execution of all rules from group UFO Unique completed.")
+    LOGGER.debug("Execution of all rules from group UFO Unique completed.")
 
