@@ -4,8 +4,8 @@ from scior.modules.logger_config import initialize_logger
 from scior.modules.rules.rule_group_aux import execute_rules_aux
 from scior.modules.rules.rule_group_base import execute_rules_base
 from scior.modules.rules.rule_group_gufo import execute_gufo_rules
-from scior.modules.rules.rule_group_ufo_general import execute_rules_ufo_general
-from scior.modules.rules.rule_group_ufo_specific import execute_rules_ufo_specific
+from scior.modules.rules.rule_group_ufo_all import execute_rules_ufo_all
+from scior.modules.rules.rule_group_ufo_some import execute_rules_ufo_specific
 from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 logger = initialize_logger()
@@ -19,8 +19,9 @@ def execute_rules_types(ontology_dataclass_list, ontology_graph, arguments):
     # Groups of rules and their containing rules' codes. Base rules are not here included.
     list_rules_groups = ["rule_group_gufo",
                          "rule_group_aux",
-                         "rule_group_ufo_general",
-                         "rule_group_ufo_specific"]
+                         "rule_group_ufo_all",
+                         "rule_group_ufo_unique",
+                         "rule_group_ufo_some"]
 
     # Execute rule_group_base just once
     execute_rules_base(ontology_graph)
@@ -56,8 +57,8 @@ def switch_rule_group_execution(ontology_dataclass_list, ontology_graph, rule_gr
     elif rule_group_code == "rule_group_aux":
         execute_rules_aux(ontology_graph)
 
-    elif rule_group_code == "rule_group_ufo_general":
-        execute_rules_ufo_general(ontology_dataclass_list, ontology_graph)
+    elif rule_group_code == "rule_group_ufo_all":
+        execute_rules_ufo_all(ontology_dataclass_list, ontology_graph)
 
     elif rule_group_code == "rule_group_ufo_specific":
         execute_rules_ufo_specific(ontology_dataclass_list, ontology_graph, arguments)

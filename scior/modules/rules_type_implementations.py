@@ -32,8 +32,9 @@ def check_incompleteness_registered(rule_code, ontology_dataclass):
 def register_incompleteness(rule_code: str, ontology_dataclass: OntologyDataClass):
     """ Registers the ontology_dataclass incompleteness_info field and insert the rule in the detected_in list. """
 
+    # TODO (@pedropaulofb): Identify how to print incompleteness cases found without repetition.
     if not ontology_dataclass.incompleteness_info["is_incomplete"]:
-        logger.warning(f"Incompleteness detected for class {ontology_dataclass} in rule {rule_code}.")
+        logger.warning(f"Incompleteness detected for class {ontology_dataclass.uri} in rule {rule_code}.")
 
     ontology_dataclass.incompleteness_info["is_incomplete"] = True
     ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)

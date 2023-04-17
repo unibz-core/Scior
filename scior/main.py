@@ -152,3 +152,4 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Raise an exception for every new error.
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
+# TODO (@pedropaulofb): Add syntax validation feature.

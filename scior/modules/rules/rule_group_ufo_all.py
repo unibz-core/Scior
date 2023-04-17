@@ -1,4 +1,4 @@
-""" Implementation of caller/switcher for rules of group UFO. """
+""" Implementation of rules from the group UFO All. """
 
 from scior.modules.logger_config import initialize_logger
 
@@ -6,7 +6,7 @@ logger = initialize_logger()
 
 
 def run_r22cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R22Cg from group UFO.
+    """ Executes rule R22Cg from group UFO All.
 
     Code: R22Cg
     Definition: RigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
@@ -36,7 +36,7 @@ def run_r22cg(ontology_dataclass_list, ontology_graph):
 
 
 def run_r23cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R23Cg from group UFO.
+    """ Executes rule R23Cg from group UFO All.
 
     Code: R23Cg
     Definition: SemiRigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
@@ -66,7 +66,7 @@ def run_r23cg(ontology_dataclass_list, ontology_graph):
 
 
 def run_r26cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R26Cg from group UFO.
+    """ Executes rule R26Cg from group UFO All.
 
     Code: R26Cg
     Definition: x != y ^ Kind(x) ^ subClassOf(x,y) -> NonSortal(y)
@@ -101,7 +101,7 @@ def run_r26cg(ontology_dataclass_list, ontology_graph):
 
 
 def run_r27cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R27Cg from group UFO.
+    """ Executes rule R27Cg from group UFO All.
 
     Code: R27Cg
     Definition: NonSortal(x) ^ subClassOf(x,y) -> NonSortal(y)
@@ -131,7 +131,7 @@ def run_r27cg(ontology_dataclass_list, ontology_graph):
 
 
 def run_r32cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R32Cg from group UFO.
+    """ Executes rule R32Cg from group UFO All.
 
     Code: R32Cg
     Definition: Phase(x) ^ subClassOf(x,y) -> ~Role(y) ^ ~RoleMixin(y)
@@ -162,7 +162,7 @@ def run_r32cg(ontology_dataclass_list, ontology_graph):
 
 
 def run_r33cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R33Cg from group UFO.
+    """ Executes rule R33Cg from group UFO All.
 
     Code: R33Cg
     Definition: PhaseMixin(x) ^ subClassOf(x,y) -> ~RoleMixin(y)
@@ -191,10 +191,10 @@ def run_r33cg(ontology_dataclass_list, ontology_graph):
     logger.debug(f"Rule {rule_code} concluded")
 
 
-def execute_rules_ufo_general(ontology_dataclass_list, ontology_graph):
-    """Executes all rules of the UFO group."""
+def execute_rules_ufo_all(ontology_dataclass_list, ontology_graph):
+    """Call the execution of all rules from the group UFO All."""
 
-    logger.debug("Executing all rules from group AUX.")
+    logger.debug("Starting execution of all rules from group UFO All.")
 
     run_r22cg(ontology_dataclass_list, ontology_graph)
     run_r23cg(ontology_dataclass_list, ontology_graph)
@@ -203,17 +203,4 @@ def execute_rules_ufo_general(ontology_dataclass_list, ontology_graph):
     run_r32cg(ontology_dataclass_list, ontology_graph)
     run_r33cg(ontology_dataclass_list, ontology_graph)
 
-# TODO (@pedropaulofb): Implement CWA rules
-# R24Cs (CWA): E! z (AntiRigidType(x) ^ Sortal(x) ^ Category(y) ^ subClassOf(x,y) ^ subClassOf(x,z) ^ subClassOf(z,y) ->
-#           RigidType(z) ^ Sortal(z))
-# R25Cs1 (CWA): E! z (Mixin(x) ^ subClassOf(y,x) ^ RigidType(y) ^ subClassOf(z,x) -> AntiRigidType(z))
-# R25Cs2 (CWA): E! y (Mixin(x) ^ subClassOf(y,x) ^ AntiRigidType(z) ^ subClassOf(z,x) -> RigidType(y))
-# R28Cs (CWA): E! y (Sortal(x) ^ subClassOf (x,y) ->  Kind(y))
-# R29Cs (CWA): E! z (shareKind(x,y) ^ subClassOf(x,z) ^ subClassOf(y,z) -> Kind(z))
-# R31Cs (CWA): E! y, z (y != z ^ NonSortal(x) ^ ~shareKind(y,z) ^ (subClassOf(y,x) v shareSuperClass(x,y)) ^
-#           (subClassOf(z,x) v shareSuperClass(x,z)) -> Sortal(y) ^ Sortal(z))
-# R34Cs (CWA): E! z (Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) ^ subClassOf(x,z) ^ subClassOf(z,y) -> Phase(z))
-# R35Cs (CWA): E! y (Phase(x) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x) -> Phase(y))
-# R36Cs (CWA): E! y (PhaseMixin(x) ^ isSubClassOf(x,y) -> Category (y))
-# R37Cs (CWA): E! z (PhaseMixin(x) ^ Category(y) ^ subClassOf(x,y) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^
-#           isSubClassOf(z,y) -> PhaseMixin(z))
+    logger.debug("Execution of all rules from group UFO All completed.")
