@@ -9,7 +9,6 @@ from scior.modules.utils_deficiencies import register_incompleteness, report_err
 LOGGER = initialize_logger()
 
 
-# TODO (@pedropaulofb): Modify selected_dataclass to INCOMPLETE_CLASSES (and use all classes from the left side of the definition)! RULE 35 already OK!
 def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], evaluated_dataclass: OntologyDataClass,
                           can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
                           rule_code: str, arguments: dict) -> None:
@@ -22,7 +21,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
     can_classes_list.sort()
 
     if length_is_list > 0:
-        LOGGER.debug(f"Rule {rule_code} satisfied. No action is required.")
+        LOGGER.debug(f"Rule {rule_code} satisfied for {evaluated_dataclass.uri}. No action is required.")
 
     elif length_can_list > 1:
         # Incompleteness found. Reporting incompleteness and possibilities (OR).
@@ -223,6 +222,100 @@ def run_r25rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
+def run_r31rg1(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    description_ = """ Executes rule R31Rg1 from group UFO Some.
+
+    Code: R31Rg1
+    Definition: NonSortal(x) -> E y (Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)))
+    Description: NonSortals must be related to at least one Sortal that has a subClassOf or shareSuperClass
+                    relation with it.
+    """
+
+    rule_code = "R31Rg1"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    query_string_subclassof = """
+        PREFIX gufo: <http://purl.org/nemo/gufo#>
+        SELECT DISTINCT ?class_x ?class_y ?class_z
+        WHERE {
+            ?class_x rdf:type gufo:NonSortal .
+            ?class_y rdfs:subClassOf ?class_x .
+        } """
+
+    query_string_sharesuperclass = """
+        PREFIX gufo: <http://purl.org/nemo/gufo#>
+        PREFIX scior: <https://purl.org/scior/>
+        SELECT DISTINCT ?class_x ?class_y ?class_z
+        WHERE {
+            ?class_x rdf:type gufo:NonSortal .
+            ?class_x scior:shareSuperClass ?class_y .
+        } """
+
+    query_subclassof_result = ontology_graph.query(query_string_subclassof)
+    query_sharesuperclass_result = ontology_graph.query(query_string_sharesuperclass)
+
+    for row_subclassof in query_subclassof_result:
+        evaluated_class_subclassof = row_subclassof.class_x.toPython()
+
+        for row_sharesuperclass in query_sharesuperclass_result:
+            evaluated_class_sharesuperclass = row_sharesuperclass.class_x.toPython()
+
+            if evaluated_class_subclassof != evaluated_class_sharesuperclass:
+                continue
+
+            # Class to be completed or that may be incomplete
+            evaluated_class = evaluated_class_sharesuperclass
+            # Class that may be used to complete the evaluated_dataclass: via superClassOf
+            selected_class_superclassof = row_subclassof.class_y.toPython()
+            # Class that may be used to complete the evaluated_dataclass: via shareSuperClass
+            selected_class_sharesuperclass = row_sharesuperclass.class_y.toPython()
+
+            # ACRONYMS: sco = superClassOf, ssc = sharedSuperClass
+
+            evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+            if evaluated_dataclass is None:
+                report_error_dataclass_not_found(evaluated_class)
+
+            selected_dataclass_sco = get_dataclass_by_uri(ontology_dataclass_list, selected_class_superclassof)
+            if selected_dataclass_sco is None:
+                report_error_dataclass_not_found(selected_class_superclassof)
+
+            selected_dataclass_ssc = get_dataclass_by_uri(ontology_dataclass_list, selected_class_sharesuperclass)
+            if selected_dataclass_ssc is None:
+                report_error_dataclass_not_found(selected_class_sharesuperclass)
+
+            is_list_sco = []
+            can_list_sco = []
+
+            is_list_ssc = []
+            can_list_ssc = []
+
+            # Creating IS List: via superClassOf
+            if "Sortal" in selected_dataclass_sco.is_type:
+                is_list_sco.append(selected_dataclass_sco.uri)
+
+            # Creating CAN List
+            elif "Sortal" in selected_dataclass_sco.can_type:
+                can_list_sco.append(selected_dataclass_sco.uri)
+
+            # Creating IS List: via superClassOf
+            if "Sortal" in selected_dataclass_sco.is_type:
+                is_list_ssc.append(selected_dataclass_sco.uri)
+
+            # Merging lists
+            is_list = is_list_sco + is_list_ssc
+            can_list = can_list_sco + can_list_ssc
+            # Removing duplicates
+            is_list = list(set(is_list))
+            can_list = list(set(can_list))
+
+            treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Sortal"],
+                                  rule_code, arguments)
+
+    LOGGER.debug(f"Rule {rule_code} concluded.")
+
+
 def run_r34rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
     """ Executes rule R34Rg from group UFO Some.
 
@@ -274,8 +367,8 @@ def run_r34rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         elif "Phase" in selected_dataclass.can_type:
             can_list.append(selected_dataclass.uri)
 
-        treat_result_ufo_some(ontology_dataclass_list, evaluated_class, can_list, is_list, ["Phase"],
-                              rule_code, arguments)
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Phase"], rule_code,
+                              arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -343,8 +436,8 @@ def run_r35rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
             elif "Phase" in selected_dataclass.can_type:
                 can_list.append(selected_dataclass.uri)
 
-            treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Phase"],
-                                  rule_code, arguments)
+            treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Phase"], rule_code,
+                                  arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -397,8 +490,8 @@ def run_r36rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         elif "Category" in selected_dataclass.can_type:
             can_list.append(selected_dataclass.uri)
 
-        treat_result_ufo_some(ontology_dataclass_list, evaluated_class, can_list, is_list, ["Category"],
-                              rule_code, arguments)
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Category"], rule_code,
+                              arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -478,7 +571,8 @@ def run_r37rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def execute_rules_ufo_some(ontology_dataclass_list, ontology_graph, arguments):
+def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+                           arguments: dict) -> None:
     """Call execution all rules from the group UFO Some."""
 
     LOGGER.debug("Starting execution of all rules from group UFO Some.")
@@ -486,6 +580,8 @@ def execute_rules_ufo_some(ontology_dataclass_list, ontology_graph, arguments):
     run_r24rg(ontology_dataclass_list, ontology_graph, arguments)
     run_r25rg1(ontology_dataclass_list, ontology_graph, arguments)
     run_r25rg2(ontology_dataclass_list, ontology_graph, arguments)
+    run_r31rg1(ontology_dataclass_list, ontology_graph, arguments)
+    # run_r31rg2(ontology_dataclass_list, ontology_graph, arguments)
     run_r34rg(ontology_dataclass_list, ontology_graph, arguments)
     run_r35rg(ontology_dataclass_list, ontology_graph, arguments)
     run_r36rg(ontology_dataclass_list, ontology_graph, arguments)

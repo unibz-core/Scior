@@ -9,7 +9,7 @@ from scior.modules.dataclass_verifications import verify_duplicates_in_lists_ont
 from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_general import lists_intersection
 
-logger = initialize_logger()
+LOGGER = initialize_logger()
 
 
 @dataclass
@@ -38,27 +38,25 @@ class OntologyDataClass(object):
         verify_multiple_final_classifications_for_types(self)
 
     def clear_incompleteness(self):
-        "When a user define the type of the dataclass, its incompleteness status must be set to its initial state."
+        """When a user define the type of the dataclass, its incompleteness status must be set to its initial state."""
 
         self.incompleteness_info["is_incomplete"] = False
         self.incompleteness_info["detected_in"] = []
 
-    def move_element_between_lists(self, element, source_list, target_list):
+    def move_element_between_lists(self, element: str, source_list: str, target_list: str, invoker_rule: str):
         """ Move an element between two lists in the same OntologyClass
             Elements can only be moved from CAN lists to IS or NOT lists
         """
 
-        logger.debug(
-            f"Starting to move element {element} from {source_list} list to {target_list} list in {self.uri}...")
-
-        source = []
-        target = []
+        LOGGER.debug(f"Rule {invoker_rule}: Starting to move gUFO classification {element} from {source_list} list "
+                     f"to {target_list} list in {self.uri}...")
 
         # VERIFICATION 1: Source and target lists must be different
         if source_list == target_list:
-            logger.error(f"Error for {self.uri} when trying to move {element} from list {source_list} "
-                         f"to list {target_list}. Source equals target list. Program aborted.")
-            exit(1)
+            LOGGER.error(f"Rule {invoker_rule}: Error for {self.uri} when trying to move the gUFO classification "
+                         f"{element} from list {source_list} to list {target_list}. "
+                         f"Source equals target list. Program aborted.")
+            raise ValueError(f"INCONSISTENCY FOUND!")
 
         # VERIFICATION 2: Only CAN lists are allowed as source list
         if source_list == "can_type":
@@ -66,9 +64,10 @@ class OntologyDataClass(object):
         elif source_list == "can_individual":
             source = self.can_individual
         else:
-            logger.error(f"Error for {self.uri} when trying to move {element} from list {source_list} "
-                         f"to list {target_list}. Source list {source_list} is unknown. Program aborted.")
-            exit(1)
+            LOGGER.error(
+                f"Rule {invoker_rule}: Error for {self.uri} when trying to move the gUFO classification {element} from "
+                f"list {source_list} to list {target_list}. Source list {source_list} is unknown. Program aborted.")
+            raise ValueError(f"INCONSISTENCY FOUND!")
 
         # VERIFICATION 3: Only IS or NOT lists are allowed as target list
         if target_list == "is_type":
@@ -80,28 +79,30 @@ class OntologyDataClass(object):
         elif target_list == "not_individual":
             target = self.not_individual
         else:
-            logger.error(f"Error for {self.uri} when trying to move {element} from list {source_list} "
-                         f"to list {target_list}. Target list {target_list} is unknown. Program aborted.")
-            exit(1)
+            LOGGER.error(
+                f"Rule {invoker_rule}: Error for {self.uri} when trying to move the gUFO classification {element} from "
+                f"list {source_list} to list {target_list}. Target list {target_list} is unknown. Program aborted.")
+            raise ValueError(f"INCONSISTENCY FOUND!")
 
         # VERIFICATION 4: Element must be in source list
         if element not in source:
-            logger.error(f"Error for {self.uri} when trying to move {element} from list {source_list} "
-                         f"to list {target_list}. The element {element} to be moved was not found "
-                         f"in {source_list}. Program aborted.")
-            exit(1)
+            LOGGER.error(
+                f"Rule {invoker_rule}: Error for {self.uri} when trying to move the gUFO classification {element} from "
+                f"list {source_list} to list {target_list}. The classification was not found in {source_list}. "
+                f"Program aborted.")
+            raise ValueError(f"INCONSISTENCY FOUND!")
 
-        # Move element
+        # move gUFO classification
         source.remove(element)
         target.append(element)
 
         # Performs consistency check
         self.is_consistent()
 
-        logger.debug(f"Element {element} moved successfully from list {source_list} "
+        LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} moved successfully from list {source_list} "
                      f"to list {target_list} in {self.uri}.")
 
-    def move_element_to_is_list(self, element):
+    def move_element_to_is_list(self, element: str, invoker_rule: str):
         """ Check if the element to be moved is a type or instance
                 and move it from the corresponding CAN to the corresponding IS list.
 
@@ -116,23 +117,24 @@ class OntologyDataClass(object):
         source_list = self.return_containing_list_name(element)
 
         if source_list == "is_type" or source_list == "is_individual":
-            logger.debug(f"Element {element} already in {source_list} for {self.uri}. No moving is necessary.")
+            LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} already in {source_list} for {self.uri}. "
+                         f"No moving is necessary.")
         else:
             if source_list == "can_type":
                 target_list = "is_type"
             elif source_list == "can_individual":
                 target_list = "is_individual"
             else:
-                logger.error(f"Inconsistency found. Error when trying to move the element {element} to the IS LIST "
-                             f"in {self.uri}. The element was not found in the CAN list. Program aborted.")
-                raise Exception("INCONSISTENCY FOUND!")
+                LOGGER.error(f"Rule {invoker_rule}: Error when trying to move the gUFO classification {element} "
+                             f"to the IS LIST in {self.uri}. The classification is in its NOT LIST. Program aborted.")
+                raise ValueError("INCONSISTENCY FOUND!")
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
-            self.move_element_between_lists(element, source_list, target_list)
+            self.move_element_between_lists(element, source_list, target_list, invoker_rule)
             self.clear_incompleteness()
             self.verify_final_type_classification()
 
-    def move_element_to_not_list(self, element):
+    def move_element_to_not_list(self, element: str, invoker_rule: str):
         """ Check if the element to be moved is a type or instance
                 and move it from the corresponding CAN to the corresponding NOT list.
 
@@ -147,38 +149,37 @@ class OntologyDataClass(object):
         source_list = self.return_containing_list_name(element)
 
         if source_list == "not_type" or source_list == "not_individual":
-            logger.debug(f"Element {element} already in {source_list} for {self.uri}. No moving is necessary.")
+            LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} already in {source_list} for {self.uri}. "
+                         f"No moving is necessary.")
         else:
             if source_list == "can_type":
                 target_list = "not_type"
             elif source_list == "can_individual":
                 target_list = "not_individual"
             else:
-                logger.error(f"When trying to move the element {element} to the NOT LIST in {self.uri}. "
-                             f"The element was not found in the CAN list. Program aborted.")
-                raise Exception("INCONSISTENCY FOUND!")
+                LOGGER.error(f"Rule {invoker_rule}: Error when trying to move the gUFO classification {element} "
+                             f"to the NOT LIST in {self.uri}. The classification is in its IS LIST. Program aborted.")
+                raise ValueError("INCONSISTENCY FOUND!")
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
-            self.move_element_between_lists(element, source_list, target_list)
+            self.move_element_between_lists(element, source_list, target_list, invoker_rule)
 
-    def move_list_of_elements_to_is_list(self, elem_list: list[str]):
+    def move_list_of_elements_to_is_list(self, elem_list: list[str], invoker_rule: str):
         """ Moves a list of elements to the IS list. Analogous to move_list_of_elements_to_not_list function.
         This is a specific case of the move_element_to_is_list function. """
 
         for elem in elem_list:
-            self.move_element_to_is_list(elem)
+            self.move_element_to_is_list(elem, invoker_rule)
 
-    def move_list_of_elements_to_not_list(self, elem_list: list[str]):
+    def move_list_of_elements_to_not_list(self, elem_list: list[str], invoker_rule: str):
         """ Moves a list of elements to the NOT list. Analogous to move_list_of_elements_to_is_list function.
         This is a specific case of the move_element_to_not_list function. """
 
         for elem in elem_list:
-            self.move_element_to_not_list(elem)
+            self.move_element_to_not_list(elem, invoker_rule)
 
     def return_containing_list_name(self, element):
         """ Verify to which of the dataclass lists the element belongs and returns the list name. """
-
-        containing_list_name = "not set"
 
         if element in self.is_type:
             containing_list_name = "is_type"
@@ -193,8 +194,8 @@ class OntologyDataClass(object):
         elif element in self.not_individual:
             containing_list_name = "not_individual"
         else:
-            logger.error(f"Element {element} does not belong to any list for {self.uri}. Program aborted.")
-            exit(1)
+            LOGGER.error(f"gUFO classification {element} does not belong to any list for {self.uri}. Program aborted.")
+            raise ValueError(f"INCONSISTENCY FOUND!")
 
         return containing_list_name
 
@@ -213,7 +214,6 @@ class OntologyDataClass(object):
         """
 
         partial_hash = input_list
-        list_hash = "not set"
 
         if input_list == "is_type":
             list_hash = self.is_type
@@ -228,8 +228,8 @@ class OntologyDataClass(object):
         elif input_list == "not_individual":
             list_hash = self.not_individual
         else:
-            logger.error(f"Unknown list type {input_list}. Unable to create hash. Program aborted.")
-            exit(1)
+            LOGGER.error(f"Unknown list type {input_list}. Unable to create hash. Program aborted.")
+            raise ValueError(f"INCONSISTENCY FOUND!")
 
         for hash_part in list_hash:
             partial_hash += hash_part
@@ -267,8 +267,8 @@ class OntologyDataClass(object):
             hash_can_individual = self.create_partial_hash("can_individual")
             hash_not_individual = self.create_partial_hash("not_individual")
 
-        class_hash = self.uri + hash_is_type + hash_is_individual + hash_can_type + \
-                     hash_can_individual + hash_not_type + hash_not_individual
+        class_hash = self.uri + hash_is_type + hash_is_individual + hash_can_type + hash_can_individual + \
+                     hash_not_type + hash_not_individual
 
         # Used for generating fix hashes
         enc_hash = class_hash.encode('utf-8')
@@ -286,27 +286,23 @@ class OntologyDataClass(object):
         Justification can be found here: https://github.com/nemo-ufes/gufo/issues/7
         """
 
-        type_leaf_classifications = ["Category",
-                                     "Kind",
-                                     "Mixin",
-                                     "Phase",
-                                     "PhaseMixin",
-                                     "Role",
-                                     "RoleMixin",
-                                     "SubKind"]
+        rule_code = "verify_final_type_classification"
+
+        type_leaf_classifications = ["Category", "Kind", "Mixin", "Phase", "PhaseMixin", "Role", "RoleMixin", "SubKind"]
 
         # Verification 1 (single leaf classification in can_list)
         if len(self.can_type) > 0:
             can_intersection_list = lists_intersection(type_leaf_classifications, self.can_type)
             if len(can_intersection_list) == 1:
-                self.move_element_to_is_list(can_intersection_list[0])
+                self.move_element_to_is_list(can_intersection_list[0], rule_code)
 
         # Verification 2 (leaf classification in is_list)
         is_intersection_list = lists_intersection(type_leaf_classifications, self.is_type)
         if len(is_intersection_list) == 1:
             for leaf_classification in type_leaf_classifications:
                 if leaf_classification not in is_intersection_list:
-                    self.move_element_to_not_list(leaf_classification)
+                    self.move_element_to_not_list(leaf_classification, rule_code)
         elif len(is_intersection_list) > 1:
-            logger.error(f"Consistency violation for class {self.uri}. "
+            LOGGER.error(f"Consistency violation for class {self.uri}. "
                          f"More than one leaf classifications ({is_intersection_list}) in its is_type list.")
+            raise ValueError("INCONSISTENCY FOUND!")
