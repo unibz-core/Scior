@@ -1,12 +1,12 @@
 """ Implementation of caller/switcher for rules of group GUFO. """
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
+
 from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 LOGGER = initialize_logger()
 
 
-def loop_execute_gufo_rules(ontology_dataclass_list: list[OntologyDataClass]):
+def loop_execute_gufo_rules(ontology_dataclass_list):
     """ Executes in loop all rules of the GUFO group."""
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
@@ -26,7 +26,7 @@ def loop_execute_gufo_rules(ontology_dataclass_list: list[OntologyDataClass]):
             LOGGER.debug("Final hash does not equals initial hash for the dataclass list. Re-executing rules.")
 
 
-def execute_gufo_rules(ontology_dataclass_list: list[OntologyDataClass]):
+def execute_gufo_rules(ontology_dataclass_list):
     """ Executes once all rules of the GUFO group."""
 
     LOGGER.debug("Executing all rules from group gUFO.")

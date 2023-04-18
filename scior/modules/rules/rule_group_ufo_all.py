@@ -36,9 +36,9 @@ def run_r22cg(ontology_dataclass_list, ontology_graph):
             LOGGER.error(f"Unexpected situation. Class {row.class_y.toPython()} not found. Program aborted.")
 
         ontology_dataclass.move_classification_to_not_list("AntiRigidType", rule_code)
+        loop_execute_gufo_rules(ontology_dataclass_list)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
-    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r23cg(ontology_dataclass_list, ontology_graph):
@@ -67,9 +67,9 @@ def run_r23cg(ontology_dataclass_list, ontology_graph):
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
                 ontology_dataclass.move_classification_to_not_list("AntiRigidType", rule_code)
+                loop_execute_gufo_rules(ontology_dataclass_list)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
-    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r26cg(ontology_dataclass_list, ontology_graph):
@@ -103,9 +103,9 @@ def run_r26cg(ontology_dataclass_list, ontology_graph):
     for ontology_dataclass in ontology_dataclass_list:
         if ontology_dataclass.uri in result:
             ontology_dataclass.move_classification_to_is_list("NonSortal", rule_code)
+            loop_execute_gufo_rules(ontology_dataclass_list)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
-    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r27cg(ontology_dataclass_list, ontology_graph):
@@ -134,9 +134,9 @@ def run_r27cg(ontology_dataclass_list, ontology_graph):
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
                 ontology_dataclass.move_classification_to_is_list("NonSortal", rule_code)
+                loop_execute_gufo_rules(ontology_dataclass_list)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
-    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r32cg(ontology_dataclass_list, ontology_graph):
@@ -165,10 +165,11 @@ def run_r32cg(ontology_dataclass_list, ontology_graph):
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
                 ontology_dataclass.move_classification_to_not_list("Role", rule_code)
+                loop_execute_gufo_rules(ontology_dataclass_list)
                 ontology_dataclass.move_classification_to_not_list("RoleMixin", rule_code)
+                loop_execute_gufo_rules(ontology_dataclass_list)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
-    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r33cg(ontology_dataclass_list, ontology_graph):
@@ -197,9 +198,9 @@ def run_r33cg(ontology_dataclass_list, ontology_graph):
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
                 ontology_dataclass.move_classification_to_not_list("RoleMixin", rule_code)
+                loop_execute_gufo_rules(ontology_dataclass_list)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
-    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def execute_rules_ufo_all(ontology_dataclass_list, ontology_graph):

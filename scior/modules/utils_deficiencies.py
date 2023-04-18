@@ -32,7 +32,7 @@ def register_incompleteness(rule_code: str, ontology_dataclass: OntologyDataClas
     """ Registers the ontology_dataclass incompleteness_info field and insert the rule in the detected_in list. """
 
     if not incompleteness_already_registered(rule_code, ontology_dataclass):
-        LOGGER.warning(f"Incompleteness detected for class {ontology_dataclass.uri} in rule {rule_code}. "
+        LOGGER.warning(f"Rule {rule_code}: Incompleteness detected for class {ontology_dataclass.uri}. "
                        f"{additional_message}")
         ontology_dataclass.incompleteness_info["is_incomplete"] = True
         ontology_dataclass.incompleteness_info["detected_in"].append(rule_code)

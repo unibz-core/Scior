@@ -3,6 +3,7 @@ import copy
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
+from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 from scior.modules.utils_rdf import get_list_of_all_classes
 
@@ -159,6 +160,7 @@ def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
             raise ValueError("EXECUTION INCONSISTENCY!")
 
         receptor_dataclass.move_classification_to_is_list(known_gufo[1], "insert_known_gufo_information")
+        loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def load_known_gufo_information(ontology_graph, ontology_dataclass_list, restriction):
@@ -173,6 +175,7 @@ def load_known_gufo_information(ontology_graph, ontology_dataclass_list, restric
         # Setting all classes as EndurantType
         for ontology_dataclass in ontology_dataclass_list:
             ontology_dataclass.move_classification_to_is_list("EndurantType", "load_known_gufo_information")
+            loop_execute_gufo_rules(ontology_dataclass_list)
         # Collecting and adding other known classifications
         list_known_gufo = get_known_gufo_types(ontology_graph)
         insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)

@@ -3,7 +3,6 @@ from rdflib import Graph, URIRef, RDFS
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
-from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 from scior.modules.utils_deficiencies import register_incompleteness, report_error_dataclass_not_found
 
@@ -36,7 +35,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
         if candidate_dataclass is None:
             report_error_dataclass_not_found(can_classes_list[0])
 
-        candidate_dataclass.move_list_of_elements_to_is_list(types_to_set_list, rule_code)
+        candidate_dataclass.move_classifications_list_to_is_list(ontology_dataclass_list, types_to_set_list, rule_code)
 
     elif length_can_list == 0:
         # Incompleteness found. Reporting incompleteness no known possibilities.
@@ -54,8 +53,6 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
     else:
         LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached.")
         raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
-
-    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r24rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
@@ -224,104 +221,6 @@ def run_r25rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
-# TODO (@pedropaulofb): Test new option and remove.
-def run_r31rg1_bak(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-    """ Executes rule R31Rg1 from group UFO Some.
-
-    Code: R31Rg1
-    Definition: NonSortal(x) -> E y (Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)))
-    Description: NonSortals must be related to at least one Sortal that has a subClassOf or shareSuperClass
-                    relation with it.
-    """
-
-    rule_code = "R31Rg1"
-
-    LOGGER.debug(f"Starting rule {rule_code}")
-
-    query_string_subclassof = """
-        PREFIX gufo: <http://purl.org/nemo/gufo#>
-        SELECT DISTINCT ?class_x ?class_y
-        WHERE {
-            ?class_x rdf:type gufo:NonSortal .
-            ?class_y rdfs:subClassOf ?class_x .
-        } """
-
-    query_string_sharesuperclass = """
-        PREFIX gufo: <http://purl.org/nemo/gufo#>
-        PREFIX scior: <https://purl.org/scior/>
-        SELECT DISTINCT ?class_x ?class_y
-        WHERE {
-            ?class_x rdf:type gufo:NonSortal .
-            ?class_x scior:shareSuperClass ?class_y .
-        } """
-
-    query_subclassof_result = ontology_graph.query(query_string_subclassof)
-    query_sharesuperclass_result = ontology_graph.query(query_string_sharesuperclass)
-
-    for row_subclassof in query_subclassof_result:
-        evaluated_class_subclassof = row_subclassof.class_x.toPython()
-
-        for row_sharesuperclass in query_sharesuperclass_result:
-            evaluated_class_sharesuperclass = row_sharesuperclass.class_x.toPython()
-
-            if evaluated_class_subclassof != evaluated_class_sharesuperclass:
-                continue
-
-            # Class to be completed or that may be incomplete
-            evaluated_class = evaluated_class_sharesuperclass
-            # Class that may be used to complete the evaluated_dataclass: via superClassOf
-            selected_class_superclassof = row_subclassof.class_y.toPython()
-            # Class that may be used to complete the evaluated_dataclass: via shareSuperClass
-            selected_class_sharesuperclass = row_sharesuperclass.class_y.toPython()
-
-            # ACRONYMS: sco = superClassOf, ssc = sharedSuperClass
-
-            evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
-            if evaluated_dataclass is None:
-                report_error_dataclass_not_found(evaluated_class)
-
-            selected_dataclass_sco = get_dataclass_by_uri(ontology_dataclass_list, selected_class_superclassof)
-            if selected_dataclass_sco is None:
-                report_error_dataclass_not_found(selected_class_superclassof)
-
-            selected_dataclass_ssc = get_dataclass_by_uri(ontology_dataclass_list, selected_class_sharesuperclass)
-            if selected_dataclass_ssc is None:
-                report_error_dataclass_not_found(selected_class_sharesuperclass)
-
-            is_list_sco = []
-            can_list_sco = []
-
-            is_list_ssc = []
-            can_list_ssc = []
-
-            # Creating IS List: via superClassOf
-            if "Sortal" in selected_dataclass_sco.is_type:
-                is_list_sco.append(selected_dataclass_sco.uri)
-
-            # Creating CAN List
-            elif "Sortal" in selected_dataclass_sco.can_type:
-                can_list_sco.append(selected_dataclass_sco.uri)
-
-            # Creating IS List: via superClassOf
-            if "Sortal" in selected_dataclass_ssc.is_type:
-                is_list_ssc.append(selected_dataclass_ssc.uri)
-
-            # Creating CAN List: via superClassOf
-            if "Sortal" in selected_dataclass_ssc.can_type:
-                can_list_ssc.append(selected_dataclass_ssc.uri)
-
-            # Merging lists
-            is_list = is_list_sco + is_list_ssc
-            can_list = can_list_sco + can_list_ssc
-            # Removing duplicates
-            is_list = list(set(is_list))
-            can_list = list(set(can_list))
-
-            treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Sortal"],
-                                  rule_code, arguments)
-
-    LOGGER.debug(f"Rule {rule_code} concluded.")
-
 
 def run_r31rg1(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
     """ Executes rule R31Rg1 from group UFO Some.
@@ -378,103 +277,67 @@ def run_r31rg1(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
+
+def run_r31rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule R31Rg2 from group UFO Some.
+
+    Code: R31Rg2
+    Definition: NonSortal(x) ^ Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)) ->
+                E z (y != z ^ Sortal(z) ^ ~shareKind(y,z) ^ (subClassOf(z,x) v shareSuperClass(x,z)))
+    Description:    NonSortals thar are related to one Sortal that has a subClassOf or shareSuperClass relation with it
+                    must be related to another Sortal that has a subClassOf or shareSuperClass relation with it.
+    """
+
+    rule_code = "R31Rg2"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    query_string = """
+        PREFIX gufo: <http://purl.org/nemo/gufo#>
+        PREFIX scior: <https://purl.org/scior/>
+        SELECT DISTINCT ?class_x ?class_y ?class_z
+        WHERE {
+            ?class_x rdf:type gufo:NonSortal .
+            ?class_y rdf:type gufo:Sortal .
+            ?class_y rdfs:subClassOf|scior:shareSuperClass ?class_x .
+            ?class_z rdfs:subClassOf|scior:shareSuperClass ?class_x .
+            FILTER (?class_y != ?class_z) .
+            FILTER (NOT EXISTS {?class_y scior:shareKind ?class_z}) .
+        } """
+
+    query_result = ontology_graph.query(query_string)
+
+    for row in query_result:
+
+        is_list = []
+        can_list = []
+
+        # Class to be completed or that may be incomplete
+        evaluated_class = row.class_x.toPython()
+        # Class that may be used to complete the evaluated_dataclass
+        selected_class = row.class_z.toPython()
+
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        if evaluated_dataclass is None:
+            report_error_dataclass_not_found(evaluated_class)
+
+        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
+        if selected_dataclass is None:
+            report_error_dataclass_not_found(selected_class)
+
+        # Creating IS List
+        if "Sortal" in selected_dataclass.is_type:
+            is_list.append(selected_dataclass.uri)
+
+        # Creating CAN List
+        elif "Sortal" in selected_dataclass.can_type:
+            can_list.append(selected_dataclass.uri)
+
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Sortal"], rule_code,
+                              arguments)
+
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
-
-# def run_r31rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-#     """ Executes rule R31Rg2 from group UFO Some.
-#
-#     Code: R31Rg2
-#     Definition: NonSortal(x) ^ Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)) ->
-#                 E z (y != z ^ Sortal(z) ^ ~shareKind(y,z) ^ (subClassOf(z,x) v shareSuperClass(x,z)))
-#     Description:    NonSortals thar are related to one Sortal that has a subClassOf or shareSuperClass relation with it
-#                     must be related to another Sortal that has a subClassOf or shareSuperClass relation with it.
-#     """
-#
-#     rule_code = "R31Rg2"
-#
-#     LOGGER.debug(f"Starting rule {rule_code}")
-#
-#     query_string_subclassof = """
-#         PREFIX gufo: <http://purl.org/nemo/gufo#>
-#         SELECT DISTINCT ?class_x ?class_y ?class_z
-#         WHERE {
-#             ?class_x rdf:type gufo:NonSortal .
-#             ?class_y rdf:type gufo:Sortal .
-#             ?class_y rdfs:subClassOf|scior:shareSuperClass ?class_x .
-#         } """
-#
-#     query_string_sharesuperclass = """
-#         PREFIX gufo: <http://purl.org/nemo/gufo#>
-#         PREFIX scior: <https://purl.org/scior/>
-#         SELECT DISTINCT ?class_x ?class_y ?class_z
-#         WHERE {
-#             ?class_x rdf:type gufo:NonSortal .
-#             ?class_x scior:shareSuperClass ?class_y .
-#         } """
-#
-#     query_subclassof_result = ontology_graph.query(query_string_subclassof)
-#     query_sharesuperclass_result = ontology_graph.query(query_string_sharesuperclass)
-#
-#     for row_subclassof in query_subclassof_result:
-#         evaluated_class_subclassof = row_subclassof.class_x.toPython()
-#
-#         for row_sharesuperclass in query_sharesuperclass_result:
-#             evaluated_class_sharesuperclass = row_sharesuperclass.class_x.toPython()
-#
-#             if evaluated_class_subclassof != evaluated_class_sharesuperclass:
-#                 continue
-#
-#             # Class to be completed or that may be incomplete
-#             evaluated_class = evaluated_class_sharesuperclass
-#             # Class that may be used to complete the evaluated_dataclass: via superClassOf
-#             selected_class_superclassof = row_subclassof.class_y.toPython()
-#             # Class that may be used to complete the evaluated_dataclass: via shareSuperClass
-#             selected_class_sharesuperclass = row_sharesuperclass.class_y.toPython()
-#
-#             # ACRONYMS: sco = superClassOf, ssc = sharedSuperClass
-#
-#             evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
-#             if evaluated_dataclass is None:
-#                 report_error_dataclass_not_found(evaluated_class)
-#
-#             selected_dataclass_sco = get_dataclass_by_uri(ontology_dataclass_list, selected_class_superclassof)
-#             if selected_dataclass_sco is None:
-#                 report_error_dataclass_not_found(selected_class_superclassof)
-#
-#             selected_dataclass_ssc = get_dataclass_by_uri(ontology_dataclass_list, selected_class_sharesuperclass)
-#             if selected_dataclass_ssc is None:
-#                 report_error_dataclass_not_found(selected_class_sharesuperclass)
-#
-#             is_list_sco = []
-#             can_list_sco = []
-#
-#             is_list_ssc = []
-#             can_list_ssc = []
-#
-#             # Creating IS List: via superClassOf
-#             if "Sortal" in selected_dataclass_sco.is_type:
-#                 is_list_sco.append(selected_dataclass_sco.uri)
-#
-#             # Creating CAN List
-#             elif "Sortal" in selected_dataclass_sco.can_type:
-#                 can_list_sco.append(selected_dataclass_sco.uri)
-#
-#             # Creating IS List: via superClassOf
-#             if "Sortal" in selected_dataclass_sco.is_type:
-#                 is_list_ssc.append(selected_dataclass_sco.uri)
-#
-#             # Merging lists
-#             is_list = is_list_sco + is_list_ssc
-#             can_list = can_list_sco + can_list_ssc
-#             # Removing duplicates
-#             is_list = list(set(is_list))
-#             can_list = list(set(can_list))
-#
-#             treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Sortal"],
-#                                   rule_code, arguments)
-#
-#     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 def run_r34rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
     """ Executes rule R34Rg from group UFO Some.
@@ -741,7 +604,7 @@ def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ont
     run_r25rg1(ontology_dataclass_list, ontology_graph, arguments)
     run_r25rg2(ontology_dataclass_list, ontology_graph, arguments)
     run_r31rg1(ontology_dataclass_list, ontology_graph, arguments)
-    # run_r31rg2(ontology_dataclass_list, ontology_graph, arguments)
+    run_r31rg2(ontology_dataclass_list, ontology_graph, arguments)
     run_r34rg(ontology_dataclass_list, ontology_graph, arguments)
     run_r35rg(ontology_dataclass_list, ontology_graph, arguments)
     run_r36rg(ontology_dataclass_list, ontology_graph, arguments)

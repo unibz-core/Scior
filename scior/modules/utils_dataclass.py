@@ -1,7 +1,6 @@
 """ Functions for Ontology Dataclasses """
 import operator
 
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 
 LOGGER = initialize_logger()
@@ -177,8 +176,7 @@ def sort_all_ontology_dataclass_list(ontology_dataclass_list):
         ontology_dataclass.not_individual.sort()
 
 
-def get_dataclass_by_uri(ontology_dataclass_list: list[OntologyDataClass],
-                         desired_uri: str) -> (OntologyDataClass | None):
+def get_dataclass_by_uri(ontology_dataclass_list, desired_uri: str):
     """ Receives the complete ontology_dataclass_list and return the specific Ontology DataClass that has the
     desired URI received as parameter or None, if this URI is not found. """
 

@@ -49,9 +49,6 @@ def execute_rules_types(ontology_dataclass_list, ontology_graph, arguments):
     # Execute rule_group_base just once
     execute_rules_base(ontology_graph)
 
-    # Loop rule_group_gufo
-    loop_rule(ontology_dataclass_list, ontology_graph, ["rule_group_gufo"], arguments)
-
     # Execute all groups of rules in loop (except group base) until there are no new modifications
     loop_rule(ontology_dataclass_list, ontology_graph, list_rules_groups, arguments)
 
