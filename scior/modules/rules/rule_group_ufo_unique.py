@@ -4,6 +4,7 @@ from rdflib import RDFS, URIRef
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
+from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 from scior.modules.utils_deficiencies import register_incompleteness, report_error_dataclass_not_found
 
@@ -39,7 +40,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
             if candidate_dataclass is None:
                 report_error_dataclass_not_found(can_class)
 
-            candidate_dataclass.move_list_of_elements_to_not_list(types_to_set_list)
+            candidate_dataclass.move_list_of_elements_to_not_list(types_to_set_list, rule_code)
 
     elif length_is_list == 0 and length_can_list > 1:
         # Incompleteness found. Reporting incompleteness and possibilities (XOR).
@@ -53,7 +54,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
         if candidate_dataclass is None:
             report_error_dataclass_not_found(can_classes_list[0])
 
-        candidate_dataclass.move_list_of_elements_to_is_list(types_to_set_list)
+        candidate_dataclass.move_list_of_elements_to_is_list(types_to_set_list, rule_code)
 
     elif length_is_list == 0 and length_can_list == 0:
         # Incompleteness found. Reporting incompleteness no known possibilities.
@@ -71,6 +72,8 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
     else:
         LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached.")
         raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
+
+    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r28rg(ontology_dataclass_list, ontology_graph, arguments):

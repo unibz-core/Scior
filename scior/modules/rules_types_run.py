@@ -1,4 +1,5 @@
 """ Rules applied to the TYPES HIERARCHY. """
+
 from rdflib import Graph
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
@@ -6,7 +7,7 @@ from scior.modules.graph_ontology import update_ontology_graph_with_gufo
 from scior.modules.logger_config import initialize_logger
 from scior.modules.rules.rule_group_aux import execute_rules_aux
 from scior.modules.rules.rule_group_base import execute_rules_base
-from scior.modules.rules.rule_group_gufo import execute_gufo_rules
+from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 from scior.modules.rules.rule_group_ufo_all import execute_rules_ufo_all
 from scior.modules.rules.rule_group_ufo_some import execute_rules_ufo_some
 from scior.modules.rules.rule_group_ufo_unique import execute_rules_ufo_unique
@@ -63,7 +64,7 @@ def switch_rule_group_execution(ontology_dataclass_list, ontology_graph, rule_gr
     LOGGER.debug(f"Accessing rule {rule_group_code} ...")
 
     if rule_group_code == "rule_group_gufo":
-        execute_gufo_rules(ontology_dataclass_list)
+        loop_execute_gufo_rules(ontology_dataclass_list)
 
     elif rule_group_code == "rule_group_aux":
         execute_rules_aux(ontology_graph)

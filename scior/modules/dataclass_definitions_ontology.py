@@ -43,7 +43,7 @@ class OntologyDataClass(object):
         self.incompleteness_info["is_incomplete"] = False
         self.incompleteness_info["detected_in"] = []
 
-    def move_element_between_lists(self, element: str, source_list: str, target_list: str, invoker_rule: str):
+    def move_classification_between_lists(self, element: str, source_list: str, target_list: str, invoker_rule: str):
         """ Move an element between two lists in the same OntologyClass
             Elements can only be moved from CAN lists to IS or NOT lists
         """
@@ -102,7 +102,7 @@ class OntologyDataClass(object):
         LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} moved successfully from list {source_list} "
                      f"to list {target_list} in {self.uri}.")
 
-    def move_element_to_is_list(self, element: str, invoker_rule: str):
+    def move_classification_to_is_list(self, element: str, invoker_rule: str):
         """ Check if the element to be moved is a type or instance
                 and move it from the corresponding CAN to the corresponding IS list.
 
@@ -130,11 +130,11 @@ class OntologyDataClass(object):
                 raise ValueError("INCONSISTENCY FOUND!")
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
-            self.move_element_between_lists(element, source_list, target_list, invoker_rule)
+            self.move_classification_between_lists(element, source_list, target_list, invoker_rule)
             self.clear_incompleteness()
             self.verify_final_type_classification()
 
-    def move_element_to_not_list(self, element: str, invoker_rule: str):
+    def move_classification_to_not_list(self, element: str, invoker_rule: str):
         """ Check if the element to be moved is a type or instance
                 and move it from the corresponding CAN to the corresponding NOT list.
 
@@ -162,21 +162,21 @@ class OntologyDataClass(object):
                 raise ValueError("INCONSISTENCY FOUND!")
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
-            self.move_element_between_lists(element, source_list, target_list, invoker_rule)
+            self.move_classification_between_lists(element, source_list, target_list, invoker_rule)
 
     def move_list_of_elements_to_is_list(self, elem_list: list[str], invoker_rule: str):
         """ Moves a list of elements to the IS list. Analogous to move_list_of_elements_to_not_list function.
         This is a specific case of the move_element_to_is_list function. """
 
         for elem in elem_list:
-            self.move_element_to_is_list(elem, invoker_rule)
+            self.move_classification_to_is_list(elem, invoker_rule)
 
     def move_list_of_elements_to_not_list(self, elem_list: list[str], invoker_rule: str):
         """ Moves a list of elements to the NOT list. Analogous to move_list_of_elements_to_is_list function.
         This is a specific case of the move_element_to_not_list function. """
 
         for elem in elem_list:
-            self.move_element_to_not_list(elem, invoker_rule)
+            self.move_classification_to_not_list(elem, invoker_rule)
 
     def return_containing_list_name(self, element):
         """ Verify to which of the dataclass lists the element belongs and returns the list name. """
@@ -294,14 +294,14 @@ class OntologyDataClass(object):
         if len(self.can_type) > 0:
             can_intersection_list = lists_intersection(type_leaf_classifications, self.can_type)
             if len(can_intersection_list) == 1:
-                self.move_element_to_is_list(can_intersection_list[0], rule_code)
+                self.move_classification_to_is_list(can_intersection_list[0], rule_code)
 
         # Verification 2 (leaf classification in is_list)
         is_intersection_list = lists_intersection(type_leaf_classifications, self.is_type)
         if len(is_intersection_list) == 1:
             for leaf_classification in type_leaf_classifications:
                 if leaf_classification not in is_intersection_list:
-                    self.move_element_to_not_list(leaf_classification, rule_code)
+                    self.move_classification_to_not_list(leaf_classification, rule_code)
         elif len(is_intersection_list) > 1:
             LOGGER.error(f"Consistency violation for class {self.uri}. "
                          f"More than one leaf classifications ({is_intersection_list}) in its is_type list.")

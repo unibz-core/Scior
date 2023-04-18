@@ -1,8 +1,10 @@
 """ Implementation of rules from the group UFO All. """
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
+from scior.modules.utils_dataclass import get_dataclass_by_uri
 
-logger = initialize_logger()
+LOGGER = initialize_logger()
 
 
 def run_r22cg(ontology_dataclass_list, ontology_graph):
@@ -15,7 +17,7 @@ def run_r22cg(ontology_dataclass_list, ontology_graph):
 
     rule_code = "R22Cg"
 
-    logger.debug(f"Starting rule {rule_code}")
+    LOGGER.debug(f"Starting rule {rule_code}")
 
     query_string = """
     PREFIX gufo: <http://purl.org/nemo/gufo#>
@@ -28,11 +30,15 @@ def run_r22cg(ontology_dataclass_list, ontology_graph):
     query_result = ontology_graph.query(query_string)
 
     for row in query_result:
-        for ontology_dataclass in ontology_dataclass_list:
-            if ontology_dataclass.uri == row.class_y.toPython():
-                ontology_dataclass.move_element_to_not_list("AntiRigidType")
+        ontology_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
 
-    logger.debug(f"Rule {rule_code} concluded")
+        if ontology_dataclass is None:
+            LOGGER.error(f"Unexpected situation. Class {row.class_y.toPython()} not found. Program aborted.")
+
+        ontology_dataclass.move_classification_to_not_list("AntiRigidType", rule_code)
+
+    LOGGER.debug(f"Rule {rule_code} concluded")
+    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r23cg(ontology_dataclass_list, ontology_graph):
@@ -45,7 +51,7 @@ def run_r23cg(ontology_dataclass_list, ontology_graph):
 
     rule_code = "R23Cg"
 
-    logger.debug(f"Starting rule {rule_code}")
+    LOGGER.debug(f"Starting rule {rule_code}")
 
     query_string = """
     PREFIX gufo: <http://purl.org/nemo/gufo#>
@@ -60,9 +66,10 @@ def run_r23cg(ontology_dataclass_list, ontology_graph):
     for row in query_result:
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
-                ontology_dataclass.move_element_to_not_list("AntiRigidType")
+                ontology_dataclass.move_classification_to_not_list("AntiRigidType", rule_code)
 
-    logger.debug(f"Rule {rule_code} concluded")
+    LOGGER.debug(f"Rule {rule_code} concluded")
+    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r26cg(ontology_dataclass_list, ontology_graph):
@@ -75,7 +82,7 @@ def run_r26cg(ontology_dataclass_list, ontology_graph):
 
     rule_code = "R26Cg"
 
-    logger.debug(f"Starting rule {rule_code}")
+    LOGGER.debug(f"Starting rule {rule_code}")
 
     query_string = """
     PREFIX gufo: <http://purl.org/nemo/gufo#>
@@ -95,9 +102,10 @@ def run_r26cg(ontology_dataclass_list, ontology_graph):
 
     for ontology_dataclass in ontology_dataclass_list:
         if ontology_dataclass.uri in result:
-            ontology_dataclass.move_element_to_is_list("NonSortal")
+            ontology_dataclass.move_classification_to_is_list("NonSortal", rule_code)
 
-    logger.debug(f"Rule {rule_code} concluded")
+    LOGGER.debug(f"Rule {rule_code} concluded")
+    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r27cg(ontology_dataclass_list, ontology_graph):
@@ -110,7 +118,7 @@ def run_r27cg(ontology_dataclass_list, ontology_graph):
 
     rule_code = "R27Cg"
 
-    logger.debug(f"Starting rule {rule_code}")
+    LOGGER.debug(f"Starting rule {rule_code}")
 
     query_string = """
     PREFIX gufo: <http://purl.org/nemo/gufo#>
@@ -125,9 +133,10 @@ def run_r27cg(ontology_dataclass_list, ontology_graph):
     for row in query_result:
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
-                ontology_dataclass.move_element_to_is_list("NonSortal")
+                ontology_dataclass.move_classification_to_is_list("NonSortal", rule_code)
 
-    logger.debug(f"Rule {rule_code} concluded")
+    LOGGER.debug(f"Rule {rule_code} concluded")
+    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r32cg(ontology_dataclass_list, ontology_graph):
@@ -140,7 +149,7 @@ def run_r32cg(ontology_dataclass_list, ontology_graph):
 
     rule_code = "R32Cg"
 
-    logger.debug(f"Starting rule {rule_code}")
+    LOGGER.debug(f"Starting rule {rule_code}")
 
     query_string = """
     PREFIX gufo: <http://purl.org/nemo/gufo#>
@@ -155,10 +164,11 @@ def run_r32cg(ontology_dataclass_list, ontology_graph):
     for row in query_result:
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
-                ontology_dataclass.move_element_to_not_list("Role")
-                ontology_dataclass.move_element_to_not_list("RoleMixin")
+                ontology_dataclass.move_classification_to_not_list("Role", rule_code)
+                ontology_dataclass.move_classification_to_not_list("RoleMixin", rule_code)
 
-    logger.debug(f"Rule {rule_code} concluded")
+    LOGGER.debug(f"Rule {rule_code} concluded")
+    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def run_r33cg(ontology_dataclass_list, ontology_graph):
@@ -171,7 +181,7 @@ def run_r33cg(ontology_dataclass_list, ontology_graph):
 
     rule_code = "R33Cg"
 
-    logger.debug(f"Starting rule {rule_code}")
+    LOGGER.debug(f"Starting rule {rule_code}")
 
     query_string = """
     PREFIX gufo: <http://purl.org/nemo/gufo#>
@@ -186,15 +196,16 @@ def run_r33cg(ontology_dataclass_list, ontology_graph):
     for row in query_result:
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
-                ontology_dataclass.move_element_to_not_list("RoleMixin")
+                ontology_dataclass.move_classification_to_not_list("RoleMixin", rule_code)
 
-    logger.debug(f"Rule {rule_code} concluded")
+    LOGGER.debug(f"Rule {rule_code} concluded")
+    loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def execute_rules_ufo_all(ontology_dataclass_list, ontology_graph):
     """Call the execution of all rules from the group UFO All."""
 
-    logger.debug("Starting execution of all rules from group UFO All.")
+    LOGGER.debug("Starting execution of all rules from group UFO All.")
 
     run_r22cg(ontology_dataclass_list, ontology_graph)
     run_r23cg(ontology_dataclass_list, ontology_graph)
@@ -203,4 +214,4 @@ def execute_rules_ufo_all(ontology_dataclass_list, ontology_graph):
     run_r32cg(ontology_dataclass_list, ontology_graph)
     run_r33cg(ontology_dataclass_list, ontology_graph)
 
-    logger.debug("Execution of all rules from group UFO All completed.")
+    LOGGER.debug("Execution of all rules from group UFO All completed.")

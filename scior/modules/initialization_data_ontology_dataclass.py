@@ -3,7 +3,10 @@ import copy
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
+from scior.modules.utils_dataclass import get_dataclass_by_uri
 from scior.modules.utils_rdf import get_list_of_all_classes
+
+LOGGER = initialize_logger()
 
 
 def initialize_ontology_dataclasses(ontology_graph, SCOPE_RESTRICTION: str) -> list:
@@ -11,8 +14,7 @@ def initialize_ontology_dataclasses(ontology_graph, SCOPE_RESTRICTION: str) -> l
     Receives the ontology graph (taxonomy only) and the gUFO scope to be considered.
     Returns an OntologyClass list of all classes in the ontology to be evaluated with its related sub-lists. """
 
-    logger = initialize_logger()
-    logger.debug("Initializing list of Ontology concepts...")
+    LOGGER.debug("Initializing list of Ontology concepts...")
 
     ontology_list = []
     classes_list = get_list_of_all_classes_no_gufo(ontology_graph)
@@ -33,7 +35,7 @@ def initialize_ontology_dataclasses(ontology_graph, SCOPE_RESTRICTION: str) -> l
                                                can_individual=gufo_can_list_individuals.copy(),
                                                incompleteness_info=new_incompleteness_dict))
 
-    logger.debug("List of Ontology concepts successfully initialized.")
+    LOGGER.debug("List of Ontology concepts successfully initialized.")
     return ontology_list
 
 
@@ -50,8 +52,6 @@ def get_list_of_all_classes_no_gufo(ontology_graph):
 
 def get_gufo_possibilities(scope_restriction):
     """ Returns list of all GUFO classes available for classification in two lists (for types and individuals). """
-
-    logger = initialize_logger()
 
     can_list_types = []
     can_list_individuals = []
@@ -77,7 +77,7 @@ def get_gufo_possibilities(scope_restriction):
     if scope_restriction == "ENDURANT_TYPES":
         can_list_types = gufo_endurant_types
     else:
-        logger.error(f"Invalid SCOPE_RESTRICTION {scope_restriction}. Program aborted.")
+        LOGGER.error(f"Invalid SCOPE_RESTRICTION {scope_restriction}. Program aborted.")
         exit(1)
 
     return can_list_types, can_list_individuals
@@ -150,10 +150,15 @@ def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
     list_known_gufo is a list of tuples containing (i) ontology class full URI, (ii) short gufo stereotype (e.g. Kind).
     """
 
-    for ontology_dataclass in ontology_dataclass_list:
-        for known_gufo in list_known_gufo:
-            if known_gufo[0] == ontology_dataclass.uri:
-                ontology_dataclass.move_element_to_is_list(known_gufo[1])
+    for known_gufo in list_known_gufo:
+
+        receptor_dataclass = get_dataclass_by_uri(ontology_dataclass_list, known_gufo[0])
+
+        if receptor_dataclass is None:
+            LOGGER.error(f"Unexpected situation. Class {known_gufo[0]} not found. Program aborted.")
+            raise ValueError("EXECUTION INCONSISTENCY!")
+
+        receptor_dataclass.move_classification_to_is_list(known_gufo[1], "insert_known_gufo_information")
 
 
 def load_known_gufo_information(ontology_graph, ontology_dataclass_list, restriction):
@@ -164,16 +169,14 @@ def load_known_gufo_information(ontology_graph, ontology_dataclass_list, restric
     dataclass's can_type (default) list to its is_type list.
     """
 
-    logger = initialize_logger()
-
     if restriction == "ENDURANT_TYPES":
         # Setting all classes as EndurantType
         for ontology_dataclass in ontology_dataclass_list:
-            ontology_dataclass.move_element_to_is_list("EndurantType")
+            ontology_dataclass.move_classification_to_is_list("EndurantType", "load_known_gufo_information")
         # Collecting and adding other known classifications
         list_known_gufo = get_known_gufo_types(ontology_graph)
         insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)
     else:
         # function get_known_gufo_individuals implemented but not used or tested
-        logger.error(f"Invalid SCOPE_RESTRICTION {restriction}. Program aborted.")
+        LOGGER.error(f"Invalid SCOPE_RESTRICTION {restriction}. Program aborted.")
         exit(1)
