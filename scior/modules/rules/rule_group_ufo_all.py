@@ -216,3 +216,6 @@ def execute_rules_ufo_all(ontology_dataclass_list, ontology_graph):
     run_r33cg(ontology_dataclass_list, ontology_graph)
 
     LOGGER.debug("Execution of all rules from group UFO All completed.")
+
+# TODO (@pedropaulofb): Implement new rule R05+R27
+# TODO (@pedropaulofb): Only loop rules when a classification is IN FACT moved, not when called.
