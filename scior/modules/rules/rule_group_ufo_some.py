@@ -8,8 +8,9 @@ from scior.modules.utils_deficiencies import register_incompleteness, report_err
 
 LOGGER = initialize_logger()
 
+
 # TODO (@pedropaulofb): Modify selected_dataclass to INCOMPLETE_CLASSES (and use all classes from the left side of the definition)! RULE 35 already OK!
-def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], selected_dataclass: OntologyDataClass,
+def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], evaluated_dataclass: OntologyDataClass,
                           can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
                           rule_code: str, arguments: dict) -> None:
     """ Treats the results from all rules from the group UFO Some. """
@@ -26,7 +27,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], sele
     elif length_can_list > 1:
         # Incompleteness found. Reporting incompleteness and possibilities (OR).
         additional_message = f"Solution: set one or more classes from {can_classes_list} as {types_to_set_list}."
-        register_incompleteness(rule_code, selected_dataclass, additional_message)
+        register_incompleteness(rule_code, evaluated_dataclass, additional_message)
 
     elif length_can_list == 1:
         # Set single candidate as desired types.
@@ -42,11 +43,11 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], sele
         if arguments["is_owa"]:
             additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
                                  f"to satisfy the rule."
-            register_incompleteness(rule_code, selected_dataclass, additional_message)
+            register_incompleteness(rule_code, evaluated_dataclass, additional_message)
 
         # Report inconsistency
         if arguments["is_cwa"]:
-            LOGGER.error(f"Inconsistency detected in rule {rule_code} for class {selected_dataclass.uri}. "
+            LOGGER.error(f"Inconsistency detected in rule {rule_code} for class {evaluated_dataclass.uri}. "
                          f"There are no asserted classes that satisfy the rule.")
             raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
 
@@ -87,10 +88,18 @@ def run_r24rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         is_list = []
         can_list = []
 
-        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_z.toPython())
+        # Class to be completed or that may be incomplete
+        evaluated_class = row.class_y.toPython()
+        # Class that may be used to complete the evaluated_dataclass
+        selected_class = row.class_z.toPython()
 
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        if evaluated_dataclass is None:
+            report_error_dataclass_not_found(evaluated_class)
+
+        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
         if selected_dataclass is None:
-            report_error_dataclass_not_found(row.class_z.toPython())
+            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "RigidType" in selected_dataclass.is_type and "Sortal" in selected_dataclass.is_type:
@@ -100,7 +109,7 @@ def run_r24rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         elif "RigidType" not in selected_dataclass.not_type and "Sortal" not in selected_dataclass.not_type:
             can_list.append(selected_dataclass.uri)
 
-        treat_result_ufo_some(ontology_dataclass_list, selected_dataclass, can_list, is_list, ["RigidType", "Sortal"],
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["RigidType", "Sortal"],
                               rule_code, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
@@ -133,10 +142,18 @@ def run_r25rg1(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
         is_list = []
         can_list = []
 
-        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
+        # Class to be completed or that may be incomplete
+        evaluated_class = row.class_x.toPython()
+        # Class that may be used to complete the evaluated_dataclass
+        selected_class = row.class_y.toPython()
 
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        if evaluated_dataclass is None:
+            report_error_dataclass_not_found(evaluated_class)
+
+        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
         if selected_dataclass is None:
-            report_error_dataclass_not_found(row.class_y.toPython())
+            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "RigidType" in selected_dataclass.is_type:
@@ -146,7 +163,7 @@ def run_r25rg1(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
         elif "RigidType" in selected_dataclass.can_type:
             can_list.append(selected_dataclass.uri)
 
-        treat_result_ufo_some(ontology_dataclass_list, selected_dataclass, can_list, is_list, ["RigidType"], rule_code,
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["RigidType"], rule_code,
                               arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
@@ -179,10 +196,18 @@ def run_r25rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
         is_list = []
         can_list = []
 
-        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
+        # Class to be completed or that may be incomplete
+        evaluated_class = row.class_x.toPython()
+        # Class that may be used to complete the evaluated_dataclass
+        selected_class = row.class_y.toPython()
 
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        if evaluated_dataclass is None:
+            report_error_dataclass_not_found(evaluated_class)
+
+        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
         if selected_dataclass is None:
-            report_error_dataclass_not_found(row.class_y.toPython())
+            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "AntiRigidType" in selected_dataclass.is_type:
@@ -192,7 +217,7 @@ def run_r25rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
         elif "AntiRigidType" in selected_dataclass.can_type:
             can_list.append(selected_dataclass.uri)
 
-        treat_result_ufo_some(ontology_dataclass_list, selected_dataclass, can_list, is_list, ["AntiRigidType"],
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["AntiRigidType"],
                               rule_code, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
@@ -228,10 +253,18 @@ def run_r34rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         is_list = []
         can_list = []
 
-        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_z.toPython())
+        # Class to be completed or that may be incomplete
+        evaluated_class = row.class_y.toPython()
+        # Class that may be used to complete the evaluated_dataclass
+        selected_class = row.class_z.toPython()
 
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        if evaluated_dataclass is None:
+            report_error_dataclass_not_found(evaluated_class)
+
+        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
         if selected_dataclass is None:
-            report_error_dataclass_not_found(row.class_z.toPython())
+            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "Phase" in selected_dataclass.is_type:
@@ -241,7 +274,7 @@ def run_r34rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         elif "Phase" in selected_dataclass.can_type:
             can_list.append(selected_dataclass.uri)
 
-        treat_result_ufo_some(ontology_dataclass_list, selected_dataclass, can_list, is_list, ["Phase"],
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_class, can_list, is_list, ["Phase"],
                               rule_code, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
@@ -252,7 +285,7 @@ def run_r35rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
 
     Code: R35Rg
     Definition: Phase(x) -> E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))
-    Description: There must exist at least two phases that shares the same Kind and that do not specialize each other.
+    Description: There must exist at least two Phases that share the same Kind and that do not specialize each other.
     """
 
     rule_code = "R35Rg"
@@ -260,7 +293,7 @@ def run_r35rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
     LOGGER.debug(f"Starting rule {rule_code}")
 
     query_string = """
-            PREFIX gufo: <http://purl.org/nemo/gufo#> 
+            PREFIX gufo: <http://purl.org/nemo/gufo#>
             PREFIX scior: <https://purl.org/scior/>
             SELECT DISTINCT ?class_x ?class_y
             WHERE {
@@ -275,32 +308,42 @@ def run_r35rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         is_list = []
         can_list = []
 
-        if (URIRef(row.class_x.toPython()), RDFS.subClassOf, URIRef(row.class_y.toPython())) in ontology_graph:
+        # Class to be completed or that may be incomplete
+        evaluated_class = row.class_x.toPython()
+        # Class that may be used to complete the evaluated_dataclass
+        selected_class = row.class_y.toPython()
+
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        if evaluated_dataclass is None:
+            report_error_dataclass_not_found(evaluated_class)
+
+        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
+        if selected_dataclass is None:
+            report_error_dataclass_not_found(selected_class)
+
+        # x must not specialize y
+        if (URIRef(evaluated_class), RDFS.subClassOf, URIRef(selected_class)) in ontology_graph:
             is_subclass = True
         else:
             is_subclass = False
 
-        if (URIRef(row.class_y.toPython()), RDFS.subClassOf, URIRef(row.class_x.toPython())) in ontology_graph:
+        # y must not specialize x
+        if (URIRef(selected_class), RDFS.subClassOf, URIRef(evaluated_class)) in ontology_graph:
             is_superclass = True
         else:
             is_superclass = False
 
         if not is_subclass and not is_superclass:
-            source_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_x.toPython())
-            target_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
-
-            if target_dataclass is None:
-                report_error_dataclass_not_found(row.class_y.toPython())
 
             # Creating IS List
-            if "Phase" in target_dataclass.is_type:
-                is_list.append(target_dataclass.uri)
+            if "Phase" in selected_dataclass.is_type:
+                is_list.append(selected_dataclass.uri)
 
             # Creating CAN List
-            elif "Phase" in target_dataclass.can_type:
-                can_list.append(target_dataclass.uri)
+            elif "Phase" in selected_dataclass.can_type:
+                can_list.append(selected_dataclass.uri)
 
-            treat_result_ufo_some(ontology_dataclass_list, source_dataclass, can_list, is_list, ["Phase"],
+            treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Phase"],
                                   rule_code, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
@@ -333,10 +376,18 @@ def run_r36rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         is_list = []
         can_list = []
 
-        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
+        # Class to be completed or that may be incomplete
+        evaluated_class = row.class_x.toPython()
+        # Class that may be used to complete the evaluated_dataclass
+        selected_class = row.class_y.toPython()
 
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        if evaluated_dataclass is None:
+            report_error_dataclass_not_found(evaluated_class)
+
+        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
         if selected_dataclass is None:
-            report_error_dataclass_not_found(row.class_y.toPython())
+            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "Category" in selected_dataclass.is_type:
@@ -346,8 +397,83 @@ def run_r36rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         elif "Category" in selected_dataclass.can_type:
             can_list.append(selected_dataclass.uri)
 
-        treat_result_ufo_some(ontology_dataclass_list, selected_dataclass, can_list, is_list, ["Category"],
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_class, can_list, is_list, ["Category"],
                               rule_code, arguments)
+
+    LOGGER.debug(f"Rule {rule_code} concluded.")
+
+
+def run_r37rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule R37Rg from group UFO Some.
+
+    Code: R37Rg
+    Definition: PhaseMixin(x) ^ Category(y) ^ subClassOf(x,y) ->
+                E z (PhaseMixin(z) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^ isSubClassOf(z,y))
+    Description: There must exist at least two PhaseMixins that share the same Category
+                    and that do not specialize each other.
+    """
+
+    rule_code = "R37Rg"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    query_string = """
+            PREFIX gufo: <http://purl.org/nemo/gufo#>
+            SELECT DISTINCT ?class_x ?class_y ?class_z
+            WHERE {
+                ?class_x rdf:type gufo:PhaseMixin .
+                ?class_y rdf:type gufo:Category .
+                ?class_x rdfs:subClassOf ?class_y .
+                ?class_z rdfs:subClassOf ?class_y .
+            } """
+
+    query_result = ontology_graph.query(query_string)
+
+    for row in query_result:
+
+        is_list = []
+        can_list = []
+
+        # Class to be completed or that may be incomplete
+        evaluated_class = row.class_y.toPython()
+        # Class that may be used to complete the evaluated_dataclass
+        selected_class = row.class_z.toPython()
+        # Class to be used during the analysis
+        related_class = row.class_x.toPython()
+
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        if evaluated_dataclass is None:
+            report_error_dataclass_not_found(evaluated_class)
+
+        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
+        if selected_dataclass is None:
+            report_error_dataclass_not_found(selected_class)
+
+        # Class z must not be subclass of class x
+        if (URIRef(selected_class), RDFS.subClassOf, URIRef(related_class)) in ontology_graph:
+            is_subclass = True
+        else:
+            is_subclass = False
+
+        # Class x must not be subclass of class z
+        if (URIRef(related_class), RDFS.subClassOf, URIRef(selected_class)) in ontology_graph:
+            is_superclass = True
+        else:
+            is_superclass = False
+
+        # Classes x and z must not be subclass or superclass of each other
+        if not is_subclass and not is_superclass:
+
+            # Creating IS List
+            if "PhaseMixin" in selected_dataclass.is_type:
+                is_list.append(selected_dataclass.uri)
+
+            # Creating CAN List
+            elif "PhaseMixin" in selected_dataclass.can_type:
+                can_list.append(selected_dataclass.uri)
+
+            treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["PhaseMixin"],
+                                  rule_code, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -363,5 +489,6 @@ def execute_rules_ufo_some(ontology_dataclass_list, ontology_graph, arguments):
     run_r34rg(ontology_dataclass_list, ontology_graph, arguments)
     run_r35rg(ontology_dataclass_list, ontology_graph, arguments)
     run_r36rg(ontology_dataclass_list, ontology_graph, arguments)
+    run_r37rg(ontology_dataclass_list, ontology_graph, arguments)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")
