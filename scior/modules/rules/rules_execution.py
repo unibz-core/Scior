@@ -7,7 +7,6 @@ from scior.modules.graph_ontology import update_ontology_graph_with_gufo
 from scior.modules.logger_config import initialize_logger
 from scior.modules.rules.rule_group_aux import execute_rules_aux
 from scior.modules.rules.rule_group_base import execute_rules_base
-from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 from scior.modules.rules.rule_group_ufo_all import execute_rules_ufo_all
 from scior.modules.rules.rule_group_ufo_some import execute_rules_ufo_some
 from scior.modules.rules.rule_group_ufo_unique import execute_rules_ufo_unique

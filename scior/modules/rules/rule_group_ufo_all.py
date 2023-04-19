@@ -1,7 +1,6 @@
 """ Implementation of rules from the group UFO All. """
 
 from scior.modules.logger_config import initialize_logger
-from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 LOGGER = initialize_logger()
@@ -35,7 +34,7 @@ def run_r22cg(ontology_dataclass_list, ontology_graph):
         if ontology_dataclass is None:
             LOGGER.error(f"Unexpected situation. Class {row.class_y.toPython()} not found. Program aborted.")
 
-        ontology_dataclass.move_classification_to_not_list("AntiRigidType", rule_code)
+        ontology_dataclass.move_classification_to_not_list(ontology_dataclass_list, "AntiRigidType", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -65,7 +64,7 @@ def run_r23cg(ontology_dataclass_list, ontology_graph):
     for row in query_result:
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
-                ontology_dataclass.move_classification_to_not_list("AntiRigidType", rule_code)
+                ontology_dataclass.move_classification_to_not_list(ontology_dataclass_list, "AntiRigidType", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -100,7 +99,7 @@ def run_r26cg(ontology_dataclass_list, ontology_graph):
 
     for ontology_dataclass in ontology_dataclass_list:
         if ontology_dataclass.uri in result:
-            ontology_dataclass.move_classification_to_is_list("NonSortal", rule_code)
+            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, "NonSortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -130,8 +129,7 @@ def run_r27cg(ontology_dataclass_list, ontology_graph):
     for row in query_result:
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
-                ontology_dataclass.move_classification_to_is_list("NonSortal", rule_code)
-                loop_execute_gufo_rules(ontology_dataclass_list)
+                ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, "NonSortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -161,8 +159,8 @@ def run_r32cg(ontology_dataclass_list, ontology_graph):
     for row in query_result:
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
-                ontology_dataclass.move_classification_to_not_list("Role", rule_code)
-                ontology_dataclass.move_classification_to_not_list("RoleMixin", rule_code)
+                ontology_dataclass.move_classification_to_not_list(ontology_dataclass_list, "Role", rule_code)
+                ontology_dataclass.move_classification_to_not_list(ontology_dataclass_list, "RoleMixin", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -192,7 +190,7 @@ def run_r33cg(ontology_dataclass_list, ontology_graph):
     for row in query_result:
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
-                ontology_dataclass.move_classification_to_not_list("RoleMixin", rule_code)
+                ontology_dataclass.move_classification_to_not_list(ontology_dataclass_list, "RoleMixin", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -221,8 +219,7 @@ def run_r05_r27cg(ontology_dataclass_list, ontology_graph):
 
     for row in query_result:
         new_sortal = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
-        new_sortal.move_classification_to_is_list("Sortal", rule_code)
-
+        new_sortal.move_classification_to_is_list(ontology_dataclass_list, "Sortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 

@@ -111,7 +111,7 @@ def external_move_to_is_list(list_ontology_dataclasses, class_name, classificati
 
     for ontology_dataclass in list_ontology_dataclasses:
         if ontology_dataclass.uri == class_name:
-            ontology_dataclass.move_classification_to_is_list(classification)
+            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, classification)
 
 
 def external_move_list_to_is_list(list_ontology_dataclasses, list_classes_to_move, classification):
@@ -121,7 +121,7 @@ def external_move_list_to_is_list(list_ontology_dataclasses, list_classes_to_mov
     for dataclass_to_move in list_classes_to_move:
         for ontology_dataclass in list_ontology_dataclasses:
             if ontology_dataclass.uri == dataclass_to_move:
-                ontology_dataclass.move_classification_to_is_list(classification)
+                ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, classification)
 
 
 def return_dataclass_from_class_name(list_ontology_dataclasses, class_name):

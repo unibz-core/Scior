@@ -22,7 +22,7 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
                                                                                               ontology_dataclass):
             logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                         f"The class {ontology_dataclass.uri} had no identity principle and now was set as a gufo:Kind.")
-            ontology_dataclass.move_classification_to_is_list(GUFO_KIND)
+            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, GUFO_KIND)
             register_incompleteness(rule_code, ontology_dataclass)
         else:
             logger.error(f"Inconsistency detected! Class {ontology_dataclass.uri} must be a gufo:Kind, "
@@ -224,7 +224,7 @@ def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, config
                        f"The class {ontology_dataclass.uri} does not have an identity provider. ")
 
         if configurations["is_complete"]:
-            ontology_dataclass.move_classification_to_is_list(GUFO_KIND)
+            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, GUFO_KIND)
             logger.info(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
         elif not configurations["is_automatic"]:
             set_interactively_class_as_gufo_type(ontology_dataclass, GUFO_KIND)
@@ -253,7 +253,7 @@ def treat_rule_ns_sub_r(rule_code, list_ontology_dataclasses, ontology_dataclass
         logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                     f"The NonSortal class {ontology_dataclass.uri} "
                     f"is only specialized into RigidTypes and, hence, was set as a gufo:Category.")
-        ontology_dataclass.move_classification_to_is_list("gufo:Category")
+        ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, "gufo:Category")
 
 
 def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, configurations):
@@ -286,7 +286,7 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
             logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                         f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings, "
                         f"hence it was set as gufo:Role.")
-            ontology_dataclass.move_classification_to_is_list("gufo:Role")
+            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, "gufo:Role")
         else:
             # Report incompleteness.
             logger.warning(f"Incompleteness detected during rule {rule_code}! "

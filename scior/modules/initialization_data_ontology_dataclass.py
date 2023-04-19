@@ -3,14 +3,13 @@ import copy
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
-from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 from scior.modules.utils_rdf import get_list_of_all_classes
 
 LOGGER = initialize_logger()
 
 
-def initialize_ontology_dataclasses(ontology_graph, SCOPE_RESTRICTION: str) -> list:
+def initialize_ontology_dataclasses(ontology_graph, scope_restriction: str) -> list:
     """
     Receives the ontology graph (taxonomy only) and the gUFO scope to be considered.
     Returns an OntologyClass list of all classes in the ontology to be evaluated with its related sub-lists. """
@@ -20,7 +19,7 @@ def initialize_ontology_dataclasses(ontology_graph, SCOPE_RESTRICTION: str) -> l
     ontology_list = []
     classes_list = get_list_of_all_classes_no_gufo(ontology_graph)
 
-    gufo_can_list_types, gufo_can_list_individuals = get_gufo_possibilities(SCOPE_RESTRICTION)
+    gufo_can_list_types, gufo_can_list_individuals = get_gufo_possibilities(scope_restriction)
 
     incompleteness_dict = {"is_incomplete": False, "detected_in": []}
 
@@ -159,7 +158,8 @@ def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
             LOGGER.error(f"Unexpected situation. Class {known_gufo[0]} not found. Program aborted.")
             raise ValueError("EXECUTION INCONSISTENCY!")
 
-        receptor_dataclass.move_classification_to_is_list(known_gufo[1], "insert_known_gufo_information")
+        receptor_dataclass.move_classification_to_is_list(ontology_dataclass_list, known_gufo[1],
+                                                          "insert_known_gufo_information")
 
 
 def load_known_gufo_information(ontology_graph, ontology_dataclass_list, restriction):
@@ -173,7 +173,8 @@ def load_known_gufo_information(ontology_graph, ontology_dataclass_list, restric
     if restriction == "ENDURANT_TYPES":
         # Setting all classes as EndurantType
         for ontology_dataclass in ontology_dataclass_list:
-            ontology_dataclass.move_classification_to_is_list("EndurantType", "load_known_gufo_information")
+            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, "EndurantType",
+                                                              "load_known_gufo_information")
         # Collecting and adding other known classifications
         list_known_gufo = get_known_gufo_types(ontology_graph)
         insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)

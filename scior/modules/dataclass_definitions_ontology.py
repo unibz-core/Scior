@@ -133,10 +133,11 @@ class OntologyDataClass(object):
                 raise ValueError("INCONSISTENCY FOUND!")
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
-            self.move_classification_between_lists(element, source_list, target_list, invoker_rule)
+            self.move_classification_between_lists(ontology_dataclass_list, element, source_list, target_list,
+                                                   invoker_rule)
             self.clear_incompleteness()
 
-    def move_classification_to_not_list(self, element: str, invoker_rule: str):
+    def move_classification_to_not_list(self, ontology_dataclass_list, element: str, invoker_rule: str):
         """ Check if the element to be moved is a type or instance
                 and move it from the corresponding CAN to the corresponding NOT list.
 
@@ -164,7 +165,8 @@ class OntologyDataClass(object):
                 raise ValueError("INCONSISTENCY FOUND!")
 
             # Consistency checking is already performed inside the move_between_ontology_lists function.
-            self.move_classification_between_lists(element, source_list, target_list, invoker_rule)
+            self.move_classification_between_lists(ontology_dataclass_list, element, source_list, target_list,
+                                                   invoker_rule)
 
     def move_classifications_list_to_is_list(self, ontology_dataclass_list, elem_list: list[str], invoker_rule: str):
         """ Moves a list of elements to the IS list. Analogous to move_list_of_elements_to_not_list function.
