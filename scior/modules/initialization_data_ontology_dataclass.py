@@ -151,7 +151,6 @@ def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
     """
 
     for known_gufo in list_known_gufo:
-
         receptor_dataclass = get_dataclass_by_uri(ontology_dataclass_list, known_gufo[0])
         receptor_dataclass.move_classification_to_is_list(ontology_dataclass_list, known_gufo[1],
                                                           "insert_known_gufo_information")

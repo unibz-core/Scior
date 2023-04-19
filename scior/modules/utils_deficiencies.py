@@ -1,5 +1,4 @@
 """ Functions related to the verification and treatment of incompleteness and inconsistency cases. """
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 
 LOGGER = initialize_logger()
@@ -14,7 +13,7 @@ def report_error_dataclass_not_found(searched_uri: str):
     raise ValueError(f"INVALID VALUE!")
 
 
-def incompleteness_already_registered(rule_code: str, ontology_dataclass: OntologyDataClass) -> bool:
+def incompleteness_already_registered(rule_code: str, ontology_dataclass) -> bool:
     """ Verifies if an incompleteness case has already being registered/reported for the received ontology_dataclass.
 
         Returns True if the incompleteness for a specific rule has already been registered/reported.
@@ -28,7 +27,7 @@ def incompleteness_already_registered(rule_code: str, ontology_dataclass: Ontolo
         return False
 
 
-def register_incompleteness(rule_code: str, ontology_dataclass: OntologyDataClass, additional_message: str = ""):
+def register_incompleteness(rule_code: str, ontology_dataclass, additional_message: str = ""):
     """ Registers the ontology_dataclass incompleteness_info field and insert the rule in the detected_in list. """
 
     if not incompleteness_already_registered(rule_code, ontology_dataclass):
