@@ -9,6 +9,8 @@ LOGGER = initialize_logger()
 def loop_execute_gufo_rules(ontology_dataclass_list):
     """ Executes in loop all rules of the GUFO group."""
 
+    LOGGER.debug("Executing in loop all rules from group gUFO.")
+
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = initial_hash + 1
 
@@ -30,7 +32,7 @@ def loop_execute_gufo_rules(ontology_dataclass_list):
 def execute_gufo_positive_rules(ontology_dataclass_list):
     """ Executes once all "positive" rules of the GUFO group."""
 
-    LOGGER.debug("Executing all positive rules from group gUFO.")
+    # LOGGER.debug("Executing all positive rules from group gUFO.")
 
     for ontology_dataclass in ontology_dataclass_list:
 
@@ -204,7 +206,7 @@ def execute_gufo_positive_rules(ontology_dataclass_list):
 def execute_gufo_negative_rules(ontology_dataclass_list):
     """ Executes once all "negative" rules of the GUFO group."""
 
-    LOGGER.debug("Executing all negative rules from group gUFO.")
+    # LOGGER.debug("Executing all negative rules from group gUFO.")
 
     for ontology_dataclass in ontology_dataclass_list:
 
