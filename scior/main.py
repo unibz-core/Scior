@@ -1,22 +1,17 @@
 """ Main module  for Scior """
-import os
 import time
 from datetime import datetime
 
 from rdflib import RDFS, RDF
 
-from scior.modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from scior.modules.initialization_arguments import treat_arguments
-from scior.modules.initialization_data_graph import initialize_nodes_lists
-from scior.modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
 from scior.modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, \
     load_known_gufo_information
 from scior.modules.logger_config import initialize_logger
 from scior.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
     create_knowledge_matrix
 from scior.modules.rules.rules_execution import execute_rules_types
-from scior.modules.utils_rdf import load_all_graph_safely, load_graph_safely_considering_restrictions, \
-    reduce_graph_considering_restrictions
+from scior.modules.utils_rdf import load_all_graph_safely, reduce_graph_considering_restrictions
 
 SOFTWARE_ACRONYM = "Scior"
 SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
@@ -76,8 +71,6 @@ def run_scior():
     consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
     knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
 
-    print(knowledge_matrix)
-
     # print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, argument,
     #                         SCOPE_RESTRICTION)
 
@@ -103,42 +96,30 @@ def run_scior_tester(global_configurations, working_graph):
         For more detailed information, please check: https://github.com/unibz-core/Scior-Tester/
     """
 
-    internal_global_configurations = {'import_gufo': False, 'save_gufo': False,
-                                      'is_automatic': global_configurations['is_automatic'],
-                                      'is_complete': global_configurations['is_complete'],
-                                      'print_time': False, 'ontology_path': ""}
-
     # DATA LOADINGS AND INITIALIZATIONS
     logger = initialize_logger("tester")
-    gufo_ttl_path = os.path.join(os.path.dirname(__file__), "resources", "gufoEndurantsOnly.ttl")
-    gufo_graph = load_graph_safely_considering_restrictions(gufo_ttl_path, LIST_GRAPH_RESTRICTIONS)
-    gufo_dictionary = initialize_gufo_dictionary()
-    ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, gufo_dictionary)
+    ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, SCOPE_RESTRICTION)
     if not len(ontology_dataclass_list):
         logger.error(f"Invalid input. The provided file does not have elements of type owl:Class. Program aborted.")
         exit(1)
-    verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
-    ontology_nodes = initialize_nodes_lists(working_graph)
-    load_known_gufo_information(working_graph, gufo_graph, ontology_dataclass_list,
-                                SCOPE_RESTRICTION)
+    load_known_gufo_information(working_graph, ontology_dataclass_list, SCOPE_RESTRICTION)
 
     # EXECUTION
     try:
         before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
-        execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes, internal_global_configurations)
+        execute_rules_types(ontology_dataclass_list, working_graph, global_configurations)
         after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
         consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
         knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
     except Exception:
         exit(1)
 
-    return ontology_dataclass_list, time_register, consolidated_statistics, knowledge_matrix, SOFTWARE_VERSION
+    return ontology_dataclass_list, consolidated_statistics, knowledge_matrix, SOFTWARE_VERSION
 
 
 if __name__ == "__main__":
     run_scior()
 
-# TODO (@pedropaulofb): Raise an exception for every new error.
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
 # TODO (@pedropaulofb): Add syntax validation feature.
