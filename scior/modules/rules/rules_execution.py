@@ -1,4 +1,6 @@
 """ Rules applied to the TYPES HIERARCHY. """
+import string
+from random import random
 
 from rdflib import Graph
 
@@ -11,6 +13,7 @@ from scior.modules.rules.rule_group_ufo_all import execute_rules_ufo_all
 from scior.modules.rules.rule_group_ufo_some import execute_rules_ufo_some
 from scior.modules.rules.rule_group_ufo_unique import execute_rules_ufo_unique
 from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
+import random
 
 LOGGER = initialize_logger()
 
@@ -18,6 +21,10 @@ LOGGER = initialize_logger()
 def loop_rule(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, list_rules_groups: list[str],
               arguments: dict) -> None:
     """ Receives a list of rule groups to perform in loop until no modifications are found. """
+
+    loop_id = ''.join(random.choices(string.ascii_lowercase, k=4))
+
+    LOGGER.debug(f"Rules loop ID = {loop_id}. Executing in loop rules groups.")
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = initial_hash + 1
@@ -30,10 +37,10 @@ def loop_rule(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
         if initial_hash == final_hash:
-            LOGGER.debug("Final hash equals initial hash for the dataclass list. "
-                         "gUFO types hierarchy rules successfully concluded.")
+            LOGGER.debug(f"Rules loop ID = {loop_id}. Final hash equals initial hash. "
+                         f"gUFO types hierarchy rules successfully concluded.")
         else:
-            LOGGER.debug("Final hash does not equals initial hash for the dataclass list. Re-executing rules.")
+            LOGGER.debug(f"Rules loop ID = {loop_id}. Final hash does not equals initial hash. Re-executing rules.")
 
 
 def execute_rules_types(ontology_dataclass_list, ontology_graph, arguments):

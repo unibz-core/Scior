@@ -1,5 +1,4 @@
 """ Main module  for Scior """
-
 import os
 import time
 from datetime import datetime
@@ -7,18 +6,14 @@ from datetime import datetime
 from rdflib import RDFS, RDF
 
 from scior.modules.dataclass_verifications import verify_all_ontology_dataclasses_consistency
-from scior.modules.graph_ontology import save_ontology_gufo_statements, \
-    save_ontology_file_as_configuration, safe_save_ontology_file
 from scior.modules.initialization_arguments import treat_arguments
 from scior.modules.initialization_data_graph import initialize_nodes_lists
 from scior.modules.initialization_data_gufo_dictionary import initialize_gufo_dictionary
 from scior.modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, \
     load_known_gufo_information
 from scior.modules.logger_config import initialize_logger
-from scior.modules.report_printer import print_report_file
 from scior.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
     create_knowledge_matrix
-from scior.modules.results_printer import print_statistics_screen
 from scior.modules.rules.rules_execution import execute_rules_types
 from scior.modules.utils_rdf import load_all_graph_safely, load_graph_safely_considering_restrictions, \
     reduce_graph_considering_restrictions
@@ -65,30 +60,25 @@ def run_scior():
     # before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
-    verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
     try:
         execute_rules_types(ontology_dataclass_list, working_graph, argument)
     except Exception as error:
         logger.error(f"The following exception occurred when Scior tried to execute its rules: "
                      f"{error} ({type(error).__name__}). Program aborted.")
         exit(1)
-    verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
-
-    safe_save_ontology_file(working_graph, "C:\\Users\\PFavatoBarcelos\\Dev\\Work\\Scior\\ontologies\\deletepp.ttl")
-    exit(5)
 
     # SAVING RESULTS - OUTPUT
 
-    after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
-
-    resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, SCOPE_RESTRICTION)
+    # after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+    #
+    # resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, SCOPE_RESTRICTION)
 
     # Calculating results
-    consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
+    # consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
+    # knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
 
-    print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, argument,
-                            SCOPE_RESTRICTION)
+    # print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, argument,
+    #                         SCOPE_RESTRICTION)
 
     now = datetime.now()
     end_date_time_here = now.strftime("%d-%m-%Y %H:%M:%S")
@@ -98,12 +88,11 @@ def run_scior():
     logger.info(f"Scior concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
     # Printing results
-    # TODO (@pedropaulofb): Remove gufo_graph
-    save_ontology_file_as_configuration(resulting_graph, end_date_time, argument)
-
-    print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,
-                      argument, before_statistics, after_statistics,
-                      consolidated_statistics, time_register, SCOPE_RESTRICTION, SOFTWARE_VERSION, knowledge_matrix)
+    # save_ontology_file_as_configuration(resulting_graph, end_date_time, argument)
+    #
+    # print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,
+    #                   argument, before_statistics, after_statistics,
+    #                   consolidated_statistics, time_register, SCOPE_RESTRICTION, SOFTWARE_VERSION, knowledge_matrix)
 
 
 def run_scior_tester(global_configurations, working_graph):

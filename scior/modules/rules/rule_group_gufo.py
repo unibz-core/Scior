@@ -1,4 +1,6 @@
 """ Implementation of caller/switcher for rules of group GUFO. """
+import string
+import random
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
@@ -9,7 +11,9 @@ LOGGER = initialize_logger()
 def loop_execute_gufo_rules(ontology_dataclass_list):
     """ Executes in loop all rules of the GUFO group."""
 
-    LOGGER.debug("Executing in loop all rules from group gUFO.")
+    loop_id = ''.join(random.choices(string.ascii_lowercase, k=4))
+
+    LOGGER.debug(f"gUFO loop ID = {loop_id}. Executing in loop all rules from group gUFO.")
 
     initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
     final_hash = initial_hash + 1
@@ -23,10 +27,10 @@ def loop_execute_gufo_rules(ontology_dataclass_list):
         final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
 
         if initial_hash == final_hash:
-            LOGGER.debug("Final hash equals initial hash for the dataclass list. "
-                         "gUFO types hierarchy rules successfully concluded.")
+            LOGGER.debug(f"gUFO loop ID = {loop_id}. Final hash equals initial hash "
+                         f"gUFO types hierarchy rules successfully concluded.")
         else:
-            LOGGER.debug("Final hash does not equals initial hash for the dataclass list. Re-executing rules.")
+            LOGGER.debug(f"gUFO loop ID = {loop_id}. Final hash does not equals initial hash. Re-executing rules.")
 
 
 def execute_gufo_positive_rules(ontology_dataclass_list):
