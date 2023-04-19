@@ -153,11 +153,6 @@ def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
     for known_gufo in list_known_gufo:
 
         receptor_dataclass = get_dataclass_by_uri(ontology_dataclass_list, known_gufo[0])
-
-        if receptor_dataclass is None:
-            LOGGER.error(f"Unexpected situation. Class {known_gufo[0]} not found. Program aborted.")
-            raise ValueError("EXECUTION INCONSISTENCY!")
-
         receptor_dataclass.move_classification_to_is_list(ontology_dataclass_list, known_gufo[1],
                                                           "insert_known_gufo_information")
 

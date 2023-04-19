@@ -2,6 +2,7 @@
 import operator
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.utils_deficiencies import report_error_dataclass_not_found
 
 LOGGER = initialize_logger()
 
@@ -184,5 +185,5 @@ def get_dataclass_by_uri(ontology_dataclass_list, desired_uri: str):
         if ontology_dataclass.uri == desired_uri:
             return ontology_dataclass
 
-    LOGGER.debug(f"No ontology_dataclass matches the desired URI.")
+    report_error_dataclass_not_found(desired_uri)
     return None

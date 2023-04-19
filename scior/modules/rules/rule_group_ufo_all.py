@@ -30,10 +30,6 @@ def run_r22cg(ontology_dataclass_list, ontology_graph):
 
     for row in query_result:
         ontology_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
-
-        if ontology_dataclass is None:
-            LOGGER.error(f"Unexpected situation. Class {row.class_y.toPython()} not found. Program aborted.")
-
         ontology_dataclass.move_classification_to_not_list(ontology_dataclass_list, "AntiRigidType", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")

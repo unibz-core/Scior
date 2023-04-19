@@ -35,10 +35,6 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
         # Set all classes in can list as not type.
         for can_class in can_classes_list:
             candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_class)
-
-            if candidate_dataclass is None:
-                report_error_dataclass_not_found(can_class)
-
             candidate_dataclass.move_classifications_list_to_not_list(ontology_dataclass_list, types_to_set_list,
                                                                       rule_code)
 

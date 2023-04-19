@@ -31,10 +31,6 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
     elif length_can_list == 1:
         # Set single candidate as desired types.
         candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
-
-        if candidate_dataclass is None:
-            report_error_dataclass_not_found(can_classes_list[0])
-
         candidate_dataclass.move_classifications_list_to_is_list(ontology_dataclass_list, types_to_set_list, rule_code)
 
     elif length_can_list == 0:
@@ -97,8 +93,6 @@ def run_r24rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
             report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
-        if selected_dataclass is None:
-            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "RigidType" in selected_dataclass.is_type and "Sortal" in selected_dataclass.is_type:
@@ -151,8 +145,6 @@ def run_r25rg1(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
             report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
-        if selected_dataclass is None:
-            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "RigidType" in selected_dataclass.is_type:
@@ -205,8 +197,6 @@ def run_r25rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
             report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
-        if selected_dataclass is None:
-            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "AntiRigidType" in selected_dataclass.is_type:
@@ -261,8 +251,6 @@ def run_r31rg1(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
             report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
-        if selected_dataclass is None:
-            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "Sortal" in selected_dataclass.is_type:
@@ -322,8 +310,6 @@ def run_r31rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
             report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
-        if selected_dataclass is None:
-            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "Sortal" in selected_dataclass.is_type:
@@ -379,8 +365,6 @@ def run_r34rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
             report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
-        if selected_dataclass is None:
-            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "Phase" in selected_dataclass.is_type:
@@ -434,8 +418,6 @@ def run_r35rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
             report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
-        if selected_dataclass is None:
-            report_error_dataclass_not_found(selected_class)
 
         # x must not specialize y
         if (URIRef(evaluated_class), RDFS.subClassOf, URIRef(selected_class)) in ontology_graph:
@@ -502,8 +484,6 @@ def run_r36rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
             report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
-        if selected_dataclass is None:
-            report_error_dataclass_not_found(selected_class)
 
         # Creating IS List
         if "Category" in selected_dataclass.is_type:
@@ -558,12 +538,7 @@ def run_r37rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         related_class = row.class_x.toPython()
 
         evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
-        if evaluated_dataclass is None:
-            report_error_dataclass_not_found(evaluated_class)
-
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
-        if selected_dataclass is None:
-            report_error_dataclass_not_found(selected_class)
 
         # Class z must not be subclass of class x
         if (URIRef(selected_class), RDFS.subClassOf, URIRef(related_class)) in ontology_graph:
