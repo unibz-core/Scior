@@ -1,6 +1,6 @@
 """ Rules applied to the TYPES HIERARCHY. """
+import random
 import string
-from random import random
 
 from rdflib import Graph
 
@@ -13,7 +13,6 @@ from scior.modules.rules.rule_group_ufo_all import execute_rules_ufo_all
 from scior.modules.rules.rule_group_ufo_some import execute_rules_ufo_some
 from scior.modules.rules.rule_group_ufo_unique import execute_rules_ufo_unique
 from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
-import random
 
 LOGGER = initialize_logger()
 

@@ -6,15 +6,44 @@ from scior.modules.utils_dataclass import get_dataclass_by_uri
 LOGGER = initialize_logger()
 
 
-def run_r22cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R22Cg from group UFO All.
+def run_ir19(ontology_dataclass_list, ontology_graph):
+    """ Executes rule IR19 from group UFO All.
 
-    Code: R22Cg
+        Code: IR19
+        Definition: Sortal(x) ^ subClassOf(y,x) -> Sortal(y)
+        Description: Everything that specialize a Sortal is also a Sortal
+        """
+
+    rule_code = "IR19"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    query_string = """
+        PREFIX gufo: <http://purl.org/nemo/gufo#>
+        SELECT DISTINCT ?class_y
+        WHERE {
+            ?class_x rdf:type gufo:Sortal .
+            ?class_y rdfs:subClassOf ?class_x .
+        } """
+
+    query_result = ontology_graph.query(query_string)
+
+    for row in query_result:
+        new_sortal = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
+        new_sortal.move_classification_to_is_list(ontology_dataclass_list, "Sortal", rule_code)
+
+    LOGGER.debug(f"Rule {rule_code} concluded")
+
+
+def run_ir28(ontology_dataclass_list, ontology_graph):
+    """ Executes rule IR28 from group UFO All.
+
+    Code: IR28
     Definition: RigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
     Description: AntiRigid types cannot generalize Rigid types.
     """
 
-    rule_code = "R22Cg"
+    rule_code = "IR28"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -35,15 +64,15 @@ def run_r22cg(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_r23cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R23Cg from group UFO All.
+def run_ir29(ontology_dataclass_list, ontology_graph):
+    """ Executes rule IR29 from group UFO All.
 
-    Code: R23Cg
+    Code: IR29
     Definition: SemiRigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
     Description: AntiRigid types cannot generalize SemiRigid types.
     """
 
-    rule_code = "R23Cg"
+    rule_code = "IR29"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -65,15 +94,15 @@ def run_r23cg(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_r26cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R26Cg from group UFO All.
+def run_ir33(ontology_dataclass_list, ontology_graph):
+    """ Executes rule IR33 from group UFO All.
 
-    Code: R26Cg
+    Code: IR33
     Definition: x != y ^ Kind(x) ^ subClassOf(x,y) -> NonSortal(y)
     Description: All entities must have a single or aggregate multiple identity principles.
     """
 
-    rule_code = "R26Cg"
+    rule_code = "IR33"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -100,15 +129,15 @@ def run_r26cg(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_r27cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R27Cg from group UFO All.
+def run_ir34(ontology_dataclass_list, ontology_graph):
+    """ Executes rule IR34 from group UFO All.
 
-    Code: R27Cg
+    Code: IR34
     Definition: NonSortal(x) ^ subClassOf(x,y) -> NonSortal(y)
     Description: NonSortals can only specialize other NonSortals
     """
 
-    rule_code = "R27Cg"
+    rule_code = "IR34"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -130,15 +159,15 @@ def run_r27cg(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_r32cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R32Cg from group UFO All.
+def run_ir41(ontology_dataclass_list, ontology_graph):
+    """ Executes rule IR41 from group UFO All.
 
-    Code: R32Cg
+    Code: IR41
     Definition: Phase(x) ^ subClassOf(x,y) -> ~Role(y) ^ ~RoleMixin(y)
     Description: Phases cannot specialize Roles and RoleMixins
     """
 
-    rule_code = "R32Cg"
+    rule_code = "IR41"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -161,15 +190,15 @@ def run_r32cg(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_r33cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule R33Cg from group UFO All.
+def run_ir42(ontology_dataclass_list, ontology_graph):
+    """ Executes rule IR42 from group UFO All.
 
-    Code: R33Cg
+    Code: IR42
     Definition: PhaseMixin(x) ^ subClassOf(x,y) -> ~RoleMixin(y)
     Description: PhaseMixins cannot specialize RoleMixins
     """
 
-    rule_code = "R33Cg"
+    rule_code = "IR42"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -191,47 +220,18 @@ def run_r33cg(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_r05_r27cg(ontology_dataclass_list, ontology_graph):
-    """ Executes rule r05_r27cg from group UFO All.
-
-        Code: R05+27Cg
-        Definition: Sortal(x) ^ subClassOf(y,x) -> Sortal(y)
-        Description: Everything that specialize a Sortal is also a Sortal
-        """
-
-    rule_code = "r05_r27cg"
-
-    LOGGER.debug(f"Starting rule {rule_code}")
-
-    query_string = """
-        PREFIX gufo: <http://purl.org/nemo/gufo#>
-        SELECT DISTINCT ?class_y
-        WHERE {
-            ?class_x rdf:type gufo:Sortal .
-            ?class_y rdfs:subClassOf ?class_x .
-        } """
-
-    query_result = ontology_graph.query(query_string)
-
-    for row in query_result:
-        new_sortal = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
-        new_sortal.move_classification_to_is_list(ontology_dataclass_list, "Sortal", rule_code)
-
-    LOGGER.debug(f"Rule {rule_code} concluded")
-
-
 def execute_rules_ufo_all(ontology_dataclass_list, ontology_graph):
     """Call the execution of all rules from the group UFO All."""
 
     LOGGER.debug("Starting execution of all rules from group UFO All.")
 
-    run_r22cg(ontology_dataclass_list, ontology_graph)
-    run_r23cg(ontology_dataclass_list, ontology_graph)
-    run_r05_r27cg(ontology_dataclass_list, ontology_graph)
-    run_r26cg(ontology_dataclass_list, ontology_graph)
-    run_r27cg(ontology_dataclass_list, ontology_graph)
-    run_r32cg(ontology_dataclass_list, ontology_graph)
-    run_r33cg(ontology_dataclass_list, ontology_graph)
+    run_ir19(ontology_dataclass_list, ontology_graph)
+    run_ir28(ontology_dataclass_list, ontology_graph)
+    run_ir29(ontology_dataclass_list, ontology_graph)
+    run_ir33(ontology_dataclass_list, ontology_graph)
+    run_ir34(ontology_dataclass_list, ontology_graph)
+    run_ir41(ontology_dataclass_list, ontology_graph)
+    run_ir42(ontology_dataclass_list, ontology_graph)
 
     LOGGER.debug("Execution of all rules from group UFO All completed.")
 

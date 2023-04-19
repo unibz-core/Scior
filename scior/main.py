@@ -56,8 +56,7 @@ def run_scior():
     # Loading the gUFO information already stated into the ontology
     load_known_gufo_information(working_graph, ontology_dataclass_list, SCOPE_RESTRICTION)
 
-    # TODO (@pedropaulofb): To be done.
-    # before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+    before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
     try:
@@ -69,13 +68,15 @@ def run_scior():
 
     # SAVING RESULTS - OUTPUT
 
-    # after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
-    #
+    after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+
     # resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, SCOPE_RESTRICTION)
 
     # Calculating results
-    # consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    # knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
+    consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
+    knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
+
+    print(knowledge_matrix)
 
     # print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, argument,
     #                         SCOPE_RESTRICTION)
@@ -124,8 +125,7 @@ def run_scior_tester(global_configurations, working_graph):
     # EXECUTION
     try:
         before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
-        time_register = execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes,
-                                            internal_global_configurations)
+        execute_rules_types(ontology_dataclass_list, working_graph, ontology_nodes, internal_global_configurations)
         after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
         consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
         knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)

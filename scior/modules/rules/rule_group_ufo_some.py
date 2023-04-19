@@ -51,16 +51,16 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
         raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
 
 
-def run_r24rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-    """ Executes rule R24Rg from group UFO.
+def run_ir30(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule IR30 from group UFO.
 
-    Code: R24Rg
+    Code: IR30
     Definition: AntiRigidType(x) ^ Sortal(x) ^ Category(y) ^ subClassOf(x,y) ->
                     E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: AntiRigid Sortals cannot "directly specialize" Categories. This must be done through a Ridig Sortal.
     """
 
-    rule_code = "R24Rg"
+    rule_code = "IR30"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -108,67 +108,15 @@ def run_r24rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_r25rg1(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-    """ Executes rule R25Rg1 from group UFO Some.
+def run_ir31(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule IR31 from group UFO Some.
 
-    Code: R25Rg1
-    Definition: Mixin(x) -> E y (subClassOf(y,x) ^ RigidType(y))
-    Description: Mixins must generalize at least one RigidType.
-    """
-
-    rule_code = "R25Rg1"
-
-    LOGGER.debug(f"Starting rule {rule_code}")
-
-    query_string = """
-        PREFIX gufo: <http://purl.org/nemo/gufo#>
-        SELECT DISTINCT ?class_x ?class_y
-        WHERE {
-            ?class_x rdf:type gufo:Mixin .
-            ?class_x rdfs:subClassOf ?class_y .
-        } """
-
-    query_result = ontology_graph.query(query_string)
-
-    for row in query_result:
-
-        is_list = []
-        can_list = []
-
-        # Class to be completed or that may be incomplete
-        evaluated_class = row.class_x.toPython()
-        # Class that may be used to complete the evaluated_dataclass
-        selected_class = row.class_y.toPython()
-
-        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
-        if evaluated_dataclass is None:
-            report_error_dataclass_not_found(evaluated_class)
-
-        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
-
-        # Creating IS List
-        if "RigidType" in selected_dataclass.is_type:
-            is_list.append(selected_dataclass.uri)
-
-        # Creating CAN List
-        elif "RigidType" in selected_dataclass.can_type:
-            can_list.append(selected_dataclass.uri)
-
-        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["RigidType"], rule_code,
-                              arguments)
-
-    LOGGER.debug(f"Rule {rule_code} concluded.")
-
-
-def run_r25rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-    """ Executes rule R25Rg2 from group UFO Some.
-
-    Code: R25Rg2
+    Code: IR31
     Definition: Mixin(x) -> E y (subClassOf(y,x) ^ AntiRigidType(y))
     Description: Mixins must generalize at least one AntiRigidType.
     """
 
-    rule_code = "R25Rg2"
+    rule_code = "IR31"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -212,16 +160,68 @@ def run_r25rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_r31rg1(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-    """ Executes rule R31Rg1 from group UFO Some.
+def run_ir32(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule IR32 from group UFO Some.
 
-    Code: R31Rg1
+    Code: IR32
+    Definition: Mixin(x) -> E y (subClassOf(y,x) ^ RigidType(y))
+    Description: Mixins must generalize at least one RigidType.
+    """
+
+    rule_code = "IR32"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    query_string = """
+        PREFIX gufo: <http://purl.org/nemo/gufo#>
+        SELECT DISTINCT ?class_x ?class_y
+        WHERE {
+            ?class_x rdf:type gufo:Mixin .
+            ?class_x rdfs:subClassOf ?class_y .
+        } """
+
+    query_result = ontology_graph.query(query_string)
+
+    for row in query_result:
+
+        is_list = []
+        can_list = []
+
+        # Class to be completed or that may be incomplete
+        evaluated_class = row.class_x.toPython()
+        # Class that may be used to complete the evaluated_dataclass
+        selected_class = row.class_y.toPython()
+
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        if evaluated_dataclass is None:
+            report_error_dataclass_not_found(evaluated_class)
+
+        selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
+
+        # Creating IS List
+        if "RigidType" in selected_dataclass.is_type:
+            is_list.append(selected_dataclass.uri)
+
+        # Creating CAN List
+        elif "RigidType" in selected_dataclass.can_type:
+            can_list.append(selected_dataclass.uri)
+
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["RigidType"], rule_code,
+                              arguments)
+
+    LOGGER.debug(f"Rule {rule_code} concluded.")
+
+
+def run_ir39(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule IR39 from group UFO Some.
+
+    Code: IR39
     Definition: NonSortal(x) -> E y (Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)))
     Description: NonSortals must be related to at least one Sortal that has a subClassOf or shareSuperClass
                     relation with it.
     """
 
-    rule_code = "R31Rg1"
+    rule_code = "IR39"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -266,17 +266,17 @@ def run_r31rg1(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_r31rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-    """ Executes rule R31Rg2 from group UFO Some.
+def run_ir40(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule IR40 from group UFO Some.
 
-    Code: R31Rg2
+    Code: IR40
     Definition: NonSortal(x) ^ Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)) ->
                 E z (y != z ^ Sortal(z) ^ ~shareKind(y,z) ^ (subClassOf(z,x) v shareSuperClass(x,z)))
     Description:    NonSortals thar are related to one Sortal that has a subClassOf or shareSuperClass relation with it
                     must be related to another Sortal that has a subClassOf or shareSuperClass relation with it.
     """
 
-    rule_code = "R31Rg2"
+    rule_code = "IR40"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -325,15 +325,15 @@ def run_r31rg2(ontology_dataclass_list: list[OntologyDataClass], ontology_graph:
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_r34rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-    """ Executes rule R34Rg from group UFO Some.
+def run_ir43(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule IR43 from group UFO Some.
 
-    Code: R34Rg
+    Code: IR43
     Definition: Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> Es z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: A Role cannot "specialize directly"  a PhaseMixin. This must be done through a Phase.
     """
 
-    rule_code = "R34Rg"
+    rule_code = "IR43"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -380,15 +380,15 @@ def run_r34rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_r35rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-    """ Executes rule R35Rg from group UFO Some.
+def run_ir44(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule IR44 from group UFO Some.
 
-    Code: R35Rg
+    Code: IR44
     Definition: Phase(x) -> E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))
     Description: There must exist at least two Phases that share the same Kind and that do not specialize each other.
     """
 
-    rule_code = "R35Rg"
+    rule_code = "IR44"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -447,15 +447,15 @@ def run_r35rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_r36rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-    """ Executes rule R36Rg from group UFO Some.
+def run_ir45(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule IR45 from group UFO Some.
 
-    Code: R36Rg
+    Code: IR45
     Definition: PhaseMixin(x) -> E y (Category (y) ^ isSubClassOf(x,y))
     Description: EveryPhaseMixin specialize at least one Category.
     """
 
-    rule_code = "R36Rg"
+    rule_code = "IR45"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -499,17 +499,17 @@ def run_r36rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_r37rg(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
-    """ Executes rule R37Rg from group UFO Some.
+def run_ir46(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+    """ Executes rule IR46 from group UFO Some.
 
-    Code: R37Rg
+    Code: IR46
     Definition: PhaseMixin(x) ^ Category(y) ^ subClassOf(x,y) ->
                 E z (PhaseMixin(z) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^ isSubClassOf(z,y))
     Description: There must exist at least two PhaseMixins that share the same Category
                     and that do not specialize each other.
     """
 
-    rule_code = "R37Rg"
+    rule_code = "IR46"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -575,14 +575,14 @@ def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ont
 
     LOGGER.debug("Starting execution of all rules from group UFO Some.")
 
-    run_r24rg(ontology_dataclass_list, ontology_graph, arguments)
-    run_r25rg1(ontology_dataclass_list, ontology_graph, arguments)
-    run_r25rg2(ontology_dataclass_list, ontology_graph, arguments)
-    run_r31rg1(ontology_dataclass_list, ontology_graph, arguments)
-    run_r31rg2(ontology_dataclass_list, ontology_graph, arguments)
-    run_r34rg(ontology_dataclass_list, ontology_graph, arguments)
-    run_r35rg(ontology_dataclass_list, ontology_graph, arguments)
-    run_r36rg(ontology_dataclass_list, ontology_graph, arguments)
-    run_r37rg(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir30(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir31(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir32(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir39(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir40(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir43(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir44(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir45(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir46(ontology_dataclass_list, ontology_graph, arguments)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")

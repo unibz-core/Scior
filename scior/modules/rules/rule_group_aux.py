@@ -7,13 +7,13 @@ SCIOR_NAMESPACE = "https://purl.org/scior/"
 LOGGER = initialize_logger()
 
 
-def run_r29ag1(ontology_graph):
-    """ Executes rule R29Ag1 from group AUX.
+def run_ir36(ontology_graph):
+    """ Executes rule IR36 from group AUX.
 
-    Code: R29Ag1
+    Code: IR36
     Definition: Kind(z) ^ subClassOf(x,z) ^ subClassOf(y,z) -> shareKind(x,y)
     """
-    rule_code = "R29Ag1"
+    rule_code = "IR36"
 
     LOGGER.debug(f"Starting rule {rule_code}.")
 
@@ -35,13 +35,13 @@ def run_r29ag1(ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_r29ag2(ontology_graph):
-    """ Executes rule R29Ag2 from group AUX.
+def run_ir37(ontology_graph):
+    """ Executes rule IR37 from group AUX.
 
-    Code: R29Ag2
+    Code: IR37
     Definition: Kind(z) ^ subClassOf(x,z) ^ shareKind(x,y) -> subClassOf(y,z)
     """
-    rule_code = "R29Ag2"
+    rule_code = "IR37"
 
     LOGGER.debug(f"Starting rule {rule_code}.")
 
@@ -69,7 +69,7 @@ def execute_rules_aux(ontology_graph):
 
     ontology_graph.bind("scior", SCIOR_NAMESPACE)
 
-    run_r29ag1(ontology_graph)
-    run_r29ag2(ontology_graph)
+    run_ir36(ontology_graph)
+    run_ir37(ontology_graph)
 
     LOGGER.debug("Execution of all rules from group AUX completed.")
