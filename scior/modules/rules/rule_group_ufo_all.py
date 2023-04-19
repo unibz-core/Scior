@@ -36,7 +36,6 @@ def run_r22cg(ontology_dataclass_list, ontology_graph):
             LOGGER.error(f"Unexpected situation. Class {row.class_y.toPython()} not found. Program aborted.")
 
         ontology_dataclass.move_classification_to_not_list("AntiRigidType", rule_code)
-        loop_execute_gufo_rules(ontology_dataclass_list)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -67,7 +66,6 @@ def run_r23cg(ontology_dataclass_list, ontology_graph):
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
                 ontology_dataclass.move_classification_to_not_list("AntiRigidType", rule_code)
-                loop_execute_gufo_rules(ontology_dataclass_list)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -103,7 +101,6 @@ def run_r26cg(ontology_dataclass_list, ontology_graph):
     for ontology_dataclass in ontology_dataclass_list:
         if ontology_dataclass.uri in result:
             ontology_dataclass.move_classification_to_is_list("NonSortal", rule_code)
-            loop_execute_gufo_rules(ontology_dataclass_list)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -165,9 +162,7 @@ def run_r32cg(ontology_dataclass_list, ontology_graph):
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
                 ontology_dataclass.move_classification_to_not_list("Role", rule_code)
-                loop_execute_gufo_rules(ontology_dataclass_list)
                 ontology_dataclass.move_classification_to_not_list("RoleMixin", rule_code)
-                loop_execute_gufo_rules(ontology_dataclass_list)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -198,7 +193,36 @@ def run_r33cg(ontology_dataclass_list, ontology_graph):
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
                 ontology_dataclass.move_classification_to_not_list("RoleMixin", rule_code)
-                loop_execute_gufo_rules(ontology_dataclass_list)
+
+    LOGGER.debug(f"Rule {rule_code} concluded")
+
+
+def run_r05_r27cg(ontology_dataclass_list, ontology_graph):
+    """ Executes rule r05_r27cg from group UFO All.
+
+        Code: R05+27Cg
+        Definition: Sortal(x) ^ subClassOf(y,x) -> Sortal(y)
+        Description: Everything that specialize a Sortal is also a Sortal
+        """
+
+    rule_code = "r05_r27cg"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    query_string = """
+        PREFIX gufo: <http://purl.org/nemo/gufo#>
+        SELECT DISTINCT ?class_y
+        WHERE {
+            ?class_x rdf:type gufo:Sortal .
+            ?class_y rdfs:subClassOf ?class_x .
+        } """
+
+    query_result = ontology_graph.query(query_string)
+
+    for row in query_result:
+        new_sortal = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
+        new_sortal.move_classification_to_is_list("Sortal", rule_code)
+
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -210,6 +234,7 @@ def execute_rules_ufo_all(ontology_dataclass_list, ontology_graph):
 
     run_r22cg(ontology_dataclass_list, ontology_graph)
     run_r23cg(ontology_dataclass_list, ontology_graph)
+    run_r05_r27cg(ontology_dataclass_list, ontology_graph)
     run_r26cg(ontology_dataclass_list, ontology_graph)
     run_r27cg(ontology_dataclass_list, ontology_graph)
     run_r32cg(ontology_dataclass_list, ontology_graph)
@@ -217,5 +242,5 @@ def execute_rules_ufo_all(ontology_dataclass_list, ontology_graph):
 
     LOGGER.debug("Execution of all rules from group UFO All completed.")
 
-# TODO (@pedropaulofb): Implement new rule R05+R27
 # TODO (@pedropaulofb): Only loop rules when a classification is IN FACT moved, not when called.
+# TODO (@pedropaulofb): Uniform all warnings with Rule at the beginning.

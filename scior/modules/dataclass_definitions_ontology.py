@@ -43,7 +43,8 @@ class OntologyDataClass(object):
         self.incompleteness_info["is_incomplete"] = False
         self.incompleteness_info["detected_in"] = []
 
-    def move_classification_between_lists(self, element: str, source_list: str, target_list: str, invoker_rule: str):
+    def move_classification_between_lists(self, ontology_dataclass_list, element: str, source_list: str,
+                                          target_list: str, invoker_rule: str):
         """ Move an element between two lists in the same OntologyClass
             Elements can only be moved from CAN lists to IS or NOT lists
         """
@@ -96,13 +97,15 @@ class OntologyDataClass(object):
         source.remove(element)
         target.append(element)
 
+        loop_execute_gufo_rules(ontology_dataclass_list)
+
         # Performs consistency check
         self.is_consistent()
 
         LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} moved successfully from list {source_list} "
                      f"to list {target_list} in {self.uri}.")
 
-    def move_classification_to_is_list(self, element: str, invoker_rule: str):
+    def move_classification_to_is_list(self, ontology_dataclass_list, element: str, invoker_rule: str):
         """ Check if the element to be moved is a type or instance
                 and move it from the corresponding CAN to the corresponding IS list.
 
@@ -168,16 +171,14 @@ class OntologyDataClass(object):
         This is a specific case of the move_element_to_is_list function. """
 
         for elem in elem_list:
-            self.move_classification_to_is_list(elem, invoker_rule)
-            loop_execute_gufo_rules(ontology_dataclass_list)
+            self.move_classification_to_is_list(ontology_dataclass_list, elem, invoker_rule)
 
     def move_classifications_list_to_not_list(self, ontology_dataclass_list, elem_list: list[str], invoker_rule: str):
         """ Moves a list of elements to the NOT list. Analogous to move_list_of_elements_to_is_list function.
         This is a specific case of the move_element_to_not_list function. """
 
         for elem in elem_list:
-            self.move_classification_to_not_list(elem, invoker_rule)
-            loop_execute_gufo_rules(ontology_dataclass_list)
+            self.move_classification_to_not_list(ontology_dataclass_list, elem, invoker_rule)
 
     def return_containing_list_name(self, element):
         """ Verify to which of the dataclass lists the element belongs and returns the list name. """

@@ -19,7 +19,7 @@ from scior.modules.report_printer import print_report_file
 from scior.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
     create_knowledge_matrix
 from scior.modules.results_printer import print_statistics_screen
-from scior.modules.rules.rules_types_run import execute_rules_types
+from scior.modules.rules.rules_execution import execute_rules_types
 from scior.modules.utils_rdf import load_all_graph_safely, load_graph_safely_considering_restrictions, \
     reduce_graph_considering_restrictions
 

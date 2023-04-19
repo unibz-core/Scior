@@ -43,13 +43,12 @@ def execute_rules_types(ontology_dataclass_list, ontology_graph, arguments):
     LOGGER.info("Starting gUFO types' hierarchy rules ...")
 
     # Groups of rules and their containing rules' codes. Base rules are not here included.
-    list_rules_groups = ["rule_group_gufo", "rule_group_aux", "rule_group_ufo_all", "rule_group_ufo_unique",
-                         "rule_group_ufo_some"]
+    list_rules_groups = ["rule_group_aux", "rule_group_ufo_all", "rule_group_ufo_unique", "rule_group_ufo_some"]
 
     # Execute rule_group_base just once
     execute_rules_base(ontology_graph)
 
-    # Execute all groups of rules in loop (except group base) until there are no new modifications
+    # Execute all groups of rules in loop (except groups base and gufo) until there are no new modifications
     loop_rule(ontology_dataclass_list, ontology_graph, list_rules_groups, arguments)
 
     LOGGER.info("gUFO types' hierarchy rules concluded.")
@@ -60,10 +59,7 @@ def switch_rule_group_execution(ontology_dataclass_list, ontology_graph, rule_gr
 
     LOGGER.debug(f"Accessing rule {rule_group_code} ...")
 
-    if rule_group_code == "rule_group_gufo":
-        loop_execute_gufo_rules(ontology_dataclass_list)
-
-    elif rule_group_code == "rule_group_aux":
+    if rule_group_code == "rule_group_aux":
         execute_rules_aux(ontology_graph)
 
     elif rule_group_code == "rule_group_ufo_all":

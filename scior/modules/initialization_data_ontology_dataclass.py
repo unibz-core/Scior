@@ -160,7 +160,6 @@ def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list):
             raise ValueError("EXECUTION INCONSISTENCY!")
 
         receptor_dataclass.move_classification_to_is_list(known_gufo[1], "insert_known_gufo_information")
-        loop_execute_gufo_rules(ontology_dataclass_list)
 
 
 def load_known_gufo_information(ontology_graph, ontology_dataclass_list, restriction):
@@ -175,7 +174,6 @@ def load_known_gufo_information(ontology_graph, ontology_dataclass_list, restric
         # Setting all classes as EndurantType
         for ontology_dataclass in ontology_dataclass_list:
             ontology_dataclass.move_classification_to_is_list("EndurantType", "load_known_gufo_information")
-            loop_execute_gufo_rules(ontology_dataclass_list)
         # Collecting and adding other known classifications
         list_known_gufo = get_known_gufo_types(ontology_graph)
         insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)
