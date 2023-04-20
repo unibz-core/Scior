@@ -3,7 +3,7 @@
 import logging
 import os
 
-from scior.modules.utils_general import get_date_time
+from scior.modules.utils_general import get_date_time, create_directory_if_not_exists
 
 
 def initialize_logger(source="default"):
@@ -32,17 +32,11 @@ def initialize_logger(source="default"):
             print(f"Logger parameter unknown ({source}). Aborting execution.")
 
         # If directory "/log" does not exist, create it
-        log_dir = "logs/"
-        try:
-            if not os.path.exists(log_dir):
-                os.makedirs(log_dir)
-        except OSError as error:
-            print(f"Could not create {log_dir} directory. Exiting program."
-                  f"System error reported: {error}")
-            exit(1)
+        log_directory = "logs/"
+        create_directory_if_not_exists(log_directory)
 
         # Creating FILE handler
-        file_handler = logging.FileHandler(f"{log_dir}{get_date_time()}.log")
+        file_handler = logging.FileHandler(f"{log_directory}{get_date_time()}.log")
         if source == "default":
             file_handler.setLevel(logging.DEBUG)
         elif source == "tester":

@@ -120,7 +120,7 @@ class OntologyDataClass(object):
         source_list = self.return_containing_list_name(element)
 
         if source_list == "is_type" or source_list == "is_individual":
-            # LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} already in {source_list} for {self.uri}. "
+            # LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} already in {source_list} for {self.uri}"
             #             f"No moving is necessary.")
             pass
         else:
@@ -153,7 +153,7 @@ class OntologyDataClass(object):
         source_list = self.return_containing_list_name(element)
 
         if source_list == "not_type" or source_list == "not_individual":
-            # LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} already in {source_list} for {self.uri}. "
+            # LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} already in {source_list} for {self.uri}"
             #              f"No moving is necessary.")
             pass
         else:

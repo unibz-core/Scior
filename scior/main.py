@@ -33,6 +33,13 @@ def run_scior():
 
     logger = initialize_logger()
 
+    # TODO (@pedropaulofb): Exceptions must have the following format:
+    # try:
+    #     result = 1/0
+    # except Exception as error:
+    #     print(f"{error = }")
+    #     raise ValueError(error)
+
     now = datetime.now()
     start_date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"Scior started on {start_date_time}!")
@@ -121,7 +128,8 @@ def run_scior_tester(global_configurations, working_graph):
 if __name__ == "__main__":
     run_scior()
 
+# TODO (@pedropaulofb): Simplify lists manipulation
+# TODO (@pedropaulofb): Adjust all exceptions and exists
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
-# TODO (@pedropaulofb): Add syntax validation feature.
 # TODO (@pedropaulofb): Implement interactive mode and light automatic.

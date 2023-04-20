@@ -5,6 +5,7 @@ from pathlib import Path
 from rdflib import URIRef, RDF, RDFS, OWL, BNode
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.utils_general import create_directory_if_not_exists
 from scior.modules.utils_rdf import get_ontology_uri, load_all_graph_safely
 
 LOGGER = initialize_logger()
@@ -97,11 +98,7 @@ def save_ontology_file_caller(end_date_time, ontology_graph, arguments):
     loaded_file_name = Path(arguments['ontology_path']).stem
 
     # If directory 'results_directory' not exists, create it
-    try:
-        if not os.path.exists(results_directory):
-            os.makedirs(results_directory)
-    except OSError as error:
-        LOGGER.error(f"Could not create {results_directory} directory. Exiting program. System error reported: {error}")
+    create_directory_if_not_exists(results_directory)
 
     # Setting file complete path
     output_file_name = loaded_file_name + "-" + end_date_time + ".ttl"
