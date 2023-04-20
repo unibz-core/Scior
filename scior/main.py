@@ -4,6 +4,7 @@ from datetime import datetime
 
 from rdflib import RDFS, RDF
 
+from scior.modules.graph_ontology import save_ontology_gufo_statements, save_ontology_file_as_configuration
 from scior.modules.initialization_arguments import treat_arguments
 from scior.modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, \
     load_known_gufo_information
@@ -65,7 +66,7 @@ def run_scior():
 
     after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
-    # resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, SCOPE_RESTRICTION)
+    resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, SCOPE_RESTRICTION)
 
     # Calculating results
     consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
@@ -82,7 +83,7 @@ def run_scior():
     logger.info(f"Scior concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
 
     # Printing results
-    # save_ontology_file_as_configuration(resulting_graph, end_date_time, argument)
+    save_ontology_file_as_configuration(resulting_graph, end_date_time, argument)
     #
     # print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,
     #                   argument, before_statistics, after_statistics,
