@@ -184,7 +184,7 @@ Scior provides other useful complementary arguments:
 -g2, --gufo2 Save all gUFO statements in the output ontology file.
 ```
 
-The first argument, **times**, prints on the screen the execution times for all executions of every implemented rule. 
+The first argument, **times**, prints on the screen the execution times for all executions of every implemented rule.
 Also, at the conclusion of the software, it prints a table aggregating all recorded times.
 
 The last two arguments of this group regard the output file generated after the Scior execution. At the end of the

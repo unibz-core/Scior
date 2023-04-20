@@ -30,7 +30,7 @@ class dataclass_statistics(object):
         self.unknown_individuals = len(ontology_dataclass.can_individual)
 
         # Added -1 because all classes start as EndurantTypes
-        self.known_types = len(ontology_dataclass.is_type) + len(ontology_dataclass.not_type) -1
+        self.known_types = len(ontology_dataclass.is_type) + len(ontology_dataclass.not_type) - 1
         self.known_individuals = len(ontology_dataclass.is_individual) + len(ontology_dataclass.not_individual)
 
 

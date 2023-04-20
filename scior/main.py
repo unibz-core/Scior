@@ -77,7 +77,7 @@ def run_scior():
 
     now = datetime.now()
     end_date_time_here = now.strftime("%d-%m-%Y %H:%M:%S")
-    end_date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
+    end_date_time = now.strftime("%Y%m%d-%H%M%S")
     et = time.perf_counter()
     elapsed_time = round((et - st), 3)
     logger.info(f"Scior concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
