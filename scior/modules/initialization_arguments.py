@@ -45,6 +45,13 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     completeness_group.add_argument("-cwa", "--adopt_cwa", action='store_true',
                                     help="Operate in Closed-World Assumption (CWA).")
 
+    # Verbosity arguments
+
+    # v0: print only start and end information and errors
+    # v1: v0 + logger information (default)
+    # v2: v1 + incompleteness cases found (logger warnings)
+    # v3: print all logger messages, including debbugging messages
+
     # General arguments
     arguments_parser.add_argument("-t", "--times", action='store_true',
                                   help="Print on the screen the execution times of all functions.")
