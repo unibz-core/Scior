@@ -370,6 +370,10 @@ run NEGATIVEsinglePhaseMixin {
 	#PhaseMixins=1
 } for 12
 
+run NEGATIVEPhase_MixinSpecializingRole_Mixin{
+	some x, y: Class | (isPhase[x] or isPhaseMixin[x]) and (isRole[y] or isRoleMixin[y]) and isSubClassOf[x,y]
+} for 12
+
 run modelWithOneKindAndTwoPhases{
 	#Kinds=1
 	#Phases=2
