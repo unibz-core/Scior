@@ -93,7 +93,7 @@ def save_ontology_file_caller(end_date_time, ontology_graph, arguments):
 
     # Collecting information for result file name and path
     project_directory = os.getcwd()
-    results_directory = "results/"
+    results_directory = "results"
     loaded_file_name = Path(arguments['ontology_path']).stem
 
     # If directory 'results_directory' not exists, create it
@@ -105,7 +105,7 @@ def save_ontology_file_caller(end_date_time, ontology_graph, arguments):
 
     # Setting file complete path
     output_file_name = loaded_file_name + "-" + end_date_time + ".ttl"
-    output_file_path = project_directory + "\\" + output_file_name
+    output_file_path = project_directory + "\\" + results_directory + "\\" + output_file_name
 
     safe_save_ontology_file(ontology_graph, output_file_path)
 
