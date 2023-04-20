@@ -3,6 +3,7 @@ import copy
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
+from scior.modules.resources_gufo import GUFO_NAMESPACE
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 from scior.modules.utils_rdf import get_list_of_all_classes
 
@@ -43,7 +44,7 @@ def get_list_of_all_classes_no_gufo(ontology_graph):
     """ Returns a list of all classes *that are not GUFO classes* as URI strings without
     repetitions available in a Graph. """
 
-    list_exceptions = ["http://purl.org/nemo/gufo"]
+    list_exceptions = [GUFO_NAMESPACE]
 
     classes_list_no_gufo = get_list_of_all_classes(ontology_graph, list_exceptions)
 
@@ -105,7 +106,7 @@ def get_known_gufo_types(ontology_graph):
 
     for row in query_result:
         list_elements.append(row.ontology_element.n3()[1:-1])
-        list_types.append(row.element_type.n3()[1:-1].replace("http://purl.org/nemo/gufo#", ""))
+        list_types.append(row.element_type.n3()[1:-1].replace(GUFO_NAMESPACE, ""))
 
     list_tuples = list(zip(list_elements, list_types))
 
@@ -137,7 +138,7 @@ def get_known_gufo_individuals(united_graph):
 
     for row in query_result:
         list_elements.append(row.ontology_element.n3()[1:-1])
-        list_individuals.append(row.element_type.n3()[1:-1].replace("http://purl.org/nemo/gufo#", ""))
+        list_individuals.append(row.element_type.n3()[1:-1].replace(GUFO_NAMESPACE, ""))
 
     list_tuples = list(zip(list_elements, list_individuals))
 

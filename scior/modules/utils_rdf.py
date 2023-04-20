@@ -138,7 +138,7 @@ def get_list_of_all_classes(ontology_graph, exceptions_list=None):
                 # N3 necessary for returning string and [1:-1] necessary for removing <>
                 classes_list.append(obj.n3()[1:-1])
 
-    # Removing repetitions
+    # Removing possible repetitions
     no_rep_classes_list = [*set(classes_list)]
 
     # Removing classes that have namespace in the exceptions_list

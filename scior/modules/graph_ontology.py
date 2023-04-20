@@ -5,12 +5,11 @@ from pathlib import Path
 from rdflib import URIRef, RDF, RDFS, OWL, BNode
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.resources_gufo import GUFO_NAMESPACE
 from scior.modules.utils_general import create_directory_if_not_exists
 from scior.modules.utils_rdf import get_ontology_uri, load_all_graph_safely
 
 LOGGER = initialize_logger()
-
-GUFO_NAMESPACE = "http://purl.org/nemo/gufo#"
 
 
 def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
@@ -73,14 +72,14 @@ def save_ontology_file_as_configuration(ontology_graph, end_date_time, global_co
 
     if global_configurations["save_gufo"]:
         # Loading gUFO file form its remote location
-        gufo_graph = load_all_graph_safely("https://nemo-ufes.github.io/gufo/gufo.ttl")
+        gufo_graph = load_all_graph_safely(GUFO_NAMESPACE)
         graph = ontology_graph + gufo_graph
     else:
         graph = ontology_graph
 
     if global_configurations["import_gufo"]:
         ontology_uri = get_ontology_uri(ontology_graph)
-        gufo_import = URIRef("https://purl.org/nemo/gufo#")
+        gufo_import = URIRef(GUFO_NAMESPACE)
         graph.add((ontology_uri, OWL.imports, gufo_import))
 
     save_ontology_file_caller(end_date_time, graph, global_configurations)
