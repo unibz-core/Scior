@@ -1,5 +1,4 @@
 """ Functions related to the verification and treatment of problems_treatment and inconsistency cases. """
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 
 LOGGER = initialize_logger()
@@ -22,18 +21,31 @@ class IncompletenessEntry(object):
         self.incompleteness_message = incompleteness_message
 
 
+def include_incompleteness_and_keep_updated(new_incompleteness_entry: IncompletenessEntry,
+                                            incompleteness_stack: list[IncompletenessEntry]) -> None:
+    """ Verify if the new entry received as parameter:
+            (i) can be directly included into the incompleteness stack or
+            (ii) if it updates an old entry (that must be removed).
+        Afer the verification the new entry is included into the incompleteness stack.
+    """
+
+    # Registering the new incompleteness entry into the incompleteness_stack
+    incompleteness_stack.append(new_incompleteness_entry)
+
+
 def register_incompleteness(incompleteness_stack: list[IncompletenessEntry], rule_code: str,
-                            list_affected_ontology_dataclasses_uris: list[str],
-                            incompleteness_message: str = "") -> None:
+                            list_affected_ontology_dataclasses_uris: list[str], incompleteness_message: str,
+                            arguments: dict) -> None:
     """ Adds a new entry to the incompleteness stack (received as parameter).
 
         Design rationale:   An ontology can be incomplete, not a class.
                             The ontology has classes affected by incompleteness cases.
 
         The entry is composed of:
-        (i) rule code,
-        (ii) a list with URIs of all classes affected by detected incompleteness,
-        (iii) and a message to be reported to the user.
+            - an id,
+            - a rule code,
+            - a list with URIs of all classes affected by detected incompleteness, and
+            - a message to be reported to the user.
     """
 
     # Sorting affected classes
@@ -44,9 +56,17 @@ def register_incompleteness(incompleteness_stack: list[IncompletenessEntry], rul
                                     list_affected_ontology_dataclasses_uris=list_affected_ontology_dataclasses_uris,
                                     incompleteness_message=incompleteness_message)
 
-    # Registering the new incompleteness entry into the incompleteness_stack
-    incompleteness_stack.append(new_entry)
+    include_incompleteness_and_keep_updated(new_entry, incompleteness_stack)
 
-    # Log incompleteness case to user if enabled by argument
-    # TODO (@pedropaulofb): Log incompleteness case to user if enabled by argument
 
+def print_all_incompleteness(incompleteness_stack: list[IncompletenessEntry], arguments: dict) -> None:
+    """ Print all incompleteness at the end of the execution when authorized by the user using the arguments. """
+
+    if arguments["verbosity2"]:
+        for incompleteness_entry in incompleteness_stack:
+            # Log incompleteness case to user if enabled by argument
+            LOGGER.info(f"Rule {incompleteness_entry.rule_code}: New incompleteness found! "
+                        f"Related classes {incompleteness_entry.list_affected_ontology_dataclasses_uris}. "
+                        f"{incompleteness_entry.incompleteness_message}")
+
+    pass

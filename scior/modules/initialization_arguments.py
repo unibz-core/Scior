@@ -5,8 +5,8 @@ import argparse
 from scior.modules.logger_config import initialize_logger
 
 
-def treat_arguments(software_acronym, software_name, software_version, software_url):
-    """ Treats user ontologies arguments. """
+def treat_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> dict:
+    """ Treat arguments provided by the user when starting software executiong. """
 
     logger = initialize_logger()
     logger.debug("Parsing arguments...")
@@ -26,46 +26,48 @@ def treat_arguments(software_acronym, software_name, software_version, software_
 
     automation_group = arguments_parser.add_mutually_exclusive_group()
 
-    automation_group.add_argument("-i", "--interactive", action='store_true',
+    automation_group.add_argument("-i", "--interactive", action='store_true', default=False,
                                   help="Execute automatic rules whenever possible, interactive rules when necessary.")
 
-    automation_group.add_argument("-a", "--automatic", action='store_true',
+    automation_group.add_argument("-a", "--automatic", action='store_true', default=True,
                                   help="* Execute only automatic rules. Interactive rules are not performed.")
 
     # ONTOLOGY COMPLETENESS ARGUMENTS
 
     completeness_group = arguments_parser.add_mutually_exclusive_group()
 
-    completeness_group.add_argument("-owa", "--is_owa", action='store_true',
-                                    help="* Operate in Open-World Assumption (OWA).")
-
-    completeness_group.add_argument("-cwa", "--is_cwa", action='store_true',
+    completeness_group.add_argument("-cwa", "--is_cwa", action='store_true', default=False,
                                     help="Operate in Closed-World Assumption (CWA).")
+
+    # Regular Mode: Assume that single instances can be automatically classified.
+    completeness_group.add_argument("-owa", "--is_owa", action='store_true', default=True,
+                                    help="* Operate in Open-World Assumption (OWA) - Regular Mode.")
+
+    # Light Mode: Single instances cannot be automatically classified.
+    completeness_group.add_argument("-owal", "--is_owa_light", action='store_true', default=False,
+                                    help="* Operate in Open-World Assumption (OWA) - Light Mode.")
 
     # VERBOSITY ARGUMENTS
 
     verbosity_group = arguments_parser.add_mutually_exclusive_group()
 
-    verbosity_group.add_argument("-v0", "--verbosity0", action='store_true',
-                                 help="Restrict printed information to start, stop, and errors.")
+    verbosity_group.add_argument("-s", "--silent", action='store_true', default=False,
+                                 help="Silent mode. Print only basic execution status information.")
 
-    verbosity_group.add_argument("-v1", "--verbosity1", action='store_true',
-                                 help="* Print basic execution status information.")
-
-    verbosity_group.add_argument("-v2", "--verbosity2", action='store_true',
-                                 help="Print additional information like incompleteness cases found.")
+    verbosity_group.add_argument("-r", "--verbose", action='store_true', default=True,
+                                 help="* Print basic execution information and results.")
 
     # REGISTER GUFO IN FILE ARGUMENTS
 
     gufo_in_file = arguments_parser.add_mutually_exclusive_group()
 
-    gufo_in_file.add_argument("-ng", "--gufo_results", action='store_true',
+    gufo_in_file.add_argument("-ng", "--gufo_results", action='store_true', default=True,
                               help="* Write in the output ontology file only the gUFO classifications found.")
 
-    gufo_in_file.add_argument("-ig", "--gufo_import", action='store_true',
+    gufo_in_file.add_argument("-ig", "--gufo_import", action='store_true', default=False,
                               help="Import gUFO ontology in the output ontology file.")
 
-    gufo_in_file.add_argument("-wg", "--gufo_write", action='store_true',
+    gufo_in_file.add_argument("-wg", "--gufo_write", action='store_true', default=False,
                               help="Write all gUFO statements in the output ontology file.")
 
     # AUTOMATIC ARGUMENTS
@@ -83,8 +85,9 @@ def treat_arguments(software_acronym, software_name, software_version, software_
         "is_automatic": arguments.automatic,
         "is_manual": arguments.manual,
 
-        "is_owa": arguments.is_owa,
         "is_cwa": arguments.is_cwa,
+        "is_owa": arguments.is_owa,
+        "is_owa_light": arguments.is_owal,
 
         "print_basic": arguments.is_v0,
         "print_default": arguments.is_v1,
@@ -94,9 +97,12 @@ def treat_arguments(software_acronym, software_name, software_version, software_
         "gufo_import": arguments.gufo_import,
         "gufo_write": arguments.gufo_write,
 
+        "is_silent": arguments.silent,
+        "is_verbose": arguments.verbose,
+
         "ontology_path": arguments.ontology_file
     }
 
-    logger.debug(f"Arguments Parsed. Obtained values are: {global_configurations}")
+    logger.debug(f"Arguments parsed. Obtained values are: {global_configurations}.")
 
     return global_configurations
