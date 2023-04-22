@@ -44,6 +44,7 @@ def verify_dataclass_classifications_quantity(ontology_dataclass: OntologyDataCl
         report_inconsistency_case_in_dataclass(ontology_dataclass, additional_message)
 
 
+# TODO (@pedropaulofb): TO BE DONE!
 def verify_dataclass_duplicates_in_lists_ontology(ontology_dataclass: OntologyDataClass) -> None:
     """ No same string must be in two lists at the same time. """
 
@@ -55,7 +56,7 @@ def verify_dataclass_duplicates_in_lists_ontology(ontology_dataclass: OntologyDa
         exit(1)
 
 
-# For versions dealing with individuals, implement this verification for that hierarchy.
+# TODO (@pedropaulofb): TO BE DONE!
 def verify_dataclass_multiple_final_classifications(ontology_dataclass: OntologyDataClass) -> None:
     """ No two final classifications can be in the is_type list at the same moment """
 
@@ -68,9 +69,8 @@ def verify_dataclass_multiple_final_classifications(ontology_dataclass: Ontology
         exit(1)
 
 
-def verify_all_ontology_dataclasses_consistency(ontology_dataclass_list: list[OntologyDataClass]):
-    """ Performs a consistency verification of all elements in the ontology_dataclass_list.
-    """
+def verify_all_ontology_dataclasses_consistency(ontology_dataclass_list: list[OntologyDataClass]) -> None:
+    """ Performs a consistency verification of all elements in the ontology_dataclass_list. """
 
     # TODO (@pedropaulofb): Define the best moment to perform the consistency checking(s).
 
