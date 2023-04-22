@@ -1,6 +1,6 @@
 """ Implementation of rules from the group UFO Unique. """
 
-from rdflib import RDFS, URIRef
+from rdflib import RDFS, URIRef, Graph
 from scior.modules.utils_deficiencies import register_incompleteness, report_error_dataclass_not_found
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
@@ -70,7 +70,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
         raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
 
 
-def run_ir35(ontology_dataclass_list, ontology_graph, arguments):
+def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict) -> None:
     """ Executes rule IR35 from group UFO.
 
     Code: IR35
@@ -110,7 +110,8 @@ def run_ir35(ontology_dataclass_list, ontology_graph, arguments):
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def execute_rules_ufo_unique(ontology_dataclass_list, ontology_graph, arguments):
+def execute_rules_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+                             arguments: dict) -> None:
     """Call execution of all rules from the group UFO Unique. """
 
     LOGGER.debug("Starting execution of all rules from group UFO Unique.")
