@@ -72,8 +72,8 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     # Execute arguments parser
     arguments = arguments_parser.parse_args()
 
-    global_configurations = {"import_gufo": arguments.gufo1,
-                             "save_gufo": arguments.gufo2,
+    global_configurations = {"import_gufo": arguments.import_gufo,
+                             "save_gufo": arguments.write_gufo,
                              "is_automatic": arguments.automatic,
                              "is_owa": arguments.adopt_owa,
                              "is_cwa": arguments.adopt_cwa,

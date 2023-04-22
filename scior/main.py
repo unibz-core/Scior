@@ -32,13 +32,19 @@ def run_scior():
 
     argument = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
-    logger = initialize_logger()
+    logger = initialize_logger("www")
+
+    logger.debug("logger.debug")
+    logger.info("logger.info")
+    logger.warning("logger.warning")
+    logger.error("logger.error")
+    exit(10)
 
     # TODO (@pedropaulofb): Exceptions must have the following format:
     # try:
     #     result = 1/0
     # except Exception as error:
-    #     print(f"{error = }")
+    #     logger.error(f"{error = }")
     #     raise ValueError(error)
 
     now = datetime.now()
