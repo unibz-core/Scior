@@ -33,12 +33,6 @@ def run_scior():
 
     logger = initialize_logger()
 
-    logger.debug("logger.debug")
-    logger.info("logger.info")
-    logger.warning("logger.warning")
-    logger.error("logger.error")
-    exit(10)
-
     # TODO (@pedropaulofb): Exceptions must have the following format:
     # try:
     #     result = 1/0

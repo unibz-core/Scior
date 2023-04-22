@@ -2,7 +2,7 @@
 import os
 from pathlib import Path
 
-from rdflib import URIRef, RDF, RDFS, OWL, BNode
+from rdflib import URIRef, RDF, RDFS, OWL, BNode, Graph
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.resources_gufo import GUFO_NAMESPACE
@@ -63,26 +63,28 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
     return ontology_graph
 
 
-def save_ontology_file_as_configuration(ontology_graph, end_date_time, global_configurations):
+def save_ontology_file_as_configuration(ontology_graph: Graph, end_date_time, arguments: dict):
     """Prints in a file the output ontology according to the related configuration, which can be:
-    global_configurations["save_gufo"] = True
-    global_configurations["import_gufo"] = True
-    global_configurations["save_gufo"] = False && global_configurations["import_gufo"] = False
     """
 
-    if global_configurations["save_gufo"]:
-        # Loading gUFO file form its remote location
-        gufo_graph = load_all_graph_safely(GUFO_NAMESPACE)
-        graph = ontology_graph + gufo_graph
-    else:
+    # Getting gUFO HTTPS information instead of HTTP
+    gufo_namespace_http = GUFO_NAMESPACE.replace("http", "https")
+
+    if arguments["gufo_classifications"]:
         graph = ontology_graph
 
-    if global_configurations["import_gufo"]:
+    elif arguments["import_gufo"]:
         ontology_uri = get_ontology_uri(ontology_graph)
-        gufo_import = URIRef(GUFO_NAMESPACE.replace("http", "https"))
+        gufo_import = URIRef(gufo_namespace_http)
+        graph = ontology_graph
         graph.add((ontology_uri, OWL.imports, gufo_import))
 
-    save_ontology_file_caller(end_date_time, graph, global_configurations)
+    elif arguments["gufo_write"]:
+        # Loading gUFO file form its remote location
+        gufo_graph = load_all_graph_safely(gufo_namespace_http)
+        graph = ontology_graph + gufo_graph
+
+    save_ontology_file_caller(end_date_time, graph, arguments)
 
 
 def save_ontology_file_caller(end_date_time, ontology_graph, arguments):

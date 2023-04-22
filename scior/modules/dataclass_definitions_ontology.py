@@ -15,11 +15,7 @@ LOGGER = initialize_logger()
 @dataclass
 class OntologyDataClass(object):
     """ Each loaded ontology dataclass has a URI (identifier) and six lists of GUFO elements.
-    The lists indicate which gUFO element the dataclass is, can, or cannot be for the types and individuals hierarchies.
-
-    incompleteness_info is a dictionary with the following filds:
-        - is_incomplete: True or False
-        - detected_in: list of rule codes where the problems_treatment was detected (no repetitions are allowed).
+        The lists indicate which gUFO element the dataclass is, can, or cannot be for the types and individuals hierarchies.
     """
 
     uri: str = field(default_factory=str)
@@ -29,7 +25,6 @@ class OntologyDataClass(object):
     can_individual: list[str] = field(default_factory=list[str])
     not_type: list[str] = field(default_factory=list[str])
     not_individual: list[str] = field(default_factory=list[str])
-    is_incomplete: bool = field(default_factory=bool)
 
     def is_consistent(self):
         """ Performs a consistency check on the dataclass. """

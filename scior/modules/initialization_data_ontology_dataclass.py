@@ -1,4 +1,5 @@
 """ Module for initializing data read from the ontology to be evaluated """
+from rdflib import Graph
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
@@ -9,19 +10,17 @@ from scior.modules.utils_rdf import get_list_of_all_classes
 LOGGER = initialize_logger()
 
 
-def initialize_ontology_dataclasses(ontology_graph, scope_restriction: str) -> list:
+def initialize_ontology_dataclasses(ontology_graph: Graph, scope_restriction: str) -> list[OntologyDataClass]:
     """
     Receives the ontology graph (taxonomy only) and the gUFO scope to be considered.
     Returns an OntologyClass list of all classes in the ontology to be evaluated with its related sub-lists. """
 
     LOGGER.debug("Initializing list of Ontology concepts...")
 
-    ontology_list = []
+    ontology_dataclass_list = []
     classes_list = get_list_of_all_classes_no_gufo(ontology_graph)
 
     gufo_can_list_types, gufo_can_list_individuals = get_gufo_possibilities(scope_restriction)
-
-    incompleteness_dict = {"is_incomplete": False, "detected_in": []}
 
     # - URI: Ontology class name
     # - CAN_TYPE and CAN_INDIVIDUAL: list of all possible ontological categories. Receive VALUES (not a pointer)
@@ -29,13 +28,13 @@ def initialize_ontology_dataclasses(ontology_graph, scope_restriction: str) -> l
     # - OTHER LISTS (IS and NOT): Empty lists. No value received.
 
     for new_class in classes_list:
-        ontology_list.append(OntologyDataClass(uri=new_class,
-                                               can_type=gufo_can_list_types.copy(),
-                                               can_individual=gufo_can_list_individuals.copy(),
-                                               is_incomplete=False))
+        ontology_dataclass_list.append(OntologyDataClass(uri=new_class,
+                                                         can_type=gufo_can_list_types.copy(),
+                                                         can_individual=gufo_can_list_individuals.copy()))
 
     LOGGER.debug("List of Ontology concepts successfully initialized.")
-    return ontology_list
+
+    return ontology_dataclass_list
 
 
 def get_list_of_all_classes_no_gufo(ontology_graph):
