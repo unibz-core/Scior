@@ -3,6 +3,7 @@ from rdflib import Graph, URIRef, RDFS
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
 from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_rule
 from scior.modules.utils_dataclass import get_dataclass_by_uri
@@ -43,11 +44,11 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
 
         # Report inconsistency
         if arguments["is_cwa"]:
-            report_inconsistency_case_in_rule(rule_code, evaluated_dataclass)
+            additional_message = f"There are no asserted classes that satisfy the rule."
+            report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     else:
-        LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached.")
-        raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
+        report_error_end_of_switch(rule_code)
 
 
 def run_ir30(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,

@@ -6,12 +6,13 @@ from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
+from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_rule
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 LOGGER = initialize_logger()
 
 
-def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], selected_dataclass: OntologyDataClass,
+def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], evaluated_dataclass: OntologyDataClass,
                             can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
                             rule_code: str, incompleteness_stack: list[IncompletenessEntry], arguments: dict) -> None:
     """ Treats the results from all rules from the group UFO Unique. """
@@ -23,10 +24,8 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
 
     if length_is_list > 1:
         # report inconsistency
-        LOGGER.error(f"Inconsistency found for rule {rule_code} when analyzing {selected_dataclass.uri}. "
-                     f"A unique class was expected, but {length_is_list} were found ({is_classes_list}). "
-                     f"Program aborted.")
-        raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
+        additional_message = f"A unique class was expected, but {length_is_list} were found ({is_classes_list})."
+        report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     elif length_is_list == 1 and length_can_list == 0:
         LOGGER.debug(f"Rule {rule_code} satisfied. No action is required.")
@@ -42,7 +41,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
     elif length_is_list == 0 and length_can_list > 1:
         # Incompleteness found. Reporting problems_treatment and possibilities (XOR).
         additional_message = f"Solution: set exactly one class from {can_classes_list} as {types_to_set_list}."
-        register_incompleteness(incompleteness_stack, rule_code, selected_dataclass, additional_message)
+        register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
 
     elif length_is_list == 0 and length_can_list == 1:
         # Set class in can list as type.
@@ -54,13 +53,12 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
         if arguments["is_owa"]:
             additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
                                  f"to satisfy the rule."
-            register_incompleteness(incompleteness_stack, rule_code, selected_dataclass, additional_message)
+            register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
 
         # Report inconsistency.
         if arguments["is_cwa"]:
-            LOGGER.error(f"Inconsistency detected in rule {rule_code} for class {selected_dataclass.uri}. "
-                         f"There are no asserted classes that satisfy the rule.")
-            raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
+            additional_message = "There are no asserted classes that satisfy the rule."
+            report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     else:
         report_error_end_of_switch(rule_code)
