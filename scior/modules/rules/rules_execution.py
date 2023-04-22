@@ -62,10 +62,10 @@ def switch_rule_group_execution(ontology_dataclass_list: list[OntologyDataClass]
         execute_rules_ufo_all(ontology_dataclass_list, ontology_graph)
 
     elif rule_group_code == "rule_group_ufo_unique":
-        execute_rules_ufo_unique(ontology_dataclass_list, ontology_graph, arguments)
+        execute_rules_ufo_unique(ontology_dataclass_list, ontology_graph, incompleteness_stack, arguments)
 
     elif rule_group_code == "rule_group_ufo_some":
-        execute_rules_ufo_some(ontology_dataclass_list, ontology_graph, arguments)
+        execute_rules_ufo_some(ontology_dataclass_list, ontology_graph, incompleteness_stack, arguments)
 
     else:
         LOGGER.error(f"Unexpected rule code ({rule_group_code}) received as parameter! Program aborted.")

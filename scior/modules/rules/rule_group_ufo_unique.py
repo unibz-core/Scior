@@ -1,10 +1,10 @@
 """ Implementation of rules from the group UFO Unique. """
 
 from rdflib import RDFS, URIRef, Graph
-from scior.modules.utils_deficiencies import register_incompleteness, report_error_dataclass_not_found
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.incompleteness import IncompletenessEntry, register_incompleteness
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 LOGGER = initialize_logger()
@@ -12,7 +12,7 @@ LOGGER = initialize_logger()
 
 def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], selected_dataclass: OntologyDataClass,
                             can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
-                            rule_code: str, arguments: dict) -> None:
+                            rule_code: str, incompleteness_stack: list[IncompletenessEntry], arguments: dict) -> None:
     """ Treats the results from all rules from the group UFO Unique. """
 
     length_is_list = len(is_classes_list)
@@ -41,15 +41,11 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
     elif length_is_list == 0 and length_can_list > 1:
         # Incompleteness found. Reporting problems_treatment and possibilities (XOR).
         additional_message = f"Solution: set exactly one class from {can_classes_list} as {types_to_set_list}."
-        register_incompleteness(rule_code, selected_dataclass, additional_message)
+        register_incompleteness(incompleteness_stack, rule_code, [selected_dataclass.uri], additional_message)
 
     elif length_is_list == 0 and length_can_list == 1:
         # Set class in can list as type.
         candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
-
-        if candidate_dataclass is None:
-            report_error_dataclass_not_found(can_classes_list[0])
-
         candidate_dataclass.move_classifications_list_to_is_list(ontology_dataclass_list, types_to_set_list, rule_code)
 
     elif length_is_list == 0 and length_can_list == 0:
@@ -57,7 +53,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
         if arguments["is_owa"]:
             additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
                                  f"to satisfy the rule."
-            register_incompleteness(rule_code, selected_dataclass, additional_message)
+            register_incompleteness(incompleteness_stack, rule_code, [selected_dataclass.uri], additional_message)
 
         # Report inconsistency.
         if arguments["is_cwa"]:
@@ -70,7 +66,8 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
         raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
 
 
-def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict) -> None:
+def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry], arguments: dict) -> None:
     """ Executes rule IR35 from group UFO.
 
     Code: IR35
@@ -111,11 +108,11 @@ def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
 
 def execute_rules_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
-                             arguments: dict) -> None:
+                             incompleteness_stack: list[IncompletenessEntry], arguments: dict) -> None:
     """Call execution of all rules from the group UFO Unique. """
 
     LOGGER.debug("Starting execution of all rules from group UFO Unique.")
 
-    run_ir35(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir35(ontology_dataclass_list, ontology_graph, incompleteness_stack, arguments)
 
     LOGGER.debug("Execution of all rules from group UFO Unique completed.")
