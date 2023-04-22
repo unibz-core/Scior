@@ -56,11 +56,11 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     arguments_parser.add_argument("-t", "--times", action='store_true',
                                   help="Print on the screen the execution times of all functions.")
 
-    arguments_parser.add_argument("-g1", "--gufo1", action='store_true',
+    arguments_parser.add_argument("-g1", "--import_gufo", action='store_true',
                                   help="Import gUFO ontology in the output ontology file.")
 
-    arguments_parser.add_argument("-g2", "--gufo2", action='store_true',
-                                  help="Save all gUFO statements in the output ontology file.")
+    arguments_parser.add_argument("-g2", "--write_gufo", action='store_true',
+                                  help="Write all gUFO statements in the output ontology file.")
 
     # Automatic arguments
     arguments_parser.add_argument("-v", "--version", action="version", help="Print the software version and exit.")

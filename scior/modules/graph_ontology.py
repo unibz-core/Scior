@@ -79,9 +79,7 @@ def save_ontology_file_as_configuration(ontology_graph, end_date_time, global_co
 
     if global_configurations["import_gufo"]:
         ontology_uri = get_ontology_uri(ontology_graph)
-        # TODO: IT WAS HTTPS!
-        # gufo_import = URIRef("https://purl.org/nemo/gufo#")
-        gufo_import = URIRef(GUFO_NAMESPACE)
+        gufo_import = URIRef(GUFO_NAMESPACE.replace("http", "https"))
         graph.add((ontology_uri, OWL.imports, gufo_import))
 
     save_ontology_file_caller(end_date_time, graph, global_configurations)
