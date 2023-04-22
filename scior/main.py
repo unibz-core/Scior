@@ -9,7 +9,6 @@ from scior.modules.initialization_arguments import treat_arguments
 from scior.modules.initialization_data_ontology_dataclass import initialize_ontology_dataclasses, \
     load_known_gufo_information
 from scior.modules.logger_config import initialize_logger
-from scior.modules.resources_gufo import GUFO_NAMESPACE
 from scior.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
     create_knowledge_matrix
 from scior.modules.rules.rules_execution import execute_rules_types

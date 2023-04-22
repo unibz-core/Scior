@@ -21,7 +21,6 @@ def initialize_logger(caller: str = "Scior") -> logging.Logger:
     else:
         raise ValueError(f"Logger parameter unknown ({caller}). Aborting execution.")
 
-
     # Creates a new logger only if Scior does not exist
     if not logging.getLogger("execution-logger").hasHandlers():
 
@@ -31,7 +30,6 @@ def initialize_logger(caller: str = "Scior") -> logging.Logger:
             console_handler.setLevel(logging.INFO)
         elif caller == "Scior-Tester":
             console_handler.setLevel(logging.ERROR)
-
 
         # If directory "/log" does not exist, create it
         log_directory = "logs/"

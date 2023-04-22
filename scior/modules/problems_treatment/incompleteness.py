@@ -38,6 +38,7 @@ def add_to_incompleteness_stack(incompleteness_stack: list[IncompletenessEntry],
 
     incompleteness_stack.append(new_entry)
 
+
 def incompleteness_already_registered(rule_code: str, ontology_dataclass) -> bool:
     """ Verifies if a problems_treatment case has already being registered/reported for the received ontology_dataclass.
 

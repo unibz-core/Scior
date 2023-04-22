@@ -95,10 +95,10 @@ class OntologyDataClass(object):
         # cleared so it can be updated if detected again.
         self.is_incomplete = False
 
-        loop_execute_gufo_rules(ontology_dataclass_list)
-
         # Performs consistency check
         self.is_consistent()
+
+        loop_execute_gufo_rules(ontology_dataclass_list)
 
         LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} moved successfully from list {source_list} "
                      f"to list {target_list} in {self.uri}.")

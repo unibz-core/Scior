@@ -1,10 +1,10 @@
 """ Implementation of rules of group UFO Some. """
 from rdflib import Graph, URIRef, RDFS
+from scior.modules.utils_deficiencies import register_incompleteness, report_error_dataclass_not_found
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_dataclass import get_dataclass_by_uri
-from scior.modules.utils_deficiencies import register_incompleteness, report_error_dataclass_not_found
 
 LOGGER = initialize_logger()
 
