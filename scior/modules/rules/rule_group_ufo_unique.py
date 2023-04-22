@@ -4,6 +4,7 @@ from rdflib import RDFS, URIRef, Graph
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
@@ -62,8 +63,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
             raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
 
     else:
-        LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached.")
-        raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
+        report_error_end_of_switch(rule_code)
 
 
 def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
