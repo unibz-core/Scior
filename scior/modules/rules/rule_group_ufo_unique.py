@@ -41,8 +41,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
     elif length_is_list == 0 and length_can_list > 1:
         # Incompleteness found. Reporting problems_treatment and possibilities (XOR).
         additional_message = f"Solution: set exactly one class from {can_classes_list} as {types_to_set_list}."
-        # A single class is affected
-        register_incompleteness(incompleteness_stack, rule_code, [selected_dataclass.uri], additional_message)
+        register_incompleteness(incompleteness_stack, rule_code, selected_dataclass, additional_message)
 
     elif length_is_list == 0 and length_can_list == 1:
         # Set class in can list as type.
@@ -54,8 +53,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
         if arguments["is_owa"]:
             additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
                                  f"to satisfy the rule."
-            # A single class is affected
-            register_incompleteness(incompleteness_stack, rule_code, [selected_dataclass.uri], additional_message)
+            register_incompleteness(incompleteness_stack, rule_code, selected_dataclass, additional_message)
 
         # Report inconsistency.
         if arguments["is_cwa"]:
