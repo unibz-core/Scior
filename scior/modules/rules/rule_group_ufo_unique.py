@@ -4,7 +4,7 @@ from rdflib import RDFS, URIRef, Graph
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
-from scior.modules.problems_treatment.incompleteness import IncompletenessEntry, register_incompleteness
+from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 LOGGER = initialize_logger()

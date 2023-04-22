@@ -1,10 +1,9 @@
 """ Implementation of rules of group UFO Some. """
 from rdflib import Graph, URIRef, RDFS
-from scior.modules.utils_deficiencies import register_incompleteness, report_error_dataclass_not_found
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
-from scior.modules.problems_treatment.incompleteness import IncompletenessEntry
+from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 LOGGER = initialize_logger()
@@ -27,7 +26,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
     elif length_can_list > 1:
         # Incompleteness found. Reporting problems_treatment and possibilities (OR).
         additional_message = f"Solution: set one or more classes from {can_classes_list} as {types_to_set_list}."
-        register_incompleteness(rule_code, evaluated_dataclass, additional_message)
+        register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
 
     elif length_can_list == 1:
         # Set single candidate as desired types.
@@ -39,7 +38,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
         if arguments["is_owa"]:
             additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
                                  f"to satisfy the rule."
-            register_incompleteness(rule_code, evaluated_dataclass, additional_message)
+            register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
 
         # Report inconsistency
         if arguments["is_cwa"]:

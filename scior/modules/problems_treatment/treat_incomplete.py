@@ -1,4 +1,4 @@
-""" Functions related to the verification and treatment of problems_treatment and inconsistency cases. """
+""" Functions related to the verification and treatment of identified INCOMPLETENESS cases. """
 import random
 import string
 
