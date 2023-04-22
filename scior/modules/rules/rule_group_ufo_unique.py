@@ -41,6 +41,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
     elif length_is_list == 0 and length_can_list > 1:
         # Incompleteness found. Reporting problems_treatment and possibilities (XOR).
         additional_message = f"Solution: set exactly one class from {can_classes_list} as {types_to_set_list}."
+        # A single class is affected
         register_incompleteness(incompleteness_stack, rule_code, [selected_dataclass.uri], additional_message)
 
     elif length_is_list == 0 and length_can_list == 1:
@@ -53,6 +54,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
         if arguments["is_owa"]:
             additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
                                  f"to satisfy the rule."
+            # A single class is affected
             register_incompleteness(incompleteness_stack, rule_code, [selected_dataclass.uri], additional_message)
 
         # Report inconsistency.
@@ -102,7 +104,7 @@ def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
                     is_kind_supertypes.remove(ontology_dataclass_sub.uri)
 
             treat_result_ufo_unique(ontology_dataclass_list, ontology_dataclass, can_kind_supertypes,
-                                    is_kind_supertypes, ["Kind"], rule_code, arguments)
+                                    is_kind_supertypes, ["Kind"], rule_code, incompleteness_stack, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 

@@ -81,5 +81,5 @@ def print_all_incompleteness(incompleteness_stack: list[IncompletenessEntry], ar
             num = current + 1
             # Log incompleteness case to user if enabled by argument
             print(f"\tI{num}: rule {incompleteness_entry.rule_code}. "
-                  f"Related classes {incompleteness_entry.list_affected_dataclasses_uris}. "
+                  f"Related classes: {incompleteness_entry.list_affected_dataclasses_uris}. "
                   f"{incompleteness_entry.incompleteness_message}")

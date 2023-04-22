@@ -12,7 +12,7 @@ LOGGER = initialize_logger()
 
 def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], evaluated_dataclass: OntologyDataClass,
                           can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
-                          rule_code: str, arguments: dict) -> None:
+                          rule_code: str, incompleteness_stack: list[IncompletenessEntry], arguments: dict) -> None:
     """ Treats the results from all rules from the group UFO Some. """
 
     length_is_list = len(is_classes_list)
@@ -105,7 +105,7 @@ def run_ir30(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["RigidType", "Sortal"],
-                              rule_code, arguments)
+                              rule_code, incompleteness_stack, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -158,7 +158,7 @@ def run_ir31(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["AntiRigidType"],
-                              rule_code, arguments)
+                              rule_code, incompleteness_stack, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -211,7 +211,7 @@ def run_ir32(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["RigidType"], rule_code,
-                              arguments)
+                              incompleteness_stack, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -266,7 +266,7 @@ def run_ir39(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Sortal"], rule_code,
-                              arguments)
+                              incompleteness_stack, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -326,7 +326,7 @@ def run_ir40(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Sortal"], rule_code,
-                              arguments)
+                              incompleteness_stack, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -382,7 +382,7 @@ def run_ir43(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Phase"], rule_code,
-                              arguments)
+                              incompleteness_stack, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -450,7 +450,7 @@ def run_ir44(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
                 can_list.append(selected_dataclass.uri)
 
             treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Phase"], rule_code,
-                                  arguments)
+                                  incompleteness_stack, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -503,7 +503,7 @@ def run_ir45(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Category"], rule_code,
-                              arguments)
+                              incompleteness_stack, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -574,7 +574,7 @@ def run_ir46(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
                 can_list.append(selected_dataclass.uri)
 
             treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["PhaseMixin"],
-                                  rule_code, arguments)
+                                  rule_code, incompleteness_stack, arguments)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
