@@ -1,4 +1,8 @@
 """ Functions related to the verification and treatment of problems_treatment and inconsistency cases. """
+import random
+import string
+
+from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 
 LOGGER = initialize_logger()
@@ -9,15 +13,15 @@ class IncompletenessEntry(object):
         later reported to the user. Its attributes are:
 
         rule_code: str - Rule that detected the incompleteness case.
-        list_affected_ontology_dataclasses_uris: list[str] - All classes affected by the detected incompleteness.
+        affected_dataclass_uri: str - URI of the classes affected by the detected incompleteness.
         message: str - Additional message to be reported together with the incompleteness case.
     """
 
-    def __init__(self, entry_id: int, rule_code: str, list_affected_dataclasses_uris: list[str],
+    def __init__(self, entry_id: str, rule_code: str, affected_dataclass_uri: str,
                  incompleteness_message: str = ""):
         self.entry_id = entry_id
         self.rule_code = rule_code
-        self.list_affected_dataclasses_uris = list_affected_dataclasses_uris
+        self.affected_dataclass_uri = affected_dataclass_uri
         self.incompleteness_message = incompleteness_message
 
 
@@ -36,7 +40,7 @@ def include_incompleteness_and_keep_updated(new_entry: IncompletenessEntry,
     # If new entry's rule and list of affected classes are already in the incompleteness stack, remove the old entry.
     for registered_entry in incompleteness_stack:
         if (registered_entry.rule_code == new_entry.rule_code) and (
-                registered_entry.list_affected_dataclasses_uris == new_entry.list_affected_dataclasses_uris):
+                registered_entry.affected_dataclass_uri == new_entry.affected_dataclass_uri):
             LOGGER.debug(f"Outdated incompleteness entry (entry_id: {registered_entry.entry_id}) "
                          f"substituted for an updated one (entry_id: {new_entry.entry_id}).")
             incompleteness_stack.remove(registered_entry)
@@ -46,25 +50,21 @@ def include_incompleteness_and_keep_updated(new_entry: IncompletenessEntry,
 
 
 def register_incompleteness(incompleteness_stack: list[IncompletenessEntry], rule_code: str,
-                            list_affected_ontology_dataclasses_uris: list[str], incompleteness_message: str) -> None:
+                            affected_ontology_dataclass: OntologyDataClass, incompleteness_message: str) -> None:
     """ Adds a new entry to the incompleteness stack (received as parameter).
-
-        Design rationale:   An ontology can be incomplete, not a class.
-                            The ontology has classes affected by incompleteness cases.
 
         The entry is composed of:
             - an id,
             - a rule code,
-            - a list with URIs of all classes affected by detected incompleteness, and
+            - a list with the URI of the classe affected by the detected incompleteness, and
             - a message to be reported to the user.
     """
 
-    # Sorting affected classes
-    list_affected_ontology_dataclasses_uris.sort()
+    new_entry_id = ''.join(random.choices(string.ascii_lowercase, k=4))
 
     # Creating new incompleteness entry
-    new_entry = IncompletenessEntry(entry_id=len(incompleteness_stack) + 1, rule_code=rule_code,
-                                    list_affected_dataclasses_uris=list_affected_ontology_dataclasses_uris,
+    new_entry = IncompletenessEntry(entry_id=new_entry_id, rule_code=rule_code,
+                                    affected_dataclass_uri=affected_ontology_dataclass.uri,
                                     incompleteness_message=incompleteness_message)
 
     LOGGER.debug(f"Creating and adding new incompleteness entry: {new_entry}.")
@@ -81,5 +81,5 @@ def print_all_incompleteness(incompleteness_stack: list[IncompletenessEntry], ar
             num = current + 1
             # Log incompleteness case to user if enabled by argument
             print(f"\tI{num}: rule {incompleteness_entry.rule_code}. "
-                  f"Related classes: {incompleteness_entry.list_affected_dataclasses_uris}. "
+                  f"Related class: {incompleteness_entry.affected_dataclass_uri}. "
                   f"{incompleteness_entry.incompleteness_message}")
