@@ -87,7 +87,7 @@ def save_ontology_file_as_configuration(ontology_graph: Graph, end_date_time, ar
     save_ontology_file_caller(end_date_time, graph, arguments)
 
 
-def save_ontology_file_caller(end_date_time, ontology_graph, arguments):
+def save_ontology_file_caller(end_date_time, ontology_graph, arguments: dict):
     """
     Saves the ontology graph into a TTL file.
     If import_gufo parameter is set as True, the saved output is going to import the GUFO ontology.

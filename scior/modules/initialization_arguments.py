@@ -17,7 +17,8 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     arguments_parser = argparse.ArgumentParser(prog="scior",
                                                description=software_acronym + " - " + software_name,
                                                allow_abbrev=False,
-                                               epilog=software_url)
+                                               epilog="Asterisks indicate default values. More information at: "
+                                                      + software_url)
 
     arguments_parser.version = about_message
 
@@ -58,8 +59,8 @@ def treat_arguments(software_acronym, software_name, software_version, software_
 
     gufo_in_file = arguments_parser.add_mutually_exclusive_group()
 
-    gufo_in_file.add_argument("-ng", "--gufo_classifications", action='store_true',
-                              help="* Write in the output ontology file only gUFO classifications found.")
+    gufo_in_file.add_argument("-ng", "--gufo_results", action='store_true',
+                              help="* Write in the output ontology file only the gUFO classifications found.")
 
     gufo_in_file.add_argument("-ig", "--gufo_import", action='store_true',
                               help="Import gUFO ontology in the output ontology file.")
@@ -79,10 +80,6 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     arguments = arguments_parser.parse_args()
 
     global_configurations = {
-        "classifications_gufo": arguments.import_gufo,
-        "import_gufo": arguments.import_gufo,
-        "save_gufo": arguments.write_gufo,
-
         "is_automatic": arguments.automatic,
         "is_manual": arguments.manual,
 
