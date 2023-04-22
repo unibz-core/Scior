@@ -1,9 +1,9 @@
 """ Module for initializing data read from the ontology to be evaluated """
 from rdflib import Graph
 
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
-from scior.modules.resources_gufo import GUFO_NAMESPACE
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
+from scior.modules.resources_gufo import GUFO_NAMESPACE, GUFO_LIST_ENDURANT_TYPES
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 from scior.modules.utils_rdf import get_list_of_all_classes
 
@@ -54,26 +54,8 @@ def get_gufo_possibilities(scope_restriction):
     can_list_types = []
     can_list_individuals = []
 
-    gufo_endurant_types = [
-        "AntiRigidType",
-        "Category",
-        "EndurantType",
-        "Kind",
-        "Mixin",
-        "NonRigidType",
-        "NonSortal",
-        "Phase",
-        "PhaseMixin",
-        "RigidType",
-        "Role",
-        "RoleMixin",
-        "SemiRigidType",
-        "Sortal",
-        "SubKind"
-    ]
-
     if scope_restriction == "ENDURANT_TYPES":
-        can_list_types = gufo_endurant_types
+        can_list_types = GUFO_LIST_ENDURANT_TYPES.copy()
     else:
         LOGGER.error(f"Invalid SCOPE_RESTRICTION {scope_restriction}. Program aborted.")
         exit(1)

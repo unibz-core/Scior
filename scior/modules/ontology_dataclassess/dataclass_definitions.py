@@ -4,9 +4,9 @@
 import hashlib
 from dataclasses import dataclass, field
 
-from scior.modules.dataclass_verifications import verify_duplicates_in_lists_ontology, \
-    verify_multiple_final_classifications_for_types
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_verifications import verify_dataclass_duplicates_in_lists_ontology, \
+    verify_dataclass_multiple_final_classifications
 from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 
 LOGGER = initialize_logger()
@@ -15,7 +15,7 @@ LOGGER = initialize_logger()
 @dataclass
 class OntologyDataClass(object):
     """ Each loaded ontology dataclass has a URI (identifier) and six lists of GUFO elements.
-        The lists indicate which gUFO element the dataclass is, can, or cannot be for the types and individuals hierarchies.
+        Lists indicate which gUFO element the dataclass is, can, or cannot be for the types and individuals hierarchies.
     """
 
     uri: str = field(default_factory=str)
@@ -25,12 +25,6 @@ class OntologyDataClass(object):
     can_individual: list[str] = field(default_factory=list[str])
     not_type: list[str] = field(default_factory=list[str])
     not_individual: list[str] = field(default_factory=list[str])
-
-    def is_consistent(self):
-        """ Performs a consistency check on the dataclass. """
-
-        verify_duplicates_in_lists_ontology(self)
-        verify_multiple_final_classifications_for_types(self)
 
     def move_classification_between_lists(self, ontology_dataclass_list, element: str, source_list: str,
                                           target_list: str, invoker_rule: str):
