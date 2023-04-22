@@ -4,6 +4,7 @@ from rdflib import Graph, URIRef, RDFS
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
+from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_rule
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 LOGGER = initialize_logger()
@@ -42,9 +43,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
 
         # Report inconsistency
         if arguments["is_cwa"]:
-            LOGGER.error(f"Inconsistency detected in rule {rule_code} for class {evaluated_dataclass.uri}. "
-                         f"There are no asserted classes that satisfy the rule.")
-            raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
+            report_inconsistency_case_in_rule(rule_code, evaluated_dataclass)
 
     else:
         LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached.")
