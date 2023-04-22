@@ -235,8 +235,8 @@ def generate_incompleteness_table(ontology_dataclass_list, border_option):
     ontology_dataclass_list.sort(key=operator.attrgetter('uri'))
 
     for dataclass in ontology_dataclass_list:
-        if dataclass.incompleteness_info["is_incomplete"] == True:
-            pretty_table.add_row([dataclass.uri, dataclass.incompleteness_info["detected_in"]])
+        if dataclass.is_incomplete["is_incomplete"] == True:
+            pretty_table.add_row([dataclass.uri, dataclass.is_incomplete["detected_in"]])
             number_incomplete_classes += 1
 
     message = f"\nA total of {number_incomplete_classes} classes were identified as incomplete.\n"

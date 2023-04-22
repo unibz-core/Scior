@@ -19,7 +19,7 @@ class OntologyDataClass(object):
 
     incompleteness_info is a dictionary with the following filds:
         - is_incomplete: True or False
-        - detected_in: list of rule codes where the incompleteness was detected (no repetitions are allowed).
+        - detected_in: list of rule codes where the problems_treatment was detected (no repetitions are allowed).
     """
 
     uri: str = field(default_factory=str)
@@ -29,19 +29,13 @@ class OntologyDataClass(object):
     can_individual: list[str] = field(default_factory=list[str])
     not_type: list[str] = field(default_factory=list[str])
     not_individual: list[str] = field(default_factory=list[str])
-    incompleteness_info: dict = field(default_factory=dict)
+    is_incomplete: bool = field(default_factory=bool)
 
     def is_consistent(self):
         """ Performs a consistency check on the dataclass. """
 
         verify_duplicates_in_lists_ontology(self)
         verify_multiple_final_classifications_for_types(self)
-
-    def clear_incompleteness(self):
-        """When a user define the type of the dataclass, its incompleteness status must be set to its initial state."""
-
-        self.incompleteness_info["is_incomplete"] = False
-        self.incompleteness_info["detected_in"] = []
 
     def move_classification_between_lists(self, ontology_dataclass_list, element: str, source_list: str,
                                           target_list: str, invoker_rule: str):
@@ -97,6 +91,10 @@ class OntologyDataClass(object):
         source.remove(element)
         target.append(element)
 
+        # Every time a classification is moved the class will be reanalyzed by alll rules, so the incompleteness is
+        # cleared so it can be updated if detected again.
+        self.is_incomplete = False
+
         loop_execute_gufo_rules(ontology_dataclass_list)
 
         # Performs consistency check
@@ -136,7 +134,6 @@ class OntologyDataClass(object):
             # Consistency checking is already performed inside the move_between_ontology_lists function.
             self.move_classification_between_lists(ontology_dataclass_list, element, source_list, target_list,
                                                    invoker_rule)
-            self.clear_incompleteness()
 
     def move_classification_to_not_list(self, ontology_dataclass_list, element: str, invoker_rule: str):
         """ Check if the element to be moved is a type or instance

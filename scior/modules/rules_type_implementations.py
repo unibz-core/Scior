@@ -17,7 +17,7 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
     logger = initialize_logger()
 
     if configurations["is_complete"]:
-        # ACTION: Report incompleteness
+        # ACTION: Report problems_treatment
         if GUFO_KIND in ontology_dataclass.can_type and not incompleteness_already_registered(rule_code,
                                                                                               ontology_dataclass):
             logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
@@ -184,7 +184,7 @@ def treat_rule_nk_k_sup(rule_code, ontology_dataclass, list_ontology_dataclasses
                        f"The class {ontology_dataclass.uri} does not have an identity provider. "
                        f"It must have exactly one gufo:Kind as direct or indirect supertype, but has none.")
 
-        # If no identity provider available, report incompleteness for all configurations
+        # If no identity provider available, report problems_treatment for all configurations
         if len(list_possibilities) == 0:
             logger.info(f"No classes were identified as possible candidates for being the "
                         f"identity provider for {ontology_dataclass.uri}.")
@@ -288,7 +288,7 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
                         f"hence it was set as gufo:Role.")
             ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, "gufo:Role")
         else:
-            # Report incompleteness.
+            # Report problems_treatment.
             logger.warning(f"Incompleteness detected during rule {rule_code}! "
                            f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings. "
                            f"This class must be set as a gufo:Role. If it is a gufo:Phase, "
@@ -323,7 +323,7 @@ def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass
             register_incompleteness(rule_code, ontology_dataclass)
 
             if number_siblings == 0:
-                # Report incompleteness
+                # Report problems_treatment
                 logger.warning(f"Incompleteness detected during rule {rule_code}! "
                                f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass "
                                f"of {superclass}. All phases always occur in phase partitions.")
@@ -335,7 +335,7 @@ def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass
                             "gufo:NonRigidType" in sibling_dataclass.is_type):
                         break
                 else:
-                    # Report incompleteness
+                    # Report problems_treatment
                     logger.warning(f"Incompleteness detected during rule {rule_code}! "
                                    f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass "
                                    f"of {superclass}. All phases always occur in phase partitions.")

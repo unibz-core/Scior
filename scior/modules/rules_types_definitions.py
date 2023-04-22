@@ -242,7 +242,7 @@ def rule_n_r_t(list_ontology_dataclasses, nodes_list, configurations):
 
     - BEHAVIOR:
         - C: Set as gufo:Kind.
-        - N+A: Report incompleteness.
+        - N+A: Report problems_treatment.
         - N+I: User can set as gufo:Kind or skip.
     """
 
@@ -290,7 +290,7 @@ def rule_ns_s_spe(list_ontology_dataclasses, graph, nodes_list, configurations):
         Actions:
             - US: User can set a class as Kind or SKIP.
             - SA: Automatically set all P as Kinds.
-            - RI: Report incompleteness.
+            - RI: Report problems_treatment.
 
         - RI: P<=0 or N+A or (C+A and P>N)
         - SA: P>0 and (C and P<=N)
@@ -343,7 +343,7 @@ def rule_nk_k_sup(list_ontology_dataclasses, graph, nodes_list, configurations):
             Actions:
                 - US: User can choose a class and set it as Kind or SKIP.
                 - SA: Automatically set the possible class as Kind.
-                - RI: Report incompleteness.
+                - RI: Report problems_treatment.
 
             - RI: P=0 or N+A or (P>1 and C+A)
             - SA: P=1 and C
@@ -399,7 +399,7 @@ def rule_s_nsup_k(list_ontology_dataclasses, graph, nodes_list, configurations):
             - Complete + Automatic: Set as gufo:Kind.
             - Complete + Interactive: Set as gufo:Kind.
 
-            - Incomplete + Automatic: Report incompleteness.
+            - Incomplete + Automatic: Report problems_treatment.
             - Incomplete + Interactive: User can set as gufo:Kind.
         """
 
@@ -461,10 +461,10 @@ def rule_nrs_ns_r(list_ontology_dataclasses, graph, nodes_list, configurations):
 
         - BEHAVIOR:
 
-            - Complete + Automatic: If can be role, Set as gufo:Role. If cannot, report incompleteness.
-            - Complete + Interactive: If can be role, Set as gufo:Role. If cannot, report incompleteness.
-            - Incomplete + Automatic: Report incompleteness.
-            - Incomplete + Interactive: Ask user if should be set to gufo:Role. If not, report incompleteness.
+            - Complete + Automatic: If can be role, Set as gufo:Role. If cannot, report problems_treatment.
+            - Complete + Interactive: If can be role, Set as gufo:Role. If cannot, report problems_treatment.
+            - Incomplete + Automatic: Report problems_treatment.
+            - Incomplete + Interactive: Ask user if should be set to gufo:Role. If not, report problems_treatment.
         """
 
     rule_code = "nrs_ns_r"
@@ -492,11 +492,11 @@ def rule_ks_sf_in(list_ontology_dataclasses, graph, nodes_list):
     """
         - REASON: Phases always occur in phase partitions.
 
-        - RULE: For every class classified as a gufo:Phase, there is an incompleteness if:
+        - RULE: For every class classified as a gufo:Phase, there is an problems_treatment if:
             (i) the Phase has no sibling classes, OR
             (ii) all its siblings are (NonSortals OR RigidType).
 
-        - BEHAVIOR: Report incompleteness in all cases.
+        - BEHAVIOR: Report problems_treatment in all cases.
         """
 
     rule_code = "ks_sf_in"

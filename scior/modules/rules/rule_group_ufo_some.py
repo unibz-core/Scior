@@ -24,7 +24,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
         LOGGER.debug(f"Rule {rule_code} satisfied for {evaluated_dataclass.uri}. No action is required.")
 
     elif length_can_list > 1:
-        # Incompleteness found. Reporting incompleteness and possibilities (OR).
+        # Incompleteness found. Reporting problems_treatment and possibilities (OR).
         additional_message = f"Solution: set one or more classes from {can_classes_list} as {types_to_set_list}."
         register_incompleteness(rule_code, evaluated_dataclass, additional_message)
 
@@ -34,7 +34,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
         candidate_dataclass.move_classifications_list_to_is_list(ontology_dataclass_list, types_to_set_list, rule_code)
 
     elif length_can_list == 0:
-        # Incompleteness found. Reporting incompleteness no known possibilities.
+        # Incompleteness found. Reporting problems_treatment no known possibilities.
         if arguments["is_owa"]:
             additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
                                  f"to satisfy the rule."

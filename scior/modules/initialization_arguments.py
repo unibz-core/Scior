@@ -49,7 +49,7 @@ def treat_arguments(software_acronym, software_name, software_version, software_
 
     # v0: print only start and end information and errors
     # v1: v0 + logger information (default)
-    # v2: v1 + incompleteness cases found (logger warnings)
+    # v2: v1 + problems_treatment cases found (logger warnings)
     # v3: print all logger messages, including debbugging messages
 
     # General arguments

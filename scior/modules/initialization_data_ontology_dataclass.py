@@ -1,5 +1,4 @@
 """ Module for initializing data read from the ontology to be evaluated """
-import copy
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
@@ -30,11 +29,10 @@ def initialize_ontology_dataclasses(ontology_graph, scope_restriction: str) -> l
     # - OTHER LISTS (IS and NOT): Empty lists. No value received.
 
     for new_class in classes_list:
-        new_incompleteness_dict = copy.deepcopy(incompleteness_dict)
         ontology_list.append(OntologyDataClass(uri=new_class,
                                                can_type=gufo_can_list_types.copy(),
                                                can_individual=gufo_can_list_individuals.copy(),
-                                               incompleteness_info=new_incompleteness_dict))
+                                               is_incomplete=False))
 
     LOGGER.debug("List of Ontology concepts successfully initialized.")
     return ontology_list

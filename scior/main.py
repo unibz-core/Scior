@@ -32,7 +32,7 @@ def run_scior():
 
     argument = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
-    logger = initialize_logger("www")
+    logger = initialize_logger()
 
     logger.debug("logger.debug")
     logger.info("logger.info")

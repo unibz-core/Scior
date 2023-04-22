@@ -47,6 +47,9 @@ def execute_rules_types(ontology_dataclass_list, ontology_graph, arguments):
 
     LOGGER.info("Starting gUFO types' hierarchy rules ...")
 
+    # Creating the incompleteness_stack
+    incompleteness_stack = []
+
     # Groups of rules and their containing rules' codes. Base rules are not here included.
     list_rules_groups = ["rule_group_aux", "rule_group_ufo_all", "rule_group_ufo_unique", "rule_group_ufo_some"]
 

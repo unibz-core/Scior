@@ -13,17 +13,25 @@ def initialize_logger(caller: str = "Scior") -> logging.Logger:
     # Create a custom logger
     new_logger = logging.getLogger("execution-logger")
 
-    # Creates a new logger only if Scior does not exist
-    if not logging.getLogger("Logger").hasHandlers():
+    # Setting lower level levels
+    if caller == "Scior":
+        new_logger.setLevel(logging.DEBUG)
+    elif caller == "Scior-Tester":
+        new_logger.setLevel(logging.ERROR)
+    else:
+        raise ValueError(f"Logger parameter unknown ({caller}). Aborting execution.")
 
-        # Creating CONSOLE and FILE handlers
+
+    # Creates a new logger only if Scior does not exist
+    if not logging.getLogger("execution-logger").hasHandlers():
+
+        # Creating CONSOLE handlers
         console_handler = logging.StreamHandler()
         if caller == "Scior":
             console_handler.setLevel(logging.INFO)
         elif caller == "Scior-Tester":
             console_handler.setLevel(logging.ERROR)
-        else:
-            raise ValueError(f"Logger parameter unknown ({caller}). Aborting execution.")
+
 
         # If directory "/log" does not exist, create it
         log_directory = "logs/"
