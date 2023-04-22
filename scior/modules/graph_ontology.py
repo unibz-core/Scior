@@ -70,7 +70,7 @@ def save_ontology_file_as_configuration(ontology_graph: Graph, end_date_time, ar
     # Getting gUFO HTTPS information instead of HTTP
     gufo_namespace_http = GUFO_NAMESPACE.replace("http", "https")
 
-    if arguments["gufo_classifications"]:
+    if arguments["gufo_results"]:
         graph = ontology_graph
 
     elif arguments["import_gufo"]:

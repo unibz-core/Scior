@@ -1,10 +1,9 @@
 """ Functions for Ontology Dataclasses """
 import operator
 
-from scior.modules.utils_deficiencies import report_error_dataclass_not_found
-
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.error_treatment import report_error_dataclass_not_found
 
 LOGGER = initialize_logger()
 

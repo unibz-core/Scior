@@ -29,12 +29,16 @@ def include_incompleteness_and_keep_updated(new_entry: IncompletenessEntry,
 
         After the verification the new entry is included into the incompleteness stack and, if necessary,
         the old (outdated) entry is removed.
+
+        AUXILIARY FUNCTION ONLY! MUST NOT BE USED OUTSIDE FUNCTION register_incompleteness.
     """
 
     # If new entry's rule and list of affected classes are already in the incompleteness stack, remove the old entry.
     for registered_entry in incompleteness_stack:
-        if (registered_entry.rule_code == new_entry.rule_code) and \
-                (registered_entry.list_affected_dataclasses_uris == new_entry.list_affected_dataclasses_uris):
+        if (registered_entry.rule_code == new_entry.rule_code) and (
+                registered_entry.list_affected_dataclasses_uris == new_entry.list_affected_dataclasses_uris):
+            LOGGER.debug(f"Outdated incompleteness entry (entry_id: {registered_entry.entry_id}) "
+                         f"substituted for an updated one (entry_id: {new_entry.entry_id}).")
             incompleteness_stack.remove(registered_entry)
 
     # Registering the new incompleteness entry into the incompleteness_stack
@@ -63,6 +67,8 @@ def register_incompleteness(incompleteness_stack: list[IncompletenessEntry], rul
                                     list_affected_dataclasses_uris=list_affected_ontology_dataclasses_uris,
                                     incompleteness_message=incompleteness_message)
 
+    LOGGER.debug(f"Creating and adding new incompleteness entry: {new_entry}.")
+
     include_incompleteness_and_keep_updated(new_entry, incompleteness_stack)
 
 
@@ -70,7 +76,7 @@ def print_all_incompleteness(incompleteness_stack: list[IncompletenessEntry], ar
     """ Print all incompleteness at the end of the execution when authorized by the user using the arguments. """
 
     if arguments["is_verbose"]:
-        print("\nINCOMPLETENESS CASES IDENTIFIED:")
+        print(f"\nINCOMPLETENESS CASES IDENTIFIED: {len(incompleteness_stack)}")
         for current, incompleteness_entry in enumerate(incompleteness_stack):
             num = current + 1
             # Log incompleteness case to user if enabled by argument

@@ -1,4 +1,4 @@
-""" Main module  for Scior """
+""" Main module for Scior """
 import time
 from datetime import datetime
 
@@ -31,14 +31,7 @@ def run_scior():
 
     argument = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
-    logger = initialize_logger()
-
-    # TODO (@pedropaulofb): Exceptions must have the following format:
-    # try:
-    #     result = 1/0
-    # except Exception as error:
-    #     logger.error(f"{error = }")
-    #     raise ValueError(error)
+    logger = initialize_logger("Scior")
 
     now = datetime.now()
     start_date_time = now.strftime("%d-%m-%Y %H:%M:%S")
@@ -133,3 +126,4 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
 # TODO (@pedropaulofb): Implement interactive mode and light automatic.
+# TODO (@pedropaulofb): Update to get_dataclass_by_uri

@@ -1,12 +1,14 @@
 """ Implementation of rules from the group UFO All. """
+from rdflib import Graph
 
+from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 LOGGER = initialize_logger()
 
 
-def run_ir19(ontology_dataclass_list, ontology_graph):
+def run_ir19(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR19 from group UFO All.
 
         Code: IR19
@@ -35,7 +37,7 @@ def run_ir19(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir28(ontology_dataclass_list, ontology_graph):
+def run_ir28(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR28 from group UFO All.
 
     Code: IR28
@@ -64,7 +66,7 @@ def run_ir28(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir29(ontology_dataclass_list, ontology_graph):
+def run_ir29(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR29 from group UFO All.
 
     Code: IR29
@@ -94,7 +96,7 @@ def run_ir29(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir33(ontology_dataclass_list, ontology_graph):
+def run_ir33(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR33 from group UFO All.
 
     Code: IR33
@@ -129,7 +131,7 @@ def run_ir33(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir34(ontology_dataclass_list, ontology_graph):
+def run_ir34(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR34 from group UFO All.
 
     Code: IR34
@@ -159,7 +161,7 @@ def run_ir34(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir41(ontology_dataclass_list, ontology_graph):
+def run_ir41(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR41 from group UFO All.
 
     Code: IR41
@@ -190,7 +192,7 @@ def run_ir41(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir42(ontology_dataclass_list, ontology_graph):
+def run_ir42(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR42 from group UFO All.
 
     Code: IR42
@@ -220,7 +222,7 @@ def run_ir42(ontology_dataclass_list, ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def execute_rules_ufo_all(ontology_dataclass_list, ontology_graph):
+def execute_rules_ufo_all(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """Call the execution of all rules from the group UFO All."""
 
     LOGGER.debug("Starting execution of all rules from group UFO All.")
@@ -234,5 +236,3 @@ def execute_rules_ufo_all(ontology_dataclass_list, ontology_graph):
     run_ir42(ontology_dataclass_list, ontology_graph)
 
     LOGGER.debug("Execution of all rules from group UFO All completed.")
-
-# TODO (@pedropaulofb): Uniform all warnings with Rule at the beginning.

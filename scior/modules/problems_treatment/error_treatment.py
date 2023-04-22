@@ -1,6 +1,7 @@
 """ Functions related to reporting and treatment of execution errors. """
+from scior.modules.logger_config import initialize_logger
 
-from scior.modules.problems_treatment.incompleteness import LOGGER
+LOGGER = initialize_logger()
 
 
 def report_error_dataclass_not_found(searched_uri: str):
@@ -10,3 +11,14 @@ def report_error_dataclass_not_found(searched_uri: str):
                  f"not found in ontology_dataclass_list. Program aborted.")
 
     raise ValueError(f"INVALID VALUE!")
+
+
+
+
+
+    # TODO (@pedropaulofb): Exceptions must have the following format:
+    # try:
+    #     result = 1/0
+    # except Exception as error:
+    #     logger.error(f"{error = }")
+    #     raise ValueError(error)

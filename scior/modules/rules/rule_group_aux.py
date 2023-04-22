@@ -1,5 +1,5 @@
 """ Implementation of caller/switcher for rules of group AUX. """
-from rdflib import URIRef, RDFS
+from rdflib import URIRef, RDFS, Graph
 
 from scior.modules.logger_config import initialize_logger
 
@@ -7,7 +7,7 @@ SCIOR_NAMESPACE = "https://purl.org/scior/"
 LOGGER = initialize_logger()
 
 
-def run_ir36(ontology_graph):
+def run_ir36(ontology_graph: Graph) -> None:
     """ Executes rule IR36 from group AUX.
 
     Code: IR36
@@ -27,15 +27,15 @@ def run_ir36(ontology_graph):
 
     query_result = ontology_graph.query(query_string)
 
-    scior_shareKind = URIRef(SCIOR_NAMESPACE + "shareKind")
+    scior_share_kind = URIRef(SCIOR_NAMESPACE + "shareKind")
 
     for row in query_result:
-        ontology_graph.add((row.class_x, scior_shareKind, row.class_y))
+        ontology_graph.add((row.class_x, scior_share_kind, row.class_y))
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir37(ontology_graph):
+def run_ir37(ontology_graph: Graph) -> None:
     """ Executes rule IR37 from group AUX.
 
     Code: IR37
@@ -62,7 +62,7 @@ def run_ir37(ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def execute_rules_aux(ontology_graph):
+def execute_rules_aux(ontology_graph: Graph) -> None:
     """Executes all rules of the AUX group."""
 
     LOGGER.debug("Starting execution of all rules from group AUX.")

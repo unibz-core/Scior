@@ -83,17 +83,13 @@ def treat_arguments(software_acronym: str, software_name: str, software_version:
 
     global_configurations = {
         "is_automatic": arguments.automatic,
-        "is_manual": arguments.manual,
+        "is_interactive": arguments.interactive,
 
         "is_cwa": arguments.is_cwa,
         "is_owa": arguments.is_owa,
-        "is_owa_light": arguments.is_owal,
+        "is_owa_light": arguments.is_owa_light,
 
-        "print_basic": arguments.is_v0,
-        "print_default": arguments.is_v1,
-        "print_all": arguments.is_v2,
-
-        "gufo_classifications": arguments.gufo_classifications,
+        "gufo_results": arguments.gufo_results,
         "gufo_import": arguments.gufo_import,
         "gufo_write": arguments.gufo_write,
 
