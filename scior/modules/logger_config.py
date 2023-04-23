@@ -1,8 +1,19 @@
 """ Logging configurations. """
+
 import logging
 import os
+from datetime import datetime
 
-from scior.modules.utils_general import get_date_time
+
+def logger_get_date_time():
+    """ Return a string in a specified format with date and time.
+    Format example: 2022.10.23-14.43
+    """
+
+    now = datetime.now()
+    date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
+
+    return date_time
 
 
 def initialize_logger(caller: str = "Scior") -> logging.Logger:
@@ -43,7 +54,7 @@ def initialize_logger(caller: str = "Scior") -> logging.Logger:
             raise OSError(error)
 
         # Creating FILE handler
-        file_handler = logging.FileHandler(f"{log_directory}{get_date_time()}.log")
+        file_handler = logging.FileHandler(f"{log_directory}{logger_get_date_time()}.log")
         if caller == "Scior":
             file_handler.setLevel(logging.DEBUG)
         elif caller == "Scior-Tester":

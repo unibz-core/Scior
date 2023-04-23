@@ -1,4 +1,4 @@
-""" Functions related to the creation of hashes for ontology_dataclasses and for the ontology_dataclasses_list. """
+""" Functions related to the creation of hashes for ontology_dataclasses and for the ontology_dataclass_list. """
 import hashlib
 
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
@@ -8,7 +8,7 @@ def create_ontology_dataclass_hash(ontology_dataclass: OntologyDataClass) -> str
     """ Creates a concatenation of all elements from a dataclass to be later used to generate the
         ontology_dataclass_list hash.
 
-        AUXILIARY FUNCTION. MUST NOT BE CALLED OUTSIDE FUNCTION create_ontology_dataclasses_list_hash.
+        AUXILIARY FUNCTION. MUST NOT BE CALLED OUTSIDE FUNCTION create_ontology_dataclass_list_hash.
     """
 
     partial_is = "IS"
@@ -28,7 +28,7 @@ def create_ontology_dataclass_hash(ontology_dataclass: OntologyDataClass) -> str
     return internal_concatenation
 
 
-def create_ontology_dataclasses_list_hash(ontology_dataclass_list: list[OntologyDataClass]) -> int:
+def create_ontology_dataclass_list_hash(ontology_dataclass_list: list[OntologyDataClass]) -> int:
     """ Calculate an integer hexadecimal SHA256 fixed hash the ontology_dataclass_list.
 
         This hash must be the same every time the internal elements are the same to be comparable among multiple

@@ -16,6 +16,7 @@ _b = before
 _a = after
 
 """
+import inspect
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
@@ -50,7 +51,8 @@ class list_classes_by_situation(object):
             self.list_uris_individuals = list_uris_individuals
             self.list_uris_all = list_uris_all
         else:
-            report_error_end_of_switch(situation, __name__)
+            current_function = inspect.stack()[0][3]
+            report_error_end_of_switch(situation, current_function)
 
 
 class classes_statistics(object):

@@ -1,4 +1,5 @@
 """ Implementation of rules from the group UFO Unique. """
+import inspect
 
 from rdflib import RDFS, URIRef, Graph
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
@@ -63,7 +64,8 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
             report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     else:
-        report_error_end_of_switch(rule_code, __name__)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(rule_code, current_function)
 
 
 def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,

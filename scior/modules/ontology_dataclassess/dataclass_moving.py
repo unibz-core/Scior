@@ -1,6 +1,8 @@
 """ Functions related to moving elements between different lists in a OntologyDataClass or
-in the ontology_data_class_list"""
+in the ontology_data_class_list. """
+
 import bisect
+import inspect
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
@@ -26,7 +28,8 @@ def move_classification_between_type_lists(ontology_dataclass_list: list[Ontolog
     elif target_list == "not_type":
         bisect.insort(ontology_dataclass.not_type, classification_to_move)
     else:
-        report_error_end_of_switch(target_list, __name__)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(target_list, current_function)
 
     # Every time a classification is moved the class will be reanalyzed by all rules, so the incompleteness is
     # cleared to be updated if detected again.
@@ -39,8 +42,7 @@ def move_classification_between_type_lists(ontology_dataclass_list: list[Ontolog
     LOGGER.debug(f"{rule_information}Classification moved from CAN_TYPE "
                  f"to {target_list.upper()} in {ontology_dataclass.uri}.")
 
-    # Every time a classification is moved between lists inside an ontology_dataclass, all list must be re-evaluated
-    # to comply with the gUFO rules.
+    # All list must be re-evaluated to comply with the gUFO rules.
     loop_execute_gufo_rules(ontology_dataclass_list)
 
 
@@ -77,7 +79,8 @@ def move_classification_to_is_type_list(ontology_dataclass_list: list[OntologyDa
 
 
     else:
-        report_error_end_of_switch(classification_to_move, __name__)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(classification_to_move, current_function)
 
 
 def move_classifications_list_to_is_type(ontology_dataclass_list: list[OntologyDataClass],
@@ -124,7 +127,8 @@ def move_classification_to_not_type_list(ontology_dataclass_list: list[OntologyD
         report_inconsistency_case_moving(ontology_dataclass, additional_message)
 
     else:
-        report_error_end_of_switch(classification_to_move, __name__)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(classification_to_move, current_function)
 
 
 def move_classifications_list_to_not_type(ontology_dataclass_list: list[OntologyDataClass],

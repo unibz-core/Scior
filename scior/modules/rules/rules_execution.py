@@ -1,4 +1,5 @@
 """ Rules applied to the TYPES HIERARCHY. """
+import inspect
 import random
 import string
 
@@ -7,7 +8,7 @@ from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 
 from scior.modules.graph_ontology import update_ontology_graph_with_gufo
 from scior.modules.logger_config import initialize_logger
-from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclasses_list_hash
+from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclass_list_hash
 from scior.modules.ontology_dataclassess.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, print_all_incompleteness
@@ -30,7 +31,7 @@ def loop_rule(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
 
     LOGGER.debug(f"Rules loop ID = {loop_id}. Executing in loop rules groups.")
 
-    initial_hash = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
+    initial_hash = create_ontology_dataclass_list_hash(ontology_dataclass_list)
     final_hash = initial_hash + 1
 
     while initial_hash != final_hash:
@@ -39,7 +40,7 @@ def loop_rule(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         for rule_group in list_rules_groups:
             switch_rule_group_execution(ontology_dataclass_list, ontology_graph, rule_group, incompleteness_stack,
                                         arguments)
-        final_hash = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
+        final_hash = create_ontology_dataclass_list_hash(ontology_dataclass_list)
 
         if initial_hash == final_hash:
             LOGGER.debug(f"Rules loop ID = {loop_id}. Final hash equals initial hash. Rules execution concluded.")
@@ -69,7 +70,8 @@ def switch_rule_group_execution(ontology_dataclass_list: list[OntologyDataClass]
         execute_rules_ufo_some(ontology_dataclass_list, ontology_graph, incompleteness_stack, arguments)
 
     else:
-        report_error_end_of_switch(rule_group_code, __name__)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(rule_group_code, current_function)
 
     update_ontology_graph_with_gufo(ontology_dataclass_list, ontology_graph)
     LOGGER.debug(f"Rule {rule_group_code} successfully performed.")

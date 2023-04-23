@@ -6,6 +6,7 @@ from scior.modules.logger_config import initialize_logger
 
 LOGGER = initialize_logger()
 
+
 def treat_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> dict:
     """ Treat arguments provided by the user when starting software executiong. """
 

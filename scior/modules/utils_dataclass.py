@@ -1,9 +1,9 @@
 """ Functions for Ontology Dataclasses """
+import inspect
 import operator
 
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
-
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.problems_treatment.treat_errors import report_error_dataclass_not_found, report_error_end_of_switch
 
 LOGGER = initialize_logger()
@@ -60,7 +60,8 @@ def get_list_gufo_classification(ontology_dataclass_list, list_uris, search_list
             search_type = ontology_dataclass.not_type
             search_individual = ontology_dataclass.not_individual
         else:
-            report_error_end_of_switch(search_list, __name__)
+            current_function = inspect.stack()[0][3]
+            report_error_end_of_switch(search_list, current_function)
 
         if (gufo_element in search_type) or (gufo_element in search_individual):
             return_list.append(ontology_dataclass.uri)
@@ -97,10 +98,12 @@ def get_element_list(ontology_dataclass_list, element, desired_list):
                 break
             else:
                 # Error. List unknown.
-                report_error_end_of_switch(desired_list, __name__)
+                current_function = inspect.stack()[0][3]
+                report_error_end_of_switch(desired_list, current_function)
     else:
         # Error. Element not found, report problem and exit program.
-        report_error_end_of_switch(desired_list, __name__)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(desired_list, current_function)
 
     return returned_object
 

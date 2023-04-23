@@ -1,10 +1,12 @@
 """ Module for initializing data read from the ontology to be evaluated """
+import inspect
+
 from rdflib import Graph
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_type_list
-from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch, report_error_requirement_not_met
 from scior.modules.resources_gufo import GUFO_NAMESPACE, GUFO_LIST_ENDURANT_TYPES
 from scior.modules.utils_dataclass import get_dataclass_by_uri, sort_all_ontology_dataclass_list
 from scior.modules.utils_rdf import get_list_of_all_classes
@@ -13,9 +15,9 @@ LOGGER = initialize_logger()
 
 
 def initialize_ontology_dataclasses(ontology_graph: Graph, scope_restriction: str) -> list[OntologyDataClass]:
+    """ Receives the ontology graph (taxonomy only) and the gUFO scope to be considered.
+        Returns the ontology_dataclass_list, a list with all classes in the ontology to be evaluated.
     """
-    Receives the ontology graph (taxonomy only) and the gUFO scope to be considered.
-    Returns an OntologyClass list of all classes in the ontology to be evaluated with its related sub-lists. """
 
     LOGGER.debug("Initializing list of Ontology concepts...")
 
@@ -33,6 +35,11 @@ def initialize_ontology_dataclasses(ontology_graph: Graph, scope_restriction: st
         ontology_dataclass_list.append(OntologyDataClass(uri=new_class,
                                                          can_type=gufo_can_list_types.copy(),
                                                          can_individual=gufo_can_list_individuals.copy()))
+
+    # Validating results: Scior requires the list to be non-empty. OWL Classes must exist in the input file.
+    if not len(ontology_dataclass_list):
+        error_message = f"Invalid input file. The provided ontology does not have entities of type owl:Class."
+        report_error_requirement_not_met(error_message)
 
     LOGGER.debug("List of Ontology concepts successfully initialized.")
 
@@ -59,7 +66,8 @@ def get_gufo_possibilities(scope_restriction: str):
     if scope_restriction == "ENDURANT_TYPES":
         can_list_types = GUFO_LIST_ENDURANT_TYPES.copy()
     else:
-        report_error_end_of_switch(scope_restriction, __name__)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(scope_restriction, current_function)
 
     return can_list_types, can_list_individuals
 

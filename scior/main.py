@@ -1,15 +1,15 @@
 """ Main module for Scior """
+import inspect
 import time
 from datetime import datetime
 
-from rdflib import RDFS, RDF
+from rdflib import RDF, RDFS
 
 from scior.modules.initialization_arguments import treat_arguments
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_initialization import initialize_ontology_dataclasses, \
     load_known_gufo_information
 from scior.modules.results_calculation import generates_partial_statistics_list
-from scior.modules.rules.rules_execution import execute_rules_types
 from scior.modules.utils_rdf import load_all_graph_safely, reduce_graph_considering_restrictions
 
 SOFTWARE_ACRONYM = "Scior"
@@ -29,13 +29,7 @@ def run_scior():
 
     argument = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
-    print("2")
-    exit(2)
-
     logger = initialize_logger("Scior")
-
-    print("3")
-    exit(3)
 
     now = datetime.now()
     start_date_time = now.strftime("%d-%m-%Y %H:%M:%S")
@@ -48,13 +42,11 @@ def run_scior():
     # Creating empty list of classes and their respective classifications
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, SCOPE_RESTRICTION)
 
-    # Validate input. OWL Classes must exist in the input file.
-    if not len(ontology_dataclass_list):
-        logger.error(f"Invalid input. The provided file does not have elements of type owl:Class. Program aborted.")
-        exit(1)
+    print(ontology_dataclass_list)
+    exit(3)
 
     # Loading the gUFO information already stated into the ontology
-    load_known_gufo_information(working_graph, ontology_dataclass_list, SCOPE_RESTRICTION)
+    load_known_gufo_information(working_graph, ontology_dataclass_list)
 
     before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 

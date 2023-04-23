@@ -1,10 +1,11 @@
 """ Functions that returns the strings to be printed in the Final Results Report. """
+import inspect
 import os
 
 from prettytable import MARKDOWN, PrettyTable
 
 from scior.modules.logger_config import initialize_logger
-from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclasses_list_hash
+from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclass_list_hash
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.results_printer import generate_classes_table, generate_classifications_table, \
     generate_times_table, generate_incompleteness_table
@@ -109,9 +110,9 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
               f"* Report file:\n\t* {report_file_name_path}\n" \
               f"* Log file available at '\\log' folder\n"
 
-    hash_types = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
-    hash_individuals = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
-    hash_total = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
+    hash_types = create_ontology_dataclass_list_hash(ontology_dataclass_list)
+    hash_individuals = create_ontology_dataclass_list_hash(ontology_dataclass_list)
+    hash_total = create_ontology_dataclass_list_hash(ontology_dataclass_list)
 
     line_04 = f"\nSolution hashes:\n" \
               f"* Hash for types:\n\t* {hash_types}\n" \
@@ -146,7 +147,8 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
                 "(i.e., after its rules' executions) in three lists: Totally Unknown Classes, " \
                 "Partially Known Classes, and Totally Known Classes.\n"
     else:
-        report_error_end_of_switch(result_lists[0], __name__)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(result_lists[0], current_function)
 
     content_all = ""
 
@@ -324,6 +326,7 @@ def get_content700(ontology_dataclass_list, restriction="PRINT_ALL"):
                                        f"\t* `not_type`\t\t=\t{dataclass.not_type}\n" \
                                        f"\t* `not_individual`\t=\t{dataclass.not_individual}\n"
     else:
-        report_error_end_of_switch(restriction, __name__)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(restriction, current_function)
 
     return class_print_information
