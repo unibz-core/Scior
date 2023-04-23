@@ -117,7 +117,7 @@ def get_ontology_uri(ontology_graph):
     return ontology_uri
 
 
-def get_list_of_all_classes(ontology_graph, exceptions_list=None):
+def get_list_of_all_classes(ontology_graph: Graph, exceptions_list=None):
     """ Returns a list of all classes as URI strings without repetitions available in a Graph.
     Classes that have namespaces included in the exception_list parameter are not included in the returned list. """
 

@@ -64,7 +64,7 @@ def get_gufo_possibilities(scope_restriction: str):
     return can_list_types, can_list_individuals
 
 
-def get_known_gufo_types(ontology_graph: Graph):
+def get_known_gufo_types(ontology_graph: Graph) -> list[tuple]:
     """ For each class in the ontology_graph, return all its known GUFO TYPES in a tuple format.
     Returned tuple format is: (ontology_class,gufo_type), being both fields strings.
     Analogous to get_known_gufo_individuals.
@@ -94,7 +94,7 @@ def get_known_gufo_types(ontology_graph: Graph):
 
 
 # Not used. Not tested yet. Requires implementation of new value of SCOPE_RESTRICTION.
-def get_known_gufo_individuals(united_graph: Graph):
+def get_known_gufo_individuals(united_graph: Graph) -> list[tuple]:
     """ For each class in the ontology_graph, return all its known GUFO INDIVIDUALS in a tuple format.
     Returned tuple format is: (ontology_class,gufo_type), being both fields strings.
     Analogous to get_known_gufo_types.
@@ -125,7 +125,8 @@ def get_known_gufo_individuals(united_graph: Graph):
     return list_tuples
 
 
-def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list: list[OntologyDataClass]):
+def insert_known_gufo_information(list_known_gufo: list[tuple],
+                                  ontology_dataclass_list: list[OntologyDataClass]) -> None:
     """ Receives a list of known gUFO information and performs the necessary movements of elements in the
     ontology_dataclass_list.
     list_known_gufo is a list of tuples containing (i) ontology class full URI, (ii) short gufo stereotype (e.g. Kind).
@@ -137,7 +138,7 @@ def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list: list
                                             "insert_known_gufo_information")
 
 
-def load_known_gufo_information(ontology_graph: Graph, ontology_dataclass_list, restriction):
+def load_known_gufo_information(ontology_graph: Graph, ontology_dataclass_list: list[OntologyDataClass]) -> None:
     """ Reads gUFO information about types and instances that are available in the inputted ontology file.
 
     I.e., if a class is already known to have any GUFO type, this information is updated in the ontology_dataclass_list.
