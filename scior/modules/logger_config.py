@@ -1,7 +1,8 @@
 """ Logging configurations. """
 import logging
+import os
 
-from scior.modules.utils_general import get_date_time, create_directory_if_not_exists
+from scior.modules.utils_general import get_date_time
 
 
 def initialize_logger(caller: str = "Scior") -> logging.Logger:
@@ -32,8 +33,14 @@ def initialize_logger(caller: str = "Scior") -> logging.Logger:
             console_handler.setLevel(logging.ERROR)
 
         # If directory "/log" does not exist, create it
+        # IMPORTANT: do not substitute because of circular dependency.
         log_directory = "logs/"
-        create_directory_if_not_exists(log_directory)
+        try:
+            if not os.path.exists(log_directory):
+                os.makedirs(log_directory)
+        except OSError as error:
+            print(f"Could not create log directory {log_directory}. Program aborted.")
+            raise OSError(error)
 
         # Creating FILE handler
         file_handler = logging.FileHandler(f"{log_directory}{get_date_time()}.log")

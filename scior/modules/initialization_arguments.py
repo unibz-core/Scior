@@ -4,12 +4,12 @@ import argparse
 
 from scior.modules.logger_config import initialize_logger
 
+LOGGER = initialize_logger()
 
 def treat_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> dict:
     """ Treat arguments provided by the user when starting software executiong. """
 
-    logger = initialize_logger()
-    logger.debug("Parsing arguments...")
+    LOGGER.debug("Parsing arguments...")
 
     about_message = software_acronym + " - version " + software_version
 
@@ -99,6 +99,6 @@ def treat_arguments(software_acronym: str, software_name: str, software_version:
         "ontology_path": arguments.ontology_file
     }
 
-    logger.debug(f"Arguments parsed. Obtained values are: {global_configurations}.")
+    LOGGER.debug(f"Arguments parsed. Obtained values are: {global_configurations}.")
 
     return global_configurations

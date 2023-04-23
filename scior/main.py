@@ -4,13 +4,11 @@ from datetime import datetime
 
 from rdflib import RDFS, RDF
 
-from scior.modules.graph_ontology import save_ontology_gufo_statements, save_ontology_file_as_configuration
 from scior.modules.initialization_arguments import treat_arguments
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_initialization import initialize_ontology_dataclasses, \
     load_known_gufo_information
-from scior.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
-    create_knowledge_matrix
+from scior.modules.results_calculation import generates_partial_statistics_list
 from scior.modules.rules.rules_execution import execute_rules_types
 from scior.modules.utils_rdf import load_all_graph_safely, reduce_graph_considering_restrictions
 
@@ -31,7 +29,13 @@ def run_scior():
 
     argument = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
+    print("2")
+    exit(2)
+
     logger = initialize_logger("Scior")
+
+    print("3")
+    exit(3)
 
     now = datetime.now()
     start_date_time = now.strftime("%d-%m-%Y %H:%M:%S")

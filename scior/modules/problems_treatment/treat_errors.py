@@ -1,5 +1,4 @@
 """ Functions related to the verification and treatment of identified ERROR cases. """
-
 from scior.modules.logger_config import initialize_logger
 
 LOGGER = initialize_logger()
