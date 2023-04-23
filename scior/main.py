@@ -91,22 +91,16 @@ def run_scior_tester(global_configurations, working_graph):
     """
 
     # DATA LOADINGS AND INITIALIZATIONS
-    logger = initialize_logger("tester")
+    logger = initialize_logger("Scior-Tester")
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, SCOPE_RESTRICTION)
-    if not len(ontology_dataclass_list):
-        logger.error(f"Invalid input. The provided file does not have elements of type owl:Class. Program aborted.")
-        exit(1)
-    load_known_gufo_information(working_graph, ontology_dataclass_list, SCOPE_RESTRICTION)
+    load_known_gufo_information(working_graph, ontology_dataclass_list)
 
     # EXECUTION
-    try:
-        before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
-        execute_rules_types(ontology_dataclass_list, working_graph, global_configurations)
-        after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
-        consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
-        knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
-    except Exception:
-        exit(1)
+    before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+    execute_rules_types(ontology_dataclass_list, working_graph, global_configurations)
+    after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+    consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
+    knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
 
     return ontology_dataclass_list, consolidated_statistics, knowledge_matrix, SOFTWARE_VERSION
 
@@ -114,8 +108,7 @@ def run_scior_tester(global_configurations, working_graph):
 if __name__ == "__main__":
     run_scior()
 
+# TODO (@pedropaulofb): Implement interactive mode and light automatic.
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
-# TODO (@pedropaulofb): Implement interactive mode and light automatic.
-# TODO (@pedropaulofb): Update to get_dataclass_by_uri
 # TODO (@pedropaulofb): Uncomment all LOGGER.debug and use the already created is_debug argument.
