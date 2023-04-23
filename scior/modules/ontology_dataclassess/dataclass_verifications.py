@@ -4,13 +4,14 @@ from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_dataclass
 from scior.modules.resources_gufo import GUFO_LIST_FINAL_CLASSIFICATIONS, GUFO_LIST_ENDURANT_TYPES
-from scior.modules.utils_general import has_duplicates, lists_intersection
 
 LOGGER = initialize_logger()
 
 
 def verify_dataclass_invalid_strings_in_lists(ontology_dataclass: OntologyDataClass) -> None:
-    """ Checks if there are invalid strings in all lists of the OntologyDataClass. """
+    """ Checks if there are invalid strings in all lists of the OntologyDataClass.
+        AUXILIARY FUNCTION! MUST NOT BE USED OUTSIDE FUNCTION verify_all_ontology_dataclasses_consistency.
+    """
 
     evaluated_list = "IS_TYPE LIST"
     for classification_is in ontology_dataclass.is_type:
@@ -32,7 +33,9 @@ def verify_dataclass_invalid_strings_in_lists(ontology_dataclass: OntologyDataCl
 
 
 def verify_dataclass_classifications_quantity(ontology_dataclass: OntologyDataClass) -> None:
-    """ Verifies if the amount of classifications found in the list corresponds to the expected value. """
+    """ Verifies if the amount of classifications found in the list corresponds to the expected value.
+        AUXILIARY FUNCTION! MUST NOT BE USED OUTSIDE FUNCTION verify_all_ontology_dataclasses_consistency.
+    """
 
     merged_list = ontology_dataclass.is_type + ontology_dataclass.can_type + ontology_dataclass.not_type
 
@@ -44,42 +47,50 @@ def verify_dataclass_classifications_quantity(ontology_dataclass: OntologyDataCl
         report_inconsistency_case_in_dataclass(ontology_dataclass, additional_message)
 
 
-# TODO (@pedropaulofb): TO BE DONE!
-def verify_dataclass_duplicates_in_lists_ontology(ontology_dataclass: OntologyDataClass) -> None:
-    """ No same string must be in two lists at the same time. """
-
-    merged_list = ontology_dataclass.is_type + ontology_dataclass.can_type + ontology_dataclass.not_type
-
-    if has_duplicates(merged_list):
-        LOGGER.error(f"INCONSISTENCY DETECTED: Same element in two lists for {ontology_dataclass.uri}. "
-                     f"Program aborted.")
-        exit(1)
-
-
-# TODO (@pedropaulofb): TO BE DONE!
 def verify_dataclass_multiple_final_classifications(ontology_dataclass: OntologyDataClass) -> None:
-    """ No two final classifications can be in the is_type list at the same moment """
+    """ No two final classifications can be in the is_type list at the same moment.
+        AUXILIARY FUNCTION! MUST NOT BE USED OUTSIDE FUNCTION verify_all_ontology_dataclasses_consistency.
+    """
 
-    result_list = lists_intersection(GUFO_LIST_FINAL_CLASSIFICATIONS, ontology_dataclass.is_type)
+    final_classifications = set(ontology_dataclass.is_type).intersection(GUFO_LIST_FINAL_CLASSIFICATIONS)
 
-    if len(result_list) > 1:
-        LOGGER.error(f"Software execution problem found! "
-                     f"The class {ontology_dataclass.uri} is of multiple final types, which is not allowed. "
-                     f"The classifications are: {result_list}. Execution aborted! ")
-        exit(1)
+    if len(final_classifications) > 1:
+        additional_message = f"Multiple final classification(s) ({final_classifications}) found in IS_TYPE list."
+        report_inconsistency_case_in_dataclass(ontology_dataclass, additional_message)
+
+
+def verify_dataclass_duplicates_in_lists(ontology_dataclass: OntologyDataClass) -> None:
+    """ No same string must be in two lists at the same time.
+        AUXILIARY FUNCTION! MUST NOT BE USED OUTSIDE FUNCTION verify_all_ontology_dataclasses_consistency.
+    """
+
+    duplicated_is_can = set(ontology_dataclass.is_type).intersection(ontology_dataclass.can_type)
+    duplicated_is_not = set(ontology_dataclass.is_type).intersection(ontology_dataclass.not_type)
+    duplicated_can_not = set(ontology_dataclass.can_type).intersection(ontology_dataclass.not_type)
+
+    if len(duplicated_is_can) > 0:
+        additional_message = f"Duplicated classification(s) ({duplicated_is_can}) found in lists IS_TYPE and CAN_TYPE."
+        report_inconsistency_case_in_dataclass(ontology_dataclass, additional_message)
+
+    if len(duplicated_is_not) > 0:
+        additional_message = f"Duplicated classification(s) ({duplicated_is_not}) found in lists IS_TYPE and NOT_TYPE."
+        report_inconsistency_case_in_dataclass(ontology_dataclass, additional_message)
+
+    if len(duplicated_can_not) > 0:
+        additional_message = f"Duplicated classification(s) ({duplicated_can_not}) found in lists " \
+                             f"CAN_TYPE and NOT_TYPE."
+        report_inconsistency_case_in_dataclass(ontology_dataclass, additional_message)
 
 
 def verify_all_ontology_dataclasses_consistency(ontology_dataclass_list: list[OntologyDataClass]) -> None:
     """ Performs a consistency verification of all elements in the ontology_dataclass_list. """
-
-    # TODO (@pedropaulofb): Define the best moment to perform the consistency checking(s).
 
     LOGGER.debug("Initializing consistency checking for all ontology dataclasses.")
 
     for ontology_dataclass in ontology_dataclass_list:
         verify_dataclass_invalid_strings_in_lists(ontology_dataclass)
         verify_dataclass_classifications_quantity(ontology_dataclass)
-        verify_dataclass_duplicates_in_lists_ontology(ontology_dataclass)
+        verify_dataclass_duplicates_in_lists(ontology_dataclass)
         verify_dataclass_multiple_final_classifications(ontology_dataclass)
 
     LOGGER.debug("Consistency checking for all ontology dataclasses successfully performed.")

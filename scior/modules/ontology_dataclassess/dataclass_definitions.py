@@ -5,7 +5,7 @@ import hashlib
 from dataclasses import dataclass, field
 
 from scior.modules.logger_config import initialize_logger
-from scior.modules.ontology_dataclassess.dataclass_verifications import verify_dataclass_duplicates_in_lists_ontology, \
+from scior.modules.ontology_dataclassess.dataclass_verifications import verify_dataclass_duplicates_in_lists, \
     verify_dataclass_multiple_final_classifications
 from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 

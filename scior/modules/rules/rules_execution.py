@@ -3,10 +3,11 @@ import random
 import string
 
 from rdflib import Graph
-
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
+
 from scior.modules.graph_ontology import update_ontology_graph_with_gufo
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, print_all_incompleteness
 from scior.modules.rules.rule_group_aux import execute_rules_aux
@@ -82,6 +83,9 @@ def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontolo
 
     LOGGER.info("Starting the execution of the inference rules. This may take some time.")
 
+    # Verify consistency once BEFORE the rules' executions
+    verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
+
     # Creating the incompleteness stack
     incompleteness_stack = []
 
@@ -93,6 +97,9 @@ def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontolo
 
     # Execute all groups of rules in loop (except groups base and gufo) until there are no new modifications
     loop_rule(ontology_dataclass_list, ontology_graph, list_rules_groups, incompleteness_stack, arguments)
+
+    # Verify consistency once AFTER the rules' executions
+    verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
 
     # Print incompleteness detection results
     print_all_incompleteness(incompleteness_stack, arguments)
