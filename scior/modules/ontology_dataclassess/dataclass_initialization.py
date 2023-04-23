@@ -132,8 +132,8 @@ def insert_known_gufo_information(list_known_gufo, ontology_dataclass_list: list
 
     for known_gufo in list_known_gufo:
         receptor_dataclass = get_dataclass_by_uri(ontology_dataclass_list, known_gufo[0])
-         move_classification_to_is_type_list(ontology_dataclass_list, receptor_dataclass, known_gufo[1],
-                                                          "insert_known_gufo_information")
+        move_classification_to_is_type_list(ontology_dataclass_list, receptor_dataclass, known_gufo[1],
+                                            "insert_known_gufo_information")
 
 
 def load_known_gufo_information(ontology_graph: Graph, ontology_dataclass_list, restriction):
@@ -146,8 +146,8 @@ def load_known_gufo_information(ontology_graph: Graph, ontology_dataclass_list, 
 
     # Setting all classes as EndurantType
     for ontology_dataclass in ontology_dataclass_list:
-         move_classification_to_is_type_list(ontology_dataclass_list,ontology_dataclass, "EndurantType",
-                                                          "load_known_gufo_information")
+        move_classification_to_is_type_list(ontology_dataclass_list, ontology_dataclass, "EndurantType",
+                                            "load_known_gufo_information")
     # Collecting and adding other known classifications
     list_known_gufo = get_known_gufo_types(ontology_graph)
     insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)

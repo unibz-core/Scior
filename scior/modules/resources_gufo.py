@@ -3,7 +3,8 @@
 GUFO_NAMESPACE = "http://purl.org/nemo/gufo#"
 
 GUFO_LIST_ENDURANT_TYPES = ["AntiRigidType", "Category", "EndurantType", "Kind", "Mixin", "NonRigidType", "NonSortal",
-    "Phase", "PhaseMixin", "RigidType", "Role", "RoleMixin", "SemiRigidType", "Sortal", "SubKind"]
+                            "Phase", "PhaseMixin", "RigidType", "Role", "RoleMixin", "SemiRigidType", "Sortal",
+                            "SubKind"]
 
 GUFO_LIST_FINAL_CLASSIFICATIONS = ["Category", "Kind", "Mixin", "Phase", "PhaseMixin", "Role", "RoleMixin", "SubKind"]
 

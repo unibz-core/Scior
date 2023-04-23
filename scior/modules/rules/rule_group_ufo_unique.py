@@ -1,9 +1,11 @@
 """ Implementation of rules from the group UFO Unique. """
 
 from rdflib import RDFS, URIRef, Graph
-
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
+
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classifications_list_to_is_type, \
+    move_classifications_list_to_not_type
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
 from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_rule
@@ -35,7 +37,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
         # Set all classes in can list as not type.
         for can_class in can_classes_list:
             candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_class)
-            candidate_dataclass.move_classifications_list_to_not_list(ontology_dataclass_list, types_to_set_list,
+            move_classifications_list_to_not_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list,
                                                                       rule_code)
 
     elif length_is_list == 0 and length_can_list > 1:
@@ -46,7 +48,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
     elif length_is_list == 0 and length_can_list == 1:
         # Set class in can list as type.
         candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
-        candidate_dataclass.move_classifications_list_to_is_list(ontology_dataclass_list, types_to_set_list, rule_code)
+        move_classifications_list_to_is_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list, rule_code)
 
     elif length_is_list == 0 and length_can_list == 0:
         # Incompleteness found. Reporting problems_treatment no known possibilities.
@@ -61,7 +63,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
             report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     else:
-        report_error_end_of_switch(rule_code,__name__)
+        report_error_end_of_switch(rule_code, __name__)
 
 
 def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,

@@ -3,6 +3,7 @@ import random
 import string
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
+
 from scior.modules.logger_config import initialize_logger
 
 LOGGER = initialize_logger()

@@ -2,6 +2,7 @@
 import operator
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
+
 from scior.modules.logger_config import initialize_logger
 from scior.modules.problems_treatment.treat_errors import report_error_dataclass_not_found
 

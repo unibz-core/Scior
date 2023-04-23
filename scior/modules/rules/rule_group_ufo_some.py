@@ -1,9 +1,10 @@
 """ Implementation of rules of group UFO Some. """
 from rdflib import Graph, URIRef, RDFS
 
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
-from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classifications_list_to_is_type
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch, report_error_dataclass_not_found
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
 from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_rule
 from scior.modules.utils_dataclass import get_dataclass_by_uri
@@ -33,7 +34,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
     elif length_can_list == 1:
         # Set single candidate as desired types.
         candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
-        candidate_dataclass.move_classifications_list_to_is_list(ontology_dataclass_list, types_to_set_list, rule_code)
+        move_classifications_list_to_is_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list, rule_code)
 
     elif length_can_list == 0:
         # Incompleteness found. Reporting problems_treatment no known possibilities.
@@ -48,7 +49,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
             report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     else:
-        report_error_end_of_switch(rule_code,__name__)
+        report_error_end_of_switch(rule_code, __name__)
 
 
 def run_ir30(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
