@@ -18,6 +18,7 @@ _a = after
 """
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 
 
 class dataclass_statistics(object):
@@ -49,8 +50,7 @@ class list_classes_by_situation(object):
             self.list_uris_individuals = list_uris_individuals
             self.list_uris_all = list_uris_all
         else:
-            logger.error(f"Unknown situation {situation} informed to list_classes_by_situation. Program aborted.")
-            exit(1)
+            report_error_end_of_switch(situation, __name__)
 
 
 class classes_statistics(object):

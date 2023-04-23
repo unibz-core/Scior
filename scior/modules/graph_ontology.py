@@ -5,6 +5,7 @@ from pathlib import Path
 from rdflib import URIRef, RDF, RDFS, OWL, BNode, Graph
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.treat_errors import report_error_io_write
 from scior.modules.resources_gufo import GUFO_NAMESPACE
 from scior.modules.utils_general import create_directory_if_not_exists
 from scior.modules.utils_rdf import get_ontology_uri, load_all_graph_safely
@@ -115,10 +116,11 @@ def safe_save_ontology_file(ontology_graph, output_file_name: str, syntax: str =
 
     try:
         ontology_graph.serialize(destination=output_file_name, encoding='utf-8', format=syntax)
-        LOGGER.info(f"Output ontology file saved. Access it in {os.path.abspath(output_file_name)}.")
     except OSError as error:
-        LOGGER.error(f"Could not save the output ontology file ({output_file_name}). Exiting program."
-                     f"System error reported: {error}")
+        file_description = f"input ontology file"
+        report_error_io_write(output_file_name, file_description, error)
+
+    LOGGER.info(f"Output ontology file saved. Access it in {os.path.abspath(output_file_name)}.")
 
 
 def treat_name(gufo_short_name: str) -> str:

@@ -4,6 +4,7 @@ from rdflib import Graph
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_type_list
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.resources_gufo import GUFO_NAMESPACE, GUFO_LIST_ENDURANT_TYPES
 from scior.modules.utils_dataclass import get_dataclass_by_uri, sort_all_ontology_dataclass_list
 from scior.modules.utils_rdf import get_list_of_all_classes
@@ -58,8 +59,7 @@ def get_gufo_possibilities(scope_restriction: str):
     if scope_restriction == "ENDURANT_TYPES":
         can_list_types = GUFO_LIST_ENDURANT_TYPES.copy()
     else:
-        LOGGER.error(f"Invalid SCOPE_RESTRICTION {scope_restriction}. Program aborted.")
-        exit(1)
+        report_error_end_of_switch(scope_restriction, __name__)
 
     return can_list_types, can_list_individuals
 

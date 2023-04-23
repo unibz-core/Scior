@@ -5,6 +5,7 @@ import time
 from prettytable import PrettyTable, SINGLE_BORDER
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 
 UNDEFINED_MESSAGE = "undefined - error if printed."
 
@@ -127,8 +128,7 @@ def generate_classes_table(consolidated_statistics, table_option, border_option)
         pos_r3_c2 = f"{after.tk_classes_all_v} ({round(after.tk_classes_all_p, 2)}%)"
         pos_r3_c3 = f"{ba.tk_classes_all_v_d} ({round(ba.tk_classes_all_p_d, 2)}%)"
     else:
-        logger.error(f"Invalid table option ({table_option}). Program aborted.")
-        exit(1)
+        report_error_end_of_switch(table_option, __name__)
 
     pretty_table.add_row([row_1, pos_r1_c1, pos_r1_c2, pos_r1_c3])
     pretty_table.add_row([row_2, pos_r2_c1, pos_r2_c2, pos_r2_c3])
@@ -208,8 +208,7 @@ def generate_classifications_table(consolidated_statistics, table_option, border
         pos_r2_c2 = f"{after.known_classif_total_v} ({round(after.known_classif_total_p, 2)}%)"
         pos_r2_c3 = f"{ba.known_classif_total_v_d} ({round(ba.known_classif_total_p_d, 2)}%)"
     else:
-        logger.error(f"Invalid table option ({table_option}). Program aborted.")
-        exit(1)
+        report_error_end_of_switch(table_option, __name__)
 
     pretty_table.add_row([row_1, pos_r1_c1, pos_r1_c2, pos_r1_c3])
     pretty_table.add_row([row_2, pos_r2_c1, pos_r2_c2, pos_r2_c3])

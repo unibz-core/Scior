@@ -5,6 +5,7 @@ from prettytable import MARKDOWN, PrettyTable
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclasses_list_hash
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.results_printer import generate_classes_table, generate_classifications_table, \
     generate_times_table, generate_incompleteness_table
 from scior.modules.utils_general import get_computer_specifications
@@ -145,8 +146,7 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
                 "(i.e., after its rules' executions) in three lists: Totally Unknown Classes, " \
                 "Partially Known Classes, and Totally Known Classes.\n"
     else:
-        logger.error(f"Unexpected list situation {result_lists[0]}. Program aborted.")
-        exit(1)
+        report_error_end_of_switch(result_lists[0], __name__)
 
     content_all = ""
 
@@ -324,7 +324,6 @@ def get_content700(ontology_dataclass_list, restriction="PRINT_ALL"):
                                        f"\t* `not_type`\t\t=\t{dataclass.not_type}\n" \
                                        f"\t* `not_individual`\t=\t{dataclass.not_individual}\n"
     else:
-        logger.error(f"Restriction unknown ({restriction}). Program aborted.")
-        exit(1)
+        report_error_end_of_switch(restriction, __name__)
 
     return class_print_information

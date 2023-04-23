@@ -6,6 +6,7 @@ from owlrl import DeductiveClosure, RDFS_Semantics
 from rdflib import RDF, OWL, Graph
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.treat_errors import report_error_io_read
 
 
 def load_graph_safely_considering_restrictions(ontology_file, graph_restriction=None):
@@ -21,7 +22,7 @@ def load_graph_safely_considering_restrictions(ontology_file, graph_restriction=
     return ontology_graph
 
 
-def load_all_graph_safely(ontology_file):
+def load_all_graph_safely(ontology_file: str) -> Graph:
     """ Safely load graph from file to working memory. """
 
     logger = initialize_logger()
@@ -29,11 +30,10 @@ def load_all_graph_safely(ontology_file):
     ontology_graph = Graph()
 
     try:
-        ontology_graph.parse(ontology_file)
+        ontology_graph.parse(ontology_file, encoding='utf-8')
     except OSError as error:
-        logger.error(f"Could not load {ontology_file} file. Exiting program.\n"
-                     f"System error reported: {error}")
-        exit(1)
+        file_description = f"input ontology file"
+        report_error_io_read(ontology_file, file_description, error)
 
     logger.debug(f"Ontology file {ontology_file} successfully loaded to working memory.")
 
