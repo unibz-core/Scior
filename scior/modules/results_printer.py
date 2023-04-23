@@ -1,6 +1,5 @@
 """ Fucntions for printing statistics to the user. """
 import inspect
-import operator
 import time
 
 from prettytable import PrettyTable, SINGLE_BORDER
@@ -225,37 +224,6 @@ def generate_classifications_table(consolidated_statistics, table_option, border
     return return_string
 
 
-def generate_incompleteness_table(ontology_dataclass_list, border_option):
-    """ Generates a table with information about incomplete classes identified. """
-
-    # Tables' columns' titles
-    columns_titles = ["Incomplete Class", "Detection Rules"]
-
-    pretty_table = PrettyTable(columns_titles)
-
-    number_incomplete_classes = 0
-    ontology_dataclass_list.sort(key=operator.attrgetter('uri'))
-
-    for dataclass in ontology_dataclass_list:
-        if dataclass.is_incomplete["is_incomplete"] == True:
-            pretty_table.add_row([dataclass.uri, dataclass.is_incomplete["detected_in"]])
-            number_incomplete_classes += 1
-
-    message = f"\nA total of {number_incomplete_classes} classes were identified as incomplete.\n"
-
-    if number_incomplete_classes != 0:
-
-        pretty_table.align = "r"
-        pretty_table.set_style(border_option)
-
-        table_text = pretty_table.get_string()
-        return_string = message + table_text
-    else:
-        return_string = message
-
-    return return_string
-
-
 def print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, configurations,
                             restriction="PRINT_ALL"):
     """ Receives list of execution times, and lists of before and after values and prints these three statistics.
@@ -294,9 +262,6 @@ def print_statistics_screen(ontology_dataclass_list, consolidated_statistics, ti
 
         print(table_classes_total)
         print(table_classifications_total)
-
-    table_incompleteness = generate_incompleteness_table(ontology_dataclass_list, SINGLE_BORDER)
-    print(table_incompleteness)
 
     if configurations["print_time"]:
         table_aggregated_time = generate_times_table(time_register, SINGLE_BORDER)

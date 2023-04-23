@@ -58,6 +58,9 @@ def treat_arguments(software_acronym: str, software_name: str, software_version:
     verbosity_group.add_argument("-r", "--verbose", action='store_true', default=True,
                                  help="* Print basic execution information and results.")
 
+    verbosity_group.add_argument("-d", "--debug", action='store_true', default=True,
+                                 help="Generates tons of log for debugging.")
+
     # REGISTER GUFO IN FILE ARGUMENTS
 
     gufo_in_file = arguments_parser.add_mutually_exclusive_group()
@@ -96,6 +99,7 @@ def treat_arguments(software_acronym: str, software_name: str, software_version:
 
         "is_silent": arguments.silent,
         "is_verbose": arguments.verbose,
+        "is_debug": arguments.debug,
 
         "ontology_path": arguments.ontology_file
     }

@@ -7,8 +7,7 @@ from prettytable import MARKDOWN, PrettyTable
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclass_list_hash
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
-from scior.modules.results_printer import generate_classes_table, generate_classifications_table, \
-    generate_times_table, generate_incompleteness_table
+from scior.modules.results_printer import generate_classes_table, generate_classifications_table
 from scior.modules.utils_general import get_computer_specifications
 
 
@@ -17,7 +16,7 @@ def get_content100(restriction="PRINT_ALL"):
 
     Allowed restriction values:
         - "PRINT_ALL" - (DEFAULT) prints types, individuals, and total tables.
-        - "TYPES_ONLY" - prints only types table.
+        - "ENDURANT_TYPES" - prints only types table.
         - "INDIVIDUALS_ONLY" - prints only individuals table.
         - "TOTAL_ONLY" - prints only total table.
     """
@@ -39,7 +38,7 @@ def get_content100(restriction="PRINT_ALL"):
               "(#list-of-totally-known-classes-after-scior)\n"
     line_10 = "* [Results Statistics](#results-statistics)\n"
 
-    if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
+    if restriction == "PRINT_ALL" or restriction == "ENDURANT_TYPES":
         line_11 = "\t* [Statistics of the Scior execution for TYPES]" \
                   "(#statistics-of-the-scior-execution-for-types)\n"
     else:
@@ -70,15 +69,13 @@ def get_content100(restriction="PRINT_ALL"):
 
 
 def get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time,
-                   elapsed_time, time_register, configurations, software_version):
+                   elapsed_time, configurations, software_version):
     """ Presents some information about the software execution."""
 
     line_01 = f"Scior version {software_version} successfully performed.\n" \
               f"* Start time {start_date_time}\n" \
               f"* End time {end_date_time}\n" \
               f"* Total elapsed time: {elapsed_time} seconds.\n"
-
-    table_times = generate_times_table(time_register, MARKDOWN)
 
     computer_specs = get_computer_specifications()
 
@@ -88,16 +85,15 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
 
     line_02 = f"\nConfigurations:\n" \
               f"* Automatic execution: {configurations['is_automatic']}\n" \
-              f"* Model is complete: {configurations['is_complete']}\n" \
-              f"* Execution times printed: {configurations['print_time']}\n" \
-              f"* GUFO imported in output file: {configurations['import_gufo']}\n" \
-              f"* GUFO saved in output file: {configurations['save_gufo']}\n"
+              f"* Model is complete: {configurations['is_cwa']}\n" \
+              f"* GUFO imported in output file: {configurations['gufo_import']}\n" \
+              f"* GUFO saved in output file: {configurations['gufo_write']}\n"
 
     in_out_file_path = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)
     input_file_name = in_out_file_path + "\\" + configurations["ontology_path"]
     output_file_name = in_out_file_path + "\\" + \
                        os.path.splitext(configurations["ontology_path"])[0] + \
-                       "-" + end_date_time + ".out.ttl"
+                       "-" + end_date_time + ".ttl"
 
     path_input_file = os.path.abspath(input_file_name)
     path_output_file = os.path.abspath(output_file_name)
@@ -119,7 +115,7 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
               f"* Hash for individuals:\n\t* {hash_individuals}\n" \
               f"* Total hash:\n\t* {hash_total}\n"
 
-    return_string = line_01 + table_times + "\n" + line_01_specs + line_02 + line_03 + line_04
+    return_string = line_01 + "\n" + line_01_specs + line_02 + line_03 + line_04
 
     return return_string
 
@@ -129,7 +125,7 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
 
     Allowed restriction values:
         - "PRINT_ALL" - (DEFAULT) prints types, individuals, and total tables.
-        - "TYPES_ONLY" - prints only types table.
+        - "ENDURANT_TYPES" - prints only types table.
         - "INDIVIDUALS_ONLY" - prints only individuals table.
         - "TOTAL_ONLY" - prints only total table.
 
@@ -165,7 +161,7 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
         title_x10 = f"\n### List of {result_lists[i].situation} Classes {result_lists[0]} Scior\n\n"
 
         # TU/PK/TK Classes Before/After - Types Only
-        if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
+        if restriction == "PRINT_ALL" or restriction == "ENDURANT_TYPES":
             title_x11 = f"\n#### {result_lists[i].situation} Classes {result_lists[0]} - Types Only\n\n"
             for element in result_lists[i].list_uris_types:
                 content_x11 += "* " + element + "\n"
@@ -195,7 +191,7 @@ def get_content500(ontology_dataclass_list, consolidated_statistics, restriction
 
     Allowed restriction values:
         - "PRINT_ALL" - (DEFAULT) prints types, individuals, and total tables.
-        - "TYPES_ONLY" - prints only types table.
+        - "ENDURANT_TYPES" - prints only types table.
         - "INDIVIDUALS_ONLY" - prints only individuals table.
         - "TOTAL_ONLY" - prints only total table.
     """
@@ -210,7 +206,7 @@ def get_content500(ontology_dataclass_list, consolidated_statistics, restriction
     title_503 = ""
     content_503 = ""
 
-    if restriction == "PRINT_ALL" or restriction == "TYPES_ONLY":
+    if restriction == "PRINT_ALL" or restriction == "ENDURANT_TYPES":
         title_501 = "\n### Statistics of the Scior execution for TYPES"
 
         table_classes_types = generate_classes_table(consolidated_statistics, "types", MARKDOWN)
@@ -238,13 +234,7 @@ def get_content500(ontology_dataclass_list, consolidated_statistics, restriction
 
         content_503 = "\n" + table_classes_total + "\n" + table_classifications_total + "\n"
 
-    title_504 = "\n## Incomplete Classes Identified"
-
-    table_incompleteness = generate_incompleteness_table(ontology_dataclass_list, MARKDOWN)
-
-    content_504 = "\n" + table_incompleteness + "\n"
-
-    content_all = title_501 + content_501 + title_502 + content_502 + title_503 + content_503 + title_504 + content_504
+    content_all = title_501 + content_501 + title_502 + content_502 + title_503 + content_503
 
     return_string = intro + content_all
 
@@ -290,7 +280,7 @@ def get_content700(ontology_dataclass_list, restriction="PRINT_ALL"):
 
     Allowed restriction values:
         - "PRINT_ALL" - (DEFAULT) prints types, individuals, and total tables.
-        - "TYPES_ONLY" - prints only types table.
+        - "ENDURANT_TYPES" - prints only types table.
         - "INDIVIDUALS_ONLY" - prints only individuals table.
         - "TOTAL_ONLY" - prints only total table.
     """
@@ -299,7 +289,7 @@ def get_content700(ontology_dataclass_list, restriction="PRINT_ALL"):
 
     class_print_information = ""
 
-    if restriction == "TYPES_ONLY":
+    if restriction == "ENDURANT_TYPES":
 
         for dataclass in ontology_dataclass_list:
             class_print_information += f"\n* `Class URI` = {dataclass.uri}\n\n" \

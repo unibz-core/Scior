@@ -3,8 +3,8 @@ from rdflib import Graph
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
-from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_type_list, \
-    move_classification_to_not_type_list
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_type, \
+    move_classification_to_not_type
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 LOGGER = initialize_logger()
@@ -34,7 +34,7 @@ def run_ir19(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
     for row in query_result:
         new_sortal = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
-        move_classification_to_is_type_list(ontology_dataclass_list, new_sortal, "Sortal", rule_code)
+        move_classification_to_is_type(ontology_dataclass_list, new_sortal, "Sortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -63,7 +63,7 @@ def run_ir28(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
     for row in query_result:
         ontology_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
-        move_classification_to_not_type_list(ontology_dataclass_list, ontology_dataclass, "AntiRigidType", rule_code)
+        move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "AntiRigidType", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -91,10 +91,8 @@ def run_ir29(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     query_result = ontology_graph.query(query_string)
 
     for row in query_result:
-        for ontology_dataclass in ontology_dataclass_list:
-            if ontology_dataclass.uri == row.class_y.toPython():
-                move_classification_to_not_type_list(ontology_dataclass_list, ontology_dataclass, "AntiRigidType",
-                                                     rule_code)
+        ontology_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
+        move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "AntiRigidType", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -129,7 +127,7 @@ def run_ir33(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
     for ontology_dataclass in ontology_dataclass_list:
         if ontology_dataclass.uri in result:
-            move_classification_to_is_type_list(ontology_dataclass_list, ontology_dataclass, "NonSortal", rule_code)
+            move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "NonSortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -157,9 +155,8 @@ def run_ir34(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     query_result = ontology_graph.query(query_string)
 
     for row in query_result:
-        for ontology_dataclass in ontology_dataclass_list:
-            if ontology_dataclass.uri == row.class_y.toPython():
-                move_classification_to_is_type_list(ontology_dataclass_list, ontology_dataclass, "NonSortal", rule_code)
+        ontology_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
+        move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "NonSortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -187,11 +184,9 @@ def run_ir41(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     query_result = ontology_graph.query(query_string)
 
     for row in query_result:
-        for ontology_dataclass in ontology_dataclass_list:
-            if ontology_dataclass.uri == row.class_y.toPython():
-                move_classification_to_not_type_list(ontology_dataclass_list, ontology_dataclass, "Role", rule_code)
-                move_classification_to_not_type_list(ontology_dataclass_list, ontology_dataclass, "RoleMixin",
-                                                     rule_code)
+        ontology_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
+        move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Role", rule_code)
+        move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "RoleMixin", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -219,10 +214,8 @@ def run_ir42(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     query_result = ontology_graph.query(query_string)
 
     for row in query_result:
-        for ontology_dataclass in ontology_dataclass_list:
-            if ontology_dataclass.uri == row.class_y.toPython():
-                move_classification_to_not_type_list(ontology_dataclass_list, ontology_dataclass, "RoleMixin",
-                                                     rule_code)
+        ontology_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
+        move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "RoleMixin", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 

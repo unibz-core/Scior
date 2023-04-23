@@ -1,13 +1,11 @@
 """ Rules applied to the TYPES HIERARCHY. """
 import inspect
-import random
-import string
 
 from rdflib import Graph
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 
 from scior.modules.graph_ontology import update_ontology_graph_with_gufo
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclass_list_hash
 from scior.modules.ontology_dataclassess.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
@@ -27,9 +25,8 @@ def loop_rule(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         AUXILIARY FUNCTION ONLY! MUST NOT BE USED OUTSIDE FUNCTION execute_rules_types.
     """
 
-    loop_id = ''.join(random.choices(string.ascii_lowercase, k=4))
-
-    LOGGER.debug(f"Rules loop ID = {loop_id}. Executing in loop rules groups.")
+    # loop_id = ''.join(random.choices(string.ascii_lowercase, k=4))
+    # LOGGER.debug(f"Rules loop ID = {loop_id}. Executing in loop rules groups.")
 
     initial_hash = create_ontology_dataclass_list_hash(ontology_dataclass_list)
     final_hash = initial_hash + 1
@@ -42,10 +39,10 @@ def loop_rule(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
                                         arguments)
         final_hash = create_ontology_dataclass_list_hash(ontology_dataclass_list)
 
-        if initial_hash == final_hash:
-            LOGGER.debug(f"Rules loop ID = {loop_id}. Final hash equals initial hash. Rules execution concluded.")
-        else:
-            LOGGER.debug(f"Rules loop ID = {loop_id}. Final hash does not equals initial hash. Re-executing rules.")
+        # if initial_hash == final_hash:
+        #     LOGGER.debug(f"Rules loop ID = {loop_id}. Final hash equals initial hash. Rules execution concluded.")
+        # else:
+        #     LOGGER.debug(f"Rules loop ID = {loop_id}. Final hash does not equals initial hash. Re-executing rules.")
 
 
 def switch_rule_group_execution(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
@@ -87,7 +84,7 @@ def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontolo
         MUST BE CALLED ONCE FROM MAIN FILE.
     """
 
-    LOGGER.info("Starting the execution of the inference rules. This may take some time.")
+    LOGGER.info("Starting the execution of inference rules for Endurant Types. This may take some time.")
 
     # Verify consistency once BEFORE the rules' executions
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)

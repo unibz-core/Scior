@@ -35,7 +35,7 @@ def load_all_graph_safely(ontology_file: str) -> Graph:
         file_description = f"input ontology file"
         report_error_io_read(ontology_file, file_description, error)
 
-    logger.debug(f"Ontology file {ontology_file} successfully loaded to working memory.")
+    logger.info(f"Ontology file {ontology_file} successfully loaded to working memory.")
 
     return ontology_graph
 

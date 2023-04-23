@@ -5,7 +5,7 @@ from rdflib import Graph
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
-from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_type_list
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_type
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch, report_error_requirement_not_met
 from scior.modules.resources_gufo import GUFO_NAMESPACE, GUFO_LIST_ENDURANT_TYPES
 from scior.modules.utils_dataclass import get_dataclass_by_uri, sort_all_ontology_dataclass_list
@@ -142,8 +142,8 @@ def insert_known_gufo_information(list_known_gufo: list[tuple],
 
     for known_gufo in list_known_gufo:
         receptor_dataclass = get_dataclass_by_uri(ontology_dataclass_list, known_gufo[0])
-        move_classification_to_is_type_list(ontology_dataclass_list, receptor_dataclass, known_gufo[1],
-                                            "insert_known_gufo_information")
+        move_classification_to_is_type(ontology_dataclass_list, receptor_dataclass, known_gufo[1],
+                                       "Known Input")
 
 
 def load_known_gufo_information(ontology_graph: Graph, ontology_dataclass_list: list[OntologyDataClass]) -> None:
@@ -156,10 +156,14 @@ def load_known_gufo_information(ontology_graph: Graph, ontology_dataclass_list: 
 
     # Setting all classes as EndurantType
     for ontology_dataclass in ontology_dataclass_list:
-        move_classification_to_is_type_list(ontology_dataclass_list, ontology_dataclass, "EndurantType",
-                                            "load_known_gufo_information")
+        move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "EndurantType", "Initialization")
+
     # Collecting and adding other known classifications
     list_known_gufo = get_known_gufo_types(ontology_graph)
+
+    # FUNCTION BELOW IS TAKING EXCESSIVE EXECUTION TIME!
     insert_known_gufo_information(list_known_gufo, ontology_dataclass_list)
 
     sort_all_ontology_dataclass_list(ontology_dataclass_list)
+
+    LOGGER.debug("Known gUFO information from input file transferred to dataclass_ontology_list.")

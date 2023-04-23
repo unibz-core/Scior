@@ -2,9 +2,9 @@
 import inspect
 
 from rdflib import RDFS, URIRef, Graph
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.ontology_dataclassess.dataclass_moving import move_classifications_list_to_is_type, \
     move_classifications_list_to_not_type
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch

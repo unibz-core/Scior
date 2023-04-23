@@ -15,13 +15,13 @@ LOGGER = initialize_logger()
 
 def move_classification_between_type_lists(ontology_dataclass_list: list[OntologyDataClass],
                                            ontology_dataclass: OntologyDataClass, classification_to_move: str,
-                                           target_list: str, caller_rule: str) -> None:
+                                           target_list: str, caller: str) -> None:
     """ Unique function that performs moving of classifications between lists of an ontology_dataclass.
         It is used for all other moving functions.
         Always insert in ordered position. I.e., final lists are always kept sorted.
     """
 
-    ontology_dataclass.is_type.remove(classification_to_move)
+    ontology_dataclass.can_type.remove(classification_to_move)
 
     if target_list == "is_type":
         bisect.insort(ontology_dataclass.is_type, classification_to_move)
@@ -35,48 +35,39 @@ def move_classification_between_type_lists(ontology_dataclass_list: list[Ontolog
     # cleared to be updated if detected again.
     ontology_dataclass.is_incomplete = False
 
-    rule_information = ""
-    if caller_rule != "":
-        rule_information = f"Rule {caller_rule}: "
-
-    LOGGER.debug(f"{rule_information}Classification moved from CAN_TYPE "
-                 f"to {target_list.upper()} in {ontology_dataclass.uri}.")
+    LOGGER.debug(f"{caller}: Classification moved from CAN_TYPE to {target_list.upper()} in {ontology_dataclass.uri}.")
 
     # All list must be re-evaluated to comply with the gUFO rules.
     loop_execute_gufo_rules(ontology_dataclass_list)
 
 
-def move_classification_to_is_type_list(ontology_dataclass_list: list[OntologyDataClass],
-                                        ontology_dataclass: OntologyDataClass, classification_to_move: str,
-                                        caller_rule: str = "") -> None:
+def move_classification_to_is_type(ontology_dataclass_list: list[OntologyDataClass],
+                                   ontology_dataclass: OntologyDataClass, classification_to_move: str,
+                                   caller: str) -> None:
     """ Receives an ontology_dataclass and a classification and moves this classification to the
         dataclass' is_type list.
     """
 
     destination_list = "is_type"
 
-    rule_information = ""
-    if caller_rule != "":
-        rule_information = f"Rule {caller_rule}: "
-
-    LOGGER.debug(
-        f"{rule_information}Moving requested for classification {classification_to_move} to {destination_list.upper()} "
-        f"in {ontology_dataclass.uri}.")
+    # LOGGER.debug(f"{caller}: Move requested to classify {classification_to_move} "
+    #              f"to {destination_list.upper()} in {ontology_dataclass.uri}.")
 
     if classification_to_move in ontology_dataclass.can_type:
         move_classification_between_type_lists(ontology_dataclass_list, ontology_dataclass, classification_to_move,
-                                               destination_list, caller_rule)
+                                               destination_list, caller)
+
+
 
     elif classification_to_move in ontology_dataclass.is_type:
-        LOGGER.debug(
-            f"{rule_information}Classification {classification_to_move} already in {destination_list.upper()} list "
-            f"of {ontology_dataclass.uri}.")
+        # LOGGER.debug(f"{caller}: Classification {classification_to_move} already "
+        #              f"in {destination_list.upper()} list of {ontology_dataclass.uri}.")
+        pass
 
     elif classification_to_move in ontology_dataclass.not_type:
-        additional_message = f"{rule_information}Classification {classification_to_move} is in NOT_LIST and " \
+        additional_message = f"{caller}: Classification {classification_to_move} is in NOT_LIST and " \
                              f"cannot be moved to {destination_list.upper()}. "
         report_inconsistency_case_moving(ontology_dataclass, additional_message)
-
 
     else:
         current_function = inspect.stack()[0][3]
@@ -91,38 +82,33 @@ def move_classifications_list_to_is_type(ontology_dataclass_list: list[OntologyD
     """
 
     for classification_to_move in list_classifications_to_move:
-        move_classification_to_is_type_list(ontology_dataclass_list, ontology_dataclass, classification_to_move,
-                                            caller_rule)
+        move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, classification_to_move,
+                                       caller_rule)
 
 
-def move_classification_to_not_type_list(ontology_dataclass_list: list[OntologyDataClass],
-                                         ontology_dataclass: OntologyDataClass, classification_to_move: str,
-                                         caller_rule: str = "") -> None:
+def move_classification_to_not_type(ontology_dataclass_list: list[OntologyDataClass],
+                                    ontology_dataclass: OntologyDataClass, classification_to_move: str,
+                                    caller: str = "") -> None:
     """ Receives an ontology_dataclass and a classification and moves this classification to the
         dataclass' not_type list.
     """
 
     destination_list = "not_type"
 
-    rule_information = ""
-    if caller_rule != "":
-        rule_information = f"Rule {caller_rule}: "
-
-    LOGGER.debug(
-        f"{rule_information}Moving requested for classification {classification_to_move} to {destination_list.upper()} "
-        f"in {ontology_dataclass.uri}.")
+    # LOGGER.debug(f"{caller}: Move requested to classify {classification_to_move} "
+    #              f"to {destination_list.upper()} in {ontology_dataclass.uri}.")
 
     if classification_to_move in ontology_dataclass.can_type:
         move_classification_between_type_lists(ontology_dataclass_list, ontology_dataclass, classification_to_move,
-                                               destination_list, caller_rule)
+                                               destination_list, caller)
 
     elif classification_to_move in ontology_dataclass.not_type:
-        LOGGER.debug(
-            f"{rule_information}Classification {classification_to_move} already in {destination_list.upper()} list "
-            f"of {ontology_dataclass.uri}.")
+        # LOGGER.debug(f"{caller}: Classification {classification_to_move} already "
+        #              f"in {destination_list.upper()} list of {ontology_dataclass.uri}.")
+        pass
 
     elif classification_to_move in ontology_dataclass.is_type:
-        additional_message = f"{rule_information}Classification {classification_to_move} is in IS_LIST and " \
+        additional_message = f"{caller}: Classification {classification_to_move} is in IS_LIST and " \
                              f"cannot be moved to {destination_list.upper()}. "
         report_inconsistency_case_moving(ontology_dataclass, additional_message)
 
@@ -139,8 +125,8 @@ def move_classifications_list_to_not_type(ontology_dataclass_list: list[Ontology
     """
 
     for classification_to_move in list_classifications_to_move:
-        move_classification_to_not_type_list(ontology_dataclass_list, ontology_dataclass,
-                                             classification_to_move, caller_rule)
+        move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass,
+                                        classification_to_move, caller_rule)
 
 
 def sort_all_ontology_dataclass_list(ontology_dataclass_list: list[OntologyDataClass]) -> None:

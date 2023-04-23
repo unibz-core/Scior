@@ -1,15 +1,18 @@
 """ Main module for Scior """
-import inspect
 import time
 from datetime import datetime
 
 from rdflib import RDF, RDFS
 
+from scior.modules.graph_ontology import save_ontology_gufo_statements, save_ontology_file_as_configuration
 from scior.modules.initialization_arguments import treat_arguments
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_initialization import initialize_ontology_dataclasses, \
     load_known_gufo_information
-from scior.modules.results_calculation import generates_partial_statistics_list
+from scior.modules.report_printer import print_report_file
+from scior.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
+    create_knowledge_matrix
+from scior.modules.rules.rules_execution import execute_rules_types
 from scior.modules.utils_rdf import load_all_graph_safely, reduce_graph_considering_restrictions
 
 SOFTWARE_ACRONYM = "Scior"
@@ -27,7 +30,7 @@ def run_scior():
 
     st = time.perf_counter()
 
-    argument = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
+    arguments = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
     logger = initialize_logger("Scior")
 
@@ -36,27 +39,21 @@ def run_scior():
     logger.info(f"Scior started on {start_date_time}!")
 
     # Loading OWL ontologies from files to the working memory
-    original_graph = load_all_graph_safely(argument["ontology_path"])
+    original_graph = load_all_graph_safely(arguments["ontology_path"])
     working_graph = reduce_graph_considering_restrictions(original_graph, LIST_GRAPH_RESTRICTIONS)
 
     # Creating empty list of classes and their respective classifications
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, SCOPE_RESTRICTION)
 
-    print(ontology_dataclass_list)
-    exit(3)
-
     # Loading the gUFO information already stated into the ontology
     load_known_gufo_information(working_graph, ontology_dataclass_list)
 
+    logger.debug("Saving initial data for calculating future statistics.")
     before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
-    try:
-        execute_rules_types(ontology_dataclass_list, working_graph, argument)
-    except Exception as error:
-        logger.error(f"The following exception occurred when Scior tried to execute its rules: "
-                     f"{error} ({type(error).__name__}). Program aborted.")
-        exit(1)
+
+    execute_rules_types(ontology_dataclass_list, working_graph, arguments)
 
     # SAVING RESULTS - OUTPUT
 
@@ -68,22 +65,22 @@ def run_scior():
     consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
     knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
 
-    # print_statistics_screen(ontology_dataclass_list, consolidated_statistics, time_register, argument,
-    #                         SCOPE_RESTRICTION)
+    # print_statistics_screen(ontology_dataclass_list, consolidated_statistics, arguments, SCOPE_RESTRICTION)
 
     now = datetime.now()
-    end_date_time_here = now.strftime("%d-%m-%Y %H:%M:%S")
-    end_date_time = now.strftime("%Y%m%d-%H%M%S")
+    end_date_time_screen = now.strftime("%d-%m-%Y %H:%M:%S")
+    end_date_time_files = now.strftime("%Y%m%d-%H%M%S")
     et = time.perf_counter()
     elapsed_time = round((et - st), 3)
-    logger.info(f"Scior concluded on {end_date_time_here}! Total execution time: {elapsed_time} seconds.")
+    logger.info(f"Scior concluded on {end_date_time_screen}! Total execution time: {elapsed_time} seconds.")
 
     # Printing results
-    save_ontology_file_as_configuration(resulting_graph, end_date_time, argument)
-    #
-    # print_report_file(ontology_dataclass_list, start_date_time, end_date_time_here, elapsed_time,
-    #                   argument, before_statistics, after_statistics,
-    #                   consolidated_statistics, time_register, SCOPE_RESTRICTION, SOFTWARE_VERSION, knowledge_matrix)
+    save_ontology_file_as_configuration(resulting_graph, end_date_time_files, arguments)
+
+    print_report_file(ontology_dataclass_list,
+                      start_date_time, end_date_time_files, elapsed_time,
+                      arguments, before_statistics, after_statistics, consolidated_statistics,
+                      SCOPE_RESTRICTION, SOFTWARE_VERSION, knowledge_matrix)
 
 
 def run_scior_tester(global_configurations, working_graph):
@@ -117,9 +114,8 @@ def run_scior_tester(global_configurations, working_graph):
 if __name__ == "__main__":
     run_scior()
 
-# TODO (@pedropaulofb): Simplify lists manipulation
-# TODO (@pedropaulofb): Adjust all exceptions and exists
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
 # TODO (@pedropaulofb): Implement interactive mode and light automatic.
 # TODO (@pedropaulofb): Update to get_dataclass_by_uri
+# TODO (@pedropaulofb): Uncomment all LOGGER.debug and use the already created is_debug argument.
