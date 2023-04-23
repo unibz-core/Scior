@@ -3,6 +3,7 @@ from rdflib import Graph
 
 from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_type_list
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 LOGGER = initialize_logger()
@@ -32,7 +33,7 @@ def run_ir19(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
     for row in query_result:
         new_sortal = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
-        new_sortal.move_classification_to_is_list(ontology_dataclass_list, "Sortal", rule_code)
+        move_classification_to_is_type_list(ontology_dataclass_list,new_sortal, "Sortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -126,7 +127,7 @@ def run_ir33(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
     for ontology_dataclass in ontology_dataclass_list:
         if ontology_dataclass.uri in result:
-            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, "NonSortal", rule_code)
+            move_classification_to_is_type_list(ontology_dataclass_list,ontology_dataclass, "NonSortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
@@ -156,7 +157,7 @@ def run_ir34(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     for row in query_result:
         for ontology_dataclass in ontology_dataclass_list:
             if ontology_dataclass.uri == row.class_y.toPython():
-                ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, "NonSortal", rule_code)
+                 move_classification_to_is_type_list(ontology_dataclass_list, ontology_dataclass, "NonSortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 

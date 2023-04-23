@@ -13,10 +13,11 @@ def report_error_dataclass_not_found(searched_uri: str) -> None:
     raise ValueError(f"Searched OntologyDataClass not found!")
 
 
-def report_error_end_of_switch(invalid_parameter: str) -> None:
+def report_error_end_of_switch(invalid_parameter: str, caller_function_name:str) -> None:
     """ Reports the error caused when an invalid parameter is provided to a switch case (if-else statements). """
 
-    LOGGER.error(f"Unexpected parameter received: {invalid_parameter}. Program aborted.")
+    LOGGER.error(f"Unexpected parameter {invalid_parameter} received in function {caller_function_name}. "
+                 f"Program aborted.")
     raise ValueError(f"End of switch (if-else statements) without valid parameter!")
 
 # TODO (@pedropaulofb): Exceptions must have the following format:

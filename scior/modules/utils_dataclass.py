@@ -108,24 +108,6 @@ def get_element_list(ontology_dataclass_list, element, desired_list):
     return returned_object
 
 
-def external_move_to_is_list(list_ontology_dataclasses, class_name, classification):
-    """ Receives the URI of an ontology dataclass and moves an element (from inputted element name) to its is list. """
-
-    for ontology_dataclass in list_ontology_dataclasses:
-        if ontology_dataclass.uri == class_name:
-            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, classification)
-
-
-def external_move_list_to_is_list(list_ontology_dataclasses, list_classes_to_move, classification):
-    """ Receives a list of URIs of ontology classes and moves the classification (e.g., 'gufo:Kind')
-    to their is_list. """
-
-    for dataclass_to_move in list_classes_to_move:
-        for ontology_dataclass in list_ontology_dataclasses:
-            if ontology_dataclass.uri == dataclass_to_move:
-                ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, classification)
-
-
 def return_dataclass_from_class_name(list_ontology_dataclasses, class_name):
     """ Receives a class name and returns the corresponding dataclass element from the list of dataclasses. """
 

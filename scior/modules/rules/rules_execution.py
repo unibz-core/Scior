@@ -69,7 +69,7 @@ def switch_rule_group_execution(ontology_dataclass_list: list[OntologyDataClass]
         execute_rules_ufo_some(ontology_dataclass_list, ontology_graph, incompleteness_stack, arguments)
 
     else:
-        report_error_end_of_switch(rule_group_code)
+        report_error_end_of_switch(rule_group_code, __name__)
 
     update_ontology_graph_with_gufo(ontology_dataclass_list, ontology_graph)
     LOGGER.debug(f"Rule {rule_group_code} successfully performed.")
@@ -78,6 +78,10 @@ def switch_rule_group_execution(ontology_dataclass_list: list[OntologyDataClass]
 def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
                         arguments: dict) -> None:
     """ Executes all rules related to types.
+
+        Every time that a classification is moved between lists, all gUFO rules are executed in loop.
+        Implemented in (move_classification_between_type_lists).
+
         MUST BE CALLED ONCE FROM MAIN FILE.
     """
 

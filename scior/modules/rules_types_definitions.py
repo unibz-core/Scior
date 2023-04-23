@@ -4,7 +4,8 @@ from scior.modules.logger_config import initialize_logger
 from scior.modules.propagation import execute_and_propagate_down, execute_and_propagate_up
 from scior.modules.rules_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe, treat_rule_nk_k_sup, \
     treat_rule_s_nsup_k, treat_rule_ns_sub_r, treat_rule_nrs_ns_r, treat_rule_ks_sf_in
-from scior.modules.utils_dataclass import get_list_gufo_classification, external_move_list_to_is_list
+from scior.modules.utils_dataclass import get_list_gufo_classification
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classifications_list_to_is_list
 from scior.modules.utils_graph import get_subclasses, get_superclasses, get_all_subclasses
 
 # Frequent GUFO types
@@ -547,6 +548,6 @@ def rule_sub_r_r(list_ontology_dataclasses, graph, nodes_list):
         logger.debug(f"Starting rule {rule_code} for ontology class {ontology_dataclass.uri} ...")
 
         list_role_subclasses = get_all_subclasses(graph, nodes_list, ontology_dataclass.uri)
-        external_move_list_to_is_list(list_ontology_dataclasses, list_role_subclasses, GUFO_ROLE)
+        move_classifications_list_to_is_list(list_ontology_dataclasses, list_role_subclasses, GUFO_ROLE)
 
         logger.debug(f"Rule {rule_code} successfully concluded for ontology class {ontology_dataclass.uri}.")

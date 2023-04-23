@@ -5,8 +5,6 @@ import hashlib
 from dataclasses import dataclass, field
 
 from scior.modules.logger_config import initialize_logger
-from scior.modules.ontology_dataclassess.dataclass_verifications import verify_dataclass_duplicates_in_lists, \
-    verify_dataclass_multiple_final_classifications
 from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 
 LOGGER = initialize_logger()
@@ -80,116 +78,14 @@ class OntologyDataClass(object):
         source.remove(element)
         target.append(element)
 
-        # Every time a classification is moved the class will be reanalyzed by alll rules, so the incompleteness is
+        # Every time a classification is moved the class will be reanalyzed by all rules, so the incompleteness is
         # cleared so it can be updated if detected again.
         self.is_incomplete = False
-
-        # Performs consistency check
-        self.is_consistent()
 
         loop_execute_gufo_rules(ontology_dataclass_list)
 
         LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} moved successfully from list {source_list} "
                      f"to list {target_list} in {self.uri}.")
-
-    def move_classification_to_is_list(self, ontology_dataclass_list, element: str, invoker_rule: str):
-        """ Check if the element to be moved is a type or instance
-                and move it from the corresponding CAN to the corresponding IS list.
-
-            The element is only moved if it still not in the IS list.
-            E.g. 1) if the element is in the can_type list, it is going to be moved to the is_type list.
-            E.g. 2) if the element is in the is_type list, it is not going to be moved.
-
-            This is a specific case of the move_element_between_lists method and
-            is analogous to the move_element_to_not_list method.
-        """
-
-        source_list = self.return_containing_list_name(element)
-
-        if source_list == "is_type" or source_list == "is_individual":
-            # LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} already in {source_list} for {self.uri}"
-            #             f"No moving is necessary.")
-            pass
-        else:
-            if source_list == "can_type":
-                target_list = "is_type"
-            elif source_list == "can_individual":
-                target_list = "is_individual"
-            else:
-                LOGGER.error(f"Rule {invoker_rule}: Error when trying to move the gUFO classification {element} "
-                             f"to the IS LIST in {self.uri}. The classification is in its NOT LIST. Program aborted.")
-                raise ValueError("INCONSISTENCY FOUND!")
-
-            # Consistency checking is already performed inside the move_between_ontology_lists function.
-            self.move_classification_between_lists(ontology_dataclass_list, element, source_list, target_list,
-                                                   invoker_rule)
-
-    def move_classification_to_not_list(self, ontology_dataclass_list, element: str, invoker_rule: str):
-        """ Check if the element to be moved is a type or instance
-                and move it from the corresponding CAN to the corresponding NOT list.
-
-            The element is only moved if it still not in the NOT list.
-            E.g. 1) if the element is in the can_type list, it is going to be moved to the not_type list.
-            E.g. 2) if the element is in the not_type list, it is not going to be moved.
-
-            This is a specific case of the move_element_between_lists method and
-            is analogous to the move_element_to_is_list method.
-        """
-
-        source_list = self.return_containing_list_name(element)
-
-        if source_list == "not_type" or source_list == "not_individual":
-            # LOGGER.debug(f"Rule {invoker_rule}: gUFO classification {element} already in {source_list} for {self.uri}"
-            #              f"No moving is necessary.")
-            pass
-        else:
-            if source_list == "can_type":
-                target_list = "not_type"
-            elif source_list == "can_individual":
-                target_list = "not_individual"
-            else:
-                LOGGER.error(f"Rule {invoker_rule}: Error when trying to move the gUFO classification {element} "
-                             f"to the NOT LIST in {self.uri}. The classification is in its IS LIST. Program aborted.")
-                raise ValueError("INCONSISTENCY FOUND!")
-
-            # Consistency checking is already performed inside the move_between_ontology_lists function.
-            self.move_classification_between_lists(ontology_dataclass_list, element, source_list, target_list,
-                                                   invoker_rule)
-
-    def move_classifications_list_to_is_list(self, ontology_dataclass_list, elem_list: list[str], invoker_rule: str):
-        """ Moves a list of elements to the IS list. Analogous to move_list_of_elements_to_not_list function.
-        This is a specific case of the move_element_to_is_list function. """
-
-        for elem in elem_list:
-            self.move_classification_to_is_list(ontology_dataclass_list, elem, invoker_rule)
-
-    def move_classifications_list_to_not_list(self, ontology_dataclass_list, elem_list: list[str], invoker_rule: str):
-        """ Moves a list of elements to the NOT list. Analogous to move_list_of_elements_to_is_list function.
-        This is a specific case of the move_element_to_not_list function. """
-
-        for elem in elem_list:
-            self.move_classification_to_not_list(ontology_dataclass_list, elem, invoker_rule)
-
-    def return_containing_list_name(self, element):
-        """ Verify to which of the dataclass lists the element belongs and returns the list name. """
-
-        if element in self.is_type:
-            containing_list_name = "is_type"
-        elif element in self.is_individual:
-            containing_list_name = "is_individual"
-        elif element in self.can_type:
-            containing_list_name = "can_type"
-        elif element in self.can_individual:
-            containing_list_name = "can_individual"
-        elif element in self.not_type:
-            containing_list_name = "not_type"
-        elif element in self.not_individual:
-            containing_list_name = "not_individual"
-        else:
-            LOGGER.error(f"gUFO classification {element} does not belong to any list for {self.uri}. Program aborted.")
-            raise ValueError(f"INCONSISTENCY FOUND!")
-
-        return containing_list_name
 
     def sort_all_internal_lists(self):
         """ Sorts all internal lists. """

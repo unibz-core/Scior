@@ -61,7 +61,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
             report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     else:
-        report_error_end_of_switch(rule_code)
+        report_error_end_of_switch(rule_code,__name__)
 
 
 def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,

@@ -22,3 +22,12 @@ def report_inconsistency_case_in_dataclass(ontology_dataclass: OntologyDataClass
                  f"{additional_message} Program aborted.")
     raise ValueError(f"Inconsistency found in ontology_dataclass consistency verification.")
 
+
+def report_inconsistency_case_moving(ontology_dataclass: OntologyDataClass, additional_message: str = "") -> None:
+    """ Reports inconsistency detected when moving a classification between ontology_dataclass' lists
+        and interrupts the software execution.
+    """
+
+    LOGGER.error(f"Inconsistency detected in {ontology_dataclass.uri}. "
+                 f"{additional_message} Program aborted.")
+    raise ValueError(f"Inconsistency found when moving classifications in an ontology_dataclass.")
