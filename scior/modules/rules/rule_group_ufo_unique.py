@@ -38,7 +38,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
         for can_class in can_classes_list:
             candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_class)
             move_classifications_list_to_not_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list,
-                                                                      rule_code)
+                                                  rule_code)
 
     elif length_is_list == 0 and length_can_list > 1:
         # Incompleteness found. Reporting problems_treatment and possibilities (XOR).

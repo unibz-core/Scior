@@ -3,6 +3,7 @@ from rdflib import Graph
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_type_list
 from scior.modules.resources_gufo import GUFO_NAMESPACE, GUFO_LIST_ENDURANT_TYPES
 from scior.modules.utils_dataclass import get_dataclass_by_uri, sort_all_ontology_dataclass_list
 from scior.modules.utils_rdf import get_list_of_all_classes

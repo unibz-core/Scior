@@ -1,9 +1,11 @@
 """ Implementation of rules for types. """
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_list, \
+    move_classifications_list_to_is_list
 from scior.modules.user_interactions import select_class_from_list, print_class_types, \
     set_interactively_class_as_gufo_type
-from scior.modules.utils_dataclass import get_list_gufo_classification, get_element_list, return_dataclass_from_class_name
-from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_list, move_classifications_list_to_is_list
+from scior.modules.utils_dataclass import get_list_gufo_classification, get_element_list, \
+    return_dataclass_from_class_name
 from scior.modules.utils_graph import get_all_related_nodes, get_all_superclasses, get_subclasses, get_superclasses
 
 # Frequent GUFO types
@@ -22,7 +24,8 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
                                                                                               ontology_dataclass):
             logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                         f"The class {ontology_dataclass.uri} had no identity principle and now was set as a gufo:Kind.")
-            ontology_dataclass move_classification_to_is_type_list(ontology_dataclass_list, GUFO_KIND)
+            ontology_dataclass
+            move_classification_to_is_type_list(ontology_dataclass_list, GUFO_KIND)
             register_incompleteness(rule_code, ontology_dataclass)
         else:
             logger.error(f"Inconsistency detected! Class {ontology_dataclass.uri} must be a gufo:Kind, "
@@ -224,7 +227,8 @@ def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, config
                        f"The class {ontology_dataclass.uri} does not have an identity provider. ")
 
         if configurations["is_complete"]:
-            ontology_dataclass move_classification_to_is_type_list(ontology_dataclass_list, GUFO_KIND)
+            ontology_dataclass
+            move_classification_to_is_type_list(ontology_dataclass_list, GUFO_KIND)
             logger.info(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
         elif not configurations["is_automatic"]:
             set_interactively_class_as_gufo_type(ontology_dataclass, GUFO_KIND)
@@ -253,7 +257,8 @@ def treat_rule_ns_sub_r(rule_code, list_ontology_dataclasses, ontology_dataclass
         logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                     f"The NonSortal class {ontology_dataclass.uri} "
                     f"is only specialized into RigidTypes and, hence, was set as a gufo:Category.")
-        ontology_dataclass move_classification_to_is_type_list(ontology_dataclass_list, "gufo:Category")
+        ontology_dataclass
+        move_classification_to_is_type_list(ontology_dataclass_list, "gufo:Category")
 
 
 def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, configurations):
@@ -286,7 +291,8 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
             logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                         f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings, "
                         f"hence it was set as gufo:Role.")
-            ontology_dataclass move_classification_to_is_type_list(ontology_dataclass_list, "gufo:Role")
+            ontology_dataclass
+            move_classification_to_is_type_list(ontology_dataclass_list, "gufo:Role")
         else:
             # Report problems_treatment.
             logger.warning(f"Incompleteness detected during rule {rule_code}! "

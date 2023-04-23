@@ -1,11 +1,11 @@
 """ Implementation of rules related to the GUFO types hierarchy. """
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classifications_list_to_is_list
 from scior.modules.propagation import execute_and_propagate_down, execute_and_propagate_up
 from scior.modules.rules_type_implementations import treat_rule_n_r_t, treat_rule_ns_s_spe, treat_rule_nk_k_sup, \
     treat_rule_s_nsup_k, treat_rule_ns_sub_r, treat_rule_nrs_ns_r, treat_rule_ks_sf_in
 from scior.modules.utils_dataclass import get_list_gufo_classification
-from scior.modules.ontology_dataclassess.dataclass_moving import move_classifications_list_to_is_list
 from scior.modules.utils_graph import get_subclasses, get_superclasses, get_all_subclasses
 
 # Frequent GUFO types

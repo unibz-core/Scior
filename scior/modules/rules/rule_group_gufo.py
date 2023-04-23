@@ -3,9 +3,9 @@ import random
 import string
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclasses_list_hash
 from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_type_list, \
     move_classification_to_not_type_list
-from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 LOGGER = initialize_logger()
 
@@ -17,7 +17,7 @@ def loop_execute_gufo_rules(ontology_dataclass_list):
 
     LOGGER.debug(f"gUFO loop ID = {loop_id}. Executing in loop all rules from group gUFO.")
 
-    initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
+    initial_hash = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
     final_hash = initial_hash + 1
 
     while initial_hash != final_hash:
@@ -26,7 +26,7 @@ def loop_execute_gufo_rules(ontology_dataclass_list):
         execute_gufo_positive_rules(ontology_dataclass_list)
         execute_gufo_negative_rules(ontology_dataclass_list)
 
-        final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
+        final_hash = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
 
         if initial_hash == final_hash:
             LOGGER.debug(f"gUFO loop ID = {loop_id}. Final hash equals initial hash "

@@ -86,7 +86,7 @@ def set_interactively_class_as_gufo_type(ontology_dataclass, gufo_type):
             print("Invalid option entered. Please retry.")
 
     if option == "y":
-        move_classification_to_is_type_list(ontology_dataclass_list,ontology_dataclass, gufo_type)
+        move_classification_to_is_type_list(ontology_dataclass_list, ontology_dataclass, gufo_type)
         ontology_dataclass.clear_incompleteness()
         logger.debug(f"The class {ontology_dataclass.uri} was successfully set as a {gufo_type}.")
 

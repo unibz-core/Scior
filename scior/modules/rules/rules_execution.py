@@ -7,6 +7,7 @@ from scior.modules.dataclass_definitions_ontology import OntologyDataClass
 
 from scior.modules.graph_ontology import update_ontology_graph_with_gufo
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclasses_list_hash
 from scior.modules.ontology_dataclassess.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, print_all_incompleteness
@@ -15,7 +16,6 @@ from scior.modules.rules.rule_group_base import execute_rules_base
 from scior.modules.rules.rule_group_ufo_all import execute_rules_ufo_all
 from scior.modules.rules.rule_group_ufo_some import execute_rules_ufo_some
 from scior.modules.rules.rule_group_ufo_unique import execute_rules_ufo_unique
-from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 
 LOGGER = initialize_logger()
 
@@ -30,7 +30,7 @@ def loop_rule(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
 
     LOGGER.debug(f"Rules loop ID = {loop_id}. Executing in loop rules groups.")
 
-    initial_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
+    initial_hash = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
     final_hash = initial_hash + 1
 
     while initial_hash != final_hash:
@@ -39,7 +39,7 @@ def loop_rule(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: 
         for rule_group in list_rules_groups:
             switch_rule_group_execution(ontology_dataclass_list, ontology_graph, rule_group, incompleteness_stack,
                                         arguments)
-        final_hash = generate_hash_ontology_dataclass_list(ontology_dataclass_list)
+        final_hash = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
 
         if initial_hash == final_hash:
             LOGGER.debug(f"Rules loop ID = {loop_id}. Final hash equals initial hash. Rules execution concluded.")

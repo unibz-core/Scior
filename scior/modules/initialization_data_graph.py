@@ -1,5 +1,6 @@
 """ Initialization of node lists """
 from scior.modules.initialization_data_ontology_dataclass import get_list_of_all_classes_no_gufo
+
 from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_graph import get_list_root_classes, get_list_leaf_classes
 

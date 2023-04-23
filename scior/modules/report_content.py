@@ -4,9 +4,9 @@ import os
 from prettytable import MARKDOWN, PrettyTable
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclasses_list_hash
 from scior.modules.results_printer import generate_classes_table, generate_classifications_table, \
     generate_times_table, generate_incompleteness_table
-from scior.modules.utils_dataclass import generate_hash_ontology_dataclass_list
 from scior.modules.utils_general import get_computer_specifications
 
 
@@ -108,9 +108,9 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
               f"* Report file:\n\t* {report_file_name_path}\n" \
               f"* Log file available at '\\log' folder\n"
 
-    hash_types = generate_hash_ontology_dataclass_list(ontology_dataclass_list, "TYPES_ONLY")
-    hash_individuals = generate_hash_ontology_dataclass_list(ontology_dataclass_list, "INDIVIDUALS_ONLY")
-    hash_total = generate_hash_ontology_dataclass_list(ontology_dataclass_list, "TOTAL")
+    hash_types = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
+    hash_individuals = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
+    hash_total = create_ontology_dataclasses_list_hash(ontology_dataclass_list)
 
     line_04 = f"\nSolution hashes:\n" \
               f"* Hash for types:\n\t* {hash_types}\n" \

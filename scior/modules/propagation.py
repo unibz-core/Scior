@@ -1,6 +1,7 @@
 """ Functions related to the propagation of modifications in the graph. """
-from scior.modules.logger_config import initialize_logger
 from scior.modules.rules_types_actions import perform_rule_actions_types
+
+from scior.modules.logger_config import initialize_logger
 from scior.modules.utils_graph import get_subclasses, get_superclasses
 
 
