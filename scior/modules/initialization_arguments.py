@@ -4,12 +4,13 @@ import argparse
 
 from scior.modules.logger_config import initialize_logger
 
+LOGGER = initialize_logger()
 
-def treat_arguments(software_acronym, software_name, software_version, software_url):
-    """ Treats user ontologies arguments. """
 
-    logger = initialize_logger()
-    logger.debug("Parsing arguments...")
+def treat_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> None:
+    """ Treat arguments provided by the user when starting software executiong. """
+
+    LOGGER.debug("Parsing arguments...")
 
     about_message = software_acronym + " - version " + software_version
 
@@ -17,69 +18,108 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     arguments_parser = argparse.ArgumentParser(prog="scior",
                                                description=software_acronym + " - " + software_name,
                                                allow_abbrev=False,
-                                               epilog=software_url)
+                                               epilog="Asterisks indicate default values. More information at: "
+                                                      + software_url)
 
     arguments_parser.version = about_message
 
-    # OPTIONAL ARGUMENTS
-
-    # Automation level
+    # AUTOMATION LEVEL ARGUMENTS
 
     automation_group = arguments_parser.add_mutually_exclusive_group()
 
-    automation_group.add_argument("-i", "--interactive", action='store_true',
-                                  help="Execute automatic rules whenever possible. "
-                                       "Execute interactive rules only if necessary (default).")
+    automation_group.add_argument("-i", "--interactive", action='store_true', default=False,
+                                  help="Execute automatic rules whenever possible, interactive rules when necessary.")
 
-    automation_group.add_argument("-a", "--automatic",
-                                  action='store_true',
-                                  help="Execute only automatic rules. Interactive rules are not performed.")
+    automation_group.add_argument("-a", "--automatic", action='store_true', default=True,
+                                  help="* Execute only automatic rules. Interactive rules are not performed.")
 
-    # Ontology completeness arguments
+    # ONTOLOGY COMPLETENESS ARGUMENTS
 
     completeness_group = arguments_parser.add_mutually_exclusive_group()
 
-    completeness_group.add_argument("-owa", "--adopt_owa", action='store_true',
-                                    help="Operate in Open-World Assumption (OWA) (default).")
-
-    completeness_group.add_argument("-cwa", "--adopt_cwa", action='store_true',
+    completeness_group.add_argument("-cwa", "--is_cwa", action='store_true', default=False,
                                     help="Operate in Closed-World Assumption (CWA).")
 
-    # Verbosity arguments
+    # Regular Mode: Assume that single instances can be automatically classified.
+    completeness_group.add_argument("-owa", "--is_owa", action='store_true', default=True,
+                                    help="* Operate in Open-World Assumption (OWA) - Regular Mode.")
 
-    # v0: print only start and end information and errors
-    # v1: v0 + logger information (default)
-    # v2: v1 + incompleteness cases found (logger warnings)
-    # v3: print all logger messages, including debbugging messages
+    # Light Mode: Single instances cannot be automatically classified.
+    completeness_group.add_argument("-owal", "--is_owa_light", action='store_true', default=False,
+                                    help="Operate in Open-World Assumption (OWA) - Light Mode.")
 
-    # General arguments
-    arguments_parser.add_argument("-t", "--times", action='store_true',
-                                  help="Print on the screen the execution times of all functions.")
+    # VERBOSITY ARGUMENTS
 
-    arguments_parser.add_argument("-g1", "--gufo1", action='store_true',
-                                  help="Import gUFO ontology in the output ontology file.")
+    verbosity_group = arguments_parser.add_mutually_exclusive_group()
 
-    arguments_parser.add_argument("-g2", "--gufo2", action='store_true',
-                                  help="Save all gUFO statements in the output ontology file.")
+    verbosity_group.add_argument("-s", "--silent", action='store_true', default=False,
+                                 help="Silent mode. Print only basic execution status information.")
 
-    # Automatic arguments
-    arguments_parser.add_argument("-v", "--version", action="version", help="Print the software version and exit.")
+    verbosity_group.add_argument("-r", "--verbose", action='store_true', default=True,
+                                 help="* Print basic execution information and results.")
+
+    verbosity_group.add_argument("-d", "--debug", action='store_true', default=False,
+                                 help="Generates tons of log for debugging.")
+
+    # REGISTER GUFO IN FILE ARGUMENTS
+
+    gufo_in_file = arguments_parser.add_mutually_exclusive_group()
+
+    gufo_in_file.add_argument("-gr", "--gufo_results", action='store_true', default=True,
+                              help="* Write in the output ontology file only the gUFO classifications found.")
+
+    gufo_in_file.add_argument("-gi", "--gufo_import", action='store_true', default=False,
+                              help="Import gUFO ontology in the output ontology file.")
+
+    gufo_in_file.add_argument("-gw", "--gufo_write", action='store_true', default=False,
+                              help="Write all gUFO statements in the output ontology file.")
+
+    # AUTOMATIC ARGUMENTS
+    arguments_parser.add_argument("-v", "--version", action="version",
+                                  help="Print the software version and exit.")
 
     # POSITIONAL ARGUMENT
-    arguments_parser.add_argument("ontology_file", type=str, action="store", help="The path of the ontology file to "
-                                                                                  "be loaded.")
+    arguments_parser.add_argument("ontology_file", type=str, action="store",
+                                  help="The path of the ontology file to be loaded.")
 
     # Execute arguments parser
     arguments = arguments_parser.parse_args()
 
-    global_configurations = {"import_gufo": arguments.gufo1,
-                             "save_gufo": arguments.gufo2,
-                             "is_automatic": arguments.automatic,
-                             "is_owa": arguments.adopt_owa,
-                             "is_cwa": arguments.adopt_cwa,
-                             "print_time": arguments.times,
-                             "ontology_path": arguments.ontology_file}
+    # Manually cleaning defaults when they are not used
+    if arguments.interactive:
+        arguments.automatic = False
 
-    logger.debug(f"Arguments Parsed. Obtained values are: {global_configurations}")
+    if arguments.is_cwa or arguments.is_owa_light:
+        arguments.is_owa = False
 
-    return global_configurations
+    if arguments.gufo_import or arguments.gufo_write:
+        arguments.gufo_results = False
+
+    if arguments.silent or arguments.debug:
+        arguments.verbose = False
+
+    # Asserting dictionary keys
+    global_configurations = {
+        "is_automatic": arguments.automatic,
+        "is_interactive": arguments.interactive,
+
+        "is_cwa": arguments.is_cwa,
+        "is_owa": arguments.is_owa,
+        "is_owa_light": arguments.is_owa_light,
+
+        "gufo_results": arguments.gufo_results,
+        "gufo_import": arguments.gufo_import,
+        "gufo_write": arguments.gufo_write,
+
+        "is_silent": arguments.silent,
+        "is_verbose": arguments.verbose,
+        "is_debug": arguments.debug,
+
+        "ontology_path": arguments.ontology_file
+    }
+
+    # Making ARGUMENTS a global variable
+    global ARGUMENTS
+    ARGUMENTS = global_configurations
+
+    LOGGER.debug(f"Arguments parsed. Obtained values are: {global_configurations}.")

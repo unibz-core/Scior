@@ -1,8 +1,11 @@
 """ General auxiliary functions. """
+import os
 import platform
 from datetime import datetime
 
 import psutil
+
+from scior.modules.problems_treatment.treat_errors import report_error_io_write
 
 
 def has_duplicates(input_list):
@@ -62,3 +65,14 @@ def get_computer_specifications():
         print(f"Failed to collect the computer specifications. Program aborted.\n"
               f"System error message is: {error}")
         exit(1)
+
+
+def create_directory_if_not_exists(directory_path: str) -> None:
+    """ Checks if a directory exists. If it does, do nothing. If it does not, create it. """
+
+    try:
+        if not os.path.exists(directory_path):
+            os.makedirs(directory_path)
+    except OSError as error:
+        file_description = f"directory"
+        report_error_io_write(directory_path, file_description, error)

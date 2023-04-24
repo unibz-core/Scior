@@ -2,53 +2,63 @@
 
 import logging
 import os
+from datetime import datetime
 
-from scior.modules.utils_general import get_date_time
+
+def logger_get_date_time():
+    """ Return a string in a specified format with date and time.
+    Format example: 2022.10.23-14.43
+    """
+
+    now = datetime.now()
+    date_time = now.strftime("%Y.%m.%d-%H.%M.%S")
+
+    return date_time
 
 
-def initialize_logger(source="default"):
-    """ Initialize Scior Logger. """
+def initialize_logger(caller: str = "Scior") -> logging.Logger:
+    """ Create and Initialize Scior Logger.
+        Parameter caller informs which function is creating the logger. Valid values are Scior and Scior-Tester.
+        The created logger is called 'execution-logger'.
+    """
 
     # Create a custom logger
-    new_logger = logging.getLogger("Scior")
+    new_logger = logging.getLogger("execution-logger")
 
-    if source == "default":
+    # Setting lower level levels
+    if caller == "Scior":
         new_logger.setLevel(logging.DEBUG)
-    elif source == "tester":
+    elif caller == "Scior-Tester":
         new_logger.setLevel(logging.ERROR)
     else:
-        print(f"Logger parameter unknown ({source}). Aborting execution.")
+        raise ValueError(f"Logger parameter unknown ({caller}). Aborting execution.")
 
     # Creates a new logger only if Scior does not exist
-    if not logging.getLogger("Scior").hasHandlers():
+    if not logging.getLogger("execution-logger").hasHandlers():
 
-        # Creating CONSOLE handler
+        # Creating CONSOLE handlers
         console_handler = logging.StreamHandler()
-        if source == "default":
+        if caller == "Scior":
             console_handler.setLevel(logging.INFO)
-        elif source == "tester":
+        elif caller == "Scior-Tester":
             console_handler.setLevel(logging.ERROR)
-        else:
-            print(f"Logger parameter unknown ({source}). Aborting execution.")
 
         # If directory "/log" does not exist, create it
-        log_dir = "logs/"
+        # IMPORTANT: do not substitute because of circular dependency.
+        log_directory = "logs/"
         try:
-            if not os.path.exists(log_dir):
-                os.makedirs(log_dir)
+            if not os.path.exists(log_directory):
+                os.makedirs(log_directory)
         except OSError as error:
-            print(f"Could not create {log_dir} directory. Exiting program."
-                  f"System error reported: {error}")
-            exit(1)
+            print(f"Could not create log directory {log_directory}. Program aborted.")
+            raise OSError(error)
 
         # Creating FILE handler
-        file_handler = logging.FileHandler(f"{log_dir}{get_date_time()}.log")
-        if source == "default":
+        file_handler = logging.FileHandler(f"{log_directory}{logger_get_date_time()}.log")
+        if caller == "Scior":
             file_handler.setLevel(logging.DEBUG)
-        elif source == "tester":
+        elif caller == "Scior-Tester":
             file_handler.setLevel(logging.ERROR)
-        else:
-            print(f"Logger parameter unknown ({source}). Aborting execution.")
 
         # Create formatters and add it to handlers
         console_format = logging.Formatter('%(levelname)s - %(message)s')

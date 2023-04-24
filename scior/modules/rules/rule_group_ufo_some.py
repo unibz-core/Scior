@@ -1,17 +1,23 @@
 """ Implementation of rules of group UFO Some. """
+import inspect
+
 from rdflib import Graph, URIRef, RDFS
 
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
+import scior.modules.initialization_arguments as args
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classifications_list_to_is_type
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch, report_error_dataclass_not_found
+from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
+from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_rule
 from scior.modules.utils_dataclass import get_dataclass_by_uri
-from scior.modules.utils_deficiencies import register_incompleteness, report_error_dataclass_not_found
 
 LOGGER = initialize_logger()
 
 
 def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], evaluated_dataclass: OntologyDataClass,
                           can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
-                          rule_code: str, arguments: dict) -> None:
+                          rule_code: str, incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Treats the results from all rules from the group UFO Some. """
 
     length_is_list = len(is_classes_list)
@@ -24,34 +30,34 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
         LOGGER.debug(f"Rule {rule_code} satisfied for {evaluated_dataclass.uri}. No action is required.")
 
     elif length_can_list > 1:
-        # Incompleteness found. Reporting incompleteness and possibilities (OR).
+        # Incompleteness found. Reporting problems_treatment and possibilities (OR).
         additional_message = f"Solution: set one or more classes from {can_classes_list} as {types_to_set_list}."
-        register_incompleteness(rule_code, evaluated_dataclass, additional_message)
+        register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
 
     elif length_can_list == 1:
         # Set single candidate as desired types.
         candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
-        candidate_dataclass.move_classifications_list_to_is_list(ontology_dataclass_list, types_to_set_list, rule_code)
+        move_classifications_list_to_is_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list, rule_code)
 
     elif length_can_list == 0:
-        # Incompleteness found. Reporting incompleteness no known possibilities.
-        if arguments["is_owa"]:
+        # Incompleteness found. Reporting problems_treatment no known possibilities.
+        if args.ARGUMENTS["is_owa"]:
             additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
                                  f"to satisfy the rule."
-            register_incompleteness(rule_code, evaluated_dataclass, additional_message)
+            register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
 
         # Report inconsistency
-        if arguments["is_cwa"]:
-            LOGGER.error(f"Inconsistency detected in rule {rule_code} for class {evaluated_dataclass.uri}. "
-                         f"There are no asserted classes that satisfy the rule.")
-            raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
+        if args.ARGUMENTS["is_cwa"]:
+            additional_message = f"There are no asserted classes that satisfy the rule."
+            report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     else:
-        LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached.")
-        raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(rule_code, current_function)
 
 
-def run_ir30(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+def run_ir30(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR30 from group UFO.
 
     Code: IR30
@@ -103,12 +109,13 @@ def run_ir30(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["RigidType", "Sortal"],
-                              rule_code, arguments)
+                              rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir31(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+def run_ir31(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR31 from group UFO Some.
 
     Code: IR31
@@ -155,12 +162,13 @@ def run_ir31(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["AntiRigidType"],
-                              rule_code, arguments)
+                              rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir32(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+def run_ir32(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR32 from group UFO Some.
 
     Code: IR32
@@ -207,12 +215,13 @@ def run_ir32(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["RigidType"], rule_code,
-                              arguments)
+                              incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir39(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+def run_ir39(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR39 from group UFO Some.
 
     Code: IR39
@@ -261,12 +270,13 @@ def run_ir39(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Sortal"], rule_code,
-                              arguments)
+                              incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir40(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+def run_ir40(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR40 from group UFO Some.
 
     Code: IR40
@@ -320,12 +330,13 @@ def run_ir40(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Sortal"], rule_code,
-                              arguments)
+                              incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir43(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+def run_ir43(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR43 from group UFO Some.
 
     Code: IR43
@@ -375,12 +386,13 @@ def run_ir43(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Phase"], rule_code,
-                              arguments)
+                              incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir44(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+def run_ir44(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR44 from group UFO Some.
 
     Code: IR44
@@ -442,12 +454,13 @@ def run_ir44(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
                 can_list.append(selected_dataclass.uri)
 
             treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Phase"], rule_code,
-                                  arguments)
+                                  incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir45(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+def run_ir45(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR45 from group UFO Some.
 
     Code: IR45
@@ -494,12 +507,13 @@ def run_ir45(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             can_list.append(selected_dataclass.uri)
 
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Category"], rule_code,
-                              arguments)
+                              incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir46(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, arguments: dict):
+def run_ir46(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR46 from group UFO Some.
 
     Code: IR46
@@ -564,25 +578,25 @@ def run_ir46(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
                 can_list.append(selected_dataclass.uri)
 
             treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["PhaseMixin"],
-                                  rule_code, arguments)
+                                  rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
 def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
-                           arguments: dict) -> None:
+                           incompleteness_stack: list[IncompletenessEntry]) -> None:
     """Call execution all rules from the group UFO Some."""
 
     LOGGER.debug("Starting execution of all rules from group UFO Some.")
 
-    run_ir30(ontology_dataclass_list, ontology_graph, arguments)
-    run_ir31(ontology_dataclass_list, ontology_graph, arguments)
-    run_ir32(ontology_dataclass_list, ontology_graph, arguments)
-    run_ir39(ontology_dataclass_list, ontology_graph, arguments)
-    run_ir40(ontology_dataclass_list, ontology_graph, arguments)
-    run_ir43(ontology_dataclass_list, ontology_graph, arguments)
-    run_ir44(ontology_dataclass_list, ontology_graph, arguments)
-    run_ir45(ontology_dataclass_list, ontology_graph, arguments)
-    run_ir46(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir30(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir31(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir32(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir39(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir40(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir43(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir44(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir45(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir46(ontology_dataclass_list, ontology_graph, incompleteness_stack)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")

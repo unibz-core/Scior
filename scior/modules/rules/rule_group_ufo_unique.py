@@ -1,18 +1,24 @@
 """ Implementation of rules from the group UFO Unique. """
+import inspect
 
-from rdflib import RDFS, URIRef
+from rdflib import RDFS, URIRef, Graph
 
-from scior.modules.dataclass_definitions_ontology import OntologyDataClass
+import scior.modules.initialization_arguments as args
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classifications_list_to_is_type, \
+    move_classifications_list_to_not_type
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
+from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
+from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_rule
 from scior.modules.utils_dataclass import get_dataclass_by_uri
-from scior.modules.utils_deficiencies import register_incompleteness, report_error_dataclass_not_found
 
 LOGGER = initialize_logger()
 
 
-def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], selected_dataclass: OntologyDataClass,
+def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], evaluated_dataclass: OntologyDataClass,
                             can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
-                            rule_code: str, arguments: dict) -> None:
+                            rule_code: str, incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Treats the results from all rules from the group UFO Unique. """
 
     length_is_list = len(is_classes_list)
@@ -22,10 +28,8 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
 
     if length_is_list > 1:
         # report inconsistency
-        LOGGER.error(f"Inconsistency found for rule {rule_code} when analyzing {selected_dataclass.uri}. "
-                     f"A unique class was expected, but {length_is_list} were found ({is_classes_list}). "
-                     f"Program aborted.")
-        raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
+        additional_message = f"A unique class was expected, but {length_is_list} were found ({is_classes_list})."
+        report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     elif length_is_list == 1 and length_can_list == 0:
         LOGGER.debug(f"Rule {rule_code} satisfied. No action is required.")
@@ -35,42 +39,38 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], se
         # Set all classes in can list as not type.
         for can_class in can_classes_list:
             candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_class)
-            candidate_dataclass.move_classifications_list_to_not_list(ontology_dataclass_list, types_to_set_list,
-                                                                      rule_code)
+            move_classifications_list_to_not_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list,
+                                                  rule_code)
 
     elif length_is_list == 0 and length_can_list > 1:
-        # Incompleteness found. Reporting incompleteness and possibilities (XOR).
+        # Incompleteness found. Reporting problems_treatment and possibilities (XOR).
         additional_message = f"Solution: set exactly one class from {can_classes_list} as {types_to_set_list}."
-        register_incompleteness(rule_code, selected_dataclass, additional_message)
+        register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
 
     elif length_is_list == 0 and length_can_list == 1:
         # Set class in can list as type.
         candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
-
-        if candidate_dataclass is None:
-            report_error_dataclass_not_found(can_classes_list[0])
-
-        candidate_dataclass.move_classifications_list_to_is_list(ontology_dataclass_list, types_to_set_list, rule_code)
+        move_classifications_list_to_is_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list, rule_code)
 
     elif length_is_list == 0 and length_can_list == 0:
-        # Incompleteness found. Reporting incompleteness no known possibilities.
-        if arguments["is_owa"]:
+        # Incompleteness found. Reporting problems_treatment no known possibilities.
+        if args.ARGUMENTS["is_owa"]:
             additional_message = f"There are no known classes that can be set as {types_to_set_list} " \
                                  f"to satisfy the rule."
-            register_incompleteness(rule_code, selected_dataclass, additional_message)
+            register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
 
         # Report inconsistency.
-        if arguments["is_cwa"]:
-            LOGGER.error(f"Inconsistency detected in rule {rule_code} for class {selected_dataclass.uri}. "
-                         f"There are no asserted classes that satisfy the rule.")
-            raise ValueError(f"INCONSISTENCY FOUND IN RULE {rule_code}!")
+        if args.ARGUMENTS["is_cwa"]:
+            additional_message = "There are no asserted classes that satisfy the rule."
+            report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     else:
-        LOGGER.error(f"Error detected in rule {rule_code}. Unexpected else clause reached.")
-        raise ValueError(f"UNEXPECTED BEHAVIOUR IN RULE {rule_code}!")
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(rule_code, current_function)
 
 
-def run_ir35(ontology_dataclass_list, ontology_graph, arguments):
+def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR35 from group UFO.
 
     Code: IR35
@@ -105,16 +105,17 @@ def run_ir35(ontology_dataclass_list, ontology_graph, arguments):
                     is_kind_supertypes.remove(ontology_dataclass_sub.uri)
 
             treat_result_ufo_unique(ontology_dataclass_list, ontology_dataclass, can_kind_supertypes,
-                                    is_kind_supertypes, ["Kind"], rule_code, arguments)
+                                    is_kind_supertypes, ["Kind"], rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def execute_rules_ufo_unique(ontology_dataclass_list, ontology_graph, arguments):
+def execute_rules_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+                             incompleteness_stack: list[IncompletenessEntry]) -> None:
     """Call execution of all rules from the group UFO Unique. """
 
     LOGGER.debug("Starting execution of all rules from group UFO Unique.")
 
-    run_ir35(ontology_dataclass_list, ontology_graph, arguments)
+    run_ir35(ontology_dataclass_list, ontology_graph, incompleteness_stack)
 
     LOGGER.debug("Execution of all rules from group UFO Unique completed.")

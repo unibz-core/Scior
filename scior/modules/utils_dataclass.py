@@ -1,8 +1,10 @@
 """ Functions for Ontology Dataclasses """
+import inspect
 import operator
 
 from scior.modules.logger_config import initialize_logger
-from scior.modules.utils_deficiencies import report_error_dataclass_not_found
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
+from scior.modules.problems_treatment.treat_errors import report_error_dataclass_not_found, report_error_end_of_switch
 
 LOGGER = initialize_logger()
 
@@ -58,8 +60,8 @@ def get_list_gufo_classification(ontology_dataclass_list, list_uris, search_list
             search_type = ontology_dataclass.not_type
             search_individual = ontology_dataclass.not_individual
         else:
-            LOGGER.error(f"Unexpected search list value {search_list}. Program aborted.")
-            exit(1)
+            current_function = inspect.stack()[0][3]
+            report_error_end_of_switch(search_list, current_function)
 
         if (gufo_element in search_type) or (gufo_element in search_individual):
             return_list.append(ontology_dataclass.uri)
@@ -96,33 +98,14 @@ def get_element_list(ontology_dataclass_list, element, desired_list):
                 break
             else:
                 # Error. List unknown.
-                LOGGER.error(f"Could not return the unknown list {desired_list} for "
-                             f"element {element}. Program aborted.")
-                exit(1)
+                current_function = inspect.stack()[0][3]
+                report_error_end_of_switch(desired_list, current_function)
     else:
         # Error. Element not found, report problem and exit program.
-        LOGGER.error(f"Could not return list {desired_list} for the unknown element {element}. Program aborted.")
-        exit(1)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(desired_list, current_function)
 
     return returned_object
-
-
-def external_move_to_is_list(list_ontology_dataclasses, class_name, classification):
-    """ Receives the URI of an ontology dataclass and moves an element (from inputted element name) to its is list. """
-
-    for ontology_dataclass in list_ontology_dataclasses:
-        if ontology_dataclass.uri == class_name:
-            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, classification)
-
-
-def external_move_list_to_is_list(list_ontology_dataclasses, list_classes_to_move, classification):
-    """ Receives a list of URIs of ontology classes and moves the classification (e.g., 'gufo:Kind')
-    to their is_list. """
-
-    for dataclass_to_move in list_classes_to_move:
-        for ontology_dataclass in list_ontology_dataclasses:
-            if ontology_dataclass.uri == dataclass_to_move:
-                ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, classification)
 
 
 def return_dataclass_from_class_name(list_ontology_dataclasses, class_name):
@@ -177,7 +160,7 @@ def sort_all_ontology_dataclass_list(ontology_dataclass_list):
         ontology_dataclass.not_individual.sort()
 
 
-def get_dataclass_by_uri(ontology_dataclass_list, desired_uri: str):
+def get_dataclass_by_uri(ontology_dataclass_list, desired_uri: str) -> OntologyDataClass | None:
     """ Receives the complete ontology_dataclass_list and return the specific Ontology DataClass that has the
     desired URI received as parameter or None, if this URI is not found. """
 

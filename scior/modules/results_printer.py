@@ -1,10 +1,11 @@
 """ Fucntions for printing statistics to the user. """
-import operator
+import inspect
 import time
 
 from prettytable import PrettyTable, SINGLE_BORDER
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 
 UNDEFINED_MESSAGE = "undefined - error if printed."
 
@@ -127,8 +128,8 @@ def generate_classes_table(consolidated_statistics, table_option, border_option)
         pos_r3_c2 = f"{after.tk_classes_all_v} ({round(after.tk_classes_all_p, 2)}%)"
         pos_r3_c3 = f"{ba.tk_classes_all_v_d} ({round(ba.tk_classes_all_p_d, 2)}%)"
     else:
-        logger.error(f"Invalid table option ({table_option}). Program aborted.")
-        exit(1)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(table_option, current_function)
 
     pretty_table.add_row([row_1, pos_r1_c1, pos_r1_c2, pos_r1_c3])
     pretty_table.add_row([row_2, pos_r2_c1, pos_r2_c2, pos_r2_c3])
@@ -208,8 +209,8 @@ def generate_classifications_table(consolidated_statistics, table_option, border
         pos_r2_c2 = f"{after.known_classif_total_v} ({round(after.known_classif_total_p, 2)}%)"
         pos_r2_c3 = f"{ba.known_classif_total_v_d} ({round(ba.known_classif_total_p_d, 2)}%)"
     else:
-        logger.error(f"Invalid table option ({table_option}). Program aborted.")
-        exit(1)
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch(table_option, current_function)
 
     pretty_table.add_row([row_1, pos_r1_c1, pos_r1_c2, pos_r1_c3])
     pretty_table.add_row([row_2, pos_r2_c1, pos_r2_c2, pos_r2_c3])
@@ -219,37 +220,6 @@ def generate_classifications_table(consolidated_statistics, table_option, border
 
     table_text = pretty_table.get_string()
     return_string = message + table_text
-
-    return return_string
-
-
-def generate_incompleteness_table(ontology_dataclass_list, border_option):
-    """ Generates a table with information about incomplete classes identified. """
-
-    # Tables' columns' titles
-    columns_titles = ["Incomplete Class", "Detection Rules"]
-
-    pretty_table = PrettyTable(columns_titles)
-
-    number_incomplete_classes = 0
-    ontology_dataclass_list.sort(key=operator.attrgetter('uri'))
-
-    for dataclass in ontology_dataclass_list:
-        if dataclass.incompleteness_info["is_incomplete"] == True:
-            pretty_table.add_row([dataclass.uri, dataclass.incompleteness_info["detected_in"]])
-            number_incomplete_classes += 1
-
-    message = f"\nA total of {number_incomplete_classes} classes were identified as incomplete.\n"
-
-    if number_incomplete_classes != 0:
-
-        pretty_table.align = "r"
-        pretty_table.set_style(border_option)
-
-        table_text = pretty_table.get_string()
-        return_string = message + table_text
-    else:
-        return_string = message
 
     return return_string
 
@@ -292,9 +262,6 @@ def print_statistics_screen(ontology_dataclass_list, consolidated_statistics, ti
 
         print(table_classes_total)
         print(table_classifications_total)
-
-    table_incompleteness = generate_incompleteness_table(ontology_dataclass_list, SINGLE_BORDER)
-    print(table_incompleteness)
 
     if configurations["print_time"]:
         table_aggregated_time = generate_times_table(time_register, SINGLE_BORDER)

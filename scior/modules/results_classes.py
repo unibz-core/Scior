@@ -16,8 +16,10 @@ _b = before
 _a = after
 
 """
+import inspect
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 
 
 class dataclass_statistics(object):
@@ -30,7 +32,7 @@ class dataclass_statistics(object):
         self.unknown_individuals = len(ontology_dataclass.can_individual)
 
         # Added -1 because all classes start as EndurantTypes
-        self.known_types = len(ontology_dataclass.is_type) + len(ontology_dataclass.not_type) -1
+        self.known_types = len(ontology_dataclass.is_type) + len(ontology_dataclass.not_type) - 1
         self.known_individuals = len(ontology_dataclass.is_individual) + len(ontology_dataclass.not_individual)
 
 
@@ -49,8 +51,8 @@ class list_classes_by_situation(object):
             self.list_uris_individuals = list_uris_individuals
             self.list_uris_all = list_uris_all
         else:
-            logger.error(f"Unknown situation {situation} informed to list_classes_by_situation. Program aborted.")
-            exit(1)
+            current_function = inspect.stack()[0][3]
+            report_error_end_of_switch(situation, current_function)
 
 
 class classes_statistics(object):

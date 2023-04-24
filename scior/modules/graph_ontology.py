@@ -1,12 +1,17 @@
 """ Functions related to reading and writing OWL files using RDFLib. """
 import os
+from pathlib import Path
 
 from rdflib import URIRef, RDF, RDFS, OWL, BNode, Graph
 
+import scior.modules.initialization_arguments as args
 from scior.modules.logger_config import initialize_logger
+from scior.modules.problems_treatment.treat_errors import report_error_io_write
+from scior.modules.resources_gufo import GUFO_NAMESPACE
+from scior.modules.utils_general import create_directory_if_not_exists
 from scior.modules.utils_rdf import get_ontology_uri, load_all_graph_safely
 
-GUFO_NAMESPACE = "http://purl.org/nemo/gufo#"
+LOGGER = initialize_logger()
 
 
 def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
@@ -60,58 +65,63 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
     return ontology_graph
 
 
-def save_ontology_file_as_configuration(ontology_graph, end_date_time, global_configurations):
+def save_ontology_file_as_configuration(ontology_graph: Graph, end_date_time):
     """Prints in a file the output ontology according to the related configuration, which can be:
-    global_configurations["save_gufo"] = True
-    global_configurations["import_gufo"] = True
-    global_configurations["save_gufo"] = False && global_configurations["import_gufo"] = False
     """
 
+    # Getting gUFO HTTPS information instead of HTTP
+    gufo_namespace_http = GUFO_NAMESPACE.replace("http", "https")
 
-    if global_configurations["save_gufo"]:
-        # Loading gUFO file form its remote location
-        gufo_graph = load_all_graph_safely("https://nemo-ufes.github.io/gufo/gufo.ttl")
-        graph = ontology_graph + gufo_graph
-    else:
+    if args.ARGUMENTS["gufo_results"]:
         graph = ontology_graph
 
-    if global_configurations["import_gufo"]:
+    elif args.ARGUMENTS["gufo_import"]:
         ontology_uri = get_ontology_uri(ontology_graph)
-        gufo_import = URIRef("https://purl.org/nemo/gufo#")
+        gufo_import = URIRef(gufo_namespace_http)
+        graph = ontology_graph
         graph.add((ontology_uri, OWL.imports, gufo_import))
 
-    save_ontology_file_caller(end_date_time, graph, global_configurations)
+    elif args.ARGUMENTS["gufo_write"]:
+        # Loading gUFO file form its remote location
+        gufo_graph = load_all_graph_safely(gufo_namespace_http)
+        graph = ontology_graph + gufo_graph
+
+    save_ontology_file_caller(end_date_time, graph)
 
 
-def save_ontology_file_caller(end_date_time, ontology_graph, configurations):
+def save_ontology_file_caller(end_date_time, ontology_graph):
     """
     Saves the ontology graph into a TTL file.
     If import_gufo parameter is set as True, the saved output is going to import the GUFO ontology.
     """
 
-    # TODO (@pedropaulofb): For simplification, save file in a folder named results inside Scior's project path.
+    # Collecting information for result file name and path
+    project_directory = os.getcwd()
+    results_directory = "results"
+    loaded_file_name = Path(args.ARGUMENTS['ontology_path']).stem
 
-    # Creating report file
-    output_file_path = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)
-    output_file_name = os.path.splitext(configurations["ontology_path"])[0] + \
-                       "-" + end_date_time + ".out.ttl"
+    # If directory 'results_directory' not exists, create it
+    create_directory_if_not_exists(results_directory)
 
-    safe_save_ontology_file(ontology_graph, output_file_name)
+    # Setting file complete path
+    output_file_name = loaded_file_name + "-" + end_date_time + ".ttl"
+    output_file_path = project_directory + "\\" + results_directory + "\\" + output_file_name
+
+    safe_save_ontology_file(ontology_graph, output_file_path)
 
 
 def safe_save_ontology_file(ontology_graph, output_file_name: str, syntax: str = 'turtle'):
     """ Safely saves the ontology graph into a TTL file in the informed destination. """
 
-    logger = initialize_logger()
-    logger.debug("Saving the output ontology file...")
+    LOGGER.debug("Saving the output ontology file...")
 
     try:
         ontology_graph.serialize(destination=output_file_name, encoding='utf-8', format=syntax)
-        logger.info(f"Output ontology file saved. Access it in {os.path.abspath(output_file_name)}.")
     except OSError as error:
-        logger.error(f"Could not save the output ontology file ({output_file_name}). Exiting program."
-                     f"System error reported: {error}")
-        exit(1)
+        file_description = f"input ontology file"
+        report_error_io_write(output_file_name, file_description, error)
+
+    LOGGER.info(f"Output ontology file saved. Access it in {os.path.abspath(output_file_name)}.")
 
 
 def treat_name(gufo_short_name: str) -> str:

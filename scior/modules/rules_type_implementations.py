@@ -1,9 +1,11 @@
 """ Implementation of rules for types. """
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_is_list, \
+    move_classifications_list_to_is_list
 from scior.modules.user_interactions import select_class_from_list, print_class_types, \
     set_interactively_class_as_gufo_type
-from scior.modules.utils_dataclass import get_list_gufo_classification, external_move_to_is_list, \
-    external_move_list_to_is_list, get_element_list, return_dataclass_from_class_name
+from scior.modules.utils_dataclass import get_list_gufo_classification, get_element_list, \
+    return_dataclass_from_class_name
 from scior.modules.utils_graph import get_all_related_nodes, get_all_superclasses, get_subclasses, get_superclasses
 
 # Frequent GUFO types
@@ -17,12 +19,13 @@ def treat_rule_n_r_t(rule_code, ontology_dataclass, configurations):
     logger = initialize_logger()
 
     if configurations["is_complete"]:
-        # ACTION: Report incompleteness
+        # ACTION: Report problems_treatment
         if GUFO_KIND in ontology_dataclass.can_type and not incompleteness_already_registered(rule_code,
                                                                                               ontology_dataclass):
             logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                         f"The class {ontology_dataclass.uri} had no identity principle and now was set as a gufo:Kind.")
-            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, GUFO_KIND)
+            ontology_dataclass
+            move_classification_to_is_type_list(ontology_dataclass_list, GUFO_KIND)
             register_incompleteness(rule_code, ontology_dataclass)
         else:
             logger.error(f"Inconsistency detected! Class {ontology_dataclass.uri} must be a gufo:Kind, "
@@ -51,7 +54,7 @@ def interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, num
     selected_class = select_class_from_list(list_ontology_dataclasses, related_can_kinds_list)
 
     if selected_class != "skipped":
-        external_move_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
+        move_classification_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
         ontology_dataclass.clear_incompleteness()
 
 
@@ -129,7 +132,7 @@ def treat_rule_ns_s_spe(rule_code, ontology_dataclass, list_ontology_dataclasses
         elif action == "set_all_as_kinds":
             logger.info(f"The following classes are going to be set as Kinds "
                         f"to solve the incompleteness: {related_can_kinds_list}.")
-            external_move_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
+            move_classifications_list_to_is_list(list_ontology_dataclasses, related_can_kinds_list, GUFO_KIND)
         elif action == "user_can_set":
             interaction_rule_ns_s_spe(list_ontology_dataclasses, ontology_dataclass, number_related_kinds,
                                       related_can_kinds_list)
@@ -148,7 +151,7 @@ def interaction_rule_nk_k_sup(ontology_dataclass, list_ontology_dataclasses, lis
 
     if selected_class != "skipped":
         ontology_dataclass.clear_incompleteness()
-        external_move_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
+        move_classification_to_is_list(list_ontology_dataclasses, selected_class, GUFO_KIND)
         logger.info(f"Class {selected_class} was correctly set as gufo:Kind.")
 
 
@@ -184,13 +187,13 @@ def treat_rule_nk_k_sup(rule_code, ontology_dataclass, list_ontology_dataclasses
                        f"The class {ontology_dataclass.uri} does not have an identity provider. "
                        f"It must have exactly one gufo:Kind as direct or indirect supertype, but has none.")
 
-        # If no identity provider available, report incompleteness for all configurations
+        # If no identity provider available, report problems_treatment for all configurations
         if len(list_possibilities) == 0:
             logger.info(f"No classes were identified as possible candidates for being the "
                         f"identity provider for {ontology_dataclass.uri}.")
         elif len(list_possibilities) == 1:
             if configurations["is_complete"]:
-                external_move_to_is_list(list_ontology_dataclasses, list_possibilities[0], GUFO_KIND)
+                move_classification_to_is_list(list_ontology_dataclasses, list_possibilities[0], GUFO_KIND)
                 logger.info(f"The class {list_possibilities[0]} is the unique possible identity provider "
                             f"for {ontology_dataclass.uri}. Hence, it was automatically asserted as gufo:Kind.")
             elif configurations["is_automatic"]:
@@ -224,7 +227,8 @@ def treat_rule_s_nsup_k(rule_code, ontology_dataclass, graph, nodes_list, config
                        f"The class {ontology_dataclass.uri} does not have an identity provider. ")
 
         if configurations["is_complete"]:
-            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, GUFO_KIND)
+            ontology_dataclass
+            move_classification_to_is_type_list(ontology_dataclass_list, GUFO_KIND)
             logger.info(f"The class {ontology_dataclass.uri} was successfully set as a gufo:Kind.")
         elif not configurations["is_automatic"]:
             set_interactively_class_as_gufo_type(ontology_dataclass, GUFO_KIND)
@@ -253,7 +257,8 @@ def treat_rule_ns_sub_r(rule_code, list_ontology_dataclasses, ontology_dataclass
         logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                     f"The NonSortal class {ontology_dataclass.uri} "
                     f"is only specialized into RigidTypes and, hence, was set as a gufo:Category.")
-        ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, "gufo:Category")
+        ontology_dataclass
+        move_classification_to_is_type_list(ontology_dataclass_list, "gufo:Category")
 
 
 def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, configurations):
@@ -286,9 +291,10 @@ def treat_rule_nrs_ns_r(rule_code, ontology_dataclass, graph, nodes_list, config
             logger.info(f"An incompleteness detected during rule {rule_code} was solved. "
                         f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings, "
                         f"hence it was set as gufo:Role.")
-            ontology_dataclass.move_classification_to_is_list(ontology_dataclass_list, "gufo:Role")
+            ontology_dataclass
+            move_classification_to_is_type_list(ontology_dataclass_list, "gufo:Role")
         else:
-            # Report incompleteness.
+            # Report problems_treatment.
             logger.warning(f"Incompleteness detected during rule {rule_code}! "
                            f"The class {ontology_dataclass.uri} is a NonRigid Sortal without siblings. "
                            f"This class must be set as a gufo:Role. If it is a gufo:Phase, "
@@ -323,7 +329,7 @@ def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass
             register_incompleteness(rule_code, ontology_dataclass)
 
             if number_siblings == 0:
-                # Report incompleteness
+                # Report problems_treatment
                 logger.warning(f"Incompleteness detected during rule {rule_code}! "
                                f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass "
                                f"of {superclass}. All phases always occur in phase partitions.")
@@ -335,7 +341,7 @@ def treat_rule_ks_sf_in(rule_code, list_ontology_dataclasses, ontology_dataclass
                             "gufo:NonRigidType" in sibling_dataclass.is_type):
                         break
                 else:
-                    # Report incompleteness
+                    # Report problems_treatment
                     logger.warning(f"Incompleteness detected during rule {rule_code}! "
                                    f"The class {ontology_dataclass.uri} is the only 'gufo:Phase' subclass "
                                    f"of {superclass}. All phases always occur in phase partitions.")
