@@ -109,7 +109,7 @@ def run_scior_tester(global_configurations, working_graph):
 
     # EXECUTION
     before_dataclass_list = copy.deepcopy(ontology_dataclass_list)
-    execute_rules_types(ontology_dataclass_list, working_graph, global_configurations)
+    execute_rules_types(ontology_dataclass_list, working_graph)
     classifications_matrix = generate_classifications_matrix(before_dataclass_list, ontology_dataclass_list)
 
     return ontology_dataclass_list, classifications_matrix
