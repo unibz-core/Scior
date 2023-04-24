@@ -103,17 +103,16 @@ def run_scior_tester(global_configurations, working_graph):
 
     # DATA LOADINGS AND INITIALIZATIONS
     logger = initialize_logger("Scior-Tester")
+
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, SCOPE_RESTRICTION)
     load_known_gufo_information(working_graph, ontology_dataclass_list)
 
     # EXECUTION
-    before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+    before_dataclass_list = copy.deepcopy(ontology_dataclass_list)
     execute_rules_types(ontology_dataclass_list, working_graph, global_configurations)
-    after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
-    consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    knowledge_matrix = generate_classifications_matrix(before_statistics, after_statistics)
+    classifications_matrix = generate_classifications_matrix(before_dataclass_list, ontology_dataclass_list)
 
-    return ontology_dataclass_list, consolidated_statistics, knowledge_matrix, SOFTWARE_VERSION
+    return ontology_dataclass_list, classifications_matrix
 
 
 if __name__ == "__main__":
