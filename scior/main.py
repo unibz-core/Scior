@@ -4,8 +4,8 @@ from datetime import datetime
 
 from rdflib import RDF, RDFS
 
+import scior.modules.initialization_arguments as args
 from scior.modules.graph_ontology import save_ontology_gufo_statements, save_ontology_file_as_configuration
-from scior.modules.initialization_arguments import treat_arguments
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_initialization import initialize_ontology_dataclasses, \
     load_known_gufo_information
@@ -30,7 +30,7 @@ def run_scior():
 
     st = time.perf_counter()
 
-    arguments = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
+    args.treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
     logger = initialize_logger("Scior")
 
@@ -39,7 +39,7 @@ def run_scior():
     logger.info(f"Scior started on {start_date_time}!")
 
     # Loading OWL ontologies from files to the working memory
-    original_graph = load_all_graph_safely(arguments["ontology_path"])
+    original_graph = load_all_graph_safely(args.ARGUMENTS["ontology_path"])
     working_graph = reduce_graph_considering_restrictions(original_graph, LIST_GRAPH_RESTRICTIONS)
 
     # Creating empty list of classes and their respective classifications
@@ -53,7 +53,7 @@ def run_scior():
 
     # EXECUTION
 
-    execute_rules_types(ontology_dataclass_list, working_graph, arguments)
+    execute_rules_types(ontology_dataclass_list, working_graph)
 
     # SAVING RESULTS - OUTPUT
 
@@ -75,11 +75,11 @@ def run_scior():
     logger.info(f"Scior concluded on {end_date_time_screen}! Total execution time: {elapsed_time} seconds.")
 
     # Printing results
-    save_ontology_file_as_configuration(resulting_graph, end_date_time_files, arguments)
+    save_ontology_file_as_configuration(resulting_graph, end_date_time_files)
 
     print_report_file(ontology_dataclass_list,
                       start_date_time, end_date_time_files, elapsed_time,
-                      arguments, before_statistics, after_statistics, consolidated_statistics,
+                      before_statistics, after_statistics, consolidated_statistics,
                       SCOPE_RESTRICTION, SOFTWARE_VERSION, knowledge_matrix)
 
 
@@ -111,4 +111,3 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Implement interactive mode and light automatic.
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
-# TODO (@pedropaulofb): Uncomment all LOGGER.debug and use the already created is_debug argument.

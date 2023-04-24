@@ -14,7 +14,7 @@ from scior.modules.utils_general import create_directory_if_not_exists
 
 def print_report_file(ontology_dataclass_list: list[OntologyDataClass],
                       start_date_time: str, end_date_time: str, elapsed_time: float,
-                      arguments: dict, before_statistics, after_statistics, consolidated_statistics,
+                      before_statistics, after_statistics, consolidated_statistics,
                       restriction: str, software_version: str, knowledge_matrix: str) -> None:
     """ Printing a file report, in MarkDown syntax, containing the state of the ontology before and after
     the execution of Scior.
@@ -50,7 +50,7 @@ def print_report_file(ontology_dataclass_list: list[OntologyDataClass],
 
     content_100 = get_content100(restriction)
     content_200 = get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time,
-                                 elapsed_time, arguments, software_version)
+                                 elapsed_time, software_version)
     content_300 = get_content300_400(lists_before, restriction)
     content_400 = get_content300_400(lists_after, restriction)
     content_500 = get_content500(ontology_dataclass_list, consolidated_statistics, restriction)

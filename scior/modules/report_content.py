@@ -4,7 +4,7 @@ import os
 
 from prettytable import MARKDOWN, PrettyTable
 
-from scior.modules.logger_config import initialize_logger
+import scior.modules.initialization_arguments as args
 from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclass_list_hash
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.results_printer import generate_classes_table, generate_classifications_table
@@ -69,7 +69,7 @@ def get_content100(restriction="PRINT_ALL"):
 
 
 def get_content200(ontology_dataclass_list, report_name, start_date_time, end_date_time,
-                   elapsed_time, configurations, software_version):
+                   elapsed_time, software_version):
     """ Presents some information about the software execution."""
 
     line_01 = f"Scior version {software_version} successfully performed.\n" \
@@ -84,15 +84,15 @@ def get_content200(ontology_dataclass_list, report_name, start_date_time, end_da
         line_01_specs += f"* {key}: {computer_specs[key]}\n"
 
     line_02 = f"\nConfigurations:\n" \
-              f"* Automatic execution: {configurations['is_automatic']}\n" \
-              f"* Model is complete: {configurations['is_cwa']}\n" \
-              f"* GUFO imported in output file: {configurations['gufo_import']}\n" \
-              f"* GUFO saved in output file: {configurations['gufo_write']}\n"
+              f"* Automatic execution: {args.ARGUMENTS['is_automatic']}\n" \
+              f"* Model is complete: {args.ARGUMENTS['is_cwa']}\n" \
+              f"* GUFO imported in output file: {args.ARGUMENTS['gufo_import']}\n" \
+              f"* GUFO saved in output file: {args.ARGUMENTS['gufo_write']}\n"
 
     in_out_file_path = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)
-    input_file_name = in_out_file_path + "\\" + configurations["ontology_path"]
+    input_file_name = in_out_file_path + "\\" + args.ARGUMENTS["ontology_path"]
     output_file_name = in_out_file_path + "\\" + \
-                       os.path.splitext(configurations["ontology_path"])[0] + \
+                       os.path.splitext(args.ARGUMENTS["ontology_path"])[0] + \
                        "-" + end_date_time + ".ttl"
 
     path_input_file = os.path.abspath(input_file_name)
@@ -131,7 +131,6 @@ def get_content300_400(result_lists, restriction="PRINT_ALL"):
 
     """
 
-    logger = initialize_logger()
     intro = ""
 
     if result_lists[0] == "Before":
@@ -284,8 +283,6 @@ def get_content700(ontology_dataclass_list, restriction="PRINT_ALL"):
         - "INDIVIDUALS_ONLY" - prints only individuals table.
         - "TOTAL_ONLY" - prints only total table.
     """
-
-    logger = initialize_logger()
 
     class_print_information = ""
 

@@ -4,6 +4,7 @@ in the ontology_data_class_list. """
 import bisect
 import inspect
 
+import scior.modules.initialization_arguments as args
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
@@ -50,8 +51,9 @@ def move_classification_to_is_type(ontology_dataclass_list: list[OntologyDataCla
 
     destination_list = "is_type"
 
-    # LOGGER.debug(f"{caller}: Move requested to classify {classification_to_move} "
-    #              f"to {destination_list.upper()} in {ontology_dataclass.uri}.")
+    if args.ARGUMENTS["is_debug"]:
+        LOGGER.debug(f"{caller}: Move requested to classify {classification_to_move} "
+                     f"to {destination_list.upper()} in {ontology_dataclass.uri}.")
 
     if classification_to_move in ontology_dataclass.can_type:
         move_classification_between_type_lists(ontology_dataclass_list, ontology_dataclass, classification_to_move,
@@ -60,9 +62,9 @@ def move_classification_to_is_type(ontology_dataclass_list: list[OntologyDataCla
 
 
     elif classification_to_move in ontology_dataclass.is_type:
-        # LOGGER.debug(f"{caller}: Classification {classification_to_move} already "
-        #              f"in {destination_list.upper()} list of {ontology_dataclass.uri}.")
-        pass
+        if args.ARGUMENTS["is_debug"]:
+            LOGGER.debug(f"{caller}: Classification {classification_to_move} already "
+                         f"in {destination_list.upper()} list of {ontology_dataclass.uri}.")
 
     elif classification_to_move in ontology_dataclass.not_type:
         additional_message = f"{caller}: Classification {classification_to_move} is in NOT_LIST and " \
@@ -95,17 +97,18 @@ def move_classification_to_not_type(ontology_dataclass_list: list[OntologyDataCl
 
     destination_list = "not_type"
 
-    # LOGGER.debug(f"{caller}: Move requested to classify {classification_to_move} "
-    #              f"to {destination_list.upper()} in {ontology_dataclass.uri}.")
+    if args.ARGUMENTS["is_debug"]:
+        LOGGER.debug(f"{caller}: Move requested to classify {classification_to_move} "
+                     f"to {destination_list.upper()} in {ontology_dataclass.uri}.")
 
     if classification_to_move in ontology_dataclass.can_type:
         move_classification_between_type_lists(ontology_dataclass_list, ontology_dataclass, classification_to_move,
                                                destination_list, caller)
 
     elif classification_to_move in ontology_dataclass.not_type:
-        # LOGGER.debug(f"{caller}: Classification {classification_to_move} already "
-        #              f"in {destination_list.upper()} list of {ontology_dataclass.uri}.")
-        pass
+        if args.ARGUMENTS["is_debug"]:
+            LOGGER.debug(f"{caller}: Classification {classification_to_move} already "
+                         f"in {destination_list.upper()} list of {ontology_dataclass.uri}.")
 
     elif classification_to_move in ontology_dataclass.is_type:
         additional_message = f"{caller}: Classification {classification_to_move} is in IS_LIST and " \

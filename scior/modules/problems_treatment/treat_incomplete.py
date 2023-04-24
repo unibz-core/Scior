@@ -2,6 +2,7 @@
 import random
 import string
 
+import scior.modules.initialization_arguments as args
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 
@@ -72,10 +73,10 @@ def register_incompleteness(incompleteness_stack: list[IncompletenessEntry], rul
     include_incompleteness_and_keep_updated(new_entry, incompleteness_stack)
 
 
-def print_all_incompleteness(incompleteness_stack: list[IncompletenessEntry], arguments: dict) -> None:
+def print_all_incompleteness(incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Print all incompleteness at the end of the execution when authorized by the user using the arguments. """
 
-    if arguments["is_verbose"] or arguments["is_debug"]:
+    if args.ARGUMENTS["is_verbose"] or args.ARGUMENTS["is_debug"]:
         print(f"\nINCOMPLETENESS CASES IDENTIFIED: {len(incompleteness_stack)}")
         for current, incompleteness_entry in enumerate(incompleteness_stack):
             num = current + 1

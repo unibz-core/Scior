@@ -7,7 +7,7 @@ from scior.modules.logger_config import initialize_logger
 LOGGER = initialize_logger()
 
 
-def treat_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> dict:
+def treat_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> None:
     """ Treat arguments provided by the user when starting software executiong. """
 
     LOGGER.debug("Parsing arguments...")
@@ -104,6 +104,8 @@ def treat_arguments(software_acronym: str, software_name: str, software_version:
         "ontology_path": arguments.ontology_file
     }
 
-    LOGGER.debug(f"Arguments parsed. Obtained values are: {global_configurations}.")
+    # Making ARGUMENTS a global variable
+    global ARGUMENTS
+    ARGUMENTS = global_configurations
 
-    return global_configurations
+    LOGGER.debug(f"Arguments parsed. Obtained values are: {global_configurations}.")

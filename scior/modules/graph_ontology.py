@@ -4,6 +4,7 @@ from pathlib import Path
 
 from rdflib import URIRef, RDF, RDFS, OWL, BNode, Graph
 
+import scior.modules.initialization_arguments as args
 from scior.modules.logger_config import initialize_logger
 from scior.modules.problems_treatment.treat_errors import report_error_io_write
 from scior.modules.resources_gufo import GUFO_NAMESPACE
@@ -64,31 +65,31 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
     return ontology_graph
 
 
-def save_ontology_file_as_configuration(ontology_graph: Graph, end_date_time, arguments: dict):
+def save_ontology_file_as_configuration(ontology_graph: Graph, end_date_time):
     """Prints in a file the output ontology according to the related configuration, which can be:
     """
 
     # Getting gUFO HTTPS information instead of HTTP
     gufo_namespace_http = GUFO_NAMESPACE.replace("http", "https")
 
-    if arguments["gufo_results"]:
+    if args.ARGUMENTS["gufo_results"]:
         graph = ontology_graph
 
-    elif arguments["import_gufo"]:
+    elif args.ARGUMENTS["import_gufo"]:
         ontology_uri = get_ontology_uri(ontology_graph)
         gufo_import = URIRef(gufo_namespace_http)
         graph = ontology_graph
         graph.add((ontology_uri, OWL.imports, gufo_import))
 
-    elif arguments["gufo_write"]:
+    elif args.ARGUMENTS["gufo_write"]:
         # Loading gUFO file form its remote location
         gufo_graph = load_all_graph_safely(gufo_namespace_http)
         graph = ontology_graph + gufo_graph
 
-    save_ontology_file_caller(end_date_time, graph, arguments)
+    save_ontology_file_caller(end_date_time, graph)
 
 
-def save_ontology_file_caller(end_date_time, ontology_graph, arguments: dict):
+def save_ontology_file_caller(end_date_time, ontology_graph):
     """
     Saves the ontology graph into a TTL file.
     If import_gufo parameter is set as True, the saved output is going to import the GUFO ontology.
@@ -97,7 +98,7 @@ def save_ontology_file_caller(end_date_time, ontology_graph, arguments: dict):
     # Collecting information for result file name and path
     project_directory = os.getcwd()
     results_directory = "results"
-    loaded_file_name = Path(arguments['ontology_path']).stem
+    loaded_file_name = Path(args.ARGUMENTS['ontology_path']).stem
 
     # If directory 'results_directory' not exists, create it
     create_directory_if_not_exists(results_directory)
