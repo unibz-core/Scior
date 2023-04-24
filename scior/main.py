@@ -1,4 +1,5 @@
 """ Main module for Scior """
+import copy
 import time
 from datetime import datetime
 
@@ -10,6 +11,7 @@ from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_initialization import initialize_ontology_dataclasses, \
     load_known_gufo_information
 from scior.modules.report_printer import print_report_file
+from scior.modules.results.results_calculation import calculate_results_statistics
 from scior.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
     create_knowledge_matrix
 from scior.modules.rules.rules_execution import execute_rules_types
@@ -32,9 +34,6 @@ def run_scior():
 
     args.treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
-    print(args.ARGUMENTS)
-    exit(2)
-
     logger = initialize_logger("Scior")
 
     now = datetime.now()
@@ -52,7 +51,8 @@ def run_scior():
     load_known_gufo_information(working_graph, ontology_dataclass_list)
 
     logger.debug("Saving initial data for calculating future statistics.")
-    before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+    before_dataclass_list = copy.deepcopy(ontology_dataclass_list)
+    #before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
 
@@ -60,13 +60,16 @@ def run_scior():
 
     # SAVING RESULTS - OUTPUT
 
-    after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
+    # after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, SCOPE_RESTRICTION)
 
-    # Calculating results
-    consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
+    # Calculating results statistics
+    calculate_results_statistics(before_dataclass_list, ontology_dataclass_list)
+
+
+    # consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
+    # knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
 
     # print_statistics_screen(ontology_dataclass_list, consolidated_statistics, arguments, SCOPE_RESTRICTION)
 
