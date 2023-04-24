@@ -1,19 +1,19 @@
-""" Class to store all statistics and results information for the Scior execution.  """
+""" Class to store and calculate all information about results' information for the Scior execution.  """
 
 
-class results_statistics_class(object):
+class ResultsInformationClass(object):
     """ Class to store all statistics and results information for the Scior execution. """
 
     def __init__(self):
         # CLASSES LISTS
 
-        self.tu_list_b = []
-        self.pk_list_b = []
-        self.tk_list_b = []
+        self.tu_list_b:list[str] = []
+        self.pk_list_b:list[str] = []
+        self.tk_list_b:list[str] = []
 
-        self.tu_list_a = []
-        self.pk_list_a = []
-        self.tk_list_a = []
+        self.tu_list_a:list[str] = []
+        self.pk_list_a:list[str] = []
+        self.tk_list_a:list[str] = []
 
         # NUMBERS FOR CLASSIFICATIONS
 
@@ -25,8 +25,8 @@ class results_statistics_class(object):
         self.num_uc_a: int = -1
         self.num_kc_a: int = -1
 
-    def calculate_statistics(self):
-        """ Calculate statistics (derived results) with the numbers stored in the class's attributes.
+    def calculate_information(self):
+        """ Calculate information (derived data results) with the numbers stored in the class's attributes.
             Zero division error does not need to be treated, as the number of classes is never zero.
         """
 
@@ -42,11 +42,15 @@ class results_statistics_class(object):
         self.num_pk_a: int = len(self.pk_list_a)
         self.num_tk_a: int = len(self.tk_list_a)
 
-
         # Totals
 
         self.num_classes_b: int = self.num_tu_b + self.num_pk_b + self.num_tk_b
         self.num_classes_a: int = self.num_tu_a + self.num_pk_a + self.num_tk_a
+
+        # TODO (@pedropaulofb): Implement
+        # Validate totals for classes
+        # if self.num_classif_b != self.num_classif_a:
+        #     LOGGER.error("")
 
         # Difference
 
@@ -60,6 +64,11 @@ class results_statistics_class(object):
 
         self.num_classif_b: int = self.num_uc_b + self.num_kc_b
         self.num_classif_a: int = self.num_uc_a + self.num_kc_a
+
+        # TODO (@pedropaulofb): Implement
+        # Validate totals for classifications
+        # if self.num_classif_b != self.num_classif_a:
+        #     LOGGER.error("")
 
         # Difference
 
@@ -98,6 +107,3 @@ class results_statistics_class(object):
 
         self.per_uc_d: float = self.per_uc_a - self.per_uc_b
         self.per_kc_d: float = self.per_kc_a - self.per_kc_b
-
-    def validate(self):
-        # number of classes before and after must equal

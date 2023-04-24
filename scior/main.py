@@ -11,7 +11,7 @@ from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_initialization import initialize_ontology_dataclasses, \
     load_known_gufo_information
 from scior.modules.report_printer import print_report_file
-from scior.modules.results.results_calculation import calculate_results_statistics
+from scior.modules.results.results_calculation import generate_results_information
 from scior.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
     create_knowledge_matrix
 from scior.modules.rules.rules_execution import execute_rules_types
@@ -65,7 +65,7 @@ def run_scior():
     resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, SCOPE_RESTRICTION)
 
     # Calculating results statistics
-    calculate_results_statistics(before_dataclass_list, ontology_dataclass_list)
+    generate_results_information(before_dataclass_list, ontology_dataclass_list)
 
 
     # consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)

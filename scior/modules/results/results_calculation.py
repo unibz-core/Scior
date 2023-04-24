@@ -1,79 +1,60 @@
 """ Functions related to aquisition, calculation, generation, and other activities related to the final statistics. """
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
-from scior.modules.results.results_data import results_statistics_class
+from scior.modules.results.results_data import ResultsInformationClass
 
 
-def calculate_numbers_classes(before_dataclass_list: list[OntologyDataClass],
-                                 after_dataclass_list: list[OntologyDataClass]) -> dict:
+def collect_results_information(results_information: ResultsInformationClass,
+                                ontology_dataclass_list: list[OntologyDataClass], situation: str):
+    """ Collect data from dataclass_list and populate the results_information. """
 
-    # Initial number of totally unknown classes
-    # Final number of totally unknown classes
+    # TODO (@pedropaulofb): TREAT COLLECT CLASSIFICATIONS
 
-    for before_dataclass in before_dataclass_list:
-        if len(before_dataclass.is_type):
-            results_statistics["TU_before"]+= 1
+    for ontology_dataclass in ontology_dataclass_list:
 
-    print(results_statistics)
-    exit(3)
+        is_size = len(ontology_dataclass.is_type)
+        not_size = len(ontology_dataclass.not_type)
 
-    # Initial number of partially known classes
-    # Final number of partially known classes
+        # Collecting TOTALLY UNKNOWN
+        if is_size + not_size == 0:
+            if situation == "before":
+                results_information.tu_list_b.append(ontology_dataclass.uri)
+            elif situation == "after":
+                results_information.tu_list_a.append(ontology_dataclass.uri)
+            # else:
+                # TODO (@pedropaulofb): Implement REPORT ERROR
 
-    # Initial number of totally known classes
-    # Final number of totally known classes
+        # Collecting TOTALLY KNOWN
+        elif len(ontology_dataclass.can_type) == 0:
+            if situation == "before":
+                results_information.tk_list_b.append(ontology_dataclass.uri)
+            elif situation == "after":
+                results_information.tk_list_a.append(ontology_dataclass.uri)
+            # else:
+                # TODO (@pedropaulofb): Implement REPORT ERROR
 
-    return results_statistics
-
-
-def calculate_numbers_classifications():
-    # sum unknown (can_type) before
-    # sum known (is_type + not_type) before
-
-    # sum unknown (can_type) after
-    # sum known (is_type + not_type) after
-
-    pass
-
-
-def generate_lists():
-    # List of totally unknown classes before
-    # List of totally unknown classes after
-
-    # List of partially known classes before
-    # List of partially known classes after
-
-    # List of totally known classes before
-    # List of totally known classes after
-
-    pass
+        # Collecting PARTIALLY KNOWN
+        else:
+            if situation == "before":
+                results_information.pk_list_b.append(ontology_dataclass.uri)
+            elif situation == "after":
+                results_information.pk_list_a.append(ontology_dataclass.uri)
+            # else:
+                # TODO (@pedropaulofb): Implement REPORT ERROR
 
 
-def calculate_percentages_classes():
-    # percentage totally unknown after/before
-    # percentage partially known after/before
-    # percentage totally known after/before
-
-    pass
-
-
-def calculate_percentages_classifications():
-    pass
-
-
-def calculate_results_statistics(before_dataclass_list: list[OntologyDataClass],
-                                 after_dataclass_list: list[OntologyDataClass]) -> dict:
+def generate_results_information(before_dataclass_list: list[OntologyDataClass],
+                                 after_dataclass_list: list[OntologyDataClass]) -> ResultsInformationClass:
     """ Create statistics dictionary with all Scior execution' statistics. """
 
-    results_statistics = results_statistics_class()
+    # TODO (@pedropaulofb): Treat specific case that all unknown classes starts with 1 known classification.
 
-    # Initial number of totally unknown classes
-    # Final number of totally unknown classes
+    results_information = ResultsInformationClass()
 
-    for before_dataclass in before_dataclass_list:
-        if len(before_dataclass.is_type):
-            results_statistics["TU_before"] += 1
+    # Collecting BEFORE information for classes
+    collect_results_information(results_information, before_dataclass_list, "before")
+    collect_results_information(results_information, after_dataclass_list, "after")
 
-    print(results_statistics)
-    exit(3)
+    # Calculating derived information
+    results_information.calculate_information()
 
-    return results_statistics
+    return results_information
