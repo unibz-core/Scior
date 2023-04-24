@@ -32,6 +32,9 @@ def run_scior():
 
     args.treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
+    print(args.ARGUMENTS)
+    exit(2)
+
     logger = initialize_logger("Scior")
 
     now = datetime.now()
