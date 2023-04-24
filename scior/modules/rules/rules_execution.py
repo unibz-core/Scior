@@ -12,7 +12,7 @@ from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDa
 from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclass_list_hash
 from scior.modules.ontology_dataclassess.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
-from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, print_all_incompleteness
+from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry
 from scior.modules.rules.rule_group_aux import execute_rules_aux
 from scior.modules.rules.rule_group_base import execute_rules_base
 from scior.modules.rules.rule_group_ufo_all import execute_rules_ufo_all
@@ -77,7 +77,8 @@ def switch_rule_group_execution(ontology_dataclass_list: list[OntologyDataClass]
     LOGGER.debug(f"Rule {rule_group_code} successfully performed.")
 
 
-def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> list[
+    IncompletenessEntry]:
     """ Executes all rules related to types.
 
         Every time that a classification is moved between lists, all gUFO rules are executed in loop.
@@ -106,7 +107,6 @@ def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontolo
     # Verify consistency once AFTER the rules' executions
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
 
-    # Print incompleteness detection results
-    print_all_incompleteness(incompleteness_stack)
-
     LOGGER.info("Execution of inference rules successfully concluded.")
+
+    return incompleteness_stack

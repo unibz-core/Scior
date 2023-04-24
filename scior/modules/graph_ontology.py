@@ -75,7 +75,7 @@ def save_ontology_file_as_configuration(ontology_graph: Graph, end_date_time):
     if args.ARGUMENTS["gufo_results"]:
         graph = ontology_graph
 
-    elif args.ARGUMENTS["import_gufo"]:
+    elif args.ARGUMENTS["gufo_import"]:
         ontology_uri = get_ontology_uri(ontology_graph)
         gufo_import = URIRef(gufo_namespace_http)
         graph = ontology_graph

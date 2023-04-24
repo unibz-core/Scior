@@ -322,10 +322,10 @@ def calculate_final_statistics(before_statistics, after_statistics):
     return comparisson_statistics
 
 
-def create_knowledge_matrix(before_statistics, after_statistics):
-    """ Receives 'before' and 'after' statistic lists and creates knowledge matrix.
+def OLD_generate_classifications_matrix(before_statistics, after_statistics):
+    """ Receives before and after lists and creates classifications matrix.
 
-    As there are 14 gUFO Endurant Types, The knowledge matrix is a 15x15 matrix.
+    As there are 14 gUFO Endurant Types, The classifications matrix is a 15x15 matrix.
     Each matrix element indicates a QUANTITY of classes.
 
     The ROWS` index (from 0 to 14) indicates how many known types BEFORE the execution.
@@ -346,16 +346,16 @@ def create_knowledge_matrix(before_statistics, after_statistics):
         - columns 1 to 13 indicate the amount of PARTIALLY KNOWN CLASSES in the OUTPUT
         - column 14 indicate the amount of TOTALLY KNOWN CLASSES in the OUTPUT
 
-    IMPORTANT: CURRENTLY THE KNOWLEDGE MATRIX CONTAINS INFORMATION ABOUT TYPES ONLY. INDIVIDUALS ARE OUT OF SCOPE.
+    IMPORTANT: CURRENTLY THE classifications matrix CONTAINS INFORMATION ABOUT TYPES ONLY. INDIVIDUALS ARE OUT OF SCOPE.
     """
 
-    # initializing the knowledge matrix with zeros
+    # initializing the classifications matrix with zeros
     knowledge_matrix = []
     for _ in range(0, 15):
         new_line = [0] * 15
         knowledge_matrix.append(new_line)
 
-    # calculating the knowledge matrix values
+    # calculating the classifications matrix values
     for before_element in before_statistics:
         for after_element in after_statistics:
             if before_element.uri == after_element.uri:

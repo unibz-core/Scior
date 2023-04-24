@@ -2,28 +2,34 @@
 
 
 class ResultsInformationClass(object):
-    """ Class to store all statistics and results information for the Scior execution. """
+    """ Class to store all statistics and results information for the Scior execution.
+        Must be created only once. I.e., there must exist only a single instance.
+    """
 
     def __init__(self):
         # CLASSES LISTS
 
-        self.tu_list_b:list[str] = []
-        self.pk_list_b:list[str] = []
-        self.tk_list_b:list[str] = []
+        self.tu_list_b: list[str] = []
+        self.pk_list_b: list[str] = []
+        self.tk_list_b: list[str] = []
 
-        self.tu_list_a:list[str] = []
-        self.pk_list_a:list[str] = []
-        self.tk_list_a:list[str] = []
+        self.tu_list_a: list[str] = []
+        self.pk_list_a: list[str] = []
+        self.tk_list_a: list[str] = []
 
-        # NUMBERS FOR CLASSIFICATIONS
+        # NUMBERS OF CLASSIFICATIONS
 
-        # Situation
+        self.num_uc_b: int = 0
+        self.num_kc_b: int = 0
 
-        self.num_uc_b: int = -1
-        self.num_kc_b: int = -1
+        self.num_uc_a: int = 0
+        self.num_kc_a: int = 0
 
-        self.num_uc_a: int = -1
-        self.num_kc_a: int = -1
+        # INCOMPLETENESS INFORMATION
+
+        # The incompleteness dict stores informs the rule identified and the amount of occurrences it had
+        self.num_incompleteness: int = 0
+        self.incompleteness_dict: dict = {}
 
     def calculate_information(self):
         """ Calculate information (derived data results) with the numbers stored in the class's attributes.

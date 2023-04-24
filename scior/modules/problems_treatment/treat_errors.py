@@ -22,7 +22,11 @@ def report_error_dataclass_not_found(searched_uri: str) -> None:
 
 
 def report_error_end_of_switch(invalid_parameter: str, caller_function_name: str) -> None:
-    """ Reports the error caused when an invalid parameter is provided to a switch case (if-else statements). """
+    """ Reports the error caused when an invalid parameter is provided to a switch case (if-else statements).
+
+    NOTE: caller_function_name can be obtained from:
+        current_function = inspect.stack()[0][3]
+    """
 
     LOGGER.error(f"Unexpected parameter {invalid_parameter} received in function {caller_function_name}. "
                  f"Program aborted.")

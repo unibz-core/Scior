@@ -2,6 +2,7 @@
 import copy
 import time
 from datetime import datetime
+from pprint import pprint
 
 from rdflib import RDF, RDFS
 
@@ -10,10 +11,9 @@ from scior.modules.graph_ontology import save_ontology_gufo_statements, save_ont
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_initialization import initialize_ontology_dataclasses, \
     load_known_gufo_information
-from scior.modules.report_printer import print_report_file
+from scior.modules.problems_treatment.treat_incomplete import print_all_incompleteness
+from scior.modules.results.classifications_matrix import generate_classifications_matrix
 from scior.modules.results.results_calculation import generate_results_information
-from scior.modules.results_calculation import generates_partial_statistics_list, calculate_final_statistics, \
-    create_knowledge_matrix
 from scior.modules.rules.rules_execution import execute_rules_types
 from scior.modules.utils_rdf import load_all_graph_safely, reduce_graph_considering_restrictions
 
@@ -52,26 +52,32 @@ def run_scior():
 
     logger.debug("Saving initial data for calculating future statistics.")
     before_dataclass_list = copy.deepcopy(ontology_dataclass_list)
-    #before_statistics = generates_partial_statistics_list(ontology_dataclass_list)
 
     # EXECUTION
 
-    execute_rules_types(ontology_dataclass_list, working_graph)
+    incompleteness_stack = execute_rules_types(ontology_dataclass_list, working_graph)
 
-    # SAVING RESULTS - OUTPUT
+    # TREATING RESULTS
 
-    # after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
-
+    # Saving file
     resulting_graph = save_ontology_gufo_statements(ontology_dataclass_list, original_graph, SCOPE_RESTRICTION)
 
-    # Calculating results statistics
-    generate_results_information(before_dataclass_list, ontology_dataclass_list)
+    # Generating results information
+    results_information = generate_results_information(before_dataclass_list, ontology_dataclass_list,
+                                                       incompleteness_stack)
 
-
-    # consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    # knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
+    # Generating Classifications Matrix
+    classifications_matrix = generate_classifications_matrix(before_dataclass_list, ontology_dataclass_list)
 
     # print_statistics_screen(ontology_dataclass_list, consolidated_statistics, arguments, SCOPE_RESTRICTION)
+
+    # Print incompleteness detection results
+    if args.ARGUMENTS["is_automatic"] and not args.ARGUMENTS["is_silent"]:
+        print_all_incompleteness(incompleteness_stack)
+        print("\nRAW PRINTING RESULTS:")
+        pprint(vars(results_information))
+        print("\nRAW PRINTING CLASSIFICATIONS MATRIX:")
+        print(f"{classifications_matrix}\n")
 
     now = datetime.now()
     end_date_time_screen = now.strftime("%d-%m-%Y %H:%M:%S")
@@ -83,10 +89,9 @@ def run_scior():
     # Printing results
     save_ontology_file_as_configuration(resulting_graph, end_date_time_files)
 
-    print_report_file(ontology_dataclass_list,
-                      start_date_time, end_date_time_files, elapsed_time,
-                      before_statistics, after_statistics, consolidated_statistics,
-                      SCOPE_RESTRICTION, SOFTWARE_VERSION, knowledge_matrix)
+    # print_report_file(ontology_dataclass_list,
+    #                   start_date_time, end_date_time_files, elapsed_time,
+    #                   SCOPE_RESTRICTION, SOFTWARE_VERSION, classifications_matrix)
 
 
 def run_scior_tester(global_configurations, working_graph):
@@ -106,7 +111,7 @@ def run_scior_tester(global_configurations, working_graph):
     execute_rules_types(ontology_dataclass_list, working_graph, global_configurations)
     after_statistics = generates_partial_statistics_list(ontology_dataclass_list)
     consolidated_statistics = calculate_final_statistics(before_statistics, after_statistics)
-    knowledge_matrix = create_knowledge_matrix(before_statistics, after_statistics)
+    knowledge_matrix = generate_classifications_matrix(before_statistics, after_statistics)
 
     return ontology_dataclass_list, consolidated_statistics, knowledge_matrix, SOFTWARE_VERSION
 
