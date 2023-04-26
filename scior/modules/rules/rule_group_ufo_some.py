@@ -1,4 +1,5 @@
 """ Implementation of rules of group UFO Some. """
+
 import inspect
 
 from rdflib import Graph, URIRef, RDFS
@@ -340,7 +341,7 @@ def run_ir43(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     """ Executes rule IR43 from group UFO Some.
 
     Code: IR43
-    Definition: Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> Es z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
+    Definition: Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: A Role cannot "specialize directly"  a PhaseMixin. This must be done through a Phase.
     """
 
@@ -589,14 +590,14 @@ def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ont
 
     LOGGER.debug("Starting execution of all rules from group UFO Some.")
 
-    run_ir30(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir31(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir32(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir39(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir40(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir43(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir44(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir45(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir46(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_ir30(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_ir31(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_ir32(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_ir39(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_ir40(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_ir43(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_ir44(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_ir45(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_ir46(ontology_dataclass_list, ontology_graph, incompleteness_stack)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")

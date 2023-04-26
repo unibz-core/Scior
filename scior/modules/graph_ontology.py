@@ -104,7 +104,8 @@ def save_ontology_file_caller(end_date_time, ontology_graph):
     create_directory_if_not_exists(results_directory)
 
     # Setting file complete path
-    output_file_name = loaded_file_name + "-" + end_date_time + ".ttl"
+    # output_file_name = loaded_file_name + "-" + end_date_time + ".ttl"
+    output_file_name = loaded_file_name + ".ttl"    # TODO (@pedropaulofb): remove this and uncomment line before.
     output_file_path = project_directory + "\\" + results_directory + "\\" + output_file_name
 
     safe_save_ontology_file(ontology_graph, output_file_path)

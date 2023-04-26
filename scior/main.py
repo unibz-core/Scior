@@ -74,10 +74,10 @@ def run_scior():
     # Print incompleteness detection results
     if args.ARGUMENTS["is_automatic"] and not args.ARGUMENTS["is_silent"]:
         print_all_incompleteness(incompleteness_stack)
-        print("\nRAW PRINTING RESULTS:")
-        pprint(vars(results_information))
-        print("\nRAW PRINTING CLASSIFICATIONS MATRIX:")
-        print(f"{classifications_matrix}\n")
+        # print("\nRAW PRINTING RESULTS:")
+        # pprint(vars(results_information))
+        # print("\nRAW PRINTING CLASSIFICATIONS MATRIX:")
+        # print(f"{classifications_matrix}\n")
 
     now = datetime.now()
     end_date_time_screen = now.strftime("%d-%m-%Y %H:%M:%S")

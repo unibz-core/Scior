@@ -250,14 +250,10 @@ fact {
 	// R35: phases come in sets 
 	all x: Phases | some y: Phases | (shareKind[x, y] and not isSubClassOf[x,y] and not isSubClassOf[y,x])
 
-	// R36: phases of phases also come in sets 
-	all disj x, y: Class | (isPhase[x] and isPhase[y] and isSubClassOf[y,x]) implies (some z: Class | z!=x and z!=y and isPhase[z] and isSubClassOf[z,x] and not isSubClassOf[z,y])
-
-
-	// R37: PhaseMixinsSpecializeCategories
+	// R36: PhaseMixinsSpecializeCategories
 	all x: PhaseMixins | some y: Categories | isSubClassOf[x,y]
 
-	// R38: phaseMixinsSpecializationsMustBePartitions 
+	// R37: phaseMixinsSpecializationsMustBePartitions 
 	all x: PhaseMixins | all y: Categories | isSubClassOf[x,y] implies (some z: PhaseMixins | (not isSubClassOf[x,z] and not isSubClassOf[z,x] and isSubClassOf[z,y]))
 }
 
@@ -318,48 +314,43 @@ check mixinCanOnlySpecializeMixinAndCategory {
 
 run RolesCanSpecializeRoles {
 	some disj child, parent: Roles | isSubClassOf[child,parent]
-} for 12
+} for 3
 
 run RolesCanSpecializePhases {	
 	some child: Roles | some parent: Phases | isSubClassOf[child,parent]
-} for 12
+} for 4
 
 run RolesCanSpecializeSubKinds {	
 	some child: Roles | some parent: Subkinds | isSubClassOf[child,parent] 
-} for 12
+} for 3
 
 run RolesCanSpecializeKinds {	
 	some child: Roles | some parent: Kinds | isSubClassOf[child,parent] 
-} for 12
+} for 2
 
 run RolesCanSpecializeRoleMixins {
 	some child: Roles | some parent: RoleMixins | isSubClassOf[child,parent] 
-} for 12
+} for 5
 
 run RolesCanSpecializePhaseMixinsa {	
 	some child: Roles | some parent: PhaseMixins | isSubClassOf[child,parent] 
-} for 12
+} for 8
 
 run RolesCanSpecializeCategories {	
 	some child: Roles | some parent: Categories | isSubClassOf[child,parent] 
-} for 12
+} for 4
 
 run RolesCanSpecializeMixins {	
 	some child: Roles | some parent: Mixins | isSubClassOf[child,parent] 
-} for 12
+} for 4
 
 run PhaseCanSpecializePhase {
 	some disj child, parent: Phases | isSubClassOf[child,parent] 
-} for 12
+} for 4
 
 run PhaseMixinCanSpecializePhaseMixin {
 	some disj child, parent: PhaseMixins | isSubClassOf[child,parent] 
-} for 12
-
-run ThreePhasesOnlyMustShareASameKind{
-	# Kinds=1
-	#Phases=3
-} for 12
+} for 7
 
 run NEGATIVEAntiRigidSortalCannotSpecializeCategoryWithoutAnIntermediateRigidSortal {
 	some x, y: Class | (isRole[x] or isPhase[x]) and isCategory[y] and isSubClassOf[x,y] and (no z: Class | (isKind[z] or isSubkind[z]) and isSubClassOf[x,z] and isSubClassOf[z,y])
@@ -379,20 +370,20 @@ run NEGATIVEsinglePhaseMixin {
 	#PhaseMixins=1
 } for 12
 
+run NEGATIVEPhase_MixinSpecializingRole_Mixin{
+	some x, y: Class | (isPhase[x] or isPhaseMixin[x]) and (isRole[y] or isRoleMixin[y]) and isSubClassOf[x,y]
+} for 12
+
 run modelWithOneKindAndTwoPhases{
 	#Kinds=1
 	#Phases=2
-} for 12
-
-run NEGATIVEmodelWithAPhaseWithASinglePhaseAsSubclass {
-	some x: Class | one y:Class | (isPhase[x] and isPhase[y] and isSubClassOf[y,x] and x!=y)
-} for 12
+} for 3
 
 run modelWithOneSubkindAndTwoPhases{
 	#Subkinds=1
 	#Phases=2
 	some disj x, y : Class | isPhase[x] and isSubkind[y] and isSubClassOf[x,y]
-} for 12
+} for 4
 
 run modelWithAllStereotypes{
 	some Kinds
@@ -404,3 +395,4 @@ run modelWithAllStereotypes{
 	some PhaseMixins
 	some Mixins
 } for 12
+

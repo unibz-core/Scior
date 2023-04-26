@@ -7,8 +7,9 @@ import inspect
 import scior.modules.initialization_arguments as args
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
-from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch, report_error_requirement_not_met
 from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_moving
+from scior.modules.resources_gufo import GUFO_LIST_ENDURANT_TYPES
 from scior.modules.rules.rule_group_gufo import loop_execute_gufo_rules
 
 LOGGER = initialize_logger()

@@ -2,8 +2,8 @@
 from rdflib import URIRef, RDFS, Graph
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.resources_gufo import SCIOR_NAMESPACE
 
-SCIOR_NAMESPACE = "https://purl.org/scior/"
 LOGGER = initialize_logger()
 
 
