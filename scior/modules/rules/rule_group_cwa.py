@@ -1,19 +1,15 @@
 """ Implementation of all rules from the group CWA. """
 from rdflib import Graph, RDFS, URIRef
-from rdflib.plugins.sparql.processor import SPARQLResult
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
-from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_not_type
-from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry
+from scior.modules.ontology_dataclassess.dataclass_moving import move_classification_to_not_type, \
+    move_classification_to_is_type
 from scior.modules.resources_gufo import SCIOR_NAMESPACE
-from scior.modules.rules.rule_group_ufo_some import treat_result_ufo_some
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 LOGGER = initialize_logger()
 
-
-# TODO (@pedropaulofb): ADD FILTER X!=Y in all the queries!
 
 def run_ir47(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule IR47 from group CWA.
@@ -498,10 +494,45 @@ def run_ir56(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         # If a break is not found:
         # It means that all supertypes cannot be a Kind and that the evaluated dataclass cannot be a Sortal
         else:
-
             move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Sortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
+
+
+def run_ir57(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule IR57 from group CWA.
+
+        Definition: ~(E y,z (x != y ^ x != z ^ subClassOf(x,y) ^ subClassOf(z,y)) -> Kind(x)
+        Description: A class without supertypes or subtypes is a Kind.
+    """
+
+    rule_code = "IR57"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    query_string = """
+        PREFIX gufo: <http://purl.org/nemo/gufo#>
+        SELECT DISTINCT ?class_x
+        WHERE {
+            ?class_x rdf:type owl:Class .
+            FILTER NOT EXISTS {
+                ?class_y rdf:type owl:Class .
+                ?class_y rdfs:subClassOf ?class_x .
+                FILTER (?class_y != ?class_x)
+            }
+            FILTER NOT EXISTS {
+                ?class_z rdf:type owl:Class .
+                ?class_x rdfs:subClassOf ?class_z .
+                FILTER (?class_z != ?class_x)
+            }
+        }
+        """
+
+    query_result = ontology_graph.query(query_string)
+
+    for row in query_result:
+        ontology_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_x.toPython())
+        move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "Kind", rule_code)
 
 
 def execute_rules_ufo_cwa(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
@@ -519,5 +550,6 @@ def execute_rules_ufo_cwa(ontology_dataclass_list: list[OntologyDataClass], onto
     run_ir54(ontology_dataclass_list, ontology_graph)
     run_ir55(ontology_dataclass_list, ontology_graph)
     run_ir56(ontology_dataclass_list, ontology_graph)
+    run_ir57(ontology_dataclass_list, ontology_graph)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")

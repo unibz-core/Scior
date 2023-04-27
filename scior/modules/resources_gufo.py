@@ -6,7 +6,7 @@ GUFO_LIST_ENDURANT_TYPES = ["AntiRigidType", "Category", "EndurantType", "Kind",
                             "Phase", "PhaseMixin", "RigidType", "Role", "RoleMixin", "SemiRigidType", "Sortal",
                             "SubKind"]
 
-GUFO_LIST_FINAL_CLASSIFICATIONS = ["Category", "Kind", "Mixin", "Phase", "PhaseMixin", "Role", "RoleMixin", "SubKind"]
+GUFO_LIST_LEAF_CLASSIFICATIONS = ["Category", "Kind", "Mixin", "Phase", "PhaseMixin", "Role", "RoleMixin", "SubKind"]
 
 # TODO (@pedropaulofb): Add dict with classes names and corresponding hierarchy type.
 
