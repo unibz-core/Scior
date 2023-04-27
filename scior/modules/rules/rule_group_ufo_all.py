@@ -13,10 +13,9 @@ LOGGER = initialize_logger()
 def run_ir19(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR19 from group UFO All.
 
-        Code: IR19
         Definition: Sortal(x) ^ subClassOf(y,x) -> Sortal(y)
         Description: Everything that specialize a Sortal is also a Sortal
-        """
+    """
 
     rule_code = "IR19"
 
@@ -42,8 +41,7 @@ def run_ir19(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ir28(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR28 from group UFO All.
 
-    Code: IR28
-    Definition: RigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
+        Definition: RigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
     Description: AntiRigid types cannot generalize Rigid types.
     """
 
@@ -71,8 +69,7 @@ def run_ir28(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ir29(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR29 from group UFO All.
 
-    Code: IR29
-    Definition: SemiRigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
+        Definition: SemiRigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
     Description: AntiRigid types cannot generalize SemiRigid types.
     """
 
@@ -100,8 +97,7 @@ def run_ir29(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ir33(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR33 from group UFO All.
 
-    Code: IR33
-    Definition: x != y ^ Kind(x) ^ subClassOf(x,y) -> NonSortal(y)
+        Definition: x != y ^ Kind(x) ^ subClassOf(x,y) -> NonSortal(y)
     Description: All entities must have a single or aggregate multiple identity principles.
     """
 
@@ -135,8 +131,7 @@ def run_ir33(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ir34(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR34 from group UFO All.
 
-    Code: IR34
-    Definition: NonSortal(x) ^ subClassOf(x,y) -> NonSortal(y)
+        Definition: NonSortal(x) ^ subClassOf(x,y) -> NonSortal(y)
     Description: NonSortals can only specialize other NonSortals
     """
 
@@ -164,8 +159,7 @@ def run_ir34(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ir41(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR41 from group UFO All.
 
-    Code: IR41
-    Definition: Phase(x) ^ subClassOf(x,y) -> ~Role(y) ^ ~RoleMixin(y)
+        Definition: Phase(x) ^ subClassOf(x,y) -> ~Role(y) ^ ~RoleMixin(y)
     Description: Phases cannot specialize Roles and RoleMixins
     """
 
@@ -194,8 +188,7 @@ def run_ir41(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ir42(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule IR42 from group UFO All.
 
-    Code: IR42
-    Definition: PhaseMixin(x) ^ subClassOf(x,y) -> ~RoleMixin(y)
+        Definition: PhaseMixin(x) ^ subClassOf(x,y) -> ~RoleMixin(y)
     Description: PhaseMixins cannot specialize RoleMixins
     """
 

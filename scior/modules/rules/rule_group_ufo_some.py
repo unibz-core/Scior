@@ -61,8 +61,7 @@ def run_ir30(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR30 from group UFO.
 
-    Code: IR30
-    Definition: AntiRigidType(x) ^ Sortal(x) ^ Category(y) ^ subClassOf(x,y) ->
+        Definition: AntiRigidType(x) ^ Sortal(x) ^ Category(y) ^ subClassOf(x,y) ->
                     E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: AntiRigid Sortals cannot "directly specialize" Categories. This must be done through a Ridig Sortal.
     """
@@ -119,8 +118,7 @@ def run_ir31(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR31 from group UFO Some.
 
-    Code: IR31
-    Definition: Mixin(x) -> E y (subClassOf(y,x) ^ AntiRigidType(y))
+        Definition: Mixin(x) -> E y (subClassOf(y,x) ^ AntiRigidType(y))
     Description: Mixins must generalize at least one AntiRigidType.
     """
 
@@ -172,8 +170,7 @@ def run_ir32(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR32 from group UFO Some.
 
-    Code: IR32
-    Definition: Mixin(x) -> E y (subClassOf(y,x) ^ RigidType(y))
+        Definition: Mixin(x) -> E y (subClassOf(y,x) ^ RigidType(y))
     Description: Mixins must generalize at least one RigidType.
     """
 
@@ -225,8 +222,7 @@ def run_ir39(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR39 from group UFO Some.
 
-    Code: IR39
-    Definition: NonSortal(x) -> E y (Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)))
+        Definition: NonSortal(x) -> E y (Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)))
     Description: NonSortals must be related to at least one Sortal that has a subClassOf or shareSuperClass
                     relation with it.
     """
@@ -280,8 +276,7 @@ def run_ir40(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR40 from group UFO Some.
 
-    Code: IR40
-    Definition: NonSortal(x) ^ Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)) ->
+        Definition: NonSortal(x) ^ Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)) ->
                 E z (y != z ^ Sortal(z) ^ ~shareKind(y,z) ^ (subClassOf(z,x) v shareSuperClass(x,z)))
     Description:    NonSortals thar are related to one Sortal that has a subClassOf or shareSuperClass relation with it
                     must be related to another Sortal that has a subClassOf or shareSuperClass relation with it.
@@ -340,8 +335,7 @@ def run_ir43(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR43 from group UFO Some.
 
-    Code: IR43
-    Definition: Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
+        Definition: Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: A Role cannot "specialize directly"  a PhaseMixin. This must be done through a Phase.
     """
 
@@ -396,8 +390,7 @@ def run_ir44(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR44 from group UFO Some.
 
-    Code: IR44
-    Definition: Phase(x) -> E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))
+        Definition: Phase(x) -> E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))
     Description: There must exist at least two Phases that share the same Kind and that do not specialize each other.
     """
 
@@ -464,8 +457,7 @@ def run_ir45(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR45 from group UFO Some.
 
-    Code: IR45
-    Definition: PhaseMixin(x) -> E y (Category (y) ^ isSubClassOf(x,y))
+        Definition: PhaseMixin(x) -> E y (Category (y) ^ isSubClassOf(x,y))
     Description: EveryPhaseMixin specialize at least one Category.
     """
 
@@ -517,8 +509,7 @@ def run_ir46(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR46 from group UFO Some.
 
-    Code: IR46
-    Definition: PhaseMixin(x) ^ Category(y) ^ subClassOf(x,y) ->
+        Definition: PhaseMixin(x) ^ Category(y) ^ subClassOf(x,y) ->
                 E z (PhaseMixin(z) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^ isSubClassOf(z,y))
     Description: There must exist at least two PhaseMixins that share the same Category
                     and that do not specialize each other.

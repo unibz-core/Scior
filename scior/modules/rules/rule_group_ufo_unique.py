@@ -73,8 +73,7 @@ def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule IR35 from group UFO.
 
-    Code: IR35
-    Definition: Sortal(x) -> E! y (subClassOf (x,y) ^ Kind(y))
+        Definition: Sortal(x) -> E! y (subClassOf (x,y) ^ Kind(y))
     Description: Every Sortal must have a unique identity provider, i.e., a single Kind as supertype.
     """
 
