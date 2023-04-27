@@ -115,6 +115,6 @@ def execute_rules_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], o
 
     LOGGER.debug("Starting execution of all rules from group UFO Unique.")
 
-    # run_ir35(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir35(ontology_dataclass_list, ontology_graph, incompleteness_stack)
 
     LOGGER.debug("Execution of all rules from group UFO Unique completed.")

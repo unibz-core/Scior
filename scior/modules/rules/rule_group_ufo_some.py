@@ -581,14 +581,14 @@ def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ont
 
     LOGGER.debug("Starting execution of all rules from group UFO Some.")
 
-    # run_ir30(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_ir31(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_ir32(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_ir39(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_ir40(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_ir43(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_ir44(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_ir45(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_ir46(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir30(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir31(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir32(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir39(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir40(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir43(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir44(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir45(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ir46(ontology_dataclass_list, ontology_graph, incompleteness_stack)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")
