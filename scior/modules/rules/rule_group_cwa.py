@@ -131,13 +131,9 @@ def run_ir49(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         class_x = row.class_x.toPython()
         class_y = row.class_y.toPython()
 
-        print(f"1) X = {class_x} AND Y = {class_y}")
-
         # Removing itself from the list
         if class_x == class_y:
             continue
-
-        print(f"2) X = {class_x} AND Y = {class_y}")
 
         # Removing class_y if it cannot be a Sortal
         dataclass_y = get_dataclass_by_uri(ontology_dataclass_list, class_y)
