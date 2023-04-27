@@ -148,7 +148,7 @@ def run_ir49(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         # Populate dictionary
         class_x_dict[class_x].append(class_y)
 
-    # Trating populated dictionary
+    # Treating populated dictionary
     for evaluated_class in class_x_dict.keys():
 
         # If the number of elements is smaller than two, set as not NonSortal
@@ -215,7 +215,7 @@ def run_ir50(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
 
 def run_ir51(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR50 from group CWA.
+    """ Implements rule IR51 from group CWA.
 
     Code: IR51
     Definition: ~(E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))) ^ PhaseMixin(y) ^ subClassOf(x,y) -> ~Role(x)
@@ -253,6 +253,139 @@ def run_ir51(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
+
+def run_ir52(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule IR52 from group CWA.
+
+    Code: IR52
+    Definition: ~(E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))) -> ~Phase(x)
+    Description: Contraposition (~Q -> ~P) of rule IR44 (P -> Q).
+    """
+
+    rule_code = "IR52"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    query_string = """
+        PREFIX scior: <https://purl.org/scior/>
+        SELECT DISTINCT ?class_x ?class_y
+        WHERE {
+            ?class_x scior:shareKind ?class_y .
+        }
+        """
+
+    query_result = ontology_graph.query(query_string)
+
+    scior_share_kind = URIRef(SCIOR_NAMESPACE + "shareKind")
+    class_x_dict = {}
+
+    # Creating dictionary for all evaluated classes with all classes related via subclasses or shareSuperClass
+    for row in query_result:
+
+        class_x = row.class_x.toPython()
+        class_y = row.class_y.toPython()
+
+        # Removing itself from the list
+        if class_x == class_y:
+            continue
+
+        # Removing class_y if it cannot be a Phase
+        dataclass_y = get_dataclass_by_uri(ontology_dataclass_list, class_y)
+        if "Phase" in dataclass_y.not_type:
+            continue
+
+        # If dictionary entry does not exist, create a new one
+        if class_x not in class_x_dict.keys():
+            class_x_dict[class_x] = []
+
+        # Populate dictionary
+        class_x_dict[class_x].append(class_y)
+
+    # Treating populated dictionary
+    for evaluated_class_x in class_x_dict.keys():
+
+        for evaluated_class_y in class_x_dict[evaluated_class_x]:
+            # Removing b subclass of a
+            if (URIRef(evaluated_class_x), scior_share_kind, URIRef(evaluated_class_y)) in ontology_graph:
+                class_x_dict[evaluated_class_x].remove(evaluated_class_y)
+            # Removing a subclass of b
+            elif (URIRef(evaluated_class_y), scior_share_kind, URIRef(evaluated_class_x)) in ontology_graph:
+                class_x_dict[evaluated_class_x].remove(evaluated_class_y)
+
+        # If there are no classes left, then it cannot be a Phase:
+        if len(class_x_dict[evaluated_class_x]) == 0:
+            dataclass_x = get_dataclass_by_uri(ontology_dataclass_list, class_x_dict[evaluated_class_x])
+            move_classification_to_not_type(ontology_dataclass_list, dataclass_x, "Phase", rule_code)
+
+    LOGGER.debug(f"Rule {rule_code} concluded.")
+
+
+def run_ir53(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule IR53 from group CWA.
+
+    Code: IR53
+    Definition: ~(E y (Category (y) ^ isSubClassOf(x,y))) -> ~PhaseMixin(x)
+    Description: Contraposition (~Q -> ~P) of rule R45 (P -> Q).
+                If a class does not have a superclass that can be a Category then it is not a PhaseMixin.
+    """
+
+    rule_code = "IR53"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    for ontology_dataclass in ontology_dataclass_list:
+        list_superclasses = []
+        is_possible = False
+
+        # Creating list of superclasses that can be a Category
+        for superclass in ontology_graph.objects(URIRef(ontology_dataclass.uri), RDFS.subClassOf):
+            superclass_dataclass = get_dataclass_by_uri(list_superclasses, superclass.toPython())
+
+            # Checking if there is at least one superclass that can be a Category. If there is, continue to the next
+            if "Category" not in superclass_dataclass.not_type:
+                is_possible = True
+
+            # If there is at least one possibility, then there is no need to evaluate the other superclasses
+            if is_possible:
+                break
+
+        if not is_possible:
+            move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "PhaseMixin", rule_code)
+
+
+def run_ir56(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule IR56 from group CWA.
+
+    Code: IR56
+    Definition: ~(E y (subClassOf (x,y) ^ Kind(y))) -> ~Sortal(x)
+    Description: Contraposition (~Q -> ~P) of rule R35 (P -> Q).
+                If a class does not have a superclass that can be a Kind then it is not a Sortal.
+    """
+
+    rule_code = "IR53"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    for ontology_dataclass in ontology_dataclass_list:
+        list_superclasses = []
+        is_possible = False
+
+        # Creating list of superclasses that can be a Category
+        for superclass in ontology_graph.objects(URIRef(ontology_dataclass.uri), RDFS.subClassOf):
+            superclass_dataclass = get_dataclass_by_uri(list_superclasses, superclass.toPython())
+
+            # Checking if there is at least one superclass that can be a Kind. If there is, continue to the next
+            if "Kind" not in superclass_dataclass.not_type:
+                is_possible = True
+
+            # If there is at least one possibility, then there is no need to evaluate the other superclasses
+            if is_possible:
+                break
+
+        if not is_possible:
+            move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Sortal", rule_code)
+
+
 def execute_rules_ufo_cwa(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """Call execution all rules from the group UFO CWA."""
 
@@ -263,19 +396,10 @@ def execute_rules_ufo_cwa(ontology_dataclass_list: list[OntologyDataClass], onto
     run_ir49(ontology_dataclass_list, ontology_graph)
     run_ir50(ontology_dataclass_list, ontology_graph)
     run_ir51(ontology_dataclass_list, ontology_graph)
-
-    # for a, get list of not sc a,b and not sc b,a
-    # remove all that do not shareKind
-    # if in all elements from the remainding list Phase is in not_type,
-    # then X is not a Phase
-
-
-    # run_ir52(ontology_dataclass_list, ontology_graph)
-    # run_ir53(ontology_dataclass_list, ontology_graph)
+    run_ir52(ontology_dataclass_list, ontology_graph)
+    run_ir53(ontology_dataclass_list, ontology_graph)
     # run_ir54(ontology_dataclass_list, ontology_graph)
     # run_ir55(ontology_dataclass_list, ontology_graph)
-    # run_ir56(ontology_dataclass_list, ontology_graph)
-    # run_ir57(ontology_dataclass_list, ontology_graph)
-    # run_ir58(ontology_dataclass_list, ontology_graph)
+    run_ir56(ontology_dataclass_list, ontology_graph)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")
