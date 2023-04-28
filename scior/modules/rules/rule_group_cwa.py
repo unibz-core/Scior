@@ -11,6 +11,7 @@ from scior.modules.utils_dataclass import get_dataclass_by_uri
 LOGGER = initialize_logger()
 
 
+
 def run_RC01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC01 from group CWA.
 
@@ -49,6 +50,7 @@ def run_RC01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             move_classification_to_not_type(ontology_dataclass_list, dataclass_y, "Category", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
+
 
 
 def run_RC02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
@@ -93,6 +95,7 @@ def run_RC02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Mixin", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
+
 
 
 def run_RC03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
@@ -237,6 +240,7 @@ def run_RC05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             move_classification_to_not_type(ontology_dataclass_list, dataclass_x, "NonSortal")
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
+
 
 
 def run_RC06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
@@ -389,6 +393,7 @@ def run_RC08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             move_classification_to_not_type(ontology_dataclass_list, dataclass_x, "Phase", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
+
 
 
 def run_RC09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
