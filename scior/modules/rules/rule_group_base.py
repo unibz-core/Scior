@@ -8,14 +8,14 @@ LOGGER = initialize_logger()
 SCIOR_NAMESPACE = "https://purl.org/scior/"
 
 
-def run_ir01(ontology_graph):
-    """ Executes rule IR01 from group base.
+def run_rb01(ontology_graph):
+    """ Executes rule RB01 from group base.
 
         Definition: subClassOf(x,x)
     Description: rdfs:subClassOf is reflexive. All owl:Classe instances are rdfs:subClassOf themselves.
     """
 
-    rule_code = "IR01"
+    rule_code = "RB01"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -25,13 +25,13 @@ def run_ir01(ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir02(ontology_graph):
-    """ Executes rule IR02 from group base.
+def run_rb02(ontology_graph):
+    """ Executes rule RB02 from group base.
 
         Definition: subClassOf(x,y) ^ subClassOf(y,z) -> subClassOf(x,z)
     Description: rdfs:subClassOf is transitive. All owl:Classe instances are rdfs:subClassOf of all their superclasses.
     """
-    rule_code = "IR02"
+    rule_code = "RB02"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -51,12 +51,12 @@ def run_ir02(ontology_graph):
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir38(ontology_graph):
-    """ Executes rule IR38 from group BASE.
+def run_rb03(ontology_graph):
+    """ Executes rule RB03 from group BASE.
 
         Definition: subClassOf(x,z) ^ subClassOf(y,z) -> shareSuperClass(x,y)
     """
-    rule_code = "IR38"
+    rule_code = "RB03"
 
     LOGGER.debug(f"Starting rule {rule_code}.")
 
@@ -82,9 +82,9 @@ def execute_rules_base(ontology_graph):
 
     LOGGER.debug("Starting execution of all rules from group BASE.")
 
-    # Executing IR02 first than IR01 because it is faster and the results are the same.
-    run_ir01(ontology_graph)
-    run_ir02(ontology_graph)
-    run_ir38(ontology_graph)
+    # Executing RB02 first than RB01 because it is faster and the results are the same.
+    run_rb01(ontology_graph)
+    run_rb02(ontology_graph)
+    run_rb03(ontology_graph)
 
     LOGGER.debug("Execution of all rules from group BASE completed.")

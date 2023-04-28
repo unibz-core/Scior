@@ -42,7 +42,6 @@ def generate_empty_matrix(matrix_size: int) -> list[list]:
     return empty_matrix
 
 
-
 def populate_leaves_matrix(leaves_matrix: list[list], before_dataclass_list: list[OntologyDataClass],
                            after_dataclass_list: list[OntologyDataClass]) -> list[list]:
     """ Populates the leaves_matrix (that is received as an argument filled with zeros). """
@@ -106,7 +105,6 @@ def generate_classifications_matrix(before_dataclass_list: list[OntologyDataClas
     # Populate the classifications matrix
     classifications_matrix = populate_classifications_matrix(classifications_matrix, before_dataclass_list,
                                                              after_dataclass_list)
-
 
     # LEAF CLASSIFICATIONS' MATRIX
 
