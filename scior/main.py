@@ -67,6 +67,7 @@ def run_scior():
                                                        incompleteness_stack)
 
     # Generating Classifications Matrix
+
     classifications_matrix, leaves_matrix = generate_classifications_matrix(before_dataclass_list,
                                                                             ontology_dataclass_list)
 
@@ -74,12 +75,14 @@ def run_scior():
 
     # Print incompleteness detection results
     if args.ARGUMENTS["is_automatic"] and not args.ARGUMENTS["is_silent"]:
+
         if not args.ARGUMENTS["is_cwa"]:
             print_all_incompleteness(incompleteness_stack)
         print("\nRAW PRINTING RESULTS:")
         pprint(vars(results_information))
         print("\nRAW PRINTING CLASSIFICATIONS MATRIX:")
         print(f"{classifications_matrix}\n")
+
         print("\nRAW PRINTING LEAVES MATRIX:")
         print(f"{leaves_matrix}\n")
 
@@ -92,6 +95,7 @@ def run_scior():
 
     # Printing results
     save_ontology_file_as_configuration(resulting_graph, end_date_time_files)
+
 
     # print_report_file(ontology_dataclass_list,  #                   start_date_time, end_date_time_files, elapsed_time,  #                   SCOPE_RESTRICTION, SOFTWARE_VERSION, classifications_matrix)
 
@@ -112,6 +116,7 @@ def run_scior_tester(global_configurations, working_graph):
     # EXECUTION
     before_dataclass_list = copy.deepcopy(ontology_dataclass_list)
     execute_rules_types(ontology_dataclass_list, working_graph)
+
     classifications_matrix, leaves_matrix = generate_classifications_matrix(before_dataclass_list,
                                                                             ontology_dataclass_list)
 
