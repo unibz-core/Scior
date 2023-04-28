@@ -19,7 +19,7 @@ from scior.modules.utils_rdf import load_all_graph_safely, reduce_graph_consider
 
 SOFTWARE_ACRONYM = "Scior"
 SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
-SOFTWARE_VERSION = "2023.04.23"
+SOFTWARE_VERSION = "2023.04.28"
 SOFTWARE_URL = "https://github.com/unibz-core/Scior/"
 SCOPE_RESTRICTION = "ENDURANT_TYPES"
 LIST_GRAPH_RESTRICTIONS = [RDF.type, RDFS.subClassOf]
@@ -32,7 +32,7 @@ def run_scior():
 
     st = time.perf_counter()
 
-    args.treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
+    args.publish_global_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
 
     logger = initialize_logger("Scior")
 
@@ -96,11 +96,10 @@ def run_scior():
     # Printing results
     save_ontology_file_as_configuration(resulting_graph, end_date_time_files)
 
-
     # print_report_file(ontology_dataclass_list,  #                   start_date_time, end_date_time_files, elapsed_time,  #                   SCOPE_RESTRICTION, SOFTWARE_VERSION, classifications_matrix)
 
 
-def run_scior_tester(global_configurations, working_graph):
+def run_scior_tester(tester_arguments, working_graph):
     """ Main function for the Scior-Tester.
         No printings and reports are generated. Logger is differently configured.
         This function is exported at the __init__.py file for being used by the Scior-Tester.
@@ -109,6 +108,8 @@ def run_scior_tester(global_configurations, working_graph):
 
     # DATA LOADINGS AND INITIALIZATIONS
     logger = initialize_logger("Scior-Tester")
+
+    args.treat_user_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL, tester_arguments)
 
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, SCOPE_RESTRICTION)
     load_known_gufo_information(working_graph, ontology_dataclass_list)
@@ -120,7 +121,7 @@ def run_scior_tester(global_configurations, working_graph):
     classifications_matrix, leaves_matrix = generate_classifications_matrix(before_dataclass_list,
                                                                             ontology_dataclass_list)
 
-    return ontology_dataclass_list, classifications_matrix
+    return ontology_dataclass_list, classifications_matrix, leaves_matrix
 
 
 if __name__ == "__main__":
