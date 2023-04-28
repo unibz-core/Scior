@@ -3,6 +3,7 @@
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_dataclass
+
 from scior.modules.resources_gufo import GUFO_LIST_LEAF_CLASSIFICATIONS, GUFO_LIST_ENDURANT_TYPES
 
 LOGGER = initialize_logger()

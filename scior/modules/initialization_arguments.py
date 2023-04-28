@@ -5,10 +5,11 @@ import argparse
 from scior.modules.logger_config import initialize_logger
 
 LOGGER = initialize_logger()
+ARGUMENTS = {}
 
 
-def treat_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> None:
-    """ Treat arguments provided by the user when starting software executiong. """
+def treat_user_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> None:
+    """ Treat arguments provided by the user when starting software execution. """
 
     LOGGER.debug("Parsing arguments...")
 
@@ -99,7 +100,7 @@ def treat_arguments(software_acronym: str, software_name: str, software_version:
         arguments.verbose = False
 
     # Asserting dictionary keys
-    global_configurations = {
+    arguments_dictionary = {
         "is_automatic": arguments.automatic,
         "is_interactive": arguments.interactive,
 
@@ -118,8 +119,18 @@ def treat_arguments(software_acronym: str, software_name: str, software_version:
         "ontology_path": arguments.ontology_file
     }
 
-    # Making ARGUMENTS a global variable
-    global ARGUMENTS
-    ARGUMENTS = global_configurations
+    return arguments_dictionary
 
-    LOGGER.debug(f"Arguments parsed. Obtained values are: {global_configurations}.")
+
+def publish_global_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str,
+                             arguments_dictionary: dict = None) -> None:
+    # Making ARGUMENTS a global variable
+
+    # Scior: dict equals None. Scior-Tester: the dictionary is directly received as argument.
+    if arguments_dictionary is None:
+        arguments_dictionary = treat_user_arguments(software_acronym, software_name, software_version, software_url)
+
+    global ARGUMENTS
+    ARGUMENTS = arguments_dictionary
+
+    LOGGER.debug(f"Arguments parsed. Obtained values are: {arguments_dictionary}.")

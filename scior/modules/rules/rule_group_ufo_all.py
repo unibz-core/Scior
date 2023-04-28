@@ -10,14 +10,14 @@ from scior.modules.utils_dataclass import get_dataclass_by_uri
 LOGGER = initialize_logger()
 
 
-def run_ir19(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Executes rule IR19 from group UFO All.
+def run_ra01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Executes rule RA01 from group UFO All.
 
         Definition: Sortal(x) ^ subClassOf(y,x) -> Sortal(y)
         Description: Everything that specialize a Sortal is also a Sortal
     """
 
-    rule_code = "IR19"
+    rule_code = "RA01"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -38,14 +38,14 @@ def run_ir19(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir28(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Executes rule IR28 from group UFO All.
+def run_ra02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Executes rule RA02 from group UFO All.
 
         Definition: RigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
     Description: AntiRigid types cannot generalize Rigid types.
     """
 
-    rule_code = "IR28"
+    rule_code = "RA02"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -66,14 +66,14 @@ def run_ir28(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir29(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Executes rule IR29 from group UFO All.
+def run_ra03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Executes rule RA03 from group UFO All.
 
         Definition: SemiRigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
     Description: AntiRigid types cannot generalize SemiRigid types.
     """
 
-    rule_code = "IR29"
+    rule_code = "RA03"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -94,14 +94,14 @@ def run_ir29(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir33(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Executes rule IR33 from group UFO All.
+def run_ra04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Executes rule RA04 from group UFO All.
 
         Definition: x != y ^ Kind(x) ^ subClassOf(x,y) -> NonSortal(y)
     Description: All entities must have a single or aggregate multiple identity principles.
     """
 
-    rule_code = "IR33"
+    rule_code = "RA04"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -128,14 +128,14 @@ def run_ir33(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir34(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Executes rule IR34 from group UFO All.
+def run_ra05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Executes rule RA05 from group UFO All.
 
         Definition: NonSortal(x) ^ subClassOf(x,y) -> NonSortal(y)
     Description: NonSortals can only specialize other NonSortals
     """
 
-    rule_code = "IR34"
+    rule_code = "RA05"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -156,14 +156,14 @@ def run_ir34(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir41(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Executes rule IR41 from group UFO All.
+def run_ra06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Executes rule RA06 from group UFO All.
 
         Definition: Phase(x) ^ subClassOf(x,y) -> ~Role(y) ^ ~RoleMixin(y)
     Description: Phases cannot specialize Roles and RoleMixins
     """
 
-    rule_code = "IR41"
+    rule_code = "RA06"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -185,14 +185,14 @@ def run_ir41(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded")
 
 
-def run_ir42(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Executes rule IR42 from group UFO All.
+def run_ra07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Executes rule RA07 from group UFO All.
 
         Definition: PhaseMixin(x) ^ subClassOf(x,y) -> ~RoleMixin(y)
     Description: PhaseMixins cannot specialize RoleMixins
     """
 
-    rule_code = "IR42"
+    rule_code = "RA07"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -218,12 +218,12 @@ def execute_rules_ufo_all(ontology_dataclass_list: list[OntologyDataClass], onto
 
     LOGGER.debug("Starting execution of all rules from group UFO All.")
 
-    run_ir19(ontology_dataclass_list, ontology_graph)
-    run_ir28(ontology_dataclass_list, ontology_graph)
-    run_ir29(ontology_dataclass_list, ontology_graph)
-    run_ir33(ontology_dataclass_list, ontology_graph)
-    run_ir34(ontology_dataclass_list, ontology_graph)
-    run_ir41(ontology_dataclass_list, ontology_graph)
-    run_ir42(ontology_dataclass_list, ontology_graph)
+    run_ra01(ontology_dataclass_list, ontology_graph)
+    run_ra02(ontology_dataclass_list, ontology_graph)
+    run_ra03(ontology_dataclass_list, ontology_graph)
+    run_ra04(ontology_dataclass_list, ontology_graph)
+    run_ra05(ontology_dataclass_list, ontology_graph)
+    run_ra06(ontology_dataclass_list, ontology_graph)
+    run_ra07(ontology_dataclass_list, ontology_graph)
 
     LOGGER.debug("Execution of all rules from group UFO All completed.")

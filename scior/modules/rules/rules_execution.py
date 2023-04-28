@@ -100,6 +100,7 @@ def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontolo
     incompleteness_stack = []
 
     # Groups of rules and their containing rules' codes. Base rules are not here included.
+
     list_rules_groups = ["rule_group_aux", "rule_group_ufo_all", "rule_group_ufo_unique", "rule_group_ufo_some",
                          "rule_group_ufo_cwa"]
 
