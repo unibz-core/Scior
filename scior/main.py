@@ -115,7 +115,7 @@ def run_scior_tester(global_configurations, working_graph):
     classifications_matrix, leaves_matrix = generate_classifications_matrix(before_dataclass_list,
                                                                             ontology_dataclass_list)
 
-    return ontology_dataclass_list, classifications_matrix
+    return ontology_dataclass_list, classifications_matrix, leaves_matrix
 
 
 if __name__ == "__main__":
