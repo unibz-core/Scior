@@ -7,12 +7,12 @@ from scior.modules.resources_gufo import SCIOR_NAMESPACE
 LOGGER = initialize_logger()
 
 
-def run_ir36(ontology_graph: Graph) -> None:
-    """ Executes rule IR36 from group AUX.
+def run_rx01(ontology_graph: Graph) -> None:
+    """ Executes rule RX01 from group AUX.
 
         Definition: Kind(z) ^ subClassOf(x,z) ^ subClassOf(y,z) -> shareKind(x,y)
     """
-    rule_code = "IR36"
+    rule_code = "RX01"
 
     LOGGER.debug(f"Starting rule {rule_code}.")
 
@@ -34,12 +34,12 @@ def run_ir36(ontology_graph: Graph) -> None:
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir37(ontology_graph: Graph) -> None:
-    """ Executes rule IR37 from group AUX.
+def run_rx02(ontology_graph: Graph) -> None:
+    """ Executes rule RX02 from group AUX.
 
         Definition: Kind(z) ^ subClassOf(x,z) ^ shareKind(x,y) -> subClassOf(y,z)
     """
-    rule_code = "IR37"
+    rule_code = "RX02"
 
     LOGGER.debug(f"Starting rule {rule_code}.")
 
@@ -67,7 +67,7 @@ def execute_rules_aux(ontology_graph: Graph) -> None:
 
     ontology_graph.bind("scior", SCIOR_NAMESPACE)
 
-    run_ir36(ontology_graph)
-    run_ir37(ontology_graph)
+    run_rx01(ontology_graph)
+    run_rx02(ontology_graph)
 
     LOGGER.debug("Execution of all rules from group AUX completed.")

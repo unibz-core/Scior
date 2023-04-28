@@ -11,15 +11,16 @@ from scior.modules.utils_dataclass import get_dataclass_by_uri
 LOGGER = initialize_logger()
 
 
-def run_ir47(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR47 from group CWA.
+
+def run_RC01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC01 from group CWA.
 
         Definition: ~(E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))) ^ AntiRigidType(x) ^
                     Sortal(x) ^ subClassOf(x,y) -> ~Category(y)
-        Description: Contraposition (~Q -> ~P) of rule IR30 (P -> Q).
+        Description: Contraposition (~Q -> ~P) of rule RS01 (P -> Q).
     """
 
-    rule_code = "IR47"
+    rule_code = "RC01"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -51,8 +52,9 @@ def run_ir47(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir48(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR48 from group CWA.
+
+def run_RC02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC02 from group CWA.
 
         Definition: ~(E y, z (subClassOf(y,x) ^ AntiRigidType(y) ^ subClassOf(z,x) ^ RigidType(z))) -> ~Mixin(x)
         Description: Contraposition (~Q -> ~P) of rule R25 (P -> Q).
@@ -60,7 +62,7 @@ def run_ir48(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         Added that the subclass cannot be the class itself.
     """
 
-    rule_code = "IR48"
+    rule_code = "RC02"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -95,15 +97,87 @@ def run_ir48(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir49(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR49 from group CWA.
+
+def run_RC03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC03 from group CWA.
+
+        Definition: ~(E y,z (x != y ^ x != z ^ subClassOf(x,y) ^ subClassOf(z,y)) -> Kind(x)
+        Description: A class without supertypes or subtypes is a Kind.
+    """
+
+    rule_code = "RC03"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    query_string = """
+        PREFIX gufo: <http://purl.org/nemo/gufo#>
+        SELECT DISTINCT ?class_x
+        WHERE {
+            ?class_x rdf:type owl:Class .
+            FILTER NOT EXISTS {
+                ?class_y rdf:type owl:Class .
+                ?class_y rdfs:subClassOf ?class_x .
+                FILTER (?class_y != ?class_x)
+            }
+            FILTER NOT EXISTS {
+                ?class_z rdf:type owl:Class .
+                ?class_x rdfs:subClassOf ?class_z .
+                FILTER (?class_z != ?class_x)
+            }
+        }
+        """
+
+    query_result = ontology_graph.query(query_string)
+
+    for row in query_result:
+        ontology_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_x.toPython())
+        move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "Kind", rule_code)
+
+    LOGGER.debug(f"Rule {rule_code} concluded.")
+
+
+def run_RC04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC04 from group CWA.
+
+        Definition: ~(E y (subClassOf (x,y) ^ Kind(y))) -> ~Sortal(x)
+        Description: Contraposition (~Q -> ~P) of rule R35 (P -> Q).
+                    If a class does not have a superclass that can be a Kind then it is not a Sortal.
+    """
+
+    rule_code = "RC04"
+
+    LOGGER.debug(f"Starting rule {rule_code}")
+
+    for ontology_dataclass in ontology_dataclass_list:
+
+        # Creating list of superclasses that can be a Kind
+        for superclass in ontology_graph.objects(URIRef(ontology_dataclass.uri), RDFS.subClassOf):
+
+            # Else, check:
+            superclass_dataclass = get_dataclass_by_uri(ontology_dataclass_list, superclass.toPython())
+
+            # Checking if there is at least one superclass that IS or CAN BE a Kind. If there is, continue to the next
+
+            if "Kind" not in superclass_dataclass.not_type:
+                break
+
+        # If a break is not found:
+        # It means that all supertypes cannot be a Kind and that the evaluated dataclass cannot be a Sortal
+        else:
+            move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Sortal", rule_code)
+
+    LOGGER.debug(f"Rule {rule_code} concluded.")
+
+
+def run_RC05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC05 from group CWA.
 
         Definition: ~(E y,z (y!=z ^ Sortal(y) ^ Sortal(z) ^ ~shareKind(y,z) ^ (subClassOf(y,x) v shareSuperClass(x,y)))^
                     (subClassOf(z,x) v shareSuperClass(x,z))) -> ~NonSortal(x)
-        Description: Contraposition (~Q -> ~P) of rule IR31 (P -> Q).
+        Description: Contraposition (~Q -> ~P) of rule RS02 (P -> Q).
     """
 
-    rule_code = "IR49"
+    rule_code = "RC05"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -168,14 +242,15 @@ def run_ir49(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir50(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR50 from group CWA.
+
+def run_RC06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC06 from group CWA.
 
         Definition: ~(E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))) ^ Role(x) ^ subClassOf(x,y) -> ~PhaseMixin(y)
-        Description: Contraposition (~Q -> ~P) of rule IR43 (P -> Q). Variation A.
+        Description: Contraposition (~Q -> ~P) of rule RS06 (P -> Q). Variation A.
     """
 
-    rule_code = "IR50"
+    rule_code = "RC06"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -213,14 +288,14 @@ def run_ir50(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir51(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR51 from group CWA.
+def run_RC07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC07 from group CWA.
 
         Definition: ~(E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))) ^ PhaseMixin(y) ^ subClassOf(x,y) -> ~Role(x)
-        Description: Contraposition (~Q -> ~P) of rule IR43 (P -> Q). Variation B.
+        Description: Contraposition (~Q -> ~P) of rule RS06 (P -> Q). Variation B.
     """
 
-    rule_code = "IR51"
+    rule_code = "RC07"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -258,15 +333,15 @@ def run_ir51(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir52(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR52 from group CWA.
+def run_RC08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC08 from group CWA.
 
         Definition: ~(E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))) -> ~Phase(x)
-        Description: Contraposition (~Q -> ~P) of rule IR44 (P -> Q).
+        Description: Contraposition (~Q -> ~P) of rule RS07 (P -> Q).
                     A class with a single phase cannot be a Kind.
     """
 
-    rule_code = "IR52"
+    rule_code = "RC08"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -320,15 +395,16 @@ def run_ir52(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir53(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR53 from group CWA.
+
+def run_RC09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC09 from group CWA.
 
         Definition: ~(E y (Category (y) ^ isSubClassOf(x,y))) -> ~PhaseMixin(x)
         Description: Contraposition (~Q -> ~P) of rule R45 (P -> Q).
                 If a class does not have a superclass that can be a Category then it is not a PhaseMixin.
     """
 
-    rule_code = "IR53"
+    rule_code = "RC09"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -353,17 +429,17 @@ def run_ir53(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir54(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR54 from group CWA.
+def run_RC10(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC10 from group CWA.
 
         Definition: ~(E z (PhaseMixin(z) ^ Category(y) ^ subClassOf(x,y) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^
                     isSubClassOf(z,y))) -> ~PhaseMixin(x)
-        Description: Contraposition (~Q -> ~P) of rule IR46 (P -> Q). Variation A.
+        Description: Contraposition (~Q -> ~P) of rule RS09 (P -> Q). Variation A.
                     A class X with a known sibling PhaseMixin Z (Z!=X) can only be a PhaseMixin if it has at least one
                     common superclass X that can be a Category.
     """
 
-    rule_code = "IR54"
+    rule_code = "RC10"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -408,17 +484,17 @@ def run_ir54(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir55(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR55 from group CWA.
+def run_RC11(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
+    """ Implements rule RC11 from group CWA.
 
         Definition: ~(E z (PhaseMixin(z) ^ PhaseMixin(x) ^ subClassOf(x,y) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^
                     isSubClassOf(z,y))) -> ~Category(y)
-        Description: Contraposition (~Q -> ~P) of rule IR46 (P -> Q). Variation B.
+        Description: Contraposition (~Q -> ~P) of rule RS09 (P -> Q). Variation B.
                     A class Y with a known PhaseMixin Z subclass can only be a Category if it at least a
                     subclass X (Y!=Z) that can be a PhaseMixin.
     """
 
-    rule_code = "IR55"
+    rule_code = "RC11"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -466,90 +542,21 @@ def run_ir55(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir56(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR56 from group CWA.
-
-        Definition: ~(E y (subClassOf (x,y) ^ Kind(y))) -> ~Sortal(x)
-        Description: Contraposition (~Q -> ~P) of rule R35 (P -> Q).
-                    If a class does not have a superclass that can be a Kind then it is not a Sortal.
-    """
-
-    rule_code = "IR56"
-
-    LOGGER.debug(f"Starting rule {rule_code}")
-
-    for ontology_dataclass in ontology_dataclass_list:
-
-        # Creating list of superclasses that can be a Kind
-        for superclass in ontology_graph.objects(URIRef(ontology_dataclass.uri), RDFS.subClassOf):
-
-            # Else, check:
-            superclass_dataclass = get_dataclass_by_uri(ontology_dataclass_list, superclass.toPython())
-
-            # Checking if there is at least one superclass that IS or CAN BE a Kind. If there is, continue to the next
-
-            if "Kind" not in superclass_dataclass.not_type:
-                break
-
-        # If a break is not found:
-        # It means that all supertypes cannot be a Kind and that the evaluated dataclass cannot be a Sortal
-        else:
-            move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Sortal", rule_code)
-
-    LOGGER.debug(f"Rule {rule_code} concluded.")
-
-
-def run_ir57(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Implements rule IR57 from group CWA.
-
-        Definition: ~(E y,z (x != y ^ x != z ^ subClassOf(x,y) ^ subClassOf(z,y)) -> Kind(x)
-        Description: A class without supertypes or subtypes is a Kind.
-    """
-
-    rule_code = "IR57"
-
-    LOGGER.debug(f"Starting rule {rule_code}")
-
-    query_string = """
-        PREFIX gufo: <http://purl.org/nemo/gufo#>
-        SELECT DISTINCT ?class_x
-        WHERE {
-            ?class_x rdf:type owl:Class .
-            FILTER NOT EXISTS {
-                ?class_y rdf:type owl:Class .
-                ?class_y rdfs:subClassOf ?class_x .
-                FILTER (?class_y != ?class_x)
-            }
-            FILTER NOT EXISTS {
-                ?class_z rdf:type owl:Class .
-                ?class_x rdfs:subClassOf ?class_z .
-                FILTER (?class_z != ?class_x)
-            }
-        }
-        """
-
-    query_result = ontology_graph.query(query_string)
-
-    for row in query_result:
-        ontology_dataclass = get_dataclass_by_uri(ontology_dataclass_list, row.class_x.toPython())
-        move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "Kind", rule_code)
-
-
 def execute_rules_ufo_cwa(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Call execution all rules from the group UFO CWA. """
 
     LOGGER.debug("Starting execution of all rules from group UFO CWA.")
 
-    run_ir47(ontology_dataclass_list, ontology_graph)
-    run_ir48(ontology_dataclass_list, ontology_graph)
-    run_ir49(ontology_dataclass_list, ontology_graph)
-    run_ir50(ontology_dataclass_list, ontology_graph)
-    run_ir51(ontology_dataclass_list, ontology_graph)
-    run_ir52(ontology_dataclass_list, ontology_graph)
-    run_ir53(ontology_dataclass_list, ontology_graph)
-    run_ir54(ontology_dataclass_list, ontology_graph)
-    run_ir55(ontology_dataclass_list, ontology_graph)
-    run_ir56(ontology_dataclass_list, ontology_graph)
-    run_ir57(ontology_dataclass_list, ontology_graph)
+    run_RC01(ontology_dataclass_list, ontology_graph)
+    run_RC02(ontology_dataclass_list, ontology_graph)
+    run_RC03(ontology_dataclass_list, ontology_graph)
+    run_RC04(ontology_dataclass_list, ontology_graph)
+    run_RC05(ontology_dataclass_list, ontology_graph)
+    run_RC06(ontology_dataclass_list, ontology_graph)
+    run_RC07(ontology_dataclass_list, ontology_graph)
+    run_RC08(ontology_dataclass_list, ontology_graph)
+    run_RC09(ontology_dataclass_list, ontology_graph)
+    run_RC10(ontology_dataclass_list, ontology_graph)
+    run_RC11(ontology_dataclass_list, ontology_graph)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")

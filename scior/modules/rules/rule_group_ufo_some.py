@@ -57,16 +57,16 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
         report_error_end_of_switch(rule_code, current_function)
 
 
-def run_ir30(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+def run_rs01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Executes rule IR30 from group UFO.
+    """ Executes rule RS01 from group UFO.
 
         Definition: AntiRigidType(x) ^ Sortal(x) ^ Category(y) ^ subClassOf(x,y) ->
                     E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: AntiRigid Sortals cannot "directly specialize" Categories. This must be done through a Ridig Sortal.
     """
 
-    rule_code = "IR30"
+    rule_code = "RS01"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -114,15 +114,15 @@ def run_ir30(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir31(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+def run_rs02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Executes rule IR31 from group UFO Some.
+    """ Executes rule RS02 from group UFO Some.
 
         Definition: Mixin(x) -> E y (subClassOf(y,x) ^ AntiRigidType(y))
     Description: Mixins must generalize at least one AntiRigidType.
     """
 
-    rule_code = "IR31"
+    rule_code = "RS02"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -166,15 +166,15 @@ def run_ir31(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir32(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+def run_rs03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Executes rule IR32 from group UFO Some.
+    """ Executes rule RS03 from group UFO Some.
 
         Definition: Mixin(x) -> E y (subClassOf(y,x) ^ RigidType(y))
     Description: Mixins must generalize at least one RigidType.
     """
 
-    rule_code = "IR32"
+    rule_code = "RS03"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -218,16 +218,16 @@ def run_ir32(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir39(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+def run_rs04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Executes rule IR39 from group UFO Some.
+    """ Executes rule RS04 from group UFO Some.
 
         Definition: NonSortal(x) -> E y (Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)))
     Description: NonSortals must be related to at least one Sortal that has a subClassOf or shareSuperClass
                     relation with it.
     """
 
-    rule_code = "IR39"
+    rule_code = "RS04"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -272,9 +272,9 @@ def run_ir39(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir40(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+def run_rs05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Executes rule IR40 from group UFO Some.
+    """ Executes rule RS05 from group UFO Some.
 
         Definition: NonSortal(x) ^ Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)) ->
                 E z (y != z ^ Sortal(z) ^ ~shareKind(y,z) ^ (subClassOf(z,x) v shareSuperClass(x,z)))
@@ -282,7 +282,7 @@ def run_ir40(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
                     must be related to another Sortal that has a subClassOf or shareSuperClass relation with it.
     """
 
-    rule_code = "IR40"
+    rule_code = "RS05"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -331,15 +331,15 @@ def run_ir40(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir43(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+def run_rs06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Executes rule IR43 from group UFO Some.
+    """ Executes rule RS06 from group UFO Some.
 
         Definition: Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: A Role cannot "specialize directly"  a PhaseMixin. This must be done through a Phase.
     """
 
-    rule_code = "IR43"
+    rule_code = "RS06"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -386,15 +386,15 @@ def run_ir43(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir44(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+def run_rs07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Executes rule IR44 from group UFO Some.
+    """ Executes rule RS07 from group UFO Some.
 
         Definition: Phase(x) -> E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))
     Description: There must exist at least two Phases that share the same Kind and that do not specialize each other.
     """
 
-    rule_code = "IR44"
+    rule_code = "RS07"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -453,15 +453,15 @@ def run_ir44(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir45(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+def run_rs08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Executes rule IR45 from group UFO Some.
+    """ Executes rule RS08 from group UFO Some.
 
         Definition: PhaseMixin(x) -> E y (Category (y) ^ isSubClassOf(x,y))
     Description: EveryPhaseMixin specialize at least one Category.
     """
 
-    rule_code = "IR45"
+    rule_code = "RS08"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -505,9 +505,9 @@ def run_ir45(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def run_ir46(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+def run_rs09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Executes rule IR46 from group UFO Some.
+    """ Executes rule RS09 from group UFO Some.
 
         Definition: PhaseMixin(x) ^ Category(y) ^ subClassOf(x,y) ->
                 E z (PhaseMixin(z) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^ isSubClassOf(z,y))
@@ -515,7 +515,7 @@ def run_ir46(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
                     and that do not specialize each other.
     """
 
-    rule_code = "IR46"
+    rule_code = "RS09"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -581,14 +581,14 @@ def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ont
 
     LOGGER.debug("Starting execution of all rules from group UFO Some.")
 
-    run_ir30(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir31(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir32(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir39(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir40(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir43(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir44(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir45(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_ir46(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs01(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs02(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs03(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs04(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs05(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs06(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs07(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs08(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs09(ontology_dataclass_list, ontology_graph, incompleteness_stack)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")

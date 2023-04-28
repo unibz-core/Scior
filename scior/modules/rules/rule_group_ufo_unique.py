@@ -69,15 +69,15 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
         report_error_end_of_switch(rule_code, current_function)
 
 
-def run_ir35(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
+def run_ru01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Executes rule IR35 from group UFO.
+    """ Executes rule RU01 from group UFO.
 
         Definition: Sortal(x) -> E! y (subClassOf (x,y) ^ Kind(y))
     Description: Every Sortal must have a unique identity provider, i.e., a single Kind as supertype.
     """
 
-    rule_code = "IR35"
+    rule_code = "RU01"
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
@@ -115,6 +115,6 @@ def execute_rules_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], o
 
     LOGGER.debug("Starting execution of all rules from group UFO Unique.")
 
-    run_ir35(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_ru01(ontology_dataclass_list, ontology_graph, incompleteness_stack)
 
     LOGGER.debug("Execution of all rules from group UFO Unique completed.")
