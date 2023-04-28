@@ -3,7 +3,8 @@
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_dataclass
-from scior.modules.resources_gufo import GUFO_LIST_FINAL_CLASSIFICATIONS, GUFO_LIST_ENDURANT_TYPES
+
+from scior.modules.resources_gufo import GUFO_LIST_LEAF_CLASSIFICATIONS, GUFO_LIST_ENDURANT_TYPES
 
 LOGGER = initialize_logger()
 
@@ -52,7 +53,7 @@ def verify_dataclass_multiple_final_classifications(ontology_dataclass: Ontology
         AUXILIARY FUNCTION! MUST NOT BE USED OUTSIDE FUNCTION verify_all_ontology_dataclasses_consistency.
     """
 
-    final_classifications = set(ontology_dataclass.is_type).intersection(GUFO_LIST_FINAL_CLASSIFICATIONS)
+    final_classifications = set(ontology_dataclass.is_type).intersection(GUFO_LIST_LEAF_CLASSIFICATIONS)
 
     if len(final_classifications) > 1:
         additional_message = f"Multiple final classification(s) ({final_classifications}) found in IS_TYPE list."

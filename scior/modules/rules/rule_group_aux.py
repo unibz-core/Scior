@@ -2,16 +2,15 @@
 from rdflib import URIRef, RDFS, Graph
 
 from scior.modules.logger_config import initialize_logger
+from scior.modules.resources_gufo import SCIOR_NAMESPACE
 
-SCIOR_NAMESPACE = "https://purl.org/scior/"
 LOGGER = initialize_logger()
 
 
 def run_ir36(ontology_graph: Graph) -> None:
     """ Executes rule IR36 from group AUX.
 
-    Code: IR36
-    Definition: Kind(z) ^ subClassOf(x,z) ^ subClassOf(y,z) -> shareKind(x,y)
+        Definition: Kind(z) ^ subClassOf(x,z) ^ subClassOf(y,z) -> shareKind(x,y)
     """
     rule_code = "IR36"
 
@@ -38,8 +37,7 @@ def run_ir36(ontology_graph: Graph) -> None:
 def run_ir37(ontology_graph: Graph) -> None:
     """ Executes rule IR37 from group AUX.
 
-    Code: IR37
-    Definition: Kind(z) ^ subClassOf(x,z) ^ shareKind(x,y) -> subClassOf(y,z)
+        Definition: Kind(z) ^ subClassOf(x,z) ^ shareKind(x,y) -> subClassOf(y,z)
     """
     rule_code = "IR37"
 

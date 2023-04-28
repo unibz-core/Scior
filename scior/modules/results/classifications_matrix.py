@@ -23,6 +23,8 @@
     """
 
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
+
+from scior.modules.resources_gufo import GUFO_LIST_ENDURANT_TYPES, GUFO_LIST_LEAF_CLASSIFICATIONS
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 
@@ -38,6 +40,30 @@ def generate_empty_matrix(matrix_size: int) -> list[list]:
         empty_matrix.append(new_line)
 
     return empty_matrix
+
+
+
+def populate_leaves_matrix(leaves_matrix: list[list], before_dataclass_list: list[OntologyDataClass],
+                           after_dataclass_list: list[OntologyDataClass]) -> list[list]:
+    """ Populates the leaves_matrix (that is received as an argument filled with zeros). """
+
+    for after_dataclass in after_dataclass_list:
+        before_dataclass = get_dataclass_by_uri(before_dataclass_list, after_dataclass.uri)
+
+        known_size_b = 0
+        known_size_a = 0
+
+        for leaf_classification in GUFO_LIST_LEAF_CLASSIFICATIONS:
+
+            # Calculating known size before and after
+            if leaf_classification not in before_dataclass.can_type:
+                known_size_b += 1
+            if leaf_classification not in after_dataclass.can_type:
+                known_size_a += 1
+
+        leaves_matrix[known_size_b][known_size_a] += 1
+
+    return leaves_matrix
 
 
 def populate_classifications_matrix(classifications_matrix: list[list], before_dataclass_list: list[OntologyDataClass],
@@ -65,17 +91,32 @@ def populate_classifications_matrix(classifications_matrix: list[list], before_d
 
 
 def generate_classifications_matrix(before_dataclass_list: list[OntologyDataClass],
-                                    after_dataclass_list: list[OntologyDataClass]) -> list[list]:
+
+                                    after_dataclass_list: list[OntologyDataClass]) -> tuple[list[list], list[list]]:
     """ Receives 'before' and 'after' lists of ontology dataclasses and creates the classifications matrix. """
 
-    # Number of possible classifications (including 0 and excluding the base classification 'EndurantType')
-    matrix_size = 15
+    # TOTAL CLASSIFICATIONS' MATRIX
 
-    # Generating new matrix
-    classifications_matrix = generate_empty_matrix(matrix_size)
+    # Total number of possible classifications (including 0 and excluding 'EndurantType'). Result = 15
+    classifications_matrix_size = len(GUFO_LIST_ENDURANT_TYPES)
+
+    # Generating new classifications matrix
+    classifications_matrix = generate_empty_matrix(classifications_matrix_size)
 
     # Populate the classifications matrix
     classifications_matrix = populate_classifications_matrix(classifications_matrix, before_dataclass_list,
                                                              after_dataclass_list)
 
-    return classifications_matrix
+
+    # LEAF CLASSIFICATIONS' MATRIX
+
+    # Number of possible leaf classifications (including 0, as there is no). Result = 9
+    leaves_matrix_size = len(GUFO_LIST_LEAF_CLASSIFICATIONS) + 1
+
+    # Generating new leaves matrix
+    leaves_matrix = generate_empty_matrix(leaves_matrix_size)
+
+    # Populate the classifications matrix
+    leaves_matrix = populate_leaves_matrix(leaves_matrix, before_dataclass_list, after_dataclass_list)
+
+    return classifications_matrix, leaves_matrix

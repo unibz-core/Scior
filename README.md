@@ -7,8 +7,8 @@ Identification of Ontological Categories for OWL Ontologies, a Python command-li
 semi-automatic semantic improvement of lightweight web ontologies. We aim to reach the referred semantic improvement via
 the association of [gUFO](https://nemo-ufes.github.io/gufo/)—a lightweight implementation of
 the [Unified Foundational Ontology (UFO)](https://nemo.inf.ufes.br/wp-content/uploads/ufo_unified_foundational_ontology_2021.pdf)
-—concepts to the OWL entities. The aim of gUFO is “*to provide a lightweight implementation of the Unified Foundational
-Ontology (UFO) suitable for Semantic Web OWL 2 DL applications*”.
+—concepts to the OWL entities. The aim of gUFO is “_to provide a lightweight implementation of the Unified Foundational
+Ontology (UFO) suitable for Semantic Web OWL 2 DL applications_”.
 
 ## Contents
 
@@ -26,7 +26,9 @@ Please access the following links for more information.
 
 - [Functioning Overview](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Functioning.md)
 - [Execution Modes](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Execution-Modes.md)
-- [Implemented Rules](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-ImplementedRules.md)
+- [Theoretical Rules](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Theoretical-Rules.md)
+- [Implemented Rules Definitions](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Implemented-Rules-Definitions.md)
+- [Implemented Rules Actions](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Implemented-Rules-Actions.md)
 
 ## Installation Requirements
 
@@ -56,32 +58,40 @@ python scior -h
 After executing the command above, Scior will provide all its usages and valid arguments, which are:
 
 ```txt
-usage: scior [-h] [-i | -a] [-n | -c] [-r] [-t] [-g1] [-g2] [-v] ontology_file
+usage: scior [-h] [-i | -a] [-cwa | -owa | -owal] [-s | -r | -d]
+             [-gr | -gi | -gw] [-v]ontology_file
 
 Scior - Identification of Ontological Categories for OWL Ontologies
 
 positional arguments:
-ontology_file The path of the ontology file to be loaded.
+  ontology_file         The path of the ontology file to be loaded.
 
 options:
--h, --help          Show this help message and exit.
--i, --interactive   Executes automatic rules whenever possible. Executes interactive rules only if necessary.
--a, --automatic     Executes only automatic rules. Interactive rules are not performed.
--n, --incomplete    The loaded ontology is an incomplete model.
--c, --complete      The loaded ontology is a complete model.
--r, --reasoning     Enable RDF reasoning for graph expansion.
--t, --times         Prints the execution times of all functions.
--g1, --gufo1        Imports gUFO ontology in the output ontology file.
--g2, --gufo2        Saves all gUFO statements in the output ontology file.
--v, --version       Prints the software version and exit.
+  -h, --help            show this help message and exit
+  -i, --interactive     Execute automatic rules whenever possible, interactive
+                        rules when necessary.
+  -a, --automatic       * Execute only automatic rules. Interactive rules are
+                        not performed.
+  -cwa, --is_cwa        Operate in Closed-World Assumption (CWA).
+  -owa, --is_owa        * Operate in Open-World Assumption (OWA) - Regular
+                        Mode.
+  -owal, --is_owa_light
+                        Operate in Open-World Assumption (OWA) - Light Mode.
+  -s, --silent          Silent mode. Print only basic execution status
+                        information.
+  -r, --verbose         * Print basic execution information and results.
+  -d, --debug           Generates tons of log for debugging.
+  -gr, --gufo_results   * Write in the output ontology file only the gUFO
+                        classifications found.
+  -gi, --gufo_import    Import gUFO ontology in the output ontology file.
+  -gw, --gufo_write     Write all gUFO statements in the output ontology file.
+  -v, --version         Print the software version and exit.
+
+Asterisks indicate default values.
 ```
 
 You can find more information about the execution options in
 the [related documentation file](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Execution-Modes.md).
-
-**IMPORTANT:** Please note that because of a
-problem [registered in this open issue](https://github.com/unibz-core/Scior/issues/11), the software may not be executed
-as we here present it.
 
 ## Related Repositories
 
@@ -110,22 +120,31 @@ In short:
 - [Scior-Dataset](https://github.com/unibz-core/Scior-Dataset): contains data resulting from the Scior-Tester.
 - [OntoUML/UFO Catalog](https://github.com/unibz-core/ontouml-models): source of models used for the performed tests.
 
+## How to Cite
+
+Please use the following reference to cite this work:
+
+*Barcelos, P. P. F., Sales, T. P., Romanenko, E., Almeida, J. P. A., Engelberg, G., & Klein, D. (2023). Inferring
+Ontological Categories of OWL Classes Using Foundational Rules. 13th International Conference on Formal Ontology in
+Information Systems (FOIS 2023). <https://purl.org/scior>*
+
 ## Contributors
 
-- PhD. Pedro Paulo Favato
+- PhD. Pedro Paulo F.
   Barcelos [[GitHub]](https://github.com/pedropaulofb) [[LinkedIn]](https://www.linkedin.com/in/pedro-paulo-favato-barcelos/)
 - PhD. Tiago Prince
   Sales [[GitHub]](https://github.com/tgoprince) [[LinkedIn]](https://www.linkedin.com/in/tiago-sales/)
 - MSc. Elena Romanenko [[GitHub]](https://github.com/mozzherina)
 - Prof. PhD. Giancarlo Guizzardi [[LinkedIn]](https://www.linkedin.com/in/giancarlo-guizzardi-bb51aa75/)
+- Prof. João Paulo A. Almeida [[GitHub]](https://github.com/jpalmeida)
 - Eng. MSc. Gal
   Engelberg [[GitHub]](https://github.com/GalEngelberg) [[LinkedIn]](https://www.linkedin.com/in/gal-engelberg/)
-- MBA Dan Klein [[GitHub](https://github.com/danklein10)] [[LinkedIn](https://www.linkedin.com/in/~danklein/)]
+- MBA Dan Klein [[GitHub]](https://github.com/danklein10) [[LinkedIn]](https://www.linkedin.com/in/~danklein/)
 
 Please get in touch with this software’s contributors using the provided links or **
 preferably** [open an issue](https://github.com/unibz-core/ontouml-models-tools/issues/) in case of doubts or problems
 found.
 
-## Acknowledgements
+## Acknowledgments
 
 This work is a collaboration with Accenture Israel Cybersecurity Labs.

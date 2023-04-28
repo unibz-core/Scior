@@ -11,8 +11,7 @@ SCIOR_NAMESPACE = "https://purl.org/scior/"
 def run_ir01(ontology_graph):
     """ Executes rule IR01 from group base.
 
-    Code: IR01
-    Definition: subClassOf(x,x)
+        Definition: subClassOf(x,x)
     Description: rdfs:subClassOf is reflexive. All owl:Classe instances are rdfs:subClassOf themselves.
     """
 
@@ -29,8 +28,7 @@ def run_ir01(ontology_graph):
 def run_ir02(ontology_graph):
     """ Executes rule IR02 from group base.
 
-    Code: IR02
-    Definition: subClassOf(x,y) ^ subClassOf(y,z) -> subClassOf(x,z)
+        Definition: subClassOf(x,y) ^ subClassOf(y,z) -> subClassOf(x,z)
     Description: rdfs:subClassOf is transitive. All owl:Classe instances are rdfs:subClassOf of all their superclasses.
     """
     rule_code = "IR02"
@@ -56,8 +54,7 @@ def run_ir02(ontology_graph):
 def run_ir38(ontology_graph):
     """ Executes rule IR38 from group BASE.
 
-    Code: IR38
-    Definition: subClassOf(x,z) ^ subClassOf(y,z) -> shareSuperClass(x,y)
+        Definition: subClassOf(x,z) ^ subClassOf(y,z) -> shareSuperClass(x,y)
     """
     rule_code = "IR38"
 
