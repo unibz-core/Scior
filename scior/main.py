@@ -109,7 +109,7 @@ def run_scior_tester(tester_arguments, working_graph):
     # DATA LOADINGS AND INITIALIZATIONS
     logger = initialize_logger("Scior-Tester")
 
-    args.treat_user_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL, tester_arguments)
+    args.publish_global_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL, tester_arguments)
 
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, SCOPE_RESTRICTION)
     load_known_gufo_information(working_graph, ontology_dataclass_list)
