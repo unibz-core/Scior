@@ -23,6 +23,7 @@
     """
 
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
+
 from scior.modules.resources_gufo import GUFO_LIST_ENDURANT_TYPES, GUFO_LIST_LEAF_CLASSIFICATIONS
 from scior.modules.utils_dataclass import get_dataclass_by_uri
 
@@ -39,6 +40,7 @@ def generate_empty_matrix(matrix_size: int) -> list[list]:
         empty_matrix.append(new_line)
 
     return empty_matrix
+
 
 
 def populate_leaves_matrix(leaves_matrix: list[list], before_dataclass_list: list[OntologyDataClass],
@@ -89,6 +91,7 @@ def populate_classifications_matrix(classifications_matrix: list[list], before_d
 
 
 def generate_classifications_matrix(before_dataclass_list: list[OntologyDataClass],
+
                                     after_dataclass_list: list[OntologyDataClass]) -> tuple[list[list], list[list]]:
     """ Receives 'before' and 'after' lists of ontology dataclasses and creates the classifications matrix. """
 
@@ -103,6 +106,7 @@ def generate_classifications_matrix(before_dataclass_list: list[OntologyDataClas
     # Populate the classifications matrix
     classifications_matrix = populate_classifications_matrix(classifications_matrix, before_dataclass_list,
                                                              after_dataclass_list)
+
 
     # LEAF CLASSIFICATIONS' MATRIX
 
