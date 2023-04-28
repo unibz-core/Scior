@@ -218,23 +218,34 @@ def execute_gufo_negative_rules(ontology_dataclass_list):
 
     for ontology_dataclass in ontology_dataclass_list:
 
-        # IR13: ~Sortal(x) -> NonSortal(x)
+        # IR13: ~Sortal(x) -> NonSortal(x) ^ ~Kind(x) ^ ~SubKind(x) ^ ~Role(x) ^ ~Phase(x)
         if "Sortal" in ontology_dataclass.not_type:
             rule_code = "IR13"
             # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
             m.move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "NonSortal", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Kind", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "SubKind", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Role", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Phase", rule_code)
 
-        # IR14: ~NonSortal(x) -> Sortal(x)
+        # IR14: ~NonSortal(x) -> Sortal(x) ^ ~Category(x) ^ ~PhaseMixin(x) ^ ~RoleMixin(x) ^ ~Mixin(x)
         if "NonSortal" in ontology_dataclass.not_type:
             rule_code = "IR14"
             # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
             m.move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "Sortal", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Category", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "PhaseMixin", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "RoleMixin", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Mixin", rule_code)
 
-        # IR04: ~RigidType(x) -> NonRigidType(x)
+        # IR04: ~RigidType(x) -> NonRigidType(x) ^ ~Kind(x) ^ ~SubKind(x) ^ ~Category(x)
         if "RigidType" in ontology_dataclass.not_type:
             rule_code = "IR04"
             # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
             m.move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "NonRigidType", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Kind", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "SubKind", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Category", rule_code)
 
         # IR06: ~AntiRigidType(x) ^ ~SemiRigidType(x) -> RigidType(x)
         if "AntiRigidType" in ontology_dataclass.not_type and "SemiRigidType" in ontology_dataclass.not_type:
@@ -249,32 +260,49 @@ def execute_gufo_negative_rules(ontology_dataclass_list):
             m.move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "RigidType", rule_code)
 
         # IR11: ~Role(x) ^ ~Phase(x) ^ ~RoleMixin(x) ^ ~PhaseMixin(x) ^ ~Mixin(x) -> RigidType(x)
-        if "Role" in ontology_dataclass.not_type and "Phase" in ontology_dataclass.not_type and "RoleMixin" in ontology_dataclass.not_type and "PhaseMixin" in ontology_dataclass.not_type and "Mixin" in ontology_dataclass.not_type:
+        if "Role" in ontology_dataclass.not_type and "Phase" in ontology_dataclass.not_type and \
+                "RoleMixin" in ontology_dataclass.not_type and "PhaseMixin" in ontology_dataclass.not_type and \
+                "Mixin" in ontology_dataclass.not_type:
             rule_code = "IR11"
             # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
             m.move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "RigidType", rule_code)
 
         # IR09: ~Category(x) ^ ~Kind(x) ^ ~SubKind(x) ^ ~Mixin(x) -> AntiRigidType(x)
-        if "Category" in ontology_dataclass.not_type and "Kind" in ontology_dataclass.not_type and "SubKind" in ontology_dataclass.not_type and "Mixin" in ontology_dataclass.not_type:
+        if "Category" in ontology_dataclass.not_type and "Kind" in ontology_dataclass.not_type and \
+                "SubKind" in ontology_dataclass.not_type and "Mixin" in ontology_dataclass.not_type:
             rule_code = "IR09"
             # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
             m.move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "AntiRigidType", rule_code)
 
         # IR08:    ~Category(x) ^ ~Kind(x) ^ ~SubKind(x) ^ ~Role(x) ^ ~Phase(x) ^ ~RoleMixin(x) ^ ~PhaseMixin(x) ->
         #           SemiRigidType(x)
-        if "Category" in ontology_dataclass.not_type and "Kind" in ontology_dataclass.not_type and "SubKind" in ontology_dataclass.not_type and "Role" in ontology_dataclass.not_type and "Phase" in ontology_dataclass.not_type and "RoleMixin" in ontology_dataclass.not_type and "PhaseMixin" in ontology_dataclass.not_type:
+        if "Category" in ontology_dataclass.not_type and "Kind" in ontology_dataclass.not_type and \
+                "SubKind" in ontology_dataclass.not_type and "Role" in ontology_dataclass.not_type and \
+                "Phase" in ontology_dataclass.not_type and "RoleMixin" in ontology_dataclass.not_type and \
+                "PhaseMixin" in ontology_dataclass.not_type:
             rule_code = "IR08"
             # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
             m.move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "SemiRigidType", rule_code)
 
         # IR15: ~Kind(x) ^ ~Phase(x) ^ ~Role(x) ^ ~SubKind(x) -> NonSortal(x)
-        if "Kind" in ontology_dataclass.not_type and "Phase" in ontology_dataclass.not_type and "Role" in ontology_dataclass.not_type and "SubKind" in ontology_dataclass.not_type:
+        if "Kind" in ontology_dataclass.not_type and "Phase" in ontology_dataclass.not_type and \
+                "Role" in ontology_dataclass.not_type and "SubKind" in ontology_dataclass.not_type:
             rule_code = "IR15"
             # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
             m.move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "NonSortal", rule_code)
 
         # IR17: ~Category(x) ^ ~PhaseMixin(x) ^ ~RoleMixin(x) ^ ~Mixin(x) -> Sortal(x)
-        if "Category" in ontology_dataclass.not_type and "PhaseMixin" in ontology_dataclass.not_type and "RoleMixin" in ontology_dataclass.not_type and "Mixin" in ontology_dataclass.not_type:
+        if "Category" in ontology_dataclass.not_type and "PhaseMixin" in ontology_dataclass.not_type and \
+                "RoleMixin" in ontology_dataclass.not_type and "Mixin" in ontology_dataclass.not_type:
             rule_code = "IR17"
             # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
             m.move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "Sortal", rule_code)
+
+        # IR58: ~AntiRigidType(x) -> ~Role(x) ^ ~Phase(x) ^ ~RoleMixin(x) ^ ~PhaseMixin(x)
+        if "AntiRigidType" in ontology_dataclass.not_type:
+            rule_code = "IR17"
+            # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Role", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Phase", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "RoleMixin", rule_code)
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "PhaseMixin", rule_code)
