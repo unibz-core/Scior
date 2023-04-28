@@ -8,7 +8,7 @@ LOGGER = initialize_logger()
 ARGUMENTS = {}
 
 
-def treat_user_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> None:
+def treat_user_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> dict:
     """ Treat arguments provided by the user when starting software execution. """
 
     LOGGER.debug("Parsing arguments...")
