@@ -5,6 +5,7 @@ import argparse
 from scior.modules.logger_config import initialize_logger
 
 LOGGER = initialize_logger()
+ARGUMENTS = {}
 
 
 def treat_user_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str) -> None:
