@@ -124,7 +124,7 @@ def treat_user_arguments(software_acronym: str, software_name: str, software_ver
 
 def publish_global_arguments(software_acronym: str, software_name: str, software_version: str, software_url: str,
                              arguments_dictionary: dict = None) -> None:
-    # Making ARGUMENTS a global variable
+    """ Makes ARGUMENTS a global variable. """
 
     # Scior: dict equals None. Scior-Tester: the dictionary is directly received as argument.
     if arguments_dictionary is None:
