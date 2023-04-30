@@ -391,7 +391,7 @@ def run_rs07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     """ Executes rule RS07 from group UFO Some.
 
         Definition: Phase(x) -> E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))
-    Description: There must exist at least two Phases that share the same Kind and that do not specialize each other.
+        Description: There must exist at least two Phases that share the same Kind and that do not specialize each other
     """
 
     rule_code = "RS07"
@@ -405,23 +405,24 @@ def run_rs07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             WHERE {
                 ?class_x rdf:type gufo:Phase .
                 ?class_x scior:shareKind ?class_y .
+                FILTER (?class_x != ?class_y)
             } """
 
     query_result = ontology_graph.query(query_string)
+    is_dictionary = {}
+    can_dictionary = {}
 
     for row in query_result:
-
-        is_list = []
-        can_list = []
 
         # Class to be completed or that may be incomplete
         evaluated_class = row.class_x.toPython()
         # Class that may be used to complete the evaluated_dataclass
         selected_class = row.class_y.toPython()
 
-        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
-        if evaluated_dataclass is None:
-            report_error_dataclass_not_found(evaluated_class)
+        # If x not in dictionary yet, create it
+        if evaluated_class not in is_dictionary.keys():
+            is_dictionary[evaluated_class] = []
+            can_dictionary[evaluated_class] = []
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
 
@@ -441,14 +442,16 @@ def run_rs07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
             # Creating IS List
             if "Phase" in selected_dataclass.is_type:
-                is_list.append(selected_dataclass.uri)
+                is_dictionary[evaluated_class].append(selected_dataclass.uri)
 
             # Creating CAN List
             elif "Phase" in selected_dataclass.can_type:
-                can_list.append(selected_dataclass.uri)
+                can_dictionary[evaluated_class].append(selected_dataclass.uri)
 
-            treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Phase"], rule_code,
-                                  incompleteness_stack)
+    for evaluated in is_dictionary.keys():
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_dictionary[evaluated],
+                              is_dictionary[evaluated], ["Phase"], rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
