@@ -312,30 +312,35 @@ def run_rs05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         } """
 
     query_result = ontology_graph.query(query_string)
+    is_dictionary = {}
+    can_dictionary = {}
 
     for row in query_result:
-
-        is_list = []
-        can_list = []
 
         # Class to be completed or that may be incomplete
         evaluated_class = row.class_x.toPython()
         # Class that may be used to complete the evaluated_dataclass
         selected_class = row.class_z.toPython()
 
-        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        # If evaluated_class not in dictionary yet, create it
+        if evaluated_class not in is_dictionary.keys():
+            is_dictionary[evaluated_class] = []
+            can_dictionary[evaluated_class] = []
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
 
         # Creating IS List
         if "Sortal" in selected_dataclass.is_type:
-            is_list.append(selected_dataclass.uri)
+            is_dictionary[evaluated_class].append(selected_class)
 
         # Creating CAN List
         elif "Sortal" in selected_dataclass.can_type:
-            can_list.append(selected_dataclass.uri)
+            can_dictionary[evaluated_class].append(selected_class)
 
-        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Sortal"], rule_code,
+    for evaluated in is_dictionary.keys():
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_dictionary[evaluated],
+                              is_dictionary[evaluated], ["Sortal"], rule_code,
                               incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
