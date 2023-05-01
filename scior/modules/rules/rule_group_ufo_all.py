@@ -1,5 +1,5 @@
 """ Implementation of rules from the group UFO All. """
-from rdflib import Graph
+from rdflib import Graph, URIRef, RDFS
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
@@ -117,9 +117,6 @@ def run_ra04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     query_result = ontology_graph.query(query_string)
 
     for row in query_result:
-
-        print(f"X = {row.class_x.toPython()} AND Y = {row.class_y.toPython()}")
-
         dataclass_y = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
         move_classification_to_is_type(ontology_dataclass_list, dataclass_y, "NonSortal", rule_code)
 
