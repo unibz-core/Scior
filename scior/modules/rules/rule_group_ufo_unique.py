@@ -81,30 +81,39 @@ def run_ru01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
     LOGGER.debug(f"Starting rule {rule_code}")
 
+    is_dictionary = {}
+    can_dictionary = {}
+
     for ontology_dataclass in ontology_dataclass_list:
-        all_supertypes = []
-        can_kind_supertypes = []
 
         # For every Sortal
         if "Sortal" in ontology_dataclass.is_type:
 
-            # Creating a list of all superclasses
-            for superclass in ontology_graph.objects(URIRef(ontology_dataclass.uri), RDFS.subClassOf):
-                all_supertypes.append(superclass.toPython())
+            # Class to be completed or that may be incomplete
+            evaluated_class = ontology_dataclass.uri
 
-            is_kind_supertypes = all_supertypes.copy()
+            # If dataclass not in dictionary yet, create it
+            if evaluated_class not in is_dictionary.keys():
+                is_dictionary[evaluated_class] = []
+                can_dictionary[evaluated_class] = []
 
-            # Removing all superclasses that are not Kinds
-            for ontology_dataclass_sub in ontology_dataclass_list:
-                # Creating list of supertypes that CAN BE Kind
-                if (ontology_dataclass_sub.uri in all_supertypes) and ("Kind" in ontology_dataclass_sub.can_type):
-                    can_kind_supertypes.append(ontology_dataclass_sub.uri)
-                # Creating list of supertypes that ARE Kind
-                if (ontology_dataclass_sub.uri in all_supertypes) and ("Kind" not in ontology_dataclass_sub.is_type):
-                    is_kind_supertypes.remove(ontology_dataclass_sub.uri)
+            # Collecting all superclasses
+            for superclass in ontology_graph.objects(URIRef(evaluated_class), RDFS.subClassOf):
+                superclass_dataclass = get_dataclass_by_uri(ontology_dataclass_list, superclass.toPython())
 
-            treat_result_ufo_unique(ontology_dataclass_list, ontology_dataclass, can_kind_supertypes,
-                                    is_kind_supertypes, ["Kind"], rule_code, incompleteness_stack)
+                # if IS Kind, add to is dictionary
+                if "Kind" in superclass_dataclass.is_type:
+                    is_dictionary[evaluated_class].append(superclass_dataclass.uri)
+                # if CAN BE Kind, add to can dictionary (else, do nothing)
+                elif "Kind" in superclass_dataclass.can_type:
+                    can_dictionary[evaluated_class].append(superclass_dataclass.uri)
+                # if CANNOT BE Kind, evaluate the next superclass
+
+        # Treat after collecting all necessary information
+        for evaluated in is_dictionary.keys():
+            evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
+            treat_result_ufo_unique(ontology_dataclass_list, evaluated_dataclass, can_dictionary[evaluated],
+                                    is_dictionary[evaluated], ["Kind"], rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 

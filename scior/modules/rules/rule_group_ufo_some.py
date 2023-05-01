@@ -83,33 +83,42 @@ def run_rs01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         } """
 
     query_result = ontology_graph.query(query_string)
+    is_dictionary = {}
+    can_dictionary = {}
 
     for row in query_result:
-
-        is_list = []
-        can_list = []
 
         # Class to be completed or that may be incomplete
         evaluated_class = row.class_y.toPython()
         # Class that may be used to complete the evaluated_dataclass
         selected_class = row.class_z.toPython()
 
-        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
-        if evaluated_dataclass is None:
-            report_error_dataclass_not_found(evaluated_class)
+        # If x not in dictionary yet, create it
+        if evaluated_class not in is_dictionary.keys():
+            is_dictionary[evaluated_class] = []
+            can_dictionary[evaluated_class] = []
 
+        # print(f"{evaluated_class = }")
+        # print(f"{selected_class = }")
+
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
 
         # Creating IS List
         if "RigidType" in selected_dataclass.is_type and "Sortal" in selected_dataclass.is_type:
-            is_list.append(selected_dataclass.uri)
+            is_dictionary[evaluated_class].append(selected_dataclass.uri)
 
         # Creating CAN List
         elif "RigidType" not in selected_dataclass.not_type and "Sortal" not in selected_dataclass.not_type:
-            can_list.append(selected_dataclass.uri)
+            can_dictionary[evaluated_class].append(selected_dataclass.uri)
 
-        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["RigidType", "Sortal"],
-                              rule_code, incompleteness_stack)
+    # Treat after collecting all necessary information
+    for evaluated in is_dictionary.keys():
+        # print(f"{len(is_dictionary[evaluated]) = }")
+        # print(f"{len(can_dictionary[evaluated]) = }")
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_dictionary[evaluated],
+                              is_dictionary[evaluated], ["RigidType", "Sortal"], rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -585,13 +594,13 @@ def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ont
     LOGGER.debug("Starting execution of all rules from group UFO Some.")
 
     run_rs01(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_rs02(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_rs03(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_rs04(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_rs05(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_rs06(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_rs07(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_rs08(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_rs09(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_rs02(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_rs03(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_rs04(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_rs05(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_rs06(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_rs07(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_rs08(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_rs09(ontology_dataclass_list, ontology_graph, incompleteness_stack)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")

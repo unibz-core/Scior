@@ -36,7 +36,8 @@ def move_classification_between_type_lists(ontology_dataclass_list: list[Ontolog
     # cleared to be updated if detected again.
     ontology_dataclass.is_incomplete = False
 
-    LOGGER.debug(f"{caller}: Classification moved from CAN_TYPE to {target_list.upper()} in {ontology_dataclass.uri}.")
+    LOGGER.debug(f"{caller}: Classification {classification_to_move} moved from CAN_TYPE to {target_list.upper()} "
+                 f"in {ontology_dataclass.uri}.")
 
     # All list must be re-evaluated to comply with the gUFO rules.
     loop_execute_gufo_rules(ontology_dataclass_list)
