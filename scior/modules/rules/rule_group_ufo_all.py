@@ -1,5 +1,5 @@
 """ Implementation of rules from the group UFO All. """
-from rdflib import Graph, URIRef, RDFS
+from rdflib import Graph
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass

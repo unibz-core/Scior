@@ -3,7 +3,7 @@ import inspect
 import random
 import string
 
-from rdflib import Graph, URIRef, RDFS
+from rdflib import Graph
 
 import scior.modules.initialization_arguments as args
 from scior.modules.graph_ontology import update_ontology_graph_with_gufo
