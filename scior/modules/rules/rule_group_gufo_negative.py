@@ -97,9 +97,15 @@ def execute_gufo_negative_rules(ontology_dataclass_list):
 
         # RN11: ~AntiRigidType(x) -> ~Role(x) ^ ~Phase(x) ^ ~RoleMixin(x) ^ ~PhaseMixin(x)
         if "AntiRigidType" in ontology_dataclass.not_type:
-            rule_code = "RN10"
+            rule_code = "RN11"
             # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
             m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Role", rule_code)
             m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "Phase", rule_code)
             m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "RoleMixin", rule_code)
             m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "PhaseMixin", rule_code)
+
+        # RN12: ~Mixin(x) -> ~SemiRigidType
+        if "Mixin" in ontology_dataclass.not_type:
+            rule_code = "RN12"
+            # LOGGER.debug(f"Executing rule {rule_code} for {ontology_dataclass.uri}.")
+            m.move_classification_to_not_type(ontology_dataclass_list, ontology_dataclass, "SemiRigidType", rule_code)
