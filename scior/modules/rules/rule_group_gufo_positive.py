@@ -8,7 +8,7 @@ LOGGER = initialize_logger()
 
 
 def execute_gufo_positive_rules(ontology_dataclass_list):
-    """ Executes once all "positive" rules of the GUFO group."""
+    """ Executes once all rules of the group gUFO Positive."""
 
     # LOGGER.debug("Executing all positive rules from group gUFO.")
 

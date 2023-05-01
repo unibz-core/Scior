@@ -7,6 +7,7 @@ import string
 import scior.modules.initialization_arguments as args
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclass_list_hash
+from scior.modules.rules.rule_group_gufo_leaves import execute_gufo_leaves_rules
 from scior.modules.rules.rule_group_gufo_negative import execute_gufo_negative_rules
 from scior.modules.rules.rule_group_gufo_positive import execute_gufo_positive_rules
 
@@ -28,7 +29,7 @@ def loop_execute_gufo_rules(ontology_dataclass_list):
 
         execute_gufo_positive_rules(ontology_dataclass_list)
         execute_gufo_negative_rules(ontology_dataclass_list)
-        # execute_gufo_leaves_rules(ontology_dataclass_list)
+        execute_gufo_leaves_rules(ontology_dataclass_list)
 
         final_hash = create_ontology_dataclass_list_hash(ontology_dataclass_list)
 
