@@ -73,6 +73,7 @@ def run_rb03(ontology_graph):
 
     for row in query_result:
         ontology_graph.add((row.class_x, scior_share_super_class, row.class_y))
+        ontology_graph.add((row.class_y, scior_share_super_class, row.class_x))
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 

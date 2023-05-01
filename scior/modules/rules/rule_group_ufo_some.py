@@ -8,7 +8,7 @@ import scior.modules.initialization_arguments as args
 from scior.modules.logger_config import initialize_logger
 from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.ontology_dataclassess.dataclass_moving import move_classifications_list_to_is_type
-from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch, report_error_dataclass_not_found
+from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry, register_incompleteness
 from scior.modules.problems_treatment.treat_inconsistent import report_inconsistency_case_in_rule
 from scior.modules.utils_dataclass import get_dataclass_by_uri
@@ -250,32 +250,35 @@ def run_rs04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         } """
 
     query_result = ontology_graph.query(query_string)
+    is_dictionary = {}
+    can_dictionary = {}
 
     for row in query_result:
-
-        is_list = []
-        can_list = []
 
         # Class to be completed or that may be incomplete
         evaluated_class = row.class_x.toPython()
         # Class that may be used to complete the evaluated_dataclass
         selected_class = row.class_y.toPython()
 
-        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
-        if evaluated_dataclass is None:
-            report_error_dataclass_not_found(evaluated_class)
+        # If evaluated_class not in dictionary yet, create it
+        if evaluated_class not in is_dictionary.keys():
+            is_dictionary[evaluated_class] = []
+            can_dictionary[evaluated_class] = []
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
 
         # Creating IS List
         if "Sortal" in selected_dataclass.is_type:
-            is_list.append(selected_dataclass.uri)
+            is_dictionary[evaluated_class].append(selected_class)
 
         # Creating CAN List
         elif "Sortal" in selected_dataclass.can_type:
-            can_list.append(selected_dataclass.uri)
+            can_dictionary[evaluated_class].append(selected_class)
 
-        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["Sortal"], rule_code,
+    for evaluated in is_dictionary.keys():
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_dictionary[evaluated],
+                              is_dictionary[evaluated], ["Sortal"], rule_code,
                               incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
@@ -321,8 +324,6 @@ def run_rs05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         selected_class = row.class_z.toPython()
 
         evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
-        if evaluated_dataclass is None:
-            report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
 
@@ -376,8 +377,6 @@ def run_rs06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         selected_class = row.class_z.toPython()
 
         evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
-        if evaluated_dataclass is None:
-            report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
 
@@ -498,8 +497,6 @@ def run_rs08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         selected_class = row.class_y.toPython()
 
         evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
-        if evaluated_dataclass is None:
-            report_error_dataclass_not_found(evaluated_class)
 
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
 
@@ -595,8 +592,8 @@ def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ont
 
     # run_rs01(ontology_dataclass_list, ontology_graph, incompleteness_stack)
     # run_rs02(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    run_rs03(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_rs04(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    # run_rs03(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs04(ontology_dataclass_list, ontology_graph, incompleteness_stack)
     # run_rs05(ontology_dataclass_list, ontology_graph, incompleteness_stack)
     # run_rs06(ontology_dataclass_list, ontology_graph, incompleteness_stack)
     # run_rs07(ontology_dataclass_list, ontology_graph, incompleteness_stack)
