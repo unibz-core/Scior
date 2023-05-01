@@ -514,11 +514,11 @@ def run_rs08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
         # Creating IS List
         if "Category" in selected_dataclass.is_type:
-            is_dictionary[evaluated_class].append(selected_dataclass.uri)
+            is_dictionary[evaluated_class].append(selected_class)
 
         # Creating CAN List
         elif "Category" in selected_dataclass.can_type:
-            can_dictionary[evaluated_class].append(selected_dataclass.uri)
+            can_dictionary[evaluated_class].append(selected_class)
 
     for evaluated in is_dictionary.keys():
         evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
@@ -554,11 +554,10 @@ def run_rs09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
             } """
 
     query_result = ontology_graph.query(query_string)
+    is_dictionary = {}
+    can_dictionary = {}
 
     for row in query_result:
-
-        is_list = []
-        can_list = []
 
         # Class to be completed or that may be incomplete
         evaluated_class = row.class_y.toPython()
@@ -567,7 +566,11 @@ def run_rs09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         # Class to be used during the analysis
         related_class = row.class_x.toPython()
 
-        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated_class)
+        # If evaluated_class not in dictionary yet, create it
+        if evaluated_class not in is_dictionary.keys():
+            is_dictionary[evaluated_class] = []
+            can_dictionary[evaluated_class] = []
+
         selected_dataclass = get_dataclass_by_uri(ontology_dataclass_list, selected_class)
 
         # Class z must not be subclass of class x
@@ -587,14 +590,16 @@ def run_rs09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
             # Creating IS List
             if "PhaseMixin" in selected_dataclass.is_type:
-                is_list.append(selected_dataclass.uri)
+                is_dictionary[evaluated_class].append(selected_class)
 
             # Creating CAN List
             elif "PhaseMixin" in selected_dataclass.can_type:
-                can_list.append(selected_dataclass.uri)
+                can_dictionary[evaluated_class].append(selected_class)
 
-            treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_list, is_list, ["PhaseMixin"],
-                                  rule_code, incompleteness_stack)
+    for evaluated in is_dictionary.keys():
+        evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
+        treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_dictionary[evaluated],
+                              is_dictionary[evaluated], ["PhaseMixin"], rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -605,14 +610,14 @@ def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ont
 
     LOGGER.debug("Starting execution of all rules from group UFO Some.")
 
-    # run_rs01(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_rs02(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_rs03(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs01(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs02(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs03(ontology_dataclass_list, ontology_graph, incompleteness_stack)
     run_rs04(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_rs05(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_rs06(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_rs07(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_rs08(ontology_dataclass_list, ontology_graph, incompleteness_stack)
-    # run_rs09(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs05(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs06(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs07(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs08(ontology_dataclass_list, ontology_graph, incompleteness_stack)
+    run_rs09(ontology_dataclass_list, ontology_graph, incompleteness_stack)
 
     LOGGER.debug("Execution of all rules from group UFO Some completed.")
