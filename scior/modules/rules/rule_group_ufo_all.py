@@ -111,19 +111,17 @@ def run_ra04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     WHERE {
         ?class_x rdf:type gufo:Kind .
         ?class_x rdfs:subClassOf ?class_y .
+        FILTER (?class_x != ?class_y)
     } """
 
     query_result = ontology_graph.query(query_string)
 
-    result = []
-
     for row in query_result:
-        if row.class_x.toPython() != row.class_y.toPython():
-            result.append(row.class_y.toPython())
 
-    for ontology_dataclass in ontology_dataclass_list:
-        if ontology_dataclass.uri in result:
-            move_classification_to_is_type(ontology_dataclass_list, ontology_dataclass, "NonSortal", rule_code)
+        print(f"X = {row.class_x.toPython()} AND Y = {row.class_y.toPython()}")
+
+        dataclass_y = get_dataclass_by_uri(ontology_dataclass_list, row.class_y.toPython())
+        move_classification_to_is_type(ontology_dataclass_list, dataclass_y, "NonSortal", rule_code)
 
     LOGGER.debug(f"Rule {rule_code} concluded")
 
