@@ -134,7 +134,7 @@ def run_rs02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         SELECT DISTINCT ?class_x ?class_y
         WHERE {
             ?class_x rdf:type gufo:Mixin .
-            ?class_x rdfs:subClassOf ?class_y .
+            ?class_y rdfs:subClassOf ?class_x .
         } """
 
     query_result = ontology_graph.query(query_string)
@@ -189,7 +189,7 @@ def run_rs03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
         SELECT DISTINCT ?class_x ?class_y
         WHERE {
             ?class_x rdf:type gufo:Mixin .
-            ?class_x rdfs:subClassOf ?class_y .
+            ?class_y rdfs:subClassOf ?class_x .
         } """
 
     query_result = ontology_graph.query(query_string)
