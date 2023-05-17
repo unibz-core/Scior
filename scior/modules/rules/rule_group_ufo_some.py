@@ -37,6 +37,8 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
     :type incompleteness_stack: list[IncompletenessEntry]
     """
 
+    current_function = inspect.stack()[0][3]
+
     length_is_list = len(is_classes_list)
     length_can_list = len(can_classes_list)
 
@@ -46,16 +48,29 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
     if length_is_list > 0:
         LOGGER.debug(f"Rule {rule_code} satisfied for {evaluated_dataclass.uri}. No action is required.")
 
+    # IS = 0 AND CAN > 1
     elif length_can_list > 1:
         # Incompleteness found. Reporting problems_treatment and possibilities (OR).
         additional_message = f"Solution: set one or more classes from {can_classes_list} as {types_to_set_list}."
         register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
 
+    # IS = 0 AND CAN = 1
     elif length_can_list == 1:
-        # Set single candidate as desired types.
-        candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
-        move_classifications_list_to_is_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list, rule_code)
 
+        if args.ARGUMENTS["is_owa"]:
+            # Incompleteness found. Reporting problems_treatment and single possibility.
+            additional_message = f"Solution: set class {can_classes_list[0]} as {types_to_set_list}."
+            register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
+
+        elif args.ARGUMENTS["is_owaf"] or args.ARGUMENTS["is_cwa"]:
+            # Set single candidate as desired types.
+            candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
+            move_classifications_list_to_is_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list,
+                                                 rule_code)
+        else:
+            report_error_end_of_switch(rule_code, current_function)
+
+    # IS = 0 AND CAN = 0
     elif length_can_list == 0:
         # Incompleteness found. Reporting problems_treatment no known possibilities.
         if args.ARGUMENTS["is_owa"]:
@@ -69,7 +84,6 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
             report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     else:
-        current_function = inspect.stack()[0][3]
         report_error_end_of_switch(rule_code, current_function)
 
 
