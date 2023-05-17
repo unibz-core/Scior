@@ -19,7 +19,23 @@ LOGGER = initialize_logger()
 def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], evaluated_dataclass: OntologyDataClass,
                             can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
                             rule_code: str, incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Treats the results from all rules from the group UFO Unique. """
+    """ Treats the results from all rules from the group UFO Unique.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param evaluated_dataclass:
+    :type evaluated_dataclass: OntologyDataClass
+    :param can_classes_list: List of candidate classes to solve the rule.
+    :type can_classes_list: list[str]
+    :param is_classes_list: List classes that already solve the rule.
+    :type is_classes_list: list[str]
+    :param types_to_set_list: gUFO types that must be set to the candidates to solve the rule.
+    :type types_to_set_list: list[str]
+    :param rule_code: Code of the rule being handled.
+    :type rule_code: str
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
+    """
 
     length_is_list = len(is_classes_list)
     length_can_list = len(can_classes_list)
@@ -73,8 +89,15 @@ def run_ru01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule RU01 from group UFO.
 
-        Definition: Sortal(x) -> E! y (subClassOf (x,y) ^ Kind(y))
+    Definition: Sortal(x) -> E! y (subClassOf (x,y) ^ Kind(y))
     Description: Every Sortal must have a unique identity provider, i.e., a single Kind as supertype.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
     """
 
     rule_code = "RU01"
@@ -120,7 +143,15 @@ def run_ru01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
 def execute_rules_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
                              incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """Call execution of all rules from the group UFO Unique. """
+    """Call execution of all rules from the group UFO Unique.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
+    """
 
     LOGGER.debug("Starting execution of all rules from group UFO Unique.")
 
