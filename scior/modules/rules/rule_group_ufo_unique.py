@@ -37,6 +37,8 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
     :type incompleteness_stack: list[IncompletenessEntry]
     """
 
+    current_function = inspect.stack()[0][3]
+
     length_is_list = len(is_classes_list)
     length_can_list = len(can_classes_list)
     can_classes_list.sort()
@@ -47,9 +49,11 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
         additional_message = f"A unique class was expected, but {length_is_list} were found ({is_classes_list})."
         report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
+    # IS = 1 AND CAN = 0
     elif length_is_list == 1 and length_can_list == 0:
         LOGGER.debug(f"Rule {rule_code} satisfied. No action is required.")
 
+    # IS = 1 AND CAN > 0
     elif length_is_list == 1 and length_can_list > 0:
 
         # Set all classes in can list as not type.
@@ -58,16 +62,29 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
             move_classifications_list_to_not_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list,
                                                   rule_code)
 
+    # IS = 0 AND CAN > 1
     elif length_is_list == 0 and length_can_list > 1:
         # Incompleteness found. Reporting problems_treatment and possibilities (XOR).
         additional_message = f"Solution: set exactly one class from {can_classes_list} as {types_to_set_list}."
         register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
 
+    # IS = 0 AND CAN = 1
     elif length_is_list == 0 and length_can_list == 1:
-        # Set class in can list as type.
-        candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
-        move_classifications_list_to_is_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list, rule_code)
 
+        if args.ARGUMENTS["is_owa"]:
+            # Incompleteness found. Reporting problems_treatment and single possibility.
+            additional_message = f"Solution: set class {can_classes_list[0]} as {types_to_set_list}."
+            register_incompleteness(incompleteness_stack, rule_code, evaluated_dataclass, additional_message)
+
+        elif args.ARGUMENTS["is_owaf"] or args.ARGUMENTS["is_cwa"]:
+            # Set single candidate as desired types.
+            candidate_dataclass = get_dataclass_by_uri(ontology_dataclass_list, can_classes_list[0])
+            move_classifications_list_to_is_type(ontology_dataclass_list, candidate_dataclass, types_to_set_list,
+                                                 rule_code)
+        else:
+            report_error_end_of_switch(rule_code, current_function)
+
+    # IS = 0 AND CAN = 0
     elif length_is_list == 0 and length_can_list == 0:
         # Incompleteness found. Reporting problems_treatment no known possibilities.
         if args.ARGUMENTS["is_owa"]:
@@ -81,7 +98,6 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
             report_inconsistency_case_in_rule(rule_code, evaluated_dataclass, additional_message)
 
     else:
-        current_function = inspect.stack()[0][3]
         report_error_end_of_switch(rule_code, current_function)
 
 
