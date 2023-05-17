@@ -19,7 +19,23 @@ LOGGER = initialize_logger()
 def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], evaluated_dataclass: OntologyDataClass,
                           can_classes_list: list[str], is_classes_list: list[str], types_to_set_list: list[str],
                           rule_code: str, incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Treats the results from all rules from the group UFO Some. """
+    """ Treats the results from all rules from the group UFO Some.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param evaluated_dataclass:
+    :type evaluated_dataclass: OntologyDataClass
+    :param can_classes_list: List of candidate classes to solve the rule.
+    :type can_classes_list: list[str]
+    :param is_classes_list: List classes that already solve the rule.
+    :type is_classes_list: list[str]
+    :param types_to_set_list: gUFO types that must be set to the candidates to solve the rule.
+    :type types_to_set_list: list[str]
+    :param rule_code: Code of the rule being handled.
+    :type rule_code: str
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
+    """
 
     length_is_list = len(is_classes_list)
     length_can_list = len(can_classes_list)
@@ -61,9 +77,16 @@ def run_rs01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule RS01 from group UFO.
 
-        Definition: AntiRigidType(x) ^ Sortal(x) ^ Category(y) ^ subClassOf(x,y) ->
-                    E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
+    Definition: AntiRigidType(x) ^ Sortal(x) ^ Category(y) ^ subClassOf(x,y) ->
+                E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: AntiRigid Sortals cannot "directly specialize" Categories. This must be done through a Ridig Sortal.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
     """
 
     rule_code = "RS01"
@@ -121,8 +144,15 @@ def run_rs02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule RS02 from group UFO Some.
 
-        Definition: Mixin(x) -> E y (subClassOf(y,x) ^ AntiRigidType(y))
+    Definition: Mixin(x) -> E y (subClassOf(y,x) ^ AntiRigidType(y))
     Description: Mixins must generalize at least one AntiRigidType.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
     """
 
     rule_code = "RS02"
@@ -176,8 +206,15 @@ def run_rs03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule RS03 from group UFO Some.
 
-        Definition: Mixin(x) -> E y (subClassOf(y,x) ^ RigidType(y))
+    Definition: Mixin(x) -> E y (subClassOf(y,x) ^ RigidType(y))
     Description: Mixins must generalize at least one RigidType.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
     """
 
     rule_code = "RS03"
@@ -231,9 +268,16 @@ def run_rs04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule RS04 from group UFO Some.
 
-        Definition: NonSortal(x) -> E y (Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)))
+    Definition: NonSortal(x) -> E y (Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)))
     Description: NonSortals must be related to at least one Sortal that has a subClassOf or shareSuperClass
-                    relation with it.
+                relation with it.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
     """
 
     rule_code = "RS04"
@@ -278,8 +322,7 @@ def run_rs04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     for evaluated in is_dictionary.keys():
         evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_dictionary[evaluated],
-                              is_dictionary[evaluated], ["Sortal"], rule_code,
-                              incompleteness_stack)
+                              is_dictionary[evaluated], ["Sortal"], rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -288,10 +331,17 @@ def run_rs05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule RS05 from group UFO Some.
 
-        Definition: NonSortal(x) ^ Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)) ->
+    Definition: NonSortal(x) ^ Sortal(y) ^ (subClassOf(y,x) v shareSuperClass(x,y)) ->
                 E z (y != z ^ Sortal(z) ^ ~shareKind(y,z) ^ (subClassOf(z,x) v shareSuperClass(x,z)))
-    Description:    NonSortals thar are related to one Sortal that has a subClassOf or shareSuperClass relation with it
-                    must be related to another Sortal that has a subClassOf or shareSuperClass relation with it.
+    Description: NonSortals thar are related to one Sortal that has a subClassOf or shareSuperClass relation with it
+                must be related to another Sortal that has a subClassOf or shareSuperClass relation with it.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
     """
 
     rule_code = "RS05"
@@ -340,8 +390,7 @@ def run_rs05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     for evaluated in is_dictionary.keys():
         evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_dictionary[evaluated],
-                              is_dictionary[evaluated], ["Sortal"], rule_code,
-                              incompleteness_stack)
+                              is_dictionary[evaluated], ["Sortal"], rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -350,8 +399,15 @@ def run_rs06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule RS06 from group UFO Some.
 
-        Definition: Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
+    Definition: Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: A Role cannot "specialize directly"  a PhaseMixin. This must be done through a Phase.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
     """
 
     rule_code = "RS06"
@@ -398,8 +454,7 @@ def run_rs06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     for evaluated in is_dictionary.keys():
         evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_dictionary[evaluated],
-                              is_dictionary[evaluated], ["Phase"], rule_code,
-                              incompleteness_stack)
+                              is_dictionary[evaluated], ["Phase"], rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -408,8 +463,15 @@ def run_rs07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule RS07 from group UFO Some.
 
-        Definition: Phase(x) -> E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))
-        Description: There must exist at least two Phases that share the same Kind and that do not specialize each other
+    Definition: Phase(x) -> E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))
+    Description: There must exist at least two Phases that share the same Kind and that do not specialize each other
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
     """
 
     rule_code = "RS07"
@@ -478,8 +540,15 @@ def run_rs08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule RS08 from group UFO Some.
 
-        Definition: PhaseMixin(x) -> E y (Category (y) ^ isSubClassOf(x,y))
+    Definition: PhaseMixin(x) -> E y (Category (y) ^ isSubClassOf(x,y))
     Description: EveryPhaseMixin specialize at least one Category.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
     """
 
     rule_code = "RS08"
@@ -523,8 +592,7 @@ def run_rs08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     for evaluated in is_dictionary.keys():
         evaluated_dataclass = get_dataclass_by_uri(ontology_dataclass_list, evaluated)
         treat_result_ufo_some(ontology_dataclass_list, evaluated_dataclass, can_dictionary[evaluated],
-                              is_dictionary[evaluated], ["Category"], rule_code,
-                              incompleteness_stack)
+                              is_dictionary[evaluated], ["Category"], rule_code, incompleteness_stack)
 
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
@@ -533,10 +601,17 @@ def run_rs09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Executes rule RS09 from group UFO Some.
 
-        Definition: PhaseMixin(x) ^ Category(y) ^ subClassOf(x,y) ->
+    Definition: PhaseMixin(x) ^ Category(y) ^ subClassOf(x,y) ->
                 E z (PhaseMixin(z) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^ isSubClassOf(z,y))
     Description: There must exist at least two PhaseMixins that share the same Category
-                    and that do not specialize each other.
+                and that do not specialize each other.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
     """
 
     rule_code = "RS09"
@@ -606,7 +681,15 @@ def run_rs09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
 def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph,
                            incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """Call execution all rules from the group UFO Some."""
+    """Call execution all rules from the group UFO Some.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
+    :type incompleteness_stack: list[IncompletenessEntry]
+    """
 
     LOGGER.debug("Starting execution of all rules from group UFO Some.")
 
