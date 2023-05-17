@@ -91,7 +91,15 @@ def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontolo
         MUST BE CALLED ONCE FROM MAIN FILE.
     """
 
-    LOGGER.info("Starting the execution of inference rules for Endurant Types. This may take some time.")
+    if args.ARGUMENTS["is_cwa"]:
+        world_assumption = "Closed-World Assumption (CWA)"
+    elif args.ARGUMENTS["is_owa"]:
+        world_assumption = "Open-World Assumption (OWA) Regular Mode"
+    elif args.ARGUMENTS["is_owaf"]:
+        world_assumption = "Open-World Assumption (OWA) Forced Mode"
+
+
+    LOGGER.info(f"Executing inference rules for Endurant Types in {world_assumption}. This may take some time.")
 
     # Verify consistency once BEFORE the rules' executions
     verify_all_ontology_dataclasses_consistency(ontology_dataclass_list)
