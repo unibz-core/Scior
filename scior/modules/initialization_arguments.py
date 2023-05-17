@@ -46,8 +46,8 @@ def treat_user_arguments(software_acronym: str, software_name: str, software_ver
                                     help="* Operate in Open-World Assumption (OWA) - Regular Mode.")
 
     # Light Mode: Single instances cannot be automatically classified.
-    completeness_group.add_argument("-owal", "--is_owa_light", action='store_true', default=False,
-                                    help="Operate in Open-World Assumption (OWA) - Light Mode.")
+    completeness_group.add_argument("-owaf", "--is_owaf", action='store_true', default=False,
+                                    help="Operate in Open-World Assumption (OWA) - Forced Mode.")
 
     # VERBOSITY ARGUMENTS
 
@@ -90,7 +90,7 @@ def treat_user_arguments(software_acronym: str, software_name: str, software_ver
     if arguments.interactive:
         arguments.automatic = False
 
-    if arguments.is_cwa or arguments.is_owa_light:
+    if arguments.is_cwa or arguments.is_owaf:
         arguments.is_owa = False
 
     if arguments.gufo_import or arguments.gufo_write:
@@ -106,7 +106,7 @@ def treat_user_arguments(software_acronym: str, software_name: str, software_ver
 
         "is_cwa": arguments.is_cwa,
         "is_owa": arguments.is_owa,
-        "is_owa_light": arguments.is_owa_light,
+        "is_owaf": arguments.is_owaf,
 
         "gufo_results": arguments.gufo_results,
         "gufo_import": arguments.gufo_import,
