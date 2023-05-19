@@ -48,7 +48,7 @@ def run_scior():
     ontology_dataclass_list = initialize_ontology_dataclasses(working_graph, SCOPE_RESTRICTION)
 
     # Loading the gUFO information already stated into the ontology
-    load_known_gufo_information(working_graph, ontology_dataclass_list)
+    load_known_gufo_information(original_graph, ontology_dataclass_list)
 
     logger.debug("Saving initial data for calculating future statistics.")
     before_dataclass_list = copy.deepcopy(ontology_dataclass_list)
