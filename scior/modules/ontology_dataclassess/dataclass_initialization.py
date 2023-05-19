@@ -233,14 +233,14 @@ def load_known_gufo_information(ontology_graph: Graph, ontology_dataclass_list: 
 
     # Collecting and adding known IS classifications
     list_known_is_gufo = get_known_gufo_types(ontology_graph, "positive")
-    insert_known_gufo_information(list_known_is_gufo, ontology_dataclass_list)
+    insert_known_gufo_information(list_known_is_gufo, ontology_dataclass_list, "positive")
 
     # Collecting and adding known NOT classifications
     list_known_not_gufo = get_known_gufo_types(ontology_graph, "negative")
-
-    # TODO (@pedropaulofb): To be implemented.
-    # insert_known_gufo_information(list_known_not_gufo, ontology_dataclass_list)
+    insert_known_gufo_information(list_known_not_gufo, ontology_dataclass_list, "negative")
 
     sort_all_ontology_dataclass_list(ontology_dataclass_list)
+
+    print(ontology_dataclass_list)
 
     LOGGER.debug("Known gUFO information from input file transferred to dataclass_ontology_list.")
