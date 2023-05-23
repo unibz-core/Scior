@@ -1,5 +1,6 @@
 """ Main module for Scior """
 import copy
+import csv
 import inspect
 import time
 from datetime import datetime

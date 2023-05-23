@@ -1,3 +1,21 @@
-input_file_name,output_file_name,CWA,OWA,OWAf;
-test_ra01_in.ttl,test_ra01_out.ttl,True,True,True;
-test_ra02_in.ttl,test_ra02_out.ttl,False,True,True;
+input_file, output_file, assumption, expected
+test_ra01_in.ttl,test_ra01_out.ttl,cwa,True
+test_ra01_in.ttl,test_ra01_out.ttl,owa,True
+test_ra02_in.ttl,test_ra02_out.ttl,cwa,True
+test_ra02_in.ttl,test_ra02_out.ttl,owa,True
+test_ra03_in.ttl,test_ra03_out.ttl,cwa,False
+test_ra03_in.ttl,test_ra03_out.ttl,owa,True
+test_ra04_in.ttl,test_ra04_out.ttl,cwa,False
+test_ra04_in.ttl,test_ra04_out.ttl,owa,True
+test_ra05_in.ttl,test_ra05_out.ttl,cwa,False
+test_ra05_in.ttl,test_ra05_out.ttl,owa,True
+test_ra06_in.ttl,test_ra06_out.ttl,cwa,False
+test_ra06_in.ttl,test_ra06_out.ttl,owa,True
+test_ra07_in.ttl,test_ra07_out.ttl,cwa,False
+test_ra07_in.ttl,test_ra07_out.ttl,owa,True
+test_rl01_in.ttl,test_rl01_out.ttl,cwa,False
+test_rl01_in.ttl,test_rl01_out.ttl,owa,True
+test_rl02_in.ttl,test_rl02_out.ttl,cwa,True
+test_rl02_in.ttl,test_rl02_out.ttl,owa,True
+test_rl03_in.ttl,test_rl03_out.ttl,cwa,False
+test_rl03_in.ttl,test_rl03_out.ttl,owa,True

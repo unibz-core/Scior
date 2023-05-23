@@ -5,6 +5,9 @@ from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDa
 
 LOGGER = initialize_logger()
 
+class InconsistentOntology(Exception):
+    """ Raised when an inconsistency if found in an ontology. """
+    pass
 
 def report_inconsistency_case_in_rule(rule_code: str, ontology_dataclass: OntologyDataClass,
                                       additional_message: str = "") -> None:
@@ -12,7 +15,7 @@ def report_inconsistency_case_in_rule(rule_code: str, ontology_dataclass: Ontolo
 
     LOGGER.error(f"Inconsistency detected in rule {rule_code} for class {ontology_dataclass.uri}. "
                  f"{additional_message} Program aborted.")
-    raise ValueError(f"Inconsistency found in rule.")
+    raise InconsistentOntology(f"Inconsistency found in rule.")
 
 
 def report_inconsistency_case_in_dataclass(ontology_dataclass: OntologyDataClass, additional_message: str = "") -> None:
@@ -20,7 +23,7 @@ def report_inconsistency_case_in_dataclass(ontology_dataclass: OntologyDataClass
 
     LOGGER.error(f"Inconsistency detected in {ontology_dataclass.uri}. "
                  f"{additional_message} Program aborted.")
-    raise ValueError(f"Inconsistency found in ontology_dataclass consistency verification.")
+    raise InconsistentOntology(f"Inconsistency found in ontology_dataclass consistency verification.")
 
 
 def report_inconsistency_case_moving(ontology_dataclass: OntologyDataClass, additional_message: str = "") -> None:
@@ -30,4 +33,4 @@ def report_inconsistency_case_moving(ontology_dataclass: OntologyDataClass, addi
 
     LOGGER.error(f"Inconsistency detected in {ontology_dataclass.uri}. "
                  f"{additional_message} Program aborted.")
-    raise ValueError(f"Inconsistency found when moving classifications in an ontology_dataclass.")
+    raise InconsistentOntology(f"Inconsistency found when moving classifications in an ontology_dataclass.")

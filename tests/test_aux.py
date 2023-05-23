@@ -1,32 +1,52 @@
 """ Auxiliary functions used for testing Scior. """
 import csv
 
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
+from scior.modules.utils_dataclass import get_dataclass_by_uri
 
-def create_tests_lists() -> list[tuple]:
+
+def get_test_list() -> list[tuple]:
     """ Loads information about test files from csv and creates a list of tuples with tests' information.
 
-    The returned tuples' content is:
-
-    1. (str) input file name: name of the input file to be tested.
-    2. (str) output file name: file with the expected output to be compared with Scior's results.
-    3. (bool) result cwa: indicates if the result is expected to be consistent or not when performed in CWA.
-    4. (bool) result owa: indicates if the result is expected to be consistent or not when performed in OWA.
-    5. (bool) result owaf: indicates if the result is expected to be consistent or not when performed in OWAf.
-
-    :return: Three tuples for tests, in the following order: CWA, OWA, and OWAf. Each one has the following format:
-    [(str) input file name, (str) output file name, (bool) result cwa, (bool) result owa, (bool) result owaf].
-    :rtype: tuple[tuple, tuple, tuple]
+    :return: The returned tuples' content is:
+                row[0] (str) input file name: name of the input file to be tested using Scior.
+                row[1] (str) output file name: file with the expected output to be compared with Scior's results.
+                row[2] (str) world-assumption to be used in the test. Can assume the values "owa" or "cwa".
+                row[3] (bool) expected consistency: indicates if the result is expected to be consistent or not.
+    :rtype: list[tuple]
     """
 
-    print("is here 0")
+    tests_information = []
 
     with open('./files/all_tests.csv', mode='r') as csv_file:
-        print("is here 1")
         csv_reader = csv.DictReader(csv_file)
-        data_as_list = list(csv_reader)
-        print("is here 2")
-        print(data_as_list)
+        for row in csv_reader:
+            single_test = tuple(row.values())
+            tests_information.append(single_test)
 
-    all_tests = []
+    return tests_information
 
-    return all_tests
+
+def validate_results(input_list: list[OntologyDataClass], output_list: list[OntologyDataClass]) -> bool:
+    """ Receives the input list of dataclasses and the output list and checks if all classifications from the
+    output list classes are in the correspondent input list classes.
+
+    :param input_list: List of classes obtained from input file with classifications after Scior's execution.
+    :type input_list: list[OntologyDataClass]
+    :param output_list: List of classes obtained from output file with expected classifications for each class.
+    :type output_list: list[OntologyDataClass]
+    :return: Indicates if all expected classifications were obtained (True) or not (False).
+    :rtype: bool
+    """
+
+    result_correct = True
+
+    for out_class in output_list:
+        in_class = get_dataclass_by_uri(input_list, out_class.uri)
+
+        if not set(out_class.is_type).issubset(set(in_class.is_type)) or not set(out_class.not_type).issubset(
+                set(in_class.not_type)):
+            result_correct = False
+            break
+
+    return result_correct
