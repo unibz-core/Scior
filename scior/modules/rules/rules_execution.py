@@ -98,7 +98,6 @@ def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontolo
     elif args.ARGUMENTS["is_owaf"]:
         world_assumption = "Open-World Assumption (OWA) Forced Mode"
 
-
     LOGGER.info(f"Executing inference rules for Endurant Types in {world_assumption}. This may take some time.")
 
     # Verify consistency once BEFORE the rules' executions

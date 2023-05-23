@@ -1,0 +1,3 @@
+input_file_name,output_file_name,CWA,OWA,OWAf;
+test_ra01_in.ttl,test_ra01_out.ttl,True,True,True;
+test_ra02_in.ttl,test_ra02_out.ttl,False,True,True;
