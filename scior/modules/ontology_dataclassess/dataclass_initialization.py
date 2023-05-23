@@ -241,6 +241,4 @@ def load_known_gufo_information(ontology_graph: Graph, ontology_dataclass_list: 
 
     sort_all_ontology_dataclass_list(ontology_dataclass_list)
 
-    print(ontology_dataclass_list)
-
     LOGGER.debug("Known gUFO information from input file transferred to dataclass_ontology_list.")
