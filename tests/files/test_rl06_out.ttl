@@ -8,4 +8,5 @@
 # AntiRigidType(x) ^ ~Role(x) ^ ~Phase(x) ^ ~PhaseMixin(x) -> RoleMixin(x)
 
 :X
-    rdf:type owl:Class, gufo:AntiRigidType, gufo:RoleMixin, [ owl:complementOf gufo:Role, gufo:Phase, gufo:PhaseMixin ] .
+    rdf:type
+            owl:Class, gufo:AntiRigidType, gufo:RoleMixin, [ owl:complementOf gufo:Role, gufo:Phase, gufo:PhaseMixin ] .

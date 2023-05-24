@@ -5,7 +5,7 @@
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @base <http://test.com> .
 
-# Sortal(x) ^ ~Kind(x) ^ ~Phase(x) ^ ~Role(x) -> SubKind(x)
+# ~NonRigidType(x) -> RigidType(x)
 
 :X
-    rdf:type owl:Class, gufo:Sortal, gufo:SubKind, [ owl:complementOf gufo:Kind, gufo:Phase, gufo:Role ] .
+    rdf:type owl:Class, gufo:RigidType, [ owl:complementOf gufo:NonRigidType ] .

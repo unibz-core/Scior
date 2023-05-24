@@ -5,7 +5,7 @@
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @base <http://test.com> .
 
-# Sortal(x) ^ ~Kind(x) ^ ~Phase(x) ^ ~Role(x) -> SubKind(x)
+# NonSortal(x) ^ ~Category(x) ^ ~PhaseMixin(x) ^ ~Mixin(x) -> RoleMixin(x)
 
 :X
-    rdf:type owl:Class, gufo:Sortal, gufo:SubKind, [ owl:complementOf gufo:Kind, gufo:Phase, gufo:Role ] .
+    rdf:type owl:Class, gufo:NonSortal, [ owl:complementOf gufo:Category, gufo:PhaseMixin, gufo:Mixin ] .
