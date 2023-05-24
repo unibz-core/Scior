@@ -1,0 +1,14 @@
+@prefix :      <http://test.com#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix gufo:  <http://purl.org/nemo/gufo#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://test.com> .
+
+# Role(x) -> AntiRigidType(x) ^ Sortal(x) ^ ~Kind(x) ^ ~Phase(x) ^ ~PhaseMixin(x) ^ ~RoleMixin(x) ^ ~SubKind(x)
+
+:X
+    rdf:type
+            owl:Class, gufo:Role, gufo:AntiRigidType, gufo:Sortal, [ owl:complementOf
+                                                                             gufo:Kind, gufo:Phase, gufo:PhaseMixin,
+                                                                             gufo:RoleMixin, gufo:SubKind ] .
