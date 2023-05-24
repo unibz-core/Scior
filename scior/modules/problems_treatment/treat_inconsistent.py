@@ -5,13 +5,23 @@ from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDa
 
 LOGGER = initialize_logger()
 
+
 class InconsistentOntology(Exception):
     """ Raised when an inconsistency if found in an ontology. """
     pass
 
+
 def report_inconsistency_case_in_rule(rule_code: str, ontology_dataclass: OntologyDataClass,
                                       additional_message: str = "") -> None:
-    """ Reports inconsistency case detected and interrupts the software execution. """
+    """ Reports inconsistency case detected and interrupts the software execution.
+
+    :param rule_code: Code of the rule in which its execution the inconsistency was detected.
+    :type rule_code: str
+    :param ontology_dataclass: Ontology class related to the inconsistency found.
+    :type ontology_dataclass: OntologyDataClass
+    :param additional_message: Message to user indicating the identified inconsistency.
+    :type additional_message: str
+    """
 
     LOGGER.error(f"Inconsistency detected in rule {rule_code} for class {ontology_dataclass.uri}. "
                  f"{additional_message} Program aborted.")
@@ -19,7 +29,13 @@ def report_inconsistency_case_in_rule(rule_code: str, ontology_dataclass: Ontolo
 
 
 def report_inconsistency_case_in_dataclass(ontology_dataclass: OntologyDataClass, additional_message: str = "") -> None:
-    """ Reports inconsistency detected when verifying ontology dataclasses and interrupts the software execution. """
+    """ Reports inconsistency detected when verifying ontology dataclasses and interrupts the software execution.
+
+    :param ontology_dataclass: Ontology class related to the inconsistency found.
+    :type ontology_dataclass: OntologyDataClass
+    :param additional_message: Message to user indicating the identified inconsistency.
+    :type additional_message: str
+    """
 
     LOGGER.error(f"Inconsistency detected in {ontology_dataclass.uri}. "
                  f"{additional_message} Program aborted.")
@@ -28,7 +44,12 @@ def report_inconsistency_case_in_dataclass(ontology_dataclass: OntologyDataClass
 
 def report_inconsistency_case_moving(ontology_dataclass: OntologyDataClass, additional_message: str = "") -> None:
     """ Reports inconsistency detected when moving a classification between ontology_dataclass' lists
-        and interrupts the software execution.
+    and interrupts the software execution.
+
+    :param ontology_dataclass: Ontology class related to the inconsistency found.
+    :type ontology_dataclass: OntologyDataClass
+    :param additional_message: Message to user indicating the identified inconsistency.
+    :type additional_message: str
     """
 
     LOGGER.error(f"Inconsistency detected in {ontology_dataclass.uri}. "

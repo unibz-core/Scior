@@ -1,6 +1,5 @@
 """ Main module for Scior """
 import copy
-import csv
 import inspect
 import time
 from datetime import datetime
@@ -150,9 +149,7 @@ def run_scior_test_execution(treatment_type: str, test_file: str, assumption: st
     # Executing Scior
     if treatment_type == "input":
         execute_rules_types(ontology_dataclass_list, working_graph)
-    elif treatment_type == "output":
-        pass
-    else:
+    elif treatment_type != "output":
         report_error_end_of_switch(treatment_type, current_function)
 
     return ontology_dataclass_list
@@ -190,3 +187,4 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Implement interactive mode.
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
+# TODO (@pedropaulofb): Include in the functions' documentation the exceptions raised.
