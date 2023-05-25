@@ -20,6 +20,8 @@ def test_scior(input_file: str, output_file: str, assumption: str, consistent: s
     :type assumption: str
     :param consistent: Indicates if the ontology is expected to be consistent or not.
     :type consistent: str
+    :param correct: Indicates if the generated result is expect to equal the provided output or not.
+    :type correct: str
     """
 
     # Default values
