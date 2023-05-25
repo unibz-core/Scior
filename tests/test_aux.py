@@ -6,19 +6,19 @@ from scior.modules.utils_dataclass import get_dataclass_by_uri
 
 
 def get_test_list() -> list[tuple]:
-    """ Loads information about test files from csv and creates a list of tuples with tests' information.
+    """ Loads information about test test_files from csv and creates a list of tuples with tests' information.
 
     :return: The returned tuples' content is:
                 row[0] (str) input file name: name of the input file to be tested using Scior.
                 row[1] (str) output file name: file with the expected output to be compared with Scior's results.
-                row[2] (str) world-assumption to be used in the test. Can assume the values "owa" or "cwa".
+                row[2] (str) world-assumption to be used in the test. Can assume the values "cwa", "owa", or "owaf".
                 row[3] (bool) expected consistency: indicates if the result is expected to be consistent or not.
     :rtype: list[tuple]
     """
 
     tests_information = []
 
-    with open('./files/all_tests.csv', mode='r') as csv_file:
+    with open('./test_files/all_tests.csv', mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
             single_test = tuple(row.values())

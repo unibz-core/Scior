@@ -43,7 +43,7 @@ def run_scior():
     start_date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     logger.info(f"Scior started on {start_date_time}!")
 
-    # Loading OWL ontologies from files to the working memory
+    # Loading OWL ontologies from test_files to the working memory
     original_graph = load_all_graph_safely(args.ARGUMENTS["ontology_path"])
     working_graph = reduce_graph_considering_restrictions(original_graph, LIST_GRAPH_RESTRICTIONS)
 
@@ -136,7 +136,7 @@ def run_scior_test_execution(treatment_type: str, test_file: str, assumption: st
 
     args.publish_global_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL, test_arguments)
 
-    # Loading OWL ontologies from files to the working memory
+    # Loading OWL ontologies from test_files to the working memory
     original_graph = load_all_graph_safely(args.ARGUMENTS["ontology_path"])
     working_graph = reduce_graph_considering_restrictions(original_graph, LIST_GRAPH_RESTRICTIONS)
 
@@ -183,7 +183,7 @@ def run_scior_tester(tester_arguments, working_graph):
 if __name__ == "__main__":
     run_scior()
 
-# TODO (@pedropaulofb): Separete the 3 functions here in new files
+# TODO (@pedropaulofb): Separete the 3 functions here in new test_files
 # TODO (@pedropaulofb): Implement interactive mode.
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.

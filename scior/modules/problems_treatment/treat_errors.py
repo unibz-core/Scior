@@ -45,7 +45,7 @@ def report_error_end_of_switch(invalid_parameter: str, caller_function_name: str
 
 
 def report_error_io_read(desired_content: str, file_description: str, error: OSError) -> None:
-    """ Reports the error caused program cannot read or load the desired content (files or directories).
+    """ Reports the error caused program cannot read or load the desired content (test_files or directories).
 
     :param desired_content: Name of the file used by the IO operation caused the error.
     :type desired_content: str
@@ -60,7 +60,7 @@ def report_error_io_read(desired_content: str, file_description: str, error: OSE
 
 
 def report_error_io_write(desired_content: str, file_description: str, error: OSError) -> None:
-    """ Reports the error caused program cannot save or write the desired content (files or directories).
+    """ Reports the error caused program cannot save or write the desired content (test_files or directories).
 
     :param desired_content: Name of the file used by the IO operation caused the error.
     :type desired_content: str

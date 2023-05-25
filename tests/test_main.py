@@ -23,7 +23,7 @@ def test_scior(input_file: str, output_file: str, assumption: str, expected: str
     """
 
     # Default values
-    base_path = "tests/files/"
+    base_path = "tests/test_files/"
     is_correct = True
     no_error = True
     is_consistent = True

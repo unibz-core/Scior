@@ -1,4 +1,4 @@
-""" Functions related to reading and writing OWL files using RDFLib. """
+""" Functions related to reading and writing OWL test_files using RDFLib. """
 import os
 from pathlib import Path
 
