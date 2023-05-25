@@ -13,6 +13,7 @@ def get_test_list() -> list[tuple]:
                 row[1] (str) output file name: file with the expected output to be compared with Scior's results.
                 row[2] (str) world-assumption to be used in the test. Can assume the values "cwa", "owa", or "owaf".
                 row[3] (bool) expected consistency: indicates if the result is expected to be consistent or not.
+                row[4] (bool) expected result: indicates if the result is expected to be correct or not.
     :rtype: list[tuple]
     """
 
