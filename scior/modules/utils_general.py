@@ -68,7 +68,12 @@ def get_computer_specifications():
 
 
 def create_directory_if_not_exists(directory_path: str) -> None:
-    """ Checks if a directory exists. If it does, do nothing. If it does not, create it. """
+    """ Checks if the directory that has the path received as argument exists.
+    If it does, do nothing. If it does not, create it.
+
+    :param directory_path: Path to the directory to be created (if it does not exist).
+    :type directory_path: str
+    """
 
     try:
         if not os.path.exists(directory_path):
