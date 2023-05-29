@@ -10,11 +10,15 @@
 
 :X
     rdf:type        owl:Class, gufo:AntiRigidType, gufo:Sortal ;
-    rdfs:subClassOf :Y, :Z .
+    rdfs:subClassOf :K .
 
 :Y
     rdf:type owl:Class, gufo:Category .
 
 :Z
+    rdf:type        owl:Class, gufo:Kind ;
+    rdfs:subClassOf :Y .
+
+:K
     rdf:type        owl:Class, gufo:RigidType, gufo:Sortal ;
     rdfs:subClassOf :Y .

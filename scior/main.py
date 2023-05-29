@@ -109,9 +109,8 @@ def run_scior_test_execution(treatment_type: str, test_file: str, assumption: st
     current_function = inspect.stack()[0][3]
 
     # FIX TEST ARGUMENTS
-    test_arguments = {"is_automatic": True, "is_interactive": False,
-                      "gufo_results": False, "gufo_import": False, "gufo_write": False,
-                      "is_silent": False, "is_verbose": True, "is_debug": False}
+    test_arguments = {"is_automatic": True, "is_interactive": False, "gufo_results": False, "gufo_import": False,
+                      "gufo_write": False, "is_silent": False, "is_verbose": True, "is_debug": False}
 
     # TEST ARGUMENTS RECEIVED AS ARGUMENTS
 
@@ -188,3 +187,5 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
 # TODO (@pedropaulofb): Include in the functions' documentation the exceptions raised.
+# TODO (@pedropaulofb): the order of the applied rules can change the possible results (specially for OWAf).
+#  See test_rs06 b & i. Ultimate sortals must be the last thing to be applied. The order of the rules must be corrected.

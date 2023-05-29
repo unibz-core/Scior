@@ -1,0 +1,24 @@
+@prefix :      <http://test.com#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix gufo:  <http://purl.org/nemo/gufo#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://test.com> .
+
+# Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
+
+
+:X
+    rdf:type        owl:Class, gufo:Role ;
+    rdfs:subClassOf :K .
+
+:Y
+    rdf:type        owl:Class, gufo:PhaseMixin ;
+    rdfs:subClassOf :Z .
+
+:Z
+    rdf:type owl:Class, gufo:Mixin .
+
+:K
+    rdf:type        owl:Class, gufo:Phase ;
+    rdfs:subClassOf :Y .

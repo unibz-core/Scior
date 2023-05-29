@@ -5,16 +5,16 @@
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @base <http://test.com> .
 
-# AntiRigidType(x) ^ Sortal(x) ^ Category(y) ^ subClassOf(x,y) ->
-#        E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
+# Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
+
 
 :X
-    rdf:type        owl:Class, gufo:AntiRigidType, gufo:Sortal ;
+    rdf:type        owl:Class, gufo:Role ;
     rdfs:subClassOf :Y, :Z .
 
 :Y
-    rdf:type owl:Class, gufo:Category .
+    rdf:type owl:Class, gufo:PhaseMixin .
 
 :Z
-    rdf:type        owl:Class, gufo:RigidType, gufo:Sortal ;
+    rdf:type        owl:Class, [ owl:complementOf gufo:RigidType ] ;
     rdfs:subClassOf :Y .

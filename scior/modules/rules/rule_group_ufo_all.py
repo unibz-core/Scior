@@ -51,7 +51,7 @@ def run_ra02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
     query_string = """
     PREFIX gufo: <http://purl.org/nemo/gufo#>
-    SELECT DISTINCT ?class_y
+    SELECT DISTINCT ?class_x ?class_y
     WHERE {
         ?class_x rdf:type gufo:RigidType .
         ?class_x rdfs:subClassOf ?class_y .
