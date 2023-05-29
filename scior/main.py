@@ -187,5 +187,3 @@ if __name__ == "__main__":
 # TODO (@pedropaulofb): Document SCOPE_RESTRICTION variable
 # TODO (@pedropaulofb): Clear unused code. Check PyCharm Analyze or install Vulture.
 # TODO (@pedropaulofb): Include in the functions' documentation the exceptions raised.
-# TODO (@pedropaulofb): the order of the applied rules can change the possible results (specially for OWAf).
-#  See test_rs06 b & i. Ultimate sortals must be the last thing to be applied. The order of the rules must be corrected.
