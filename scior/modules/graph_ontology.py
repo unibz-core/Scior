@@ -65,7 +65,7 @@ def save_ontology_gufo_statements(dataclass_list, ontology_graph, restriction):
     return ontology_graph
 
 
-def save_ontology_file_as_configuration(ontology_graph: Graph, end_date_time):
+def save_ontology_file_as_configuration(ontology_graph: Graph, end_date_time: str) -> None:
     """Prints in a file the output ontology according to the related configuration, which can be:
     """
 
@@ -89,10 +89,14 @@ def save_ontology_file_as_configuration(ontology_graph: Graph, end_date_time):
     save_ontology_file_caller(end_date_time, graph)
 
 
-def save_ontology_file_caller(end_date_time, ontology_graph):
-    """
-    Saves the ontology graph into a TTL file.
+def save_ontology_file_caller(end_date_time: str, ontology_graph: Graph) -> None:
+    """ Saves the ontology graph into a TTL file.
     If import_gufo parameter is set as True, the saved output is going to import the GUFO ontology.
+
+    :param end_date_time: String containing the software's execution end date and time.
+    :type end_date_time: str
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
     """
 
     # Collecting information for result file name and path
@@ -104,16 +108,22 @@ def save_ontology_file_caller(end_date_time, ontology_graph):
     create_directory_if_not_exists(results_directory)
 
     # Setting file complete path
-
-    # output_file_name = loaded_file_name + "-" + end_date_time + ".ttl"
-    output_file_name = loaded_file_name + ".ttl"  # TODO (@pedropaulofb): remove this and uncomment line before.
+    output_file_name = loaded_file_name + "-" + end_date_time + ".ttl"
     output_file_path = project_directory + "\\" + results_directory + "\\" + output_file_name
 
     safe_save_ontology_file(ontology_graph, output_file_path)
 
 
-def safe_save_ontology_file(ontology_graph, output_file_name: str, syntax: str = 'turtle'):
-    """ Safely saves the ontology graph into a TTL file in the informed destination. """
+def safe_save_ontology_file(ontology_graph: Graph, output_file_name: str, syntax: str = 'turtle'):
+    """ Safely saves the ontology graph into a TTL file in the informed destination.
+
+    :param ontology_graph: Ontology's updated working graph
+    :type ontology_graph: Graph
+    :param output_file_name: Created output file name.
+    :type output_file_name: str
+    :param syntax: Syntax to be used for saving the ontology file (default value is 'turtle').
+    :type syntax: str
+    """
 
     LOGGER.debug("Saving the output ontology file...")
 

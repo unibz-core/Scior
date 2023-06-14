@@ -162,8 +162,8 @@ test_rs06a_in.ttl,test_rs06a_out.ttl,cwa,False,True
 test_rs06a_in.ttl,test_rs06a_out.ttl,owa,True,True
 test_rs06a_in.ttl,test_rs06a_out.ttl,owaf,True,True
 test_rs06b_in.ttl,test_rs06b_out.ttl,cwa,False,True
-test_rs06b_in.ttl,test_rs06b_out.ttl,owa,False,False
-test_rs06b_in.ttl,test_rs06b_out.ttl,owaf,True,True
+test_rs06b_in.ttl,test_rs06b_out.ttl,owa,True,False
+test_rs06b_in.ttl,test_rs06b_out.ttl,owaf,False,True
 test_rs06c_in.ttl,test_rs06c_out.ttl,cwa,False,True
 test_rs06c_in.ttl,test_rs06c_out.ttl,owa,True,True
 test_rs06c_in.ttl,test_rs06c_out.ttl,owaf,True,True
@@ -183,8 +183,8 @@ test_rs06h_in.ttl,test_rs06h_out.ttl,cwa,False,True
 test_rs06h_in.ttl,test_rs06h_out.ttl,owa,True,True
 test_rs06h_in.ttl,test_rs06h_out.ttl,owaf,True,True
 test_rs06i_in.ttl,test_rs06i_out.ttl,cwa,False,True
-test_rs06i_in.ttl,test_rs06i_out.ttl,owa,False,False
-test_rs06i_in.ttl,test_rs06i_out.ttl,owaf,True,True
+test_rs06i_in.ttl,test_rs06i_out.ttl,owa,True,False
+test_rs06i_in.ttl,test_rs06i_out.ttl,owaf,False,True
 test_ru01a_in.ttl,test_ru01a_out.ttl,cwa,True,True
 test_ru01a_in.ttl,test_ru01a_out.ttl,owa,True,True
 test_ru01a_in.ttl,test_ru01a_out.ttl,owaf,True,True

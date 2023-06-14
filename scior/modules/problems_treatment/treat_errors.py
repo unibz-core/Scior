@@ -10,6 +10,7 @@ def report_error_requirement_not_met(error_message: str) -> None:
 
     :param error_message: Message to be printed to the user indicating the detected error.
     :type error_message: str
+    :raises ValueError: Always.
     """
 
     LOGGER.error(f"{error_message} Program aborted.")
@@ -21,6 +22,7 @@ def report_error_dataclass_not_found(searched_uri: str) -> None:
 
     :param searched_uri: URI of the class that caused the error (i.e., that was searched and not found).
     :type searched_uri: str
+    :raises ValueError: Always.
     """
 
     LOGGER.error(f"Unexpected situation. Searched URI {searched_uri} "
@@ -37,6 +39,7 @@ def report_error_end_of_switch(invalid_parameter: str, caller_function_name: str
     :type invalid_parameter: str
     :param caller_function_name: Name of the function in which the invalid parameter was used.
     :type caller_function_name: str
+    :raises ValueError: Always.
     """
 
     LOGGER.error(f"Unexpected parameter {invalid_parameter} received in function {caller_function_name}. "
@@ -53,6 +56,7 @@ def report_error_io_read(desired_content: str, file_description: str, error: OSE
     :type file_description: str
     :param error: Error raised by the IO operation.
     :type error: OSError
+    :raises OSError: Always.
     """
 
     LOGGER.error(f"Could not load or read the {file_description} {desired_content}. Program aborted.")
@@ -68,6 +72,7 @@ def report_error_io_write(desired_content: str, file_description: str, error: OS
     :type file_description: str
     :param error: Error raised by the IO operation.
     :type error: OSError
+    :raises OSError: Always.
     """
 
     LOGGER.error(f"Could not create, write, or save the {file_description} {desired_content}. Program aborted.")

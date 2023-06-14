@@ -22,7 +22,7 @@ from scior.modules.utils_rdf import load_all_graph_safely, reduce_graph_consider
 
 SOFTWARE_ACRONYM = "Scior"
 SOFTWARE_NAME = "Identification of Ontological Categories for OWL Ontologies"
-SOFTWARE_VERSION = "2023.05.17"
+SOFTWARE_VERSION = "2023.06.14"
 SOFTWARE_URL = "https://github.com/unibz-core/Scior/"
 SCOPE_RESTRICTION = "ENDURANT_TYPES"
 LIST_GRAPH_RESTRICTIONS = [RDF.type, RDFS.subClassOf]
