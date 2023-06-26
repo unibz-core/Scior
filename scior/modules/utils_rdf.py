@@ -8,6 +8,7 @@ from rdflib import RDF, OWL, Graph
 from scior.modules.logger_config import initialize_logger
 from scior.modules.problems_treatment.treat_errors import report_error_io_read
 
+LOGGER = initialize_logger()
 
 def load_graph_safely_considering_restrictions(ontology_file, graph_restriction=None):
     """ Safely load graph from file to working memory.
@@ -23,9 +24,13 @@ def load_graph_safely_considering_restrictions(ontology_file, graph_restriction=
 
 
 def load_all_graph_safely(ontology_file: str) -> Graph:
-    """ Safely load graph from file to working memory. """
+    """ Safely load graph from file to working memory.
 
-    logger = initialize_logger()
+    :param ontology_file: Path to the ontology file to be loaded into the working memory.
+    :type ontology_file: str
+    :return: RDFLib graph loaded as object.
+    :rtype: Graph
+    """
 
     ontology_graph = Graph()
 
@@ -35,7 +40,7 @@ def load_all_graph_safely(ontology_file: str) -> Graph:
         file_description = f"input ontology file"
         report_error_io_read(ontology_file, file_description, error)
 
-    logger.info(f"Ontology file {ontology_file} successfully loaded to working memory.")
+    LOGGER.info(f"Ontology file {ontology_file} successfully loaded to working memory.")
 
     return ontology_graph
 
@@ -156,13 +161,11 @@ def get_list_of_all_classes(ontology_graph: Graph, exceptions_list=None):
 def perform_reasoning(ontology_graph):
     """Perform reasoner and consequently expands the ontology graph. """
 
-    logger = initialize_logger()
-
-    logger.info("Initializing RDFS reasoning. This may take a while...")
+    LOGGER.info("Initializing RDFS reasoning. This may take a while...")
 
     st = time.perf_counter()
     DeductiveClosure(RDFS_Semantics).expand(ontology_graph)
     et = time.perf_counter()
     elapsed_time = round((et - st), 4)
 
-    logger.info(f"Reasoning process completed in {elapsed_time} seconds.")
+    LOGGER.info(f"Reasoning process completed in {elapsed_time} seconds.")
