@@ -4,22 +4,20 @@ The rules implemented in Scior are outlined in this document.
 
 ## Content
 
-- [Scior: Implemented Rules](#scior-implemented-rules)
-  - [Content](#content)
   - [Definitions](#definitions)
     - [Scope](#scope)
     - [Groups of Rules](#groups-of-rules)
     - [Nomenclature for Rules](#nomenclature-for-rules)
   - [Implementation Rules](#implementation-rules)
-    - [Auxiliary Rules Group](#auxiliary-rules-group)
-    - [Base Rules Group](#base-rules-group)
-    - [CWA Rules Group](#cwa-rules-group)
-    - [gUFO Leaves Rules Group](#gufo-leaves-rules-group)
-    - [gUFO Negative Rules Group](#gufo-negative-rules-group)
-    - [gUFO Positive Rules Group](#gufo-positive-rules-group)
-    - [UFO All Rules Group](#ufo-all-rules-group)
-    - [UFO Some Rules Group](#ufo-some-rules-group)
-    - [UFO Unique Rules Group](#ufo-unique-rules-group)
+    - [Auxiliary Rules' Group](#auxiliary-rules-group)
+    - [Base Rules' Group](#base-rules-group)
+    - [CWA Rules' Group](#cwa-rules-group)
+    - [gUFO Leaves Rules' Group](#gufo-leaves-rules-group)
+    - [gUFO Negative Rules' Group](#gufo-negative-rules-group)
+    - [gUFO Positive Rules' Group](#gufo-positive-rules-group)
+    - [UFO All Rules' Group](#ufo-all-rules-group)
+    - [UFO Some Rules' Group](#ufo-some-rules-group)
+    - [UFO Unique Rules' Group](#ufo-unique-rules-group)
 
 
 ## Definitions
@@ -56,20 +54,20 @@ Example of codes are: RA01, RL10, and RU02.
 
 ## Implementation Rules
 
-A complete list of implementation rules is available in `.tsv` (tab-separated) format here.
+A complete list of implementation rules is available in `.tsv` (tab-separated) format and can be [DOWNLOADED HERE](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Implemented-Rules.md).
 
-### Auxiliary Rules Group
+### Auxiliary Rules' Group
 
 - **RX01 :**&ensp; $Kind(z) \land subClassOf(x,z) \land subClassOf(y,z) \rightarrow shareKind(x,y)$
 - **RX02 :**&ensp; $Kind(z) \land subClassOf(x,z) \land shareKind(x,y) \rightarrow subClassOf(y,z)$
 
-### Base Rules Group
+### Base Rules' Group
 
 - **RB01 :**&ensp; $subClassOf(x,x)$
 - **RB02 :**&ensp; $subClassOf(x,y) \land subClassOf(y,z) \rightarrow subClassOf(x,z)$
 - **RB03 :**&ensp; $subClassOf(x,z) \land subClassOf(y,z) \rightarrow shareSuperClass(x,y)$
 
-### CWA Rules Group
+### CWA Rules' Group
 
 - **RC01 :**&ensp; $\neg (\exists z (RigidType(z) \land Sortal(z) \land subClassOf(x,z) \land subClassOf(z,y))) \land AntiRigidType(x) \land Sortal(x) \land subClassOf(x,y) \rightarrow \neg Category(y)$
 - **RC02 :**&ensp; $\neg (\exists y, z (subClassOf(y,x) \land AntiRigidType(y) \land subClassOf(z,x) \land RigidType(z))) \rightarrow \neg Mixin(x)$
@@ -83,7 +81,7 @@ A complete list of implementation rules is available in `.tsv` (tab-separated) f
 - **RC10 :**&ensp; $\neg (\exists z (PhaseMixin(z) \land Category(y) \land subClassOf(x,y) \land \neg isSubClassOf(x,z) \land \neg isSubClassOf(z,x) \land isSubClassOf(z,y))) \rightarrow \neg PhaseMixin(x)$
 - **RC11 :**&ensp; $\neg (\exists z (PhaseMixin(z) \land PhaseMixin(x) \land subClassOf(x,y) \land \neg isSubClassOf(x,z) \land \neg isSubClassOf(z,x) \land isSubClassOf(z,y))) \rightarrow \neg Category(y)$
 
-### gUFO Leaves Rules Group
+### gUFO Leaves Rules' Group
 
 - **RL01 :**&ensp; $RigidType(x) \land \neg Kind(x) \land \neg SubKind(x) \rightarrow Category(x)$
 - **RL02 :**&ensp; $RigidType(x) \land \neg SubKind(x) \land \neg Category(x) \rightarrow Kind(x)$
@@ -101,7 +99,7 @@ A complete list of implementation rules is available in `.tsv` (tab-separated) f
 - **RL14 :**&ensp; $NonSortal(x) \land \neg Category(x) \land \neg PhaseMixin(x) \land \neg Mixin(x) \rightarrow RoleMixin(x)$
 - **RL15 :**&ensp; $NonSortal(x) \land \neg Category(x) \land \neg PhaseMixin(x) \land \neg RoleMixin(x) \rightarrow Mixin(x)$
 
-### gUFO Negative Rules Group
+### gUFO Negative Rules' Group
 
 - **RN01 :**&ensp; $\neg NonRigidType(x) \rightarrow RigidType(x)$
 - **RN02 :**&ensp; $\neg AntiRigidType(x) \land \neg SemiRigidType(x) \rightarrow RigidType(x)$
@@ -116,7 +114,7 @@ A complete list of implementation rules is available in `.tsv` (tab-separated) f
 - **RN11 :**&ensp; $\neg AntiRigidType(x) \rightarrow \neg Role(x) \land \neg Phase(x) \land \neg RoleMixin(x) \land \neg PhaseMixin(x)$
 - **RN12 :**&ensp; $\neg Mixin(x) \rightarrow \neg SemiRigidType$
 
-### gUFO Positive Rules Group
+### gUFO Positive Rules' Group
 
 - **RP01 :**&ensp; $NonRigidType(x) \rightarrow \neg RigidType(x)$
 - **RP02 :**&ensp; $RigidType(x) \rightarrow \neg NonRigidType(x) \land \neg AntiRigidType(x) \land \neg SemiRigidType(x) \land \neg Role(x) \land \neg Phase(x) \land \neg RoleMixin(x) \land \neg PhaseMixin(x) \land \neg Mixin(x)$
@@ -133,7 +131,7 @@ A complete list of implementation rules is available in `.tsv` (tab-separated) f
 - **RP13 :**&ensp; $PhaseMixin(x) \rightarrow AntiRigidType(x) \land NonSortal(x) \land \neg Category(x) \land \neg Mixin(x) \land \neg Phase(x) \land \neg Role(x) \land \neg RoleMixin(x)$
 - **RP14 :**&ensp; $Mixin(x) \rightarrow NonSortal(x) \land SemiRigidType(x) \land \neg Category(x) \land \neg PhaseMixin(x) \land \neg RoleMixin(x)$
 
-### UFO All Rules Group
+### UFO All Rules' Group
 
 - **RA01 :**&ensp; $Sortal(x) \land subClassOf(y,x) \rightarrow Sortal(y)$
 - **RA02 :**&ensp; $RigidType(x) \land subClassOf(x,y) \rightarrow \neg AntiRigidType(y)$
@@ -143,7 +141,7 @@ A complete list of implementation rules is available in `.tsv` (tab-separated) f
 - **RA06 :**&ensp; $Phase(x) \land subClassOf(x,y) \rightarrow \neg Role(y) \land \neg RoleMixin(y)$
 - **RA07 :**&ensp; $PhaseMixin(x) \land subClassOf(x,y) \rightarrow \neg RoleMixin(y)$
 
-### UFO Some Rules Group
+### UFO Some Rules' Group
 
 - **RS01 :**&ensp; $AntiRigidType(x) \land Sortal(x) \land Category(y) \land subClassOf(x,y) \rightarrow \exists z (RigidType(z) \land Sortal(z) \land subClassOf(x,z) \land subClassOf(z,y))$
 - **RS02 :**&ensp; $Mixin(x) \rightarrow \exists y (subClassOf(y,x) \land AntiRigidType(y))$
@@ -155,6 +153,6 @@ A complete list of implementation rules is available in `.tsv` (tab-separated) f
 - **RS08 :**&ensp; $PhaseMixin(x) \rightarrow \exists y (Category (y) \land isSubClassOf(x,y))$
 - **RS09 :**&ensp; $PhaseMixin(x) \land Category(y) \land subClassOf(x,y) \rightarrow \exists z (PhaseMixin(z) \land \neg isSubClassOf(x,z) \land \neg isSubClassOf(z,x) \land isSubClassOf(z,y))$
 
-### UFO Unique Rules Group
+### UFO Unique Rules' Group
 
 - **RU01 :**&ensp; $Sortal(x) \rightarrow \exists! y (subClassOf (x,y) \land Kind(y))$
