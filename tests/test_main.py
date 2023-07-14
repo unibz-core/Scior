@@ -3,7 +3,7 @@ import pytest
 
 from scior.main import run_scior_test_execution
 from scior.modules.problems_treatment.treat_inconsistent import InconsistentOntology
-from tests.test_aux import validate_results, get_test_list
+from test_aux import validate_results, get_test_list
 
 LIST_OF_TESTS = get_test_list()
 

@@ -2,13 +2,14 @@
 import copy
 import time
 
-from owlrl import DeductiveClosure, RDFS_Semantics
+from owlrl import RDFS_Semantics, DeductiveClosure
 from rdflib import RDF, OWL, Graph
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.problems_treatment.treat_errors import report_error_io_read
 
 LOGGER = initialize_logger()
+
 
 def load_graph_safely_considering_restrictions(ontology_file, graph_restriction=None):
     """ Safely load graph from file to working memory.

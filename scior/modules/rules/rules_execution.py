@@ -13,7 +13,7 @@ from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontolog
 from scior.modules.ontology_dataclassess.dataclass_verifications import verify_all_ontology_dataclasses_consistency
 from scior.modules.problems_treatment.treat_errors import report_error_end_of_switch
 from scior.modules.problems_treatment.treat_incomplete import IncompletenessEntry
-from scior.modules.rules.rule_group_aux import execute_rules_aux
+from scior.modules.rules.rule_group_aux import execute_rules_auxiliary
 from scior.modules.rules.rule_group_base import execute_rules_base
 from scior.modules.rules.rule_group_cwa import execute_rules_ufo_cwa
 from scior.modules.rules.rule_group_ufo_all import execute_rules_ufo_all
@@ -59,7 +59,7 @@ def switch_rule_group_execution(ontology_dataclass_list: list[OntologyDataClass]
     LOGGER.debug(f"Accessing rule {rule_group_code} ...")
 
     if rule_group_code == "rule_group_aux":
-        execute_rules_aux(ontology_graph)
+        execute_rules_auxiliary(ontology_graph)
 
     elif rule_group_code == "rule_group_ufo_all":
         execute_rules_ufo_all(ontology_dataclass_list, ontology_graph)

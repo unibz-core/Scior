@@ -1,4 +1,4 @@
-""" Implementation of caller/switcher for rules of group AUX. """
+""" Implementation of caller/switcher for rules of group AUXILIARY. """
 from rdflib import URIRef, RDFS, Graph
 
 from scior.modules.logger_config import initialize_logger
@@ -60,8 +60,8 @@ def run_rx02(ontology_graph: Graph) -> None:
     LOGGER.debug(f"Rule {rule_code} concluded.")
 
 
-def execute_rules_aux(ontology_graph: Graph) -> None:
-    """Executes all rules of the AUX group."""
+def execute_rules_auxiliary(ontology_graph: Graph) -> None:
+    """Executes all rules of the AUXILIARY group."""
 
     LOGGER.debug("Starting execution of all rules from group AUX.")
 

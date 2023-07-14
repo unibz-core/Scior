@@ -1,15 +1,14 @@
-@prefix :      <http://test.com#> .
-@prefix owl:   <http://www.w3.org/2002/07/owl#> .
-@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix gufo:  <http://purl.org/nemo/gufo#> .
-@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix :     <http://test.com#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix gufo: <http://purl.org/nemo/gufo#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @base <http://test.com> .
 
 # RoleMixin(x) -> AntiRigidType(x) ^ NonSortal(x) ^ ~Category(x) ^ ~Mixin(x) ^ ~Phase(x) ^ ~PhaseMixin(x) ^ ~Role(x)
 
 :X
-    rdf:type
-            owl:Class, gufo:RoleMixin, gufo:AntiRigidType, gufo:NonSortal, [ owl:complementOf gufo:Category, gufo:Mixin,
-                                                                                              gufo:Phase,
-                                                                                              gufo:PhaseMixin,
-                                                                                              gufo:Role ] .
+    rdf:type owl:Class, gufo:RoleMixin, gufo:AntiRigidType, gufo:NonSortal, [ owl:complementOf gufo:Category,
+                                                                                               gufo:Mixin, gufo:Phase,
+                                                                                               gufo:PhaseMixin,
+                                                                                               gufo:Role ] .

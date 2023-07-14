@@ -3,8 +3,6 @@ import os
 import platform
 from datetime import datetime
 
-import psutil
-
 from scior.modules.problems_treatment.treat_errors import report_error_io_write
 
 

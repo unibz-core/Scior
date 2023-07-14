@@ -123,8 +123,7 @@ gufo:Aspect
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:Endurant ;
     owl:disjointWith    gufo:Object ;
-    owl:disjointUnionOf ( gufo:ExtrinsicAspect
-                          gufo:IntrinsicAspect ) ;
+    owl:disjointUnionOf ( gufo:ExtrinsicAspect gufo:IntrinsicAspect ) ;
     rdfs:comment        """A gufo:Endurant that depends on at least one other concrete individual for its existence. A gufo:Aspect is a characteristic or trait of a concrete individual that is itself conceived as an individual.
 
 Examples include: intrinsic physical aspects, such as the Moon's mass, Lassie's fur color; mental dispositions, such as Bob's math skills, his belief that the number one is odd; as well as relational aspects, such as John's love for Mary and the marriage between John and Mary. 
@@ -151,8 +150,7 @@ For example, \"PhysicalObject\" may be considered a gufo:Category, encompassing 
 gufo:Collection
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:Object ;
-    owl:disjointUnionOf ( gufo:FixedCollection
-                          gufo:VariableCollection ) ;
+    owl:disjointUnionOf ( gufo:FixedCollection gufo:VariableCollection ) ;
     rdfs:comment        """A complex gufo:Object whose parts (the members of the collection) have a uniform structure (i.e., members are conceived as playing the same role in the collection). Collections may have a fixed or variable membership, which can be asserted using gufo:FixedCollection and gufo:VariableCollection respectively.
 
 Examples include a deck of cards, a pile of bricks, a forest (conceived as a collection of trees), and a group of people.
@@ -166,8 +164,7 @@ A gufo:Collection may be decomposed into \"smaller\" collections. For instance, 
 ###  http://purl.org/nemo/gufo#Endurant
 gufo:Endurant
     rdf:type            owl:Class ;
-    owl:disjointUnionOf ( gufo:Aspect
-                          gufo:Object ) ;
+    owl:disjointUnionOf ( gufo:Aspect gufo:Object ) ;
     rdfs:comment        """A gufo:ConcreteIndividual that endures in time and may change qualitatively while keeping its identity.
 
 Examples include: ordinary objects of everyday experience, such as a person, a house, and a car; reified relationships, such as a marriage, a rental contract, and a person's love for another; and existentially-dependent aspects of objects, such as a car's weight, a person's language skills, and a house's color. 
@@ -178,18 +175,16 @@ Also termed \"continuant\" in the philosophical literature."""@en ;
 
 ###  http://purl.org/nemo/gufo#EndurantType
 gufo:EndurantType
-    rdf:type owl:Class ;
-    owl:disjointUnionOf ( gufo:NonRigidType
-                          gufo:RigidType ), ( gufo:NonSortal
-                                              gufo:Sortal ) ;
-    rdfs:comment """A gufo:Type whose instances are endurants.
+    rdf:type            owl:Class ;
+    owl:disjointUnionOf ( gufo:NonRigidType gufo:RigidType ), ( gufo:NonSortal gufo:Sortal ) ;
+    rdfs:comment        """A gufo:Type whose instances are endurants.
 
 Instances of gufo:EndurantType are subclasses of gufo:Endurant.
 
 Examples include the object kind \"Person\", the phase \"Child\", the relator kind \"Marriage\".
 
 See Guizzardi et al. (2018) for details concerning the taxonomy of endurant types included here."""@en ;
-    rdfs:label "EndurantType"@en .
+    rdfs:label          "EndurantType"@en .
 
 
 ###  http://purl.org/nemo/gufo#ExtrinsicAspect
@@ -197,8 +192,7 @@ gufo:ExtrinsicAspect
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:Aspect ;
     owl:disjointWith    gufo:IntrinsicAspect ;
-    owl:disjointUnionOf ( gufo:ExtrinsicMode
-                          gufo:Relator ) ;
+    owl:disjointUnionOf ( gufo:ExtrinsicMode gufo:Relator ) ;
     rdfs:comment        """A gufo:Aspect that depends on one or more concrete individuals.
 
 Extrinsic (or \"relational\") aspects are reified relationships, e.g., John and Mary's marriage, Mary's employment contract at Nasa, or parts of those relationships, e.g., John's obligations towards Mary in the scope of the marriage, Mary's reciprocal claims, Mary's obligations towards John, John's reciprocal claims. Extrinsic aspects can also be reified one-sided relationships, e.g., John's admiration for Obama (which depends on Obama but does not characterize him).
@@ -249,8 +243,7 @@ To explicitly capture temporary components, use gufo:TemporaryParthoodSituation.
 gufo:IntrinsicAspect
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:Aspect ;
-    owl:disjointUnionOf ( gufo:IntrinsicMode
-                          gufo:Quality ) ;
+    owl:disjointUnionOf ( gufo:IntrinsicMode gufo:Quality ) ;
     rdfs:comment        """A gufo:Aspect that depends on a single concrete individual in which it inheres.
 
 Examples include intrinsic physical aspects, such as the Moon's mass, Lassie's fur color; the fragility of John Lennon's glasses; mental dispositions, such as Bob's math skills, his belief that the number one is odd.
@@ -300,8 +293,7 @@ gufo:NonRigidType
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:EndurantType ;
     owl:disjointWith    gufo:RigidType ;
-    owl:disjointUnionOf ( gufo:AntiRigidType
-                          gufo:SemiRigidType ) ;
+    owl:disjointUnionOf ( gufo:AntiRigidType gufo:SemiRigidType ) ;
     rdfs:comment        """A gufo:EndurantType that does not apply necessarily to at least one of its instances (see Guizzardi, 2005, chapter 4).
 
 Examples include anti-rigid types, such as the role \"Student\" and the phase \"Child\", and semi-rigid types, such as the mixin \"MusicalArtist\" (which necessarily characterizes bands, but contingently characterizes people) and the mixin \"FemaleAnimal\" (which is necessarily characterizes female dogs, but contigently characterizes clownfish)."""@en ;

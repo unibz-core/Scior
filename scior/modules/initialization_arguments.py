@@ -19,7 +19,7 @@ def treat_user_arguments(software_acronym: str, software_name: str, software_ver
     arguments_parser = argparse.ArgumentParser(prog="scior",
                                                description=software_acronym + " - " + software_name,
                                                allow_abbrev=False,
-                                               epilog="Asterisks indicate default values. More information at: "
+                                               epilog="Asterisks represent default values. More information at: "
                                                       + software_url)
 
     arguments_parser.version = about_message

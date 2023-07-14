@@ -121,11 +121,11 @@ Guizzardi et al. (2013) included a notion of \"brings-about\" that related event
 ###  http://purl.org/nemo/gufo#categorizes
 gufo:categorizes
     rdf:type     owl:ObjectProperty ;
-    rdfs:domain  [ owl:intersectionOf ( gufo:Type
-                                        [ rdf:type         owl:Class ;
-                                          owl:complementOf gufo:AbstractIndividualType ]
-                                        [ rdf:type         owl:Class ;
-                                          owl:complementOf gufo:ConcreteIndividualType ] ) ;
+    rdfs:domain  [ owl:intersectionOf ( gufo:Type [ rdf:type         owl:Class ;
+                                                    owl:complementOf gufo:AbstractIndividualType ] [ rdf:type
+                                                                                                             owl:Class ;
+                                                                                                     owl:complementOf
+                                                                                                             gufo:ConcreteIndividualType ] ) ;
                    rdf:type           owl:Class ] ;
     rdfs:range   gufo:Type ;
     rdfs:comment """Identifies a gufo:Type whose instances may be classified by instances of the categorizing higher-order type.
@@ -389,8 +389,7 @@ When a component may change its relation to be whole, see gufo:standsInQualified
 gufo:isDerivedFrom
     rdf:type     owl:ObjectProperty ;
     rdfs:domain  [ rdf:type    owl:Class ;
-                   owl:unionOf ( gufo:ComparativeRelationshipType
-                                 gufo:MaterialRelationshipType ) ] ;
+                   owl:unionOf ( gufo:ComparativeRelationshipType gufo:MaterialRelationshipType ) ] ;
     rdfs:range   gufo:EndurantType ;
     rdfs:comment """Identifies a gufo:EndurantType from which the material or comparative relation can be derived. The identified gufo:EndurantType should be a subclass of gufo:Aspect, more specifically a subclass of gufo:ExtrinsicAspect in the case of a gufo:MaterialRelationshipType, and a subclass of gufo:IntrinsicAspect in the case of a gufo:ComparativeRelationshipType.
 
@@ -527,11 +526,11 @@ Examples include the participation of Freddy Mercury in Queen's Live Aid Concert
 gufo:partitions
     rdf:type           owl:ObjectProperty ;
     rdfs:subPropertyOf gufo:categorizes ;
-    rdfs:domain        [ owl:intersectionOf ( gufo:Type
-                                              [ rdf:type         owl:Class ;
-                                                owl:complementOf gufo:AbstractIndividualType ]
-                                              [ rdf:type         owl:Class ;
-                                                owl:complementOf gufo:ConcreteIndividualType ] ) ;
+    rdfs:domain        [ owl:intersectionOf ( gufo:Type [ rdf:type         owl:Class ;
+                                                          owl:complementOf gufo:AbstractIndividualType ] [ rdf:type
+                                                                                                                   owl:Class ;
+                                                                                                           owl:complementOf
+                                                                                                                   gufo:ConcreteIndividualType ] ) ;
                          rdf:type           owl:Class ] ;
     rdfs:comment       """Identifies a gufo:Type whose instances are classified by exactly one instance of the partitioning higher-order type.
 
@@ -789,8 +788,7 @@ gufo:Aspect
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:Endurant ;
     owl:disjointWith    gufo:Object ;
-    owl:disjointUnionOf ( gufo:ExtrinsicAspect
-                          gufo:IntrinsicAspect ) ;
+    owl:disjointUnionOf ( gufo:ExtrinsicAspect gufo:IntrinsicAspect ) ;
     rdfs:comment        """A gufo:Endurant that depends on at least one other concrete individual for its existence. A gufo:Aspect is a characteristic or trait of a concrete individual that is itself conceived as an individual.
 
 Examples include: intrinsic physical aspects, such as the Moon's mass, Lassie's fur color; mental dispositions, such as Bob's math skills, his belief that the number one is odd; as well as relational aspects, such as John's love for Mary and the marriage between John and Mary. 
@@ -817,8 +815,7 @@ For example, \"PhysicalObject\" may be considered a gufo:Category, encompassing 
 gufo:Collection
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:Object ;
-    owl:disjointUnionOf ( gufo:FixedCollection
-                          gufo:VariableCollection ) ;
+    owl:disjointUnionOf ( gufo:FixedCollection gufo:VariableCollection ) ;
     rdfs:comment        """A complex gufo:Object whose parts (the members of the collection) have a uniform structure (i.e., members are conceived as playing the same role in the collection). Collections may have a fixed or variable membership, which can be asserted using gufo:FixedCollection and gufo:VariableCollection respectively.
 
 Examples include a deck of cards, a pile of bricks, a forest (conceived as a collection of trees), and a group of people.
@@ -851,9 +848,7 @@ Corresponds to \"comparative formal relation\" in Guizzardi (2005) and \"Compara
 gufo:ConcreteIndividual
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:Individual ;
-    owl:disjointUnionOf ( gufo:Endurant
-                          gufo:Event
-                          gufo:Situation ) ;
+    owl:disjointUnionOf ( gufo:Endurant gufo:Event gufo:Situation ) ;
     rdfs:comment        """A gufo:Individual that exists in space-time.
 
 Concrete individuals comprise not only object-like entities (a car, a mountain, a person, a marriage, a belief), but also events (a business meeting, a soccer match) and situations (the situation in which a person weighs 80 kilograms, the situation in which a bank account is overdrawn)."""@en ;
@@ -877,8 +872,7 @@ Examples include the gufo:Kind \"Person\", the gufo:Category \"Physical Object\"
 gufo:Endurant
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:ConcreteIndividual ;
-    owl:disjointUnionOf ( gufo:Aspect
-                          gufo:Object ) ;
+    owl:disjointUnionOf ( gufo:Aspect gufo:Object ) ;
     rdfs:comment        """A gufo:ConcreteIndividual that endures in time and may change qualitatively while keeping its identity.
 
 Examples include: ordinary objects of everyday experience, such as a person, a house, and a car; reified relationships, such as a marriage, a rental contract, and a person's love for another; and existentially-dependent aspects of objects, such as a car's weight, a person's language skills, and a house's color. 
@@ -889,20 +883,18 @@ Also termed \"continuant\" in the philosophical literature."""@en ;
 
 ###  http://purl.org/nemo/gufo#EndurantType
 gufo:EndurantType
-    rdf:type owl:Class ;
-    rdfs:subClassOf gufo:ConcreteIndividualType ;
-    owl:disjointWith gufo:EventType, gufo:SituationType ;
-    owl:disjointUnionOf ( gufo:NonRigidType
-                          gufo:RigidType ), ( gufo:NonSortal
-                                              gufo:Sortal ) ;
-    rdfs:comment """A gufo:Type whose instances are endurants.
+    rdf:type            owl:Class ;
+    rdfs:subClassOf     gufo:ConcreteIndividualType ;
+    owl:disjointWith    gufo:EventType, gufo:SituationType ;
+    owl:disjointUnionOf ( gufo:NonRigidType gufo:RigidType ), ( gufo:NonSortal gufo:Sortal ) ;
+    rdfs:comment        """A gufo:Type whose instances are endurants.
 
 Instances of gufo:EndurantType are subclasses of gufo:Endurant.
 
 Examples include the object kind \"Person\", the phase \"Child\", the relator kind \"Marriage\".
 
 See Guizzardi et al. (2018) for details concerning the taxonomy of endurant types included here."""@en ;
-    rdfs:label "EndurantType"@en .
+    rdfs:label          "EndurantType"@en .
 
 
 ###  http://purl.org/nemo/gufo#Event
@@ -938,8 +930,7 @@ gufo:ExtrinsicAspect
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:Aspect ;
     owl:disjointWith    gufo:IntrinsicAspect ;
-    owl:disjointUnionOf ( gufo:ExtrinsicMode
-                          gufo:Relator ) ;
+    owl:disjointUnionOf ( gufo:ExtrinsicMode gufo:Relator ) ;
     rdfs:comment        """A gufo:Aspect that depends on one or more concrete individuals.
 
 Extrinsic (or \"relational\") aspects are reified relationships, e.g., John and Mary's marriage, Mary's employment contract at Nasa, or parts of those relationships, e.g., John's obligations towards Mary in the scope of the marriage, Mary's reciprocal claims, Mary's obligations towards John, John's reciprocal claims. Extrinsic aspects can also be reified one-sided relationships, e.g., John's admiration for Obama (which depends on Obama but does not characterize him).
@@ -1006,8 +997,7 @@ To explicitly capture temporary components, use gufo:TemporaryParthoodSituation.
 gufo:Individual
     rdf:type            owl:Class ;
     owl:disjointWith    gufo:Type ;
-    owl:disjointUnionOf ( gufo:AbstractIndividual
-                          gufo:ConcreteIndividual ) ;
+    owl:disjointUnionOf ( gufo:AbstractIndividual gufo:ConcreteIndividual ) ;
     rdfs:comment        """An entity that (unlike a gufo:Type) cannot be instantiated.
 
 Individuals may be either concrete (e.g., the Earth, Mick Jagger, Brazil, the 1985 Mexico City Earthquake) or abstract (e.g., the number two, the proposition that 'three is a prime number').
@@ -1023,8 +1013,7 @@ gufo:IntrinsicAspect
                                        owl:onProperty           gufo:inheresIn ;
                                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
                                        owl:onClass              gufo:ConcreteIndividual ] ;
-    owl:disjointUnionOf ( gufo:IntrinsicMode
-                          gufo:Quality ) ;
+    owl:disjointUnionOf ( gufo:IntrinsicMode gufo:Quality ) ;
     rdfs:comment        """A gufo:Aspect that depends on a single concrete individual in which it inheres.
 
 Examples include intrinsic physical aspects, such as the Moon's mass, Lassie's fur color; the fragility of John Lennon's glasses; mental dispositions, such as Bob's math skills, his belief that the number one is odd.
@@ -1090,8 +1079,7 @@ gufo:NonRigidType
     rdf:type            owl:Class ;
     rdfs:subClassOf     gufo:EndurantType ;
     owl:disjointWith    gufo:RigidType ;
-    owl:disjointUnionOf ( gufo:AntiRigidType
-                          gufo:SemiRigidType ) ;
+    owl:disjointUnionOf ( gufo:AntiRigidType gufo:SemiRigidType ) ;
     rdfs:comment        """A gufo:EndurantType that does not apply necessarily to at least one of its instances (see Guizzardi, 2005, chapter 4).
 
 Examples include anti-rigid types, such as the role \"Student\" and the phase \"Child\", and semi-rigid types, such as the mixin \"MusicalArtist\" (which necessarily characterizes bands, but contingently characterizes people) and the mixin \"FemaleAnimal\" (which is necessarily characterizes female dogs, but contigently characterizes clownfish)."""@en ;
@@ -1186,55 +1174,56 @@ Use this class only for quality values (qualia) that are to be reified in the A-
 
 ###  http://purl.org/nemo/gufo#QualityValueAttributionSituation
 gufo:QualityValueAttributionSituation
-    rdf:type                                                                                             owl:Class ;
-    rdfs:subClassOf                                                                                      gufo:Situation,
-                                                                                                         [ rdf:type
-                                                                                                                       owl:Class ;
-                                                                                                           owl:unionOf ( [ rdf:type
-                                                                                                                                   owl:Restriction ;
-                                                                                                                           owl:onProperty
-                                                                                                                                   gufo:concernsReifiedQualityValue ;
-                                                                                                                           owl:qualifiedCardinality
-                                                                                                                                   "1"^^xsd:nonNegativeInteger ;
-                                                                                                                           owl:onClass
-                                                                                                                                   gufo:QualityValue ]
-                                                                                                                         [ rdf:type
-                                                                                                                                   owl:Restriction ;
-                                                                                                                           owl:onProperty
-                                                                                                                                   gufo:concernsQualityValue ;
-                                                                                                                           owl:cardinality
-                                                                                                                                   "1"^^xsd:nonNegativeInteger ] ) ],
-                                                                                                         [ rdf:type
-                                                                                                                   owl:Restriction ;
-                                                                                                           owl:onProperty
-                                                                                                                   gufo:concernsQualityType ;
-                                                                                                           owl:qualifiedCardinality
-                                                                                                                   "1"^^xsd:nonNegativeInteger ;
-                                                                                                           owl:onClass
-                                                                                                                   gufo:EndurantType ],
-                                                                                                         [ rdf:type
-                                                                                                                   owl:Restriction ;
-                                                                                                           owl:onProperty
-                                                                                                                   [ owl:inverseOf
-                                                                                                                             gufo:standsInQualifiedAttribution ] ;
-                                                                                                           owl:qualifiedCardinality
-                                                                                                                   "1"^^xsd:nonNegativeInteger ;
-                                                                                                           owl:onClass
-                                                                                                                   gufo:Endurant ] ;
-    owl:disjointWith                                                                                     gufo:TemporaryConstitutionSituation,
-                                                                                                         gufo:TemporaryInstantiationSituation,
-                                                                                                         gufo:TemporaryParthoodSituation,
-                                                                                                         gufo:TemporaryRelationshipSituation ;
-    rdfs:comment                                                                                         """A gufo:Situation in which a quality value is temporarily attributed to a gufo:Endurant.
+    rdf:type                                                                                              owl:Class ;
+    rdfs:subClassOf                                                                                       gufo:Situation,
+                                                                                                          [ rdf:type
+                                                                                                                    owl:Class ;
+                                                                                                            owl:unionOf
+                                                                                                                    ( [ rdf:type
+                                                                                                                                owl:Restriction ;
+                                                                                                                        owl:onProperty
+                                                                                                                                gufo:concernsReifiedQualityValue ;
+                                                                                                                        owl:qualifiedCardinality
+                                                                                                                                "1"^^xsd:nonNegativeInteger ;
+                                                                                                                        owl:onClass
+                                                                                                                                gufo:QualityValue ]
+                                                                                                                      [ rdf:type
+                                                                                                                                owl:Restriction ;
+                                                                                                                        owl:onProperty
+                                                                                                                                gufo:concernsQualityValue ;
+                                                                                                                        owl:cardinality
+                                                                                                                                "1"^^xsd:nonNegativeInteger ] ) ],
+                                                                                                          [ rdf:type
+                                                                                                                    owl:Restriction ;
+                                                                                                            owl:onProperty
+                                                                                                                    gufo:concernsQualityType ;
+                                                                                                            owl:qualifiedCardinality
+                                                                                                                    "1"^^xsd:nonNegativeInteger ;
+                                                                                                            owl:onClass
+                                                                                                                    gufo:EndurantType ],
+                                                                                                          [ rdf:type
+                                                                                                                    owl:Restriction ;
+                                                                                                            owl:onProperty
+                                                                                                                    [ owl:inverseOf
+                                                                                                                              gufo:standsInQualifiedAttribution ] ;
+                                                                                                            owl:qualifiedCardinality
+                                                                                                                    "1"^^xsd:nonNegativeInteger ;
+                                                                                                            owl:onClass
+                                                                                                                    gufo:Endurant ] ;
+    owl:disjointWith                                                                                      gufo:TemporaryConstitutionSituation,
+                                                                                                          gufo:TemporaryInstantiationSituation,
+                                                                                                          gufo:TemporaryParthoodSituation,
+                                                                                                          gufo:TemporaryRelationshipSituation ;
+    rdfs:comment                                                                                          """A gufo:Situation in which a quality value is temporarily attributed to a gufo:Endurant.
 
 A gufo:QualityValueAttributionSituation should be used only for mutable qualities, i.e. those whose value can vary in time.
 
 Examples include: the situation in which the value of a bitcoin in Euros is 6.526,12, which lasted from 10/12/2019 to 11/12/2019; the situation in which the weight of Mike Tyson was 100 kg; and the situation in which the color of Einstein' hair was grey.
 
 This is a reification of the quality value attribution (in a solution that is similar to the qualified relation pattern  http://patterns.dataincubator.org/book/qualified-relation.html )"""@en ;
-    rdfs:label                                                                                           "QualityValueAttributionSituation"@en ;
-    rdfs:seeAlso                                                                                         gufo:concernsQualityValue,
-                                                                                                         gufo:concernsReifiedQualityValue .
+    rdfs:label                                                                                            "QualityValueAttributionSituation"@en ;
+    rdfs:seeAlso                                                                                          gufo:concernsQualityValue,
+                                                                                                          gufo:concernsReifiedQualityValue .
 
 
 ###  http://purl.org/nemo/gufo#Quantity
