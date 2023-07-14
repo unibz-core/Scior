@@ -1,4 +1,4 @@
-﻿Base Rules	Group	Rule Code	First-Order Logic	Markdown
+﻿Base Rules	Group	Rule Code	First-Order Logic	Formatted to Markdown
 R05, R27	UFO All	RA01	Sortal(x) ^ subClassOf(y,x) -> Sortal(y)	$Sortal(x) \land subClassOf(y,x) \rightarrow Sortal(y)$
 R22	UFO All	RA02	RigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)	$RigidType(x) \land subClassOf(x,y) \rightarrow \neg AntiRigidType(y)$
 R23	UFO All	RA03	SemiRigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)	$SemiRigidType(x) \land subClassOf(x,y) \rightarrow \neg AntiRigidType(y)$

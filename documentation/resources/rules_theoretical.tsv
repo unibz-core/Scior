@@ -1,4 +1,4 @@
-﻿Code	First-Order Logic Rule	Markdown Rule
+﻿Code	First-Order Logic Rule	Formatted to Markdown
 R01	subClassOf(x,x)	$subClassOf(x,x)$
 R02	subClassOf(x,y) ^ subClassOf(y,z) -> subClassOf(x,z)	$subClassOf(x,y) \land subClassOf(y,z) \rightarrow subClassOf(x,z)$
 R03	EndurantType(x) <-> RigidType(x) xor NonRigidType(x)	$EndurantType(x) \leftrightarrow RigidType(x) \oplus NonRigidType(x)$
