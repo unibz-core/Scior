@@ -56,7 +56,7 @@ Example of codes are: RA01, RL10, and RU02.
 
 ## Implementation Rules
 
-A complete list of implementation rules is available in `csv` format here.
+A complete list of implementation rules is available in `.tsv` (tab-separated) format here.
 
 ### Auxiliary Rules Group
 
@@ -73,7 +73,7 @@ A complete list of implementation rules is available in `csv` format here.
 
 - **RC01 :**&ensp; $\neg (\exists z (RigidType(z) \land Sortal(z) \land subClassOf(x,z) \land subClassOf(z,y))) \land AntiRigidType(x) \land Sortal(x) \land subClassOf(x,y) \rightarrow \neg Category(y)$
 - **RC02 :**&ensp; $\neg (\exists y, z (subClassOf(y,x) \land AntiRigidType(y) \land subClassOf(z,x) \land RigidType(z))) \rightarrow \neg Mixin(x)$
-- **RC03 :**&ensp; $\neg(\exists y (x \neq y \land subClassOf(x,y)) \rightarrow Kind(x)$
+- **RC03 :**&ensp; $\neg(\exists y (x \neq y \land subClassOf(x,y)) \rightarrow Kind(x))$
 - **RC04 :**&ensp; $\neg (\exists y (subClassOf (x,y) \land Kind(y))) \rightarrow \neg Sortal(x)$
 - **RC05 :**&ensp; $\neg (\exists y, z ( y \neq z \land Sortal(y) \land Sortal(z) \land \neg shareKind(y,z) \land (subClassOf(y,x) v shareSuperClass(x,y))) \land (subClassOf(z,x) v shareSuperClass(x,z))) \rightarrow \neg NonSortal(x)$
 - **RC06 :**&ensp; $\neg (\exists z (Phase(z) \land subClassOf(x,z) \land subClassOf(z,y))) \land Role(x) \land subClassOf(x,y) \rightarrow \neg PhaseMixin(y)$
