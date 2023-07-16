@@ -1,0 +1,55 @@
+Assumption	Type	IS	CAN	Automatic Action
+CWA	Some	0	0	Report inconsistency.
+CWA	Some	0	1	Set class in can list as type.
+CWA	Some	0	2	Report incompleteness and possibilities (OR).
+CWA	Some	1	0	No action.
+CWA	Some	1	1	No action.
+CWA	Some	1	2	No action.
+CWA	Some	2	0	No action.
+CWA	Some	2	1	No action.
+CWA	Some	2	2	No action.
+CWA	Unique	0	0	Report inconsistency.
+CWA	Unique	0	1	Set class in can list as type.
+CWA	Unique	0	2	Report incompleteness and possibilities (XOR).
+CWA	Unique	1	0	No action.
+CWA	Unique	1	1	Set all classes in can list as not type.
+CWA	Unique	1	2	Set all classes in can list as not type.
+CWA	Unique	2	0	Report inconsistency.
+CWA	Unique	2	1	Report inconsistency.
+CWA	Unique	2	2	Report inconsistency.
+OWA	Some	0	0	Report incompleteness and no possibility.
+OWA	Some	0	1	Report incompleteness and single possibility.
+OWA	Some	0	2	Report incompleteness and possibilities (OR).
+OWA	Some	1	0	No action.
+OWA	Some	1	1	No action.
+OWA	Some	1	2	No action.
+OWA	Some	2	0	No action.
+OWA	Some	2	1	No action.
+OWA	Some	2	2	No action.
+OWA	Unique	0	0	Report incompleteness and no possibility.
+OWA	Unique	0	1	Report incompleteness and single possibility.
+OWA	Unique	0	2	Report incompleteness and possibilities (XOR).
+OWA	Unique	1	0	No action.
+OWA	Unique	1	1	Set all classes in can list as not type.
+OWA	Unique	1	2	Set all classes in can list as not type.
+OWA	Unique	2	0	Report inconsistency.
+OWA	Unique	2	1	Report inconsistency.
+OWA	Unique	2	2	Report inconsistency.
+OWA-F	Some	0	0	Report incompleteness and no possibility.
+OWA-F	Some	0	1	Set class in can list as type.
+OWA-F	Some	0	2	Report incompleteness and possibilities (OR).
+OWA-F	Some	1	0	No action.
+OWA-F	Some	1	1	No action.
+OWA-F	Some	1	2	No action.
+OWA-F	Some	2	0	No action.
+OWA-F	Some	2	1	No action.
+OWA-F	Some	2	2	No action.
+OWA-F	Unique	0	0	Report incompleteness and no possibility.
+OWA-F	Unique	0	1	Set class in can list as type.
+OWA-F	Unique	0	2	Report incompleteness and possibilities (XOR).
+OWA-F	Unique	1	0	No action.
+OWA-F	Unique	1	1	Set all classes in can list as not type.
+OWA-F	Unique	1	2	Set all classes in can list as not type.
+OWA-F	Unique	2	0	Report inconsistency.
+OWA-F	Unique	2	1	Report inconsistency.
+OWA-F	Unique	2	2	Report inconsistency.
