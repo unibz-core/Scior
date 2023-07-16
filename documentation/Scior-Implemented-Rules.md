@@ -54,7 +54,7 @@ Example of codes are: RA01, RL10, and RU02.
 
 ## Implementation Rules
 
-A complete list of implementation rules is available in `.tsv` (tab-separated) format and can be [ACCESSED HERE](https://github.com/unibz-core/Scior/blob/main/documentation/resources/rules_implementation.tsv).
+A complete list of implementation rules is available in `.tsv` (tab-separated) format and can be [ACCESSED HERE](https://github.com/unibz-core/Scior/blob/main/documentation/resources/rules_implementation.tsv). Scior's modules with the code that implement the rules can be [ACCESSED HERE](https://github.com/unibz-core/Scior/tree/main/scior/modules/rules).
 
 ### Auxiliary Rules' Group
 

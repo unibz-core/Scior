@@ -1,0 +1,91 @@
+Rule	Test	Variation	Input	Output	ConsistencyCWA	ConsistencyOWA	ConsistencyOWAF	ResultMatchCWA	ResultMatchOWA	ResultMatchOWAF	CSV-CWA	CSV-OWA	CSV-OWA-F
+RA01	test_ra01		test_ra01_in.ttl	test_ra01_out.ttl	True	True	True	True	True	True	test_ra01_in.ttl,test_ra01_out.ttl,cwa,True,True	test_ra01_in.ttl,test_ra01_out.ttl,owa,True,True	test_ra01_in.ttl,test_ra01_out.ttl,owaf,True,True
+RA02	test_ra02		test_ra02_in.ttl	test_ra02_out.ttl	True	True	True	True	True	True	test_ra02_in.ttl,test_ra02_out.ttl,cwa,True,True	test_ra02_in.ttl,test_ra02_out.ttl,owa,True,True	test_ra02_in.ttl,test_ra02_out.ttl,owaf,True,True
+RA03	test_ra03		test_ra03_in.ttl	test_ra03_out.ttl	False	True	True	True	True	True	test_ra03_in.ttl,test_ra03_out.ttl,cwa,False,True	test_ra03_in.ttl,test_ra03_out.ttl,owa,True,True	test_ra03_in.ttl,test_ra03_out.ttl,owaf,True,True
+RA04	test_ra04		test_ra04_in.ttl	test_ra04_out.ttl	False	True	True	True	True	True	test_ra04_in.ttl,test_ra04_out.ttl,cwa,False,True	test_ra04_in.ttl,test_ra04_out.ttl,owa,True,True	test_ra04_in.ttl,test_ra04_out.ttl,owaf,True,True
+RA05	test_ra05		test_ra05_in.ttl	test_ra05_out.ttl	False	True	True	True	True	True	test_ra05_in.ttl,test_ra05_out.ttl,cwa,False,True	test_ra05_in.ttl,test_ra05_out.ttl,owa,True,True	test_ra05_in.ttl,test_ra05_out.ttl,owaf,True,True
+RA06	test_ra06		test_ra06_in.ttl	test_ra06_out.ttl	False	True	True	True	True	True	test_ra06_in.ttl,test_ra06_out.ttl,cwa,False,True	test_ra06_in.ttl,test_ra06_out.ttl,owa,True,True	test_ra06_in.ttl,test_ra06_out.ttl,owaf,True,True
+RA07	test_ra07		test_ra07_in.ttl	test_ra07_out.ttl	False	True	True	True	True	True	test_ra07_in.ttl,test_ra07_out.ttl,cwa,False,True	test_ra07_in.ttl,test_ra07_out.ttl,owa,True,True	test_ra07_in.ttl,test_ra07_out.ttl,owaf,True,True
+RC01	test_rc01		test_rc01_in.ttl	test_rc01_out.ttl									
+RC02	test_rc02		test_rc02_in.ttl	test_rc02_out.ttl									
+RC03	test_rc03		test_rc03_in.ttl	test_rc03_out.ttl									
+RC04	test_rc04		test_rc04_in.ttl	test_rc04_out.ttl									
+RC05	test_rc05		test_rc05_in.ttl	test_rc05_out.ttl									
+RC06	test_rc06		test_rc06_in.ttl	test_rc06_out.ttl									
+RC07	test_rc07		test_rc07_in.ttl	test_rc07_out.ttl									
+RC08	test_rc08		test_rc08_in.ttl	test_rc08_out.ttl									
+RC09	test_rc09		test_rc09_in.ttl	test_rc09_out.ttl									
+RC10	test_rc10		test_rc10_in.ttl	test_rc10_out.ttl									
+RC11	test_rc11		test_rc11_in.ttl	test_rc11_out.ttl									
+RL01	test_rl01		test_rl01_in.ttl	test_rl01_out.ttl	False	True	True	True	True	True	test_rl01_in.ttl,test_rl01_out.ttl,cwa,False,True	test_rl01_in.ttl,test_rl01_out.ttl,owa,True,True	test_rl01_in.ttl,test_rl01_out.ttl,owaf,True,True
+RL02	test_rl02		test_rl02_in.ttl	test_rl02_out.ttl	True	True	True	True	True	True	test_rl02_in.ttl,test_rl02_out.ttl,cwa,True,True	test_rl02_in.ttl,test_rl02_out.ttl,owa,True,True	test_rl02_in.ttl,test_rl02_out.ttl,owaf,True,True
+RL03	test_rl03		test_rl03_in.ttl	test_rl03_out.ttl	False	True	True	True	True	True	test_rl03_in.ttl,test_rl03_out.ttl,cwa,False,True	test_rl03_in.ttl,test_rl03_out.ttl,owa,True,True	test_rl03_in.ttl,test_rl03_out.ttl,owaf,True,True
+RL04	test_rl04		test_rl04_in.ttl	test_rl04_out.ttl	False	True	True	True	True	True	test_rl04_in.ttl,test_rl04_out.ttl,cwa,False,True	test_rl04_in.ttl,test_rl04_out.ttl,owa,True,True	test_rl04_in.ttl,test_rl04_out.ttl,owaf,True,True
+RL05	test_rl05		test_rl05_in.ttl	test_rl05_out.ttl	False	True	True	True	True	True	test_rl05_in.ttl,test_rl05_out.ttl,cwa,False,True	test_rl05_in.ttl,test_rl05_out.ttl,owa,True,True	test_rl05_in.ttl,test_rl05_out.ttl,owaf,True,True
+RL06	test_rl06		test_rl06_in.ttl	test_rl06_out.ttl	False	True	True	True	True	True	test_rl06_in.ttl,test_rl06_out.ttl,cwa,False,True	test_rl06_in.ttl,test_rl06_out.ttl,owa,True,True	test_rl06_in.ttl,test_rl06_out.ttl,owaf,True,True
+RL07	test_rl07		test_rl07_in.ttl	test_rl07_out.ttl	False	True	True	True	True	True	test_rl07_in.ttl,test_rl07_out.ttl,cwa,False,True	test_rl07_in.ttl,test_rl07_out.ttl,owa,True,True	test_rl07_in.ttl,test_rl07_out.ttl,owaf,True,True
+RL08	test_rl08		test_rl08_in.ttl	test_rl08_out.ttl	True	True	True	True	True	True	test_rl08_in.ttl,test_rl08_out.ttl,cwa,True,True	test_rl08_in.ttl,test_rl08_out.ttl,owa,True,True	test_rl08_in.ttl,test_rl08_out.ttl,owaf,True,True
+RL09	test_rl09		test_rl09_in.ttl	test_rl09_out.ttl	False	True	True	True	True	True	test_rl09_in.ttl,test_rl09_out.ttl,cwa,False,True	test_rl09_in.ttl,test_rl09_out.ttl,owa,True,True	test_rl09_in.ttl,test_rl09_out.ttl,owaf,True,True
+RL10	test_rl10		test_rl10_in.ttl	test_rl10_out.ttl	False	True	True	True	True	True	test_rl10_in.ttl,test_rl10_out.ttl,cwa,False,True	test_rl10_in.ttl,test_rl10_out.ttl,owa,True,True	test_rl10_in.ttl,test_rl10_out.ttl,owaf,True,True
+RL11	test_rl11		test_rl11_in.ttl	test_rl11_out.ttl	False	True	True	True	True	True	test_rl11_in.ttl,test_rl11_out.ttl,cwa,False,True	test_rl11_in.ttl,test_rl11_out.ttl,owa,True,True	test_rl11_in.ttl,test_rl11_out.ttl,owaf,True,True
+RL12	test_rl12		test_rl12_in.ttl	test_rl12_out.ttl	False	True	True	True	True	True	test_rl12_in.ttl,test_rl12_out.ttl,cwa,False,True	test_rl12_in.ttl,test_rl12_out.ttl,owa,True,True	test_rl12_in.ttl,test_rl12_out.ttl,owaf,True,True
+RL13	test_rl13		test_rl13_in.ttl	test_rl13_out.ttl	False	True	True	True	True	True	test_rl13_in.ttl,test_rl13_out.ttl,cwa,False,True	test_rl13_in.ttl,test_rl13_out.ttl,owa,True,True	test_rl13_in.ttl,test_rl13_out.ttl,owaf,True,True
+RL14	test_rl14		test_rl14_in.ttl	test_rl14_out.ttl	False	True	True	True	True	True	test_rl14_in.ttl,test_rl14_out.ttl,cwa,False,True	test_rl14_in.ttl,test_rl14_out.ttl,owa,True,True	test_rl14_in.ttl,test_rl14_out.ttl,owaf,True,True
+RL15	test_rl15		test_rl15_in.ttl	test_rl15_out.ttl	False	True	True	True	True	True	test_rl15_in.ttl,test_rl15_out.ttl,cwa,False,True	test_rl15_in.ttl,test_rl15_out.ttl,owa,True,True	test_rl15_in.ttl,test_rl15_out.ttl,owaf,True,True
+RN01	test_rn01		test_rn01_in.ttl	test_rn01_out.ttl	True	True	True	True	True	True	test_rn01_in.ttl,test_rn01_out.ttl,cwa,True,True	test_rn01_in.ttl,test_rn01_out.ttl,owa,True,True	test_rn01_in.ttl,test_rn01_out.ttl,owaf,True,True
+RN02	test_rn02		test_rn02_in.ttl	test_rn02_out.ttl	True	True	True	True	True	True	test_rn02_in.ttl,test_rn02_out.ttl,cwa,True,True	test_rn02_in.ttl,test_rn02_out.ttl,owa,True,True	test_rn02_in.ttl,test_rn02_out.ttl,owaf,True,True
+RN03	test_rn03		test_rn03_in.ttl	test_rn03_out.ttl	False	True	True	True	True	True	test_rn03_in.ttl,test_rn03_out.ttl,cwa,False,True	test_rn03_in.ttl,test_rn03_out.ttl,owa,True,True	test_rn03_in.ttl,test_rn03_out.ttl,owaf,True,True
+RN04	test_rn04		test_rn04_in.ttl	test_rn04_out.ttl	False	True	True	True	True	True	test_rn04_in.ttl,test_rn04_out.ttl,cwa,False,True	test_rn04_in.ttl,test_rn04_out.ttl,owa,True,True	test_rn04_in.ttl,test_rn04_out.ttl,owaf,True,True
+RN05	test_rn05		test_rn05_in.ttl	test_rn05_out.ttl	True	True	True	True	True	True	test_rn05_in.ttl,test_rn05_out.ttl,cwa,True,True	test_rn05_in.ttl,test_rn05_out.ttl,owa,True,True	test_rn05_in.ttl,test_rn05_out.ttl,owaf,True,True
+RN06	test_rn06		test_rn06_in.ttl	test_rn06_out.ttl	False	True	True	True	True	True	test_rn06_in.ttl,test_rn06_out.ttl,cwa,False,True	test_rn06_in.ttl,test_rn06_out.ttl,owa,True,True	test_rn06_in.ttl,test_rn06_out.ttl,owaf,True,True
+RN07	test_rn07		test_rn07_in.ttl	test_rn07_out.ttl	False	True	True	True	True	True	test_rn07_in.ttl,test_rn07_out.ttl,cwa,False,True	test_rn07_in.ttl,test_rn07_out.ttl,owa,True,True	test_rn07_in.ttl,test_rn07_out.ttl,owaf,True,True
+RN08	test_rn08		test_rn08_in.ttl	test_rn08_out.ttl	True	True	True	True	True	True	test_rn08_in.ttl,test_rn08_out.ttl,cwa,True,True	test_rn08_in.ttl,test_rn08_out.ttl,owa,True,True	test_rn08_in.ttl,test_rn08_out.ttl,owaf,True,True
+RN09	test_rn09		test_rn09_in.ttl	test_rn09_out.ttl	False	True	True	True	True	True	test_rn09_in.ttl,test_rn09_out.ttl,cwa,False,True	test_rn09_in.ttl,test_rn09_out.ttl,owa,True,True	test_rn09_in.ttl,test_rn09_out.ttl,owaf,True,True
+RN10	test_rn10		test_rn10_in.ttl	test_rn10_out.ttl	True	True	True	True	True	True	test_rn10_in.ttl,test_rn10_out.ttl,cwa,True,True	test_rn10_in.ttl,test_rn10_out.ttl,owa,True,True	test_rn10_in.ttl,test_rn10_out.ttl,owaf,True,True
+RN11	test_rn11		test_rn11_in.ttl	test_rn11_out.ttl	True	True	True	True	True	True	test_rn11_in.ttl,test_rn11_out.ttl,cwa,True,True	test_rn11_in.ttl,test_rn11_out.ttl,owa,True,True	test_rn11_in.ttl,test_rn11_out.ttl,owaf,True,True
+RN12	test_rn12		test_rn12_in.ttl	test_rn12_out.ttl	True	True	True	True	True	True	test_rn12_in.ttl,test_rn12_out.ttl,cwa,True,True	test_rn12_in.ttl,test_rn12_out.ttl,owa,True,True	test_rn12_in.ttl,test_rn12_out.ttl,owaf,True,True
+RP01	test_rp01		test_rp01_in.ttl	test_rp01_out.ttl	False	True	True	True	True	True	test_rp01_in.ttl,test_rp01_out.ttl,cwa,False,True	test_rp01_in.ttl,test_rp01_out.ttl,owa,True,True	test_rp01_in.ttl,test_rp01_out.ttl,owaf,True,True
+RP02	test_rp02		test_rp02_in.ttl	test_rp02_out.ttl	True	True	True	True	True	True	test_rp02_in.ttl,test_rp02_out.ttl,cwa,True,True	test_rp02_in.ttl,test_rp02_out.ttl,owa,True,True	test_rp02_in.ttl,test_rp02_out.ttl,owaf,True,True
+RP03	test_rp03		test_rp03_in.ttl	test_rp03_out.ttl	False	True	True	True	True	True	test_rp03_in.ttl,test_rp03_out.ttl,cwa,False,True	test_rp03_in.ttl,test_rp03_out.ttl,owa,True,True	test_rp03_in.ttl,test_rp03_out.ttl,owaf,True,True
+RP04	test_rp04		test_rp04_in.ttl	test_rp04_out.ttl	False	True	True	True	True	True	test_rp04_in.ttl,test_rp04_out.ttl,cwa,False,True	test_rp04_in.ttl,test_rp04_out.ttl,owa,True,True	test_rp04_in.ttl,test_rp04_out.ttl,owaf,True,True
+RP05	test_rp05		test_rp05_in.ttl	test_rp05_out.ttl	False	True	True	True	True	True	test_rp05_in.ttl,test_rp05_out.ttl,cwa,False,True	test_rp05_in.ttl,test_rp05_out.ttl,owa,True,True	test_rp05_in.ttl,test_rp05_out.ttl,owaf,True,True
+RP06	test_rp06		test_rp06_in.ttl	test_rp06_out.ttl	True	True	True	True	True	True	test_rp06_in.ttl,test_rp06_out.ttl,cwa,True,True	test_rp06_in.ttl,test_rp06_out.ttl,owa,True,True	test_rp06_in.ttl,test_rp06_out.ttl,owaf,True,True
+RP07	test_rp07		test_rp07_in.ttl	test_rp07_out.ttl	True	True	True	True	True	True	test_rp07_in.ttl,test_rp07_out.ttl,cwa,True,True	test_rp07_in.ttl,test_rp07_out.ttl,owa,True,True	test_rp07_in.ttl,test_rp07_out.ttl,owaf,True,True
+RP08	test_rp08		test_rp08_in.ttl	test_rp08_out.ttl	False	True	True	True	True	True	test_rp08_in.ttl,test_rp08_out.ttl,cwa,False,True	test_rp08_in.ttl,test_rp08_out.ttl,owa,True,True	test_rp08_in.ttl,test_rp08_out.ttl,owaf,True,True
+RP09	test_rp09		test_rp09_in.ttl	test_rp09_out.ttl	False	True	True	True	True	True	test_rp09_in.ttl,test_rp09_out.ttl,cwa,False,True	test_rp09_in.ttl,test_rp09_out.ttl,owa,True,True	test_rp09_in.ttl,test_rp09_out.ttl,owaf,True,True
+RP10	test_rp10		test_rp10_in.ttl	test_rp10_out.ttl	False	True	True	True	True	True	test_rp10_in.ttl,test_rp10_out.ttl,cwa,False,True	test_rp10_in.ttl,test_rp10_out.ttl,owa,True,True	test_rp10_in.ttl,test_rp10_out.ttl,owaf,True,True
+RP11	test_rp11		test_rp11_in.ttl	test_rp11_out.ttl	False	True	True	True	True	True	test_rp11_in.ttl,test_rp11_out.ttl,cwa,False,True	test_rp11_in.ttl,test_rp11_out.ttl,owa,True,True	test_rp11_in.ttl,test_rp11_out.ttl,owaf,True,True
+RP12	test_rp12		test_rp12_in.ttl	test_rp12_out.ttl	False	True	True	True	True	True	test_rp12_in.ttl,test_rp12_out.ttl,cwa,False,True	test_rp12_in.ttl,test_rp12_out.ttl,owa,True,True	test_rp12_in.ttl,test_rp12_out.ttl,owaf,True,True
+RP13	test_rp13		test_rp13_in.ttl	test_rp13_out.ttl	False	True	True	True	True	True	test_rp13_in.ttl,test_rp13_out.ttl,cwa,False,True	test_rp13_in.ttl,test_rp13_out.ttl,owa,True,True	test_rp13_in.ttl,test_rp13_out.ttl,owaf,True,True
+RP14	test_rp14		test_rp14_in.ttl	test_rp14_out.ttl	False	True	True	True	True	True	test_rp14_in.ttl,test_rp14_out.ttl,cwa,False,True	test_rp14_in.ttl,test_rp14_out.ttl,owa,True,True	test_rp14_in.ttl,test_rp14_out.ttl,owaf,True,True
+RS01	test_rs01	a	test_rs01a_in.ttl	test_rs01a_out.ttl	False	True	True	True	True	True	test_rs01a_in.ttl,test_rs01a_out.ttl,cwa,False,True	test_rs01a_in.ttl,test_rs01a_out.ttl,owa,True,True	test_rs01a_in.ttl,test_rs01a_out.ttl,owaf,True,True
+RS01	test_rs01	b	test_rs01b_in.ttl	test_rs01b_out.ttl	False	True	True	True	False	True	test_rs01b_in.ttl,test_rs01b_out.ttl,cwa,False,True	test_rs01b_in.ttl,test_rs01b_out.ttl,owa,True,False	test_rs01b_in.ttl,test_rs01b_out.ttl,owaf,True,True
+RS01	test_rs01	c	test_rs01c_in.ttl	test_rs01c_out.ttl	False	True	True	True	True	True	test_rs01c_in.ttl,test_rs01c_out.ttl,cwa,False,True	test_rs01c_in.ttl,test_rs01c_out.ttl,owa,True,True	test_rs01c_in.ttl,test_rs01c_out.ttl,owaf,True,True
+RS01	test_rs01	d	test_rs01d_in.ttl	test_rs01d_out.ttl	False	True	True	True	True	True	test_rs01d_in.ttl,test_rs01d_out.ttl,cwa,False,True	test_rs01d_in.ttl,test_rs01d_out.ttl,owa,True,True	test_rs01d_in.ttl,test_rs01d_out.ttl,owaf,True,True
+RS01	test_rs01	e	test_rs01e_in.ttl	test_rs01e_out.ttl	True	True	True	True	False	True	test_rs01e_in.ttl,test_rs01e_out.ttl,cwa,True,True	test_rs01e_in.ttl,test_rs01e_out.ttl,owa,True,False	test_rs01e_in.ttl,test_rs01e_out.ttl,owaf,True,True
+RS02	test_rs02		test_rs02_in.ttl	test_rs02_out.ttl									
+RS03	test_rs03		test_rs03_in.ttl	test_rs03_out.ttl									
+RS04	test_rs04		test_rs04_in.ttl	test_rs04_out.ttl									
+RS05	test_rs05		test_rs05_in.ttl	test_rs05_out.ttl									
+RS06	test_rs06	a	test_rs06a_in.ttl	test_rs06a_out.ttl	False	True	True	True	True	True	test_rs06a_in.ttl,test_rs06a_out.ttl,cwa,False,True	test_rs06a_in.ttl,test_rs06a_out.ttl,owa,True,True	test_rs06a_in.ttl,test_rs06a_out.ttl,owaf,True,True
+RS06	test_rs06	b	test_rs06b_in.ttl	test_rs06b_out.ttl	False	True	False	True	False	True	test_rs06b_in.ttl,test_rs06b_out.ttl,cwa,False,True	test_rs06b_in.ttl,test_rs06b_out.ttl,owa,True,False	test_rs06b_in.ttl,test_rs06b_out.ttl,owaf,False,True
+RS06	test_rs06	c	test_rs06c_in.ttl	test_rs06c_out.ttl	False	True	True	True	True	True	test_rs06c_in.ttl,test_rs06c_out.ttl,cwa,False,True	test_rs06c_in.ttl,test_rs06c_out.ttl,owa,True,True	test_rs06c_in.ttl,test_rs06c_out.ttl,owaf,True,True
+RS06	test_rs06	d	test_rs06d_in.ttl	test_rs06d_out.ttl	False	False	False	True	True	True	test_rs06d_in.ttl,test_rs06d_out.ttl,cwa,False,True	test_rs06d_in.ttl,test_rs06d_out.ttl,owa,False,True	test_rs06d_in.ttl,test_rs06d_out.ttl,owaf,False,True
+RS06	test_rs06	e	test_rs06e_in.ttl	test_rs06e_out.ttl	False	False	False	True	True	True	test_rs06e_in.ttl,test_rs06e_out.ttl,cwa,False,True	test_rs06e_in.ttl,test_rs06e_out.ttl,owa,False,True	test_rs06e_in.ttl,test_rs06e_out.ttl,owaf,False,True
+RS06	test_rs06	f	test_rs06f_in.ttl	test_rs06f_out.ttl	False	False	False	True	True	True	test_rs06f_in.ttl,test_rs06f_out.ttl,cwa,False,True	test_rs06f_in.ttl,test_rs06f_out.ttl,owa,False,True	test_rs06f_in.ttl,test_rs06f_out.ttl,owaf,False,True
+RS06	test_rs06	g	test_rs06g_in.ttl	test_rs06g_out.ttl	False	False	False	True	True	True	test_rs06g_in.ttl,test_rs06g_out.ttl,cwa,False,True	test_rs06g_in.ttl,test_rs06g_out.ttl,owa,False,True	test_rs06g_in.ttl,test_rs06g_out.ttl,owaf,False,True
+RS06	test_rs06	h	test_rs06h_in.ttl	test_rs06h_out.ttl	False	True	True	True	True	True	test_rs06h_in.ttl,test_rs06h_out.ttl,cwa,False,True	test_rs06h_in.ttl,test_rs06h_out.ttl,owa,True,True	test_rs06h_in.ttl,test_rs06h_out.ttl,owaf,True,True
+RS06	test_rs06	i	test_rs06i_in.ttl	test_rs06i_out.ttl	False	True	False	True	False	True	test_rs06i_in.ttl,test_rs06i_out.ttl,cwa,False,True	test_rs06i_in.ttl,test_rs06i_out.ttl,owa,True,False	test_rs06i_in.ttl,test_rs06i_out.ttl,owaf,False,True
+RS07	test_rs07		test_rs07_in.ttl	test_rs07_out.ttl									
+RS08	test_rs08		test_rs08_in.ttl	test_rs08_out.ttl									
+RS09	test_rs09		test_rs09_in.ttl	test_rs09_out.ttl									
+RU01	test_ru01	a	test_ru01a_in.ttl	test_ru01a_out.ttl	True	True	True	True	True	True	test_ru01a_in.ttl,test_ru01a_out.ttl,cwa,True,True	test_ru01a_in.ttl,test_ru01a_out.ttl,owa,True,True	test_ru01a_in.ttl,test_ru01a_out.ttl,owaf,True,True
+RU01	test_ru01	b	test_ru01b_in.ttl	test_ru01b_out.ttl	True	True	True	True	False	True	test_ru01b_in.ttl,test_ru01b_out.ttl,cwa,True,True	test_ru01b_in.ttl,test_ru01b_out.ttl,owa,True,False	test_ru01b_in.ttl,test_ru01b_out.ttl,owaf,True,True
+RU01	test_ru01	c	test_ru01c_in.ttl	test_ru01c_out.ttl	False	True	True	True	True	True	test_ru01c_in.ttl,test_ru01c_out.ttl,cwa,False,True	test_ru01c_in.ttl,test_ru01c_out.ttl,owa,True,True	test_ru01c_in.ttl,test_ru01c_out.ttl,owaf,True,True
+RU01	test_ru01	d	test_ru01d_in.ttl	test_ru01d_out.ttl	True	True	True	True	True	True	test_ru01d_in.ttl,test_ru01d_out.ttl,cwa,True,True	test_ru01d_in.ttl,test_ru01d_out.ttl,owa,True,True	test_ru01d_in.ttl,test_ru01d_out.ttl,owaf,True,True
+RU01	test_ru01	e	test_ru01e_in.ttl	test_ru01e_out.ttl	True	True	True	True	True	True	test_ru01e_in.ttl,test_ru01e_out.ttl,cwa,True,True	test_ru01e_in.ttl,test_ru01e_out.ttl,owa,True,True	test_ru01e_in.ttl,test_ru01e_out.ttl,owaf,True,True
+RU01	test_ru01	f	test_ru01f_in.ttl	test_ru01f_out.ttl	True	True	True	True	False	True	test_ru01f_in.ttl,test_ru01f_out.ttl,cwa,True,True	test_ru01f_in.ttl,test_ru01f_out.ttl,owa,True,False	test_ru01f_in.ttl,test_ru01f_out.ttl,owaf,True,True
+RU01	test_ru01	g	test_ru01g_in.ttl	test_ru01g_out.ttl	False	True	True	True	True	True	test_ru01g_in.ttl,test_ru01g_out.ttl,cwa,False,True	test_ru01g_in.ttl,test_ru01g_out.ttl,owa,True,True	test_ru01g_in.ttl,test_ru01g_out.ttl,owaf,True,True
+RU01	test_ru01	h	test_ru01h_in.ttl	test_ru01h_out.ttl	False	True	True	True	True	True	test_ru01h_in.ttl,test_ru01h_out.ttl,cwa,False,True	test_ru01h_in.ttl,test_ru01h_out.ttl,owa,True,True	test_ru01h_in.ttl,test_ru01h_out.ttl,owaf,True,True
+RU01	test_ru01	i	test_ru01i_in.ttl	test_ru01i_out.ttl	False	True	True	True	False	True	test_ru01i_in.ttl,test_ru01i_out.ttl,cwa,False,True	test_ru01i_in.ttl,test_ru01i_out.ttl,owa,True,False	test_ru01i_in.ttl,test_ru01i_out.ttl,owaf,True,True
+RU01	test_ru01	j	test_ru01j_in.ttl	test_ru01j_out.ttl	True	True	True	True	False	True	test_ru01j_in.ttl,test_ru01j_out.ttl,cwa,True,True	test_ru01j_in.ttl,test_ru01j_out.ttl,owa,True,False	test_ru01j_in.ttl,test_ru01j_out.ttl,owaf,True,True
