@@ -9,19 +9,19 @@ LIST_OF_TESTS = get_test_list()
 
 
 @pytest.mark.parametrize("input_file, output_file, assumption, consistent, correct", LIST_OF_TESTS)
-def test_scior(input_file: str, output_file: str, assumption: str, consistent: str, correct: str):
+def test_scior(input_file: str, output_file: str, assumption: str, is_consistent: str, is_correct: str):
     """ Executes Scior in a received input file and checks if the execution result matches the expected value.
 
-    :param input_file: Path to file that is going to be used to test Scior.
+    :param input_file: Path to an owl file that is going to be used to test Scior.
     :type input_file: str
-    :param output_file: Path to a file that contains the expected results for the Scior execution.
+    :param output_file: Path to an owl file that contains the expected results for the Scior execution.
     :type output_file: str
-    :param assumption: World-assumption to be used in the Scior test.
+    :param assumption: Indicates the world-assumption to be used in the Scior test. Valid values: 'cwa', 'owa', 'owaf')
     :type assumption: str
-    :param consistent: Indicates if the ontology is expected to be consistent or not.
-    :type consistent: str
-    :param correct: Indicates if the generated result is expect to equal the provided output or not.
-    :type correct: str
+    :param is_consistent: Indicates if the ontology is expected to be consistent or not.
+    :type is_consistent: str
+    :param is_correct: Indicates if the generated result is expected to equal the provided output or not.
+    :type is_correct: str
     """
 
     # Default values
@@ -33,8 +33,8 @@ def test_scior(input_file: str, output_file: str, assumption: str, consistent: s
     # Adjusting inputs
     input_file = base_path + input_file
     output_file = base_path + output_file
-    consistent = True if consistent == "True" else False
-    correct = True if correct == "True" else False
+    is_consistent = True if is_consistent == "True" else False
+    is_correct = True if is_correct == "True" else False
 
     try:
         # Creating input and output dataclass_lists
@@ -51,15 +51,15 @@ def test_scior(input_file: str, output_file: str, assumption: str, consistent: s
         no_error = False
 
     # Setting problem messages
-    exp_consist_msg = "consistent" if consistent else "inconsistent"
+    exp_consist_msg = "consistent" if is_consistent else "inconsistent"
     got_consist_msg = "consistent" if is_consistent else "inconsistent"
-    exp_result_msg = "correct" if correct else "incorrect"
+    exp_result_msg = "correct" if is_correct else "incorrect"
     got_result_msg = "correct" if is_correct else "incorrect"
 
     # The expected result is got when it is set as False and the result obtained is also False
-    if correct == False and is_correct == False:
+    if is_correct == False and is_correct == False:
         is_correct = True
 
     assert no_error, f"EXECUTION ERROR! Error not associated with file consistency or Scior's results."
-    assert consistent == is_consistent, f"CONSISTENCY NOT MATCHED! Expected {exp_consist_msg}, got {got_consist_msg}."
+    assert is_consistent == is_consistent, f"CONSISTENCY NOT MATCHED! Expected {exp_consist_msg}, got {got_consist_msg}."
     assert is_correct, f"RESULT NOT MATCHED! Expected {exp_result_msg}, got {got_result_msg}."

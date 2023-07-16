@@ -1,4 +1,4 @@
-# Scior: Implemented Rules
+# Scior: Implemented Rules Definitions
 
 The rules implemented in Scior are outlined in this document.
 
