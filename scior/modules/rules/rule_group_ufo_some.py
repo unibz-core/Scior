@@ -555,7 +555,7 @@ def run_rs08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     """ Executes rule RS08 from group UFO Some.
 
     Definition: PhaseMixin(x) -> E y (Category (y) ^ isSubClassOf(x,y))
-    Description: EveryPhaseMixin specialize at least one Category.
+    Description: Every PhaseMixin specializes at least one Category.
 
     :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
     :type ontology_dataclass_list: list[OntologyDataClass]
