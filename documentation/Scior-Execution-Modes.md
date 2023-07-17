@@ -47,8 +47,8 @@ We implemented Scior using the [RDFLib Python library](https://rdflib.readthedoc
 Scior provides two execution modes regarding user's interactivity: totally automatic (i.e., no interaction is required at any moment) or interactive execution (when the user can provide information whenever necessary). The arguments for setting these execution modes are:
 
 ```txt
--i, --interactive	Execute automatic rules whenever possible, interactive rules when necessary.                
--a, --automatic	* Execute only automatic rules. Interactive rules are not performed.
+-i, --interactive    Execute automatic rules whenever possible, interactive rules when necessary.                
+-a, --automatic      * Execute only automatic rules. Interactive rules are not performed.
 ```
 
 As a premise, Scior always considers the number of possibilities to (positively or negatively) attribute a classification to a class: if the number of possibilities is one, no interaction is needed and hence it automatically attributes the classification to the class. If the number of possibilities is higher than one, Scior will require the user's interaction or report the situation to the user, when in the interactive and automatic modes, respectively. The information about actions considering different situations are presented [in the corresponding documentation](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Implemented-Rules-Actions.md).
@@ -58,9 +58,9 @@ As a premise, Scior always considers the number of possibilities to (positively 
 Another piece of information that the user should provide to Scior is the completeness of the model to be evaluated. Scior considers this information for performing different actions according to its world assumption. The three available options are:
 
 ```txt
--cwa, --is_cwa	Operate in Closed-World Assumption (CWA).
--owa, --is_owa	* Operate in Open-World Assumption (OWA) – Regular Mode.
--owaf, --is_owaf	Operate in Open-World Assumption (OWA) – Forced Mode.
+-cwa,   --is_cwa    Operate in Closed-World Assumption (CWA).
+-owa,   --is_owa    * Operate in Open-World Assumption (OWA) – Regular Mode.
+-owaf,  --is_owaf   Operate in Open-World Assumption (OWA) – Forced Mode.
 ```
 
 RDF-based knowledge graphs are implemented over the [open-world assumption](https://en.wikipedia.org/wiki/Open-world_assumption) paradigm, where unknown information may be true or false—i.e., in this paradigm, it is supposed that the model may be **incomplete**. Pieces of information may be (intentionally or not) missing from the input file and the Scior engine must know that to infer each entity’s correct ontological categories. On one hand, the open-world assumption may cause Scior to identify more possibilities to be displayed to the user's choice when using the interactive mode, but it may also lead to fewer inferences when in the automatic mode.
@@ -76,9 +76,9 @@ While some rules are performed the same way in both modes, others have different
 The user can choose among printing only the necessary execution information, printing all generated information or do not print any information.
 
 ```txt
--s, --silent   Silent mode. Print only basic execution status information.
--r, --verbose  * Print basic execution information and results.
--d, --debug    Generates tons of log for debugging.
+-s, --silent     Silent mode. Print only basic execution status information.
+-r, --verbose    * Print basic execution information and results.
+-d, --debug      Generates tons of log for debugging.
 ```
 
 ## Output gUFO (Optional Arguments)
@@ -86,9 +86,9 @@ The user can choose among printing only the necessary execution information, pri
 The arguments of this group regard the output file generated after Scior’s execution is concluded, when it saves an output file containing all the discovered gUFO information (more information [here](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Functioning.md#output-ontology)).
 
 ```txt
--gr, --gufo_results * Write in the output ontology file only the gUFO classifications found.
--gi, --gufo_import  Import gUFO ontology in the output ontology file.
--gw, --gufo_write	Write all gUFO statements in the output ontology file.
+-gr,  --gufo_results    * Write in the output ontology file only the gUFO classifications found.
+-gi,  --gufo_import     Import gUFO ontology in the output ontology file.
+-gw,  --gufo_write      Write all gUFO statements in the output ontology file.
 ```
 
 By default, the output file only references the gUFO concepts in its assertions (so the only known gUFO information is the one that is contained in the file).
@@ -100,8 +100,8 @@ If the user wants to store or manipulate **gUFO** information in the output file
 The two last arguments are the ones to print a help message and the software version:
 
 ```txt
--h, --help show this help message and exit.
--v, --version Print the software version and exit.
+-h, --help      Show this help message and exit.
+-v, --version   Print the software version and exit.
 ```
 
 The **help** argument is a default functionality provided by the [Python argparse library](https://docs.python.org/3/library/argparse.html). When a user requests help, the software returns a string containing a help message, including the program usage and information about its available arguments. Finally, the **version** argument simply prints the version of Scior being executed.
