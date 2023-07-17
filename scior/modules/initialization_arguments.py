@@ -13,7 +13,7 @@ def treat_user_arguments(software_acronym: str, software_name: str, software_ver
 
     LOGGER.debug("Parsing arguments...")
 
-    about_message = software_acronym + " - version " + software_version
+    about_message = software_acronym + " - version " + software_version + " - " + software_url
 
     # PARSING ARGUMENTS
     arguments_parser = argparse.ArgumentParser(prog="scior",

@@ -4,6 +4,7 @@ import time
 
 from owlrl import RDFS_Semantics, DeductiveClosure
 from rdflib import RDF, OWL, Graph
+from rdflib.util import guess_format
 
 from scior.modules.logger_config import initialize_logger
 from scior.modules.problems_treatment.treat_errors import report_error_io_read
@@ -36,7 +37,8 @@ def load_all_graph_safely(ontology_file: str) -> Graph:
     ontology_graph = Graph()
 
     try:
-        ontology_graph.parse(ontology_file, encoding='utf-8')
+        file_format = guess_format(ontology_file)
+        ontology_graph.parse(ontology_file, format=file_format, encoding='utf-8')
     except OSError as error:
         file_description = f"input ontology file"
         report_error_io_read(ontology_file, file_description, error)

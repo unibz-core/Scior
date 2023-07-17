@@ -16,10 +16,10 @@
 
 ## Functioning and Features
 
-We provide specific documentation for better explaining the Scior scope, objectives, functioning logics, and features. Please access the following links for more information.
+We provide specific documentation for better explaining the Scior's scope, objectives, functioning logics, and features. Please access the following links for more information.
 
 <!-- - [Functioning Overview](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Functioning.md) -->
-<!-- - [Execution Modes](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Execution-Modes.md) -->
+- [Execution Modes](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Execution-Modes.md)
 - [Theoretical Rules](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Theoretical-Rules.md)
 - [Implemented Rules Definitions](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Implemented-Rules-Definitions.md)
 - [Implemented Rules Actions](https://github.com/unibz-core/Scior/blob/main/documentation/Scior-Implemented-Rules-Actions.md)
