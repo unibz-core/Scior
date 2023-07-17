@@ -11,8 +11,11 @@ SCIOR_NAMESPACE = "https://purl.org/scior/"
 def run_rb01(ontology_graph):
     """ Executes rule RB01 from group base.
 
-        Definition: subClassOf(x,x)
+    Definition: subClassOf(x,x)
     Description: rdfs:subClassOf is reflexive. All owl:Classe instances are rdfs:subClassOf themselves.
+
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RB01"
@@ -28,8 +31,11 @@ def run_rb01(ontology_graph):
 def run_rb02(ontology_graph):
     """ Executes rule RB02 from group base.
 
-        Definition: subClassOf(x,y) ^ subClassOf(y,z) -> subClassOf(x,z)
+    Definition: subClassOf(x,y) ^ subClassOf(y,z) -> subClassOf(x,z)
     Description: rdfs:subClassOf is transitive. All owl:Classe instances are rdfs:subClassOf of all their superclasses.
+
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
     rule_code = "RB02"
 
@@ -54,7 +60,10 @@ def run_rb02(ontology_graph):
 def run_rb03(ontology_graph):
     """ Executes rule RB03 from group BASE.
 
-        Definition: subClassOf(x,z) ^ subClassOf(y,z) -> shareSuperClass(x,y)
+    Definition: subClassOf(x,z) ^ subClassOf(y,z) -> shareSuperClass(x,y)
+
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
     rule_code = "RB03"
 
@@ -79,7 +88,11 @@ def run_rb03(ontology_graph):
 
 
 def execute_rules_base(ontology_graph):
-    """Executes once all rules of the group BASE ."""
+    """Executes once all rules of the group BASE .
+
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
+    """
 
     LOGGER.debug("Starting execution of all rules from group BASE.")
 

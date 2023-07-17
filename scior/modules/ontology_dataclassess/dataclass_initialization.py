@@ -188,7 +188,7 @@ def insert_known_gufo_information(list_known_gufo: list[tuple], ontology_datacla
     The tuple's first element is the ontology class to receive the assertion and the second is the type to be
     asserted to it (in short form, e.g., Kind).
     :type list_known_gufo: list[tuple]
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
     :param assertion_type: Indication of the assertion to be included into the ontology_dataclass elements.
     Allowed values are 'positive' or 'negative'. If invalid value is provided a ValueError exception is raised.
@@ -221,9 +221,9 @@ def load_known_gufo_information(ontology_graph: Graph, ontology_dataclass_list: 
     E.g., if the class Person is set as a gufo:Kind in the loaded ontology, this stereotype is moved from the
     dataclass's can_type (default) list to its is_type list.
 
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
     """
 

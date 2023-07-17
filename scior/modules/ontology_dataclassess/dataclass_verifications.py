@@ -94,7 +94,7 @@ def verify_dataclass_duplicates_in_lists(ontology_dataclass: OntologyDataClass) 
 def verify_all_ontology_dataclasses_consistency(ontology_dataclass_list: list[OntologyDataClass]) -> None:
     """ Performs a consistency verification of all elements in the ontology_dataclass_list.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
     """
 

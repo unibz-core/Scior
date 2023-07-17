@@ -13,8 +13,13 @@ LOGGER = initialize_logger()
 def run_ra01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule RA01 from group UFO All.
 
-        Definition: Sortal(x) ^ subClassOf(y,x) -> Sortal(y)
-        Description: Everything that specialize a Sortal is also a Sortal
+    Definition: Sortal(x) ^ subClassOf(y,x) -> Sortal(y)
+    Description: Everything that specialize a Sortal is also a Sortal
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RA01"
@@ -41,8 +46,13 @@ def run_ra01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ra02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule RA02 from group UFO All.
 
-        Definition: RigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
+    Definition: RigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
     Description: AntiRigid types cannot generalize Rigid types.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RA02"
@@ -69,8 +79,13 @@ def run_ra02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ra03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule RA03 from group UFO All.
 
-        Definition: SemiRigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
+    Definition: SemiRigidType(x) ^ subClassOf(x,y) -> ~AntiRigidType(y)
     Description: AntiRigid types cannot generalize SemiRigid types.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RA03"
@@ -97,8 +112,13 @@ def run_ra03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ra04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule RA04 from group UFO All.
 
-        Definition: x != y ^ Kind(x) ^ subClassOf(x,y) -> NonSortal(y)
+    Definition: x != y ^ Kind(x) ^ subClassOf(x,y) -> NonSortal(y)
     Description: All entities must have a single or aggregate multiple identity principles.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RA04"
@@ -126,8 +146,13 @@ def run_ra04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ra05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule RA05 from group UFO All.
 
-        Definition: NonSortal(x) ^ subClassOf(x,y) -> NonSortal(y)
+    Definition: NonSortal(x) ^ subClassOf(x,y) -> NonSortal(y)
     Description: NonSortals can only specialize other NonSortals
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RA05"
@@ -154,8 +179,13 @@ def run_ra05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ra06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule RA06 from group UFO All.
 
-        Definition: Phase(x) ^ subClassOf(x,y) -> ~Role(y) ^ ~RoleMixin(y)
+    Definition: Phase(x) ^ subClassOf(x,y) -> ~Role(y) ^ ~RoleMixin(y)
     Description: Phases cannot specialize Roles and RoleMixins
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RA06"
@@ -183,8 +213,13 @@ def run_ra06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_ra07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Executes rule RA07 from group UFO All.
 
-        Definition: PhaseMixin(x) ^ subClassOf(x,y) -> ~RoleMixin(y)
+    Definition: PhaseMixin(x) ^ subClassOf(x,y) -> ~RoleMixin(y)
     Description: PhaseMixins cannot specialize RoleMixins
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RA07"
@@ -209,7 +244,13 @@ def run_ra07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
 
 def execute_rules_ufo_all(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """Call the execution of all rules from the group UFO All."""
+    """Call the execution of all rules from the group UFO All.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
+    """
 
     LOGGER.debug("Starting execution of all rules from group UFO All.")
 

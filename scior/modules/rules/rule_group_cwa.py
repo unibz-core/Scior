@@ -14,9 +14,14 @@ LOGGER = initialize_logger()
 def run_RC01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC01 from group CWA.
 
-        Definition: ~(E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))) ^ AntiRigidType(x) ^
-                    Sortal(x) ^ subClassOf(x,y) -> ~Category(y)
-        Description: Contraposition (~Q -> ~P) of rule RS01 (P -> Q).
+    Definition: ~(E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))) ^ AntiRigidType(x) ^
+                Sortal(x) ^ subClassOf(x,y) -> ~Category(y)
+    Description: Contraposition (~Q -> ~P) of rule RS01 (P -> Q).
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC01"
@@ -54,10 +59,15 @@ def run_RC01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_RC02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC02 from group CWA.
 
-        Definition: ~(E y, z (subClassOf(y,x) ^ AntiRigidType(y) ^ subClassOf(z,x) ^ RigidType(z))) -> ~Mixin(x)
-        Description: Contraposition (~Q -> ~P) of rule R25 (P -> Q).
+    Definition: ~(E y, z (subClassOf(y,x) ^ AntiRigidType(y) ^ subClassOf(z,x) ^ RigidType(z))) -> ~Mixin(x)
+    Description: Contraposition (~Q -> ~P) of rule R25 (P -> Q).
 
-        Added that the subclass cannot be the class itself.
+    Added that the subclass cannot be the class itself.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC02"
@@ -98,8 +108,13 @@ def run_RC02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_RC03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC03 from group CWA.
 
-        Definition: ~(E y,z (x != y ^ x != z ^ subClassOf(x,y) ^ subClassOf(z,y)) -> Kind(x)
-        Description: A class without supertypes or subtypes is a Kind.
+    Definition: ~(E y,z (x != y ^ x != z ^ subClassOf(x,y) ^ subClassOf(z,y)) -> Kind(x)
+    Description: A class without supertypes or subtypes is a Kind.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC03"
@@ -136,9 +151,14 @@ def run_RC03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_RC04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC04 from group CWA.
 
-        Definition: ~(E y (subClassOf (x,y) ^ Kind(y))) -> ~Sortal(x)
-        Description: Contraposition (~Q -> ~P) of rule R35 (P -> Q).
-                    If a class does not have a superclass that can be a Kind then it is not a Sortal.
+    Definition: ~(E y (subClassOf (x,y) ^ Kind(y))) -> ~Sortal(x)
+    Description: Contraposition (~Q -> ~P) of rule R35 (P -> Q).
+                If a class does not have a superclass that can be a Kind then it is not a Sortal.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC04"
@@ -169,9 +189,14 @@ def run_RC04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_RC05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC05 from group CWA.
 
-        Definition: ~(E y,z (y!=z ^ Sortal(y) ^ Sortal(z) ^ ~shareKind(y,z) ^ (subClassOf(y,x) v shareSuperClass(x,y)))^
+    Definition: ~(E y,z (y!=z ^ Sortal(y) ^ Sortal(z) ^ ~shareKind(y,z) ^ (subClassOf(y,x) v shareSuperClass(x,y)))^
                     (subClassOf(z,x) v shareSuperClass(x,z))) -> ~NonSortal(x)
-        Description: Contraposition (~Q -> ~P) of rule RS02 (P -> Q).
+    Description: Contraposition (~Q -> ~P) of rule RS02 (P -> Q).
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC05"
@@ -242,8 +267,13 @@ def run_RC05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_RC06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC06 from group CWA.
 
-        Definition: ~(E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))) ^ Role(x) ^ subClassOf(x,y) -> ~PhaseMixin(y)
-        Description: Contraposition (~Q -> ~P) of rule RS06 (P -> Q). Variation A.
+    Definition: ~(E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))) ^ Role(x) ^ subClassOf(x,y) -> ~PhaseMixin(y)
+    Description: Contraposition (~Q -> ~P) of rule RS06 (P -> Q). Variation A.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC06"
@@ -287,8 +317,13 @@ def run_RC06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_RC07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC07 from group CWA.
 
-        Definition: ~(E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))) ^ PhaseMixin(y) ^ subClassOf(x,y) -> ~Role(x)
-        Description: Contraposition (~Q -> ~P) of rule RS06 (P -> Q). Variation B.
+    Definition: ~(E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))) ^ PhaseMixin(y) ^ subClassOf(x,y) -> ~Role(x)
+    Description: Contraposition (~Q -> ~P) of rule RS06 (P -> Q). Variation B.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC07"
@@ -332,9 +367,13 @@ def run_RC07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_RC08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC08 from group CWA.
 
-        Definition: ~(E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))) -> ~Phase(x)
-        Description: Contraposition (~Q -> ~P) of rule RS07 (P -> Q).
-                    A class with a single phase cannot be a Kind.
+    Definition: ~(E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))) -> ~Phase(x)
+    Description: Contraposition (~Q -> ~P) of rule RS07 (P -> Q). A class with a single phase cannot be a Kind.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC08"
@@ -394,9 +433,14 @@ def run_RC08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_RC09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC09 from group CWA.
 
-        Definition: ~(E y (Category (y) ^ isSubClassOf(x,y))) -> ~PhaseMixin(x)
-        Description: Contraposition (~Q -> ~P) of rule R45 (P -> Q).
+    Definition: ~(E y (Category (y) ^ isSubClassOf(x,y))) -> ~PhaseMixin(x)
+    Description: Contraposition (~Q -> ~P) of rule R45 (P -> Q).
                 If a class does not have a superclass that can be a Category then it is not a PhaseMixin.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC09"
@@ -427,11 +471,16 @@ def run_RC09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_RC10(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC10 from group CWA.
 
-        Definition: ~(E z (PhaseMixin(z) ^ Category(y) ^ subClassOf(x,y) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^
-                    isSubClassOf(z,y))) -> ~PhaseMixin(x)
-        Description: Contraposition (~Q -> ~P) of rule RS09 (P -> Q). Variation A.
-                    A class X with a known sibling PhaseMixin Z (Z!=X) can only be a PhaseMixin if it has at least one
-                    common superclass X that can be a Category.
+    Definition: ~(E z (PhaseMixin(z) ^ Category(y) ^ subClassOf(x,y) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^
+                isSubClassOf(z,y))) -> ~PhaseMixin(x)
+    Description: Contraposition (~Q -> ~P) of rule RS09 (P -> Q). Variation A.
+                A class X with a known sibling PhaseMixin Z (Z!=X) can only be a PhaseMixin if it has at least one
+                common superclass X that can be a Category.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC10"
@@ -482,11 +531,16 @@ def run_RC10(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 def run_RC11(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
     """ Implements rule RC11 from group CWA.
 
-        Definition: ~(E z (PhaseMixin(z) ^ PhaseMixin(x) ^ subClassOf(x,y) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^
-                    isSubClassOf(z,y))) -> ~Category(y)
-        Description: Contraposition (~Q -> ~P) of rule RS09 (P -> Q). Variation B.
-                    A class Y with a known PhaseMixin Z subclass can only be a Category if it at least a
-                    subclass X (Y!=Z) that can be a PhaseMixin.
+    Definition: ~(E z (PhaseMixin(z) ^ PhaseMixin(x) ^ subClassOf(x,y) ^ ~isSubClassOf(x,z) ^ ~isSubClassOf(z,x) ^
+                isSubClassOf(z,y))) -> ~Category(y)
+    Description: Contraposition (~Q -> ~P) of rule RS09 (P -> Q). Variation B.
+                A class Y with a known PhaseMixin Z subclass can only be a Category if it at least a
+                subclass X (Y!=Z) that can be a PhaseMixin.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
 
     rule_code = "RC11"
@@ -538,7 +592,13 @@ def run_RC11(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
 
 
 def execute_rules_ufo_cwa(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph) -> None:
-    """ Call execution all rules from the group UFO CWA. """
+    """ Call execution all rules from the group UFO CWA.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
+    """
 
     LOGGER.debug("Starting execution of all rules from group UFO CWA.")
 

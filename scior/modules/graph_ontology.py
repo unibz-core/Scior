@@ -95,7 +95,7 @@ def save_ontology_file_caller(end_date_time: str, ontology_graph: Graph) -> None
 
     :param end_date_time: String containing the software's execution end date and time.
     :type end_date_time: str
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     """
 
@@ -117,7 +117,7 @@ def save_ontology_file_caller(end_date_time: str, ontology_graph: Graph) -> None
 def safe_save_ontology_file(ontology_graph: Graph, output_file_name: str, syntax: str = 'turtle'):
     """ Safely saves the ontology graph into a TTL file in the informed destination.
 
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param output_file_name: Created output file name.
     :type output_file_name: str

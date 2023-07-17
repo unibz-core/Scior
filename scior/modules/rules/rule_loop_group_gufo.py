@@ -6,6 +6,7 @@ import string
 # Used this way to avoid circular dependency
 import scior.modules.initialization_arguments as args
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 from scior.modules.ontology_dataclassess.dataclass_hashing import create_ontology_dataclass_list_hash
 from scior.modules.rules.rule_group_gufo_leaves import execute_gufo_leaves_rules
 from scior.modules.rules.rule_group_gufo_negative import execute_gufo_negative_rules
@@ -14,8 +15,12 @@ from scior.modules.rules.rule_group_gufo_positive import execute_gufo_positive_r
 LOGGER = initialize_logger()
 
 
-def loop_execute_gufo_rules(ontology_dataclass_list):
-    """ Executes in loop all rules of the GUFO group."""
+def loop_execute_gufo_rules(ontology_dataclass_list: list[OntologyDataClass]) -> None:
+    """ Executes in loop all rules of the GUFO group.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    """
 
     if args.ARGUMENTS["is_debug"]:
         loop_id = ''.join(random.choices(string.ascii_lowercase, k=4))

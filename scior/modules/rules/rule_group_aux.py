@@ -10,7 +10,10 @@ LOGGER = initialize_logger()
 def run_rx01(ontology_graph: Graph) -> None:
     """ Executes rule RX01 from group AUX.
 
-        Definition: Kind(z) ^ subClassOf(x,z) ^ subClassOf(y,z) -> shareKind(x,y)
+    Definition: Kind(z) ^ subClassOf(x,z) ^ subClassOf(y,z) -> shareKind(x,y)
+
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
     """
     rule_code = "RX01"
 
@@ -37,7 +40,12 @@ def run_rx01(ontology_graph: Graph) -> None:
 def run_rx02(ontology_graph: Graph) -> None:
     """ Executes rule RX02 from group AUX.
 
-        Definition: Kind(z) ^ subClassOf(x,z) ^ shareKind(x,y) -> subClassOf(y,z)
+    Definition: Kind(z) ^ subClassOf(x,z) ^ shareKind(x,y) -> subClassOf(y,z)
+
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
+
+
     """
     rule_code = "RX02"
 
@@ -61,7 +69,11 @@ def run_rx02(ontology_graph: Graph) -> None:
 
 
 def execute_rules_auxiliary(ontology_graph: Graph) -> None:
-    """Executes all rules of the AUXILIARY group."""
+    """Executes all rules of the AUXILIARY group.
+
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
+    :type ontology_graph: Graph
+    """
 
     LOGGER.debug("Starting execution of all rules from group AUX.")
 

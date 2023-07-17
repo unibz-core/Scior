@@ -87,8 +87,6 @@ def execute_rules_types(ontology_dataclass_list: list[OntologyDataClass], ontolo
 
         Every time that a classification is moved between lists, all gUFO rules are executed in loop.
         Implemented in (move_classification_between_type_lists).
-
-        MUST BE CALLED ONCE FROM MAIN FILE.
     """
 
     if args.ARGUMENTS["is_cwa"]:

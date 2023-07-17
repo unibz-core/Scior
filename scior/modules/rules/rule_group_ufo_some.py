@@ -21,7 +21,7 @@ def treat_result_ufo_some(ontology_dataclass_list: list[OntologyDataClass], eval
                           rule_code: str, incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Treats the results from all rules from the group UFO Some.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
     :param evaluated_dataclass:
     :type evaluated_dataclass: OntologyDataClass
@@ -95,9 +95,9 @@ def run_rs01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
                 E z (RigidType(z) ^ Sortal(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: AntiRigid Sortals cannot "directly specialize" Categories. This must be done through a Ridig Sortal.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
@@ -161,9 +161,9 @@ def run_rs02(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     Definition: Mixin(x) -> E y (subClassOf(y,x) ^ AntiRigidType(y))
     Description: Mixins must generalize at least one AntiRigidType.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
@@ -223,9 +223,9 @@ def run_rs03(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     Definition: Mixin(x) -> E y (subClassOf(y,x) ^ RigidType(y))
     Description: Mixins must generalize at least one RigidType.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
@@ -286,9 +286,9 @@ def run_rs04(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     Description: NonSortals must be related to at least one Sortal that has a subClassOf or shareSuperClass
                 relation with it.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
@@ -350,9 +350,9 @@ def run_rs05(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     Description: NonSortals thar are related to one Sortal that has a subClassOf or shareSuperClass relation with it
                 must be related to another Sortal that has a subClassOf or shareSuperClass relation with it.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
@@ -416,9 +416,9 @@ def run_rs06(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     Definition: Role(x) ^ PhaseMixin(y) ^ subClassOf(x,y) -> E z (Phase(z) ^ subClassOf(x,z) ^ subClassOf(z,y))
     Description: A Role cannot "specialize directly"  a PhaseMixin. This must be done through a Phase.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
@@ -480,9 +480,9 @@ def run_rs07(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     Definition: Phase(x) -> E y (Phase (y) ^ shareKind(x,y) ^ ~isSubClassOf(x,y) ^ ~isSubClassOf(y,x))
     Description: There must exist at least two Phases that share the same Kind and that do not specialize each other
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
@@ -557,9 +557,9 @@ def run_rs08(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     Definition: PhaseMixin(x) -> E y (Category (y) ^ isSubClassOf(x,y))
     Description: Every PhaseMixin specializes at least one Category.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
@@ -620,9 +620,9 @@ def run_rs09(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     Description: There must exist at least two PhaseMixins that share the same Category
                 and that do not specialize each other.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
@@ -697,9 +697,9 @@ def execute_rules_ufo_some(ontology_dataclass_list: list[OntologyDataClass], ont
                            incompleteness_stack: list[IncompletenessEntry]) -> None:
     """Call execution all rules from the group UFO Some.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]

@@ -3,12 +3,17 @@
 # Used this way to avoid circular dependency
 import scior.modules.ontology_dataclassess.dataclass_moving as m
 from scior.modules.logger_config import initialize_logger
+from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDataClass
 
 LOGGER = initialize_logger()
 
 
-def execute_gufo_negative_rules(ontology_dataclass_list):
-    """ Executes once all rules of the group gUFO Negative."""
+def execute_gufo_negative_rules(ontology_dataclass_list: list[OntologyDataClass]) -> None:
+    """ Executes once all rules of the group gUFO Negative.
+
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    """
 
     # LOGGER.debug("Executing all negative rules from group gUFO.")
 

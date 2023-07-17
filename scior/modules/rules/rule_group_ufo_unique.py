@@ -21,7 +21,7 @@ def treat_result_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], ev
                             rule_code: str, incompleteness_stack: list[IncompletenessEntry]) -> None:
     """ Treats the results from all rules from the group UFO Unique.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
     :param evaluated_dataclass:
     :type evaluated_dataclass: OntologyDataClass
@@ -108,9 +108,9 @@ def run_ru01(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: G
     Definition: Sortal(x) -> E! y (subClassOf (x,y) ^ Kind(y))
     Description: Every Sortal must have a unique identity provider, i.e., a single Kind as supertype.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
@@ -161,9 +161,9 @@ def execute_rules_ufo_unique(ontology_dataclass_list: list[OntologyDataClass], o
                              incompleteness_stack: list[IncompletenessEntry]) -> None:
     """Call execution of all rules from the group UFO Unique.
 
-    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :param ontology_dataclass_list: List with all OntologyDataClass elements, including their URIs and internal lists.
     :type ontology_dataclass_list: list[OntologyDataClass]
-    :param ontology_graph: Ontology's updated working graph
+    :param ontology_graph: Updated ontology's working (RDFLib) graph on memory to be manipulated.
     :type ontology_graph: Graph
     :param incompleteness_stack: List of identified incompleteness to be updated if necessary.
     :type incompleteness_stack: list[IncompletenessEntry]
