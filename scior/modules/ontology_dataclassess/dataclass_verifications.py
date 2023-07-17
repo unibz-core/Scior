@@ -11,7 +11,9 @@ LOGGER = initialize_logger()
 
 def verify_dataclass_invalid_strings_in_lists(ontology_dataclass: OntologyDataClass) -> None:
     """ Checks if there are invalid strings in all lists of the OntologyDataClass.
-        AUXILIARY FUNCTION! MUST NOT BE USED OUTSIDE FUNCTION verify_all_ontology_dataclasses_consistency.
+
+    :param ontology_dataclass: Data structure that contains information about the class and its internal lists.
+    :type ontology_dataclass: OntologyDataClass
     """
 
     evaluated_list = "IS_TYPE LIST"
@@ -35,7 +37,9 @@ def verify_dataclass_invalid_strings_in_lists(ontology_dataclass: OntologyDataCl
 
 def verify_dataclass_classifications_quantity(ontology_dataclass: OntologyDataClass) -> None:
     """ Verifies if the amount of classifications found in the list corresponds to the expected value.
-        AUXILIARY FUNCTION! MUST NOT BE USED OUTSIDE FUNCTION verify_all_ontology_dataclasses_consistency.
+
+    :param ontology_dataclass: Data structure that contains information about the class and its internal lists.
+    :type ontology_dataclass: OntologyDataClass
     """
 
     merged_list = ontology_dataclass.is_type + ontology_dataclass.can_type + ontology_dataclass.not_type
@@ -50,7 +54,9 @@ def verify_dataclass_classifications_quantity(ontology_dataclass: OntologyDataCl
 
 def verify_dataclass_multiple_final_classifications(ontology_dataclass: OntologyDataClass) -> None:
     """ No two final classifications can be in the is_type list at the same moment.
-        AUXILIARY FUNCTION! MUST NOT BE USED OUTSIDE FUNCTION verify_all_ontology_dataclasses_consistency.
+
+    :param ontology_dataclass: Data structure that contains information about the class and its internal lists.
+    :type ontology_dataclass: OntologyDataClass
     """
 
     final_classifications = set(ontology_dataclass.is_type).intersection(GUFO_LIST_LEAF_CLASSIFICATIONS)
@@ -62,7 +68,9 @@ def verify_dataclass_multiple_final_classifications(ontology_dataclass: Ontology
 
 def verify_dataclass_duplicates_in_lists(ontology_dataclass: OntologyDataClass) -> None:
     """ No same string must be in two lists at the same time.
-        AUXILIARY FUNCTION! MUST NOT BE USED OUTSIDE FUNCTION verify_all_ontology_dataclasses_consistency.
+
+    :param ontology_dataclass: Data structure that contains information about the class and its internal lists.
+    :type ontology_dataclass: OntologyDataClass
     """
 
     duplicated_is_can = set(ontology_dataclass.is_type).intersection(ontology_dataclass.can_type)
@@ -84,7 +92,11 @@ def verify_dataclass_duplicates_in_lists(ontology_dataclass: OntologyDataClass) 
 
 
 def verify_all_ontology_dataclasses_consistency(ontology_dataclass_list: list[OntologyDataClass]) -> None:
-    """ Performs a consistency verification of all elements in the ontology_dataclass_list. """
+    """ Performs a consistency verification of all elements in the ontology_dataclass_list.
+
+    :param ontology_dataclass_list: List of ontology dataclasses (all classes and is, can, and not lists of types).
+    :type ontology_dataclass_list: list[OntologyDataClass]
+    """
 
     LOGGER.debug("Initializing consistency checking for all ontology dataclasses.")
 

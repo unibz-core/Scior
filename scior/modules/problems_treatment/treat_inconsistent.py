@@ -17,7 +17,7 @@ def report_inconsistency_case_in_rule(rule_code: str, ontology_dataclass: Ontolo
 
     :param rule_code: Code of the rule in which its execution the inconsistency was detected.
     :type rule_code: str
-    :param ontology_dataclass: Ontology class related to the inconsistency found.
+    :param ontology_dataclass: Data structure that contains information about the class and its internal lists.
     :type ontology_dataclass: OntologyDataClass
     :param additional_message: Message to user indicating the identified inconsistency.
     :type additional_message: str
@@ -31,7 +31,7 @@ def report_inconsistency_case_in_rule(rule_code: str, ontology_dataclass: Ontolo
 def report_inconsistency_case_in_dataclass(ontology_dataclass: OntologyDataClass, additional_message: str = "") -> None:
     """ Reports inconsistency detected when verifying ontology dataclasses and interrupts the software execution.
 
-    :param ontology_dataclass: Ontology class related to the inconsistency found.
+    :param ontology_dataclass: Data structure that contains information about the class and its internal lists.
     :type ontology_dataclass: OntologyDataClass
     :param additional_message: Message to user indicating the identified inconsistency.
     :type additional_message: str
@@ -46,7 +46,7 @@ def report_inconsistency_case_moving(ontology_dataclass: OntologyDataClass, addi
     """ Reports inconsistency detected when moving a classification between ontology_dataclass' lists
     and interrupts the software execution.
 
-    :param ontology_dataclass: Ontology class related to the inconsistency found.
+    :param ontology_dataclass: Data structure that contains information about the class and its internal lists.
     :type ontology_dataclass: OntologyDataClass
     :param additional_message: Message to user indicating the identified inconsistency.
     :type additional_message: str

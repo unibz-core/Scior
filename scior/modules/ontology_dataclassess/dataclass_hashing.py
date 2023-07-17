@@ -6,9 +6,12 @@ from scior.modules.ontology_dataclassess.dataclass_definitions import OntologyDa
 
 def create_ontology_dataclass_hash(ontology_dataclass: OntologyDataClass) -> str:
     """ Creates a concatenation of all elements from a dataclass to be later used to generate the
-        ontology_dataclass_list hash.
+    ontology_dataclass_list hash.
 
-        AUXILIARY FUNCTION. MUST NOT BE CALLED OUTSIDE FUNCTION create_ontology_dataclass_list_hash.
+    :param ontology_dataclass: Data structure that contains information about the class and its internal lists.
+    :type ontology_dataclass: OntologyDataClass
+    :return: Internal concatenation of all elements from a dataclass to be used as hash.
+    :rtype: str
     """
 
     partial_is = "IS"
