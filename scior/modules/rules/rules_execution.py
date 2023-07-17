@@ -25,9 +25,7 @@ LOGGER = initialize_logger()
 
 def loop_rule(ontology_dataclass_list: list[OntologyDataClass], ontology_graph: Graph, list_rules_groups: list[str],
               incompleteness_stack: list[IncompletenessEntry]) -> None:
-    """ Receives a list of rule groups to perform in loop until no modifications are found.
-        AUXILIARY FUNCTION ONLY! MUST NOT BE USED OUTSIDE FUNCTION execute_rules_types.
-    """
+    """ Receives a list of rule groups to perform in loop until no modifications are found. """
 
     if args.ARGUMENTS["is_debug"]:
         loop_id = ''.join(random.choices(string.ascii_lowercase, k=4))

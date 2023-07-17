@@ -38,7 +38,7 @@ The input file (the `intput_file` test argument) is the file to be processed by 
 
 Each csv line is an independent test. Each test is performed according to the flowchart below.
 
-![test flowchart](https://raw.githubusercontent.com/unibz-core/Scior/main/documentation/resources/images/Test%20Flowchart.png)
+![test flowchart](https://raw.githubusercontent.com/unibz-core/Scior/main/documentation/resources/images/flowchart_test.png)
 
 At the start, Scior receives the input owl file to be processed and the execution mode (world assumption) in which it must operate.
 
